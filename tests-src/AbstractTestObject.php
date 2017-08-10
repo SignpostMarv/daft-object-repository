@@ -1,0 +1,22 @@
+<?php
+/**
+* @author SignpostMarv
+*/
+declare(strict_types=1);
+
+namespace SignpostMarv\DaftObject;
+
+abstract class AbstractTestObject extends AbstractArrayBackedDaftObject
+{
+    const PROPERTIES = [
+        'Foo',
+        'FooNotNullable',
+        'Bar',
+        'Baz',
+        'Bat',
+    ];
+
+    const NULLABLE_PROPERTIES = [
+        'Bat',
+    ];
+}

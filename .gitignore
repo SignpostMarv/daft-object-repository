@@ -1,0 +1,4 @@
+/vendor/
+/phpunit/
+/*.tmp
+/.php_cs.cache

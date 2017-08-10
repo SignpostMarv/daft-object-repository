@@ -1,0 +1,45 @@
+{
+    "name": "signpostmarv/daft-object",
+    "description": "Daft Object",
+    "type": "library",
+    "license": "ISC",
+    "authors": [
+        {
+            "name": "SignpostMarv",
+            "email": "me@signpostmarv.name"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "SignpostMarv\\DaftObject\\": "./src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SignpostMarv\\DaftObject\\": "./tests-src/",
+            "SignpostMarv\\DaftObject\\Tests\\": "./tests/"
+        }
+    },
+    "config": {
+        "classmap-authoritative": true,
+        "sort-packages": true
+    },
+    "scripts": {
+        "tests": [
+            "composer install",
+            "php ./vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --verbose --allow-risky=yes --dry-run",
+            "php ./vendor/phpstan/phpstan/bin/phpstan analyse -l5 .php_cs.dist src tests",
+            "php ./vendor/vimeo/psalm/bin/psalm",
+            "php ./vendor/phpunit/phpunit/phpunit"
+        ]
+    },
+    "require": {
+        "php": "^7.1"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "dev-master",
+        "phpunit/phpunit": "^5.7",
+        "signpostmarv/php-cs-fixer-config": "^0.3.0",
+        "vimeo/psalm": "dev-master"
+    }
+}
