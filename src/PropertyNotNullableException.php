@@ -1,6 +1,6 @@
 <?php
 /**
-* Exceptions
+* Exceptions.
 *
 * @author SignpostMarv
 */
@@ -12,12 +12,12 @@ use Throwable;
 use TypeError;
 
 /**
-* Exception thrown when a property is not nullable
+* Exception thrown when a property is not nullable.
 */
 class PropertyNotNullableException extends TypeError
 {
     /**
-    * Wraps to TypeError::__construct()
+    * Wraps to TypeError::__construct().
     *
     * @param string $className name of the class on which the property is not nullable
     * @param string $property name of the property which is not nullable

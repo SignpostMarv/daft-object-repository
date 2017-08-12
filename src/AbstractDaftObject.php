@@ -1,6 +1,6 @@
 <?php
 /**
-* Base daft objects
+* Base daft objects.
 *
 * @author SignpostMarv
 */
@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace SignpostMarv\DaftObject;
 
 /**
-* Base daft object
+* Base daft object.
 */
 abstract class AbstractDaftObject
 {
@@ -70,14 +70,14 @@ abstract class AbstractDaftObject
     }
 
     /**
-    * required to support isset($foo->bar);
+    * required to support isset($foo->bar);.
     *
     * @param string $property the property being checked
     */
     abstract public function __isset(string $property) : bool;
 
     /**
-    * required to support unset($foo->bar)
+    * required to support unset($foo->bar).
     *
     * @param string $property the property being unset
     *

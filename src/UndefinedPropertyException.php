@@ -1,6 +1,6 @@
 <?php
 /**
-* Exceptions
+* Exceptions.
 *
 * @author SignpostMarv
 */
@@ -12,12 +12,12 @@ use RuntimeException;
 use Throwable;
 
 /**
-* Exception thrown when a property is not defined
+* Exception thrown when a property is not defined.
 */
 class UndefinedPropertyException extends RuntimeException
 {
     /**
-    * Wraps to TypeError::__construct()
+    * Wraps to TypeError::__construct().
     *
     * @param string $className name of the class on which the property is not defined
     * @param string $property name of the property which is not defined

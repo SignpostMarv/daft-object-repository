@@ -1,6 +1,6 @@
 <?php
 /**
-* Base daft objects
+* Base daft objects.
 *
 * @author SignpostMarv
 */
@@ -9,26 +9,26 @@ declare(strict_types=1);
 namespace SignpostMarv\DaftObject;
 
 /**
-* Array-backed daft objects
+* Array-backed daft objects.
 */
 abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject
 {
     /**
-    * data for this instance
+    * data for this instance.
     *
     * @var array
     */
     private $data = [];
 
     /**
-    * List of changes properties
+    * List of changes properties.
     *
     * @var bool[]
     */
     private $changedProperties = [];
 
     /**
-    * Create an array-backed daft object
+    * Create an array-backed daft object.
     *
     * @param array $data key-value pairs
     * @param bool $writeAll if TRUE, route $data through static::__set()
@@ -90,7 +90,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject
     }
 
     /**
-    * Retrieve a property from data
+    * Retrieve a property from data.
     *
     * @param string $property the property being retrieved
     *
