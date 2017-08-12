@@ -1,24 +1,39 @@
 <?php
 /**
+* Base daft objects
+*
 * @author SignpostMarv
 */
 declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject;
 
+/**
+* Array-backed daft objects
+*/
 abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject
 {
     /**
+    * data for this instance
+    *
     * @var array
     */
     private $data = [];
 
     /**
+    * List of changes properties
+    *
     * @var bool[]
     */
     private $changedProperties = [];
 
-    public function __construct(array $data = [], bool $writeAll = false)
+    /**
+    * Create an array-backed daft object
+    *
+    * @param array $data key-value pairs
+    * @param bool $writeAll if TRUE, route $data through static::__set()
+    */
+    public function __construct(array $data = [], bool $writeAll = false) : void
     {
         if ($writeAll === true) {
             foreach ($data as $k => $v) {
@@ -31,7 +46,10 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject
         }
     }
 
-    public function __isset(string $property)
+    /**
+    * {@inheritdoc}
+    */
+    public function __isset(string $property) : bool
     {
         return
             in_array($property, static::PROPERTIES, true) &&
@@ -72,11 +90,15 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject
     }
 
     /**
-    * @return mixed
+    * Retrieve a property from data
+    *
+    * @param string $property the property being retrieved
+    *
+    * @return mixed the property value
     */
-    protected function RetrieveFromData(string $k)
+    protected function RetrievePropertyValueFromData(string $property)
     {
-        return $this->data[$k];
+        return $this->data[$property];
     }
 
     /**

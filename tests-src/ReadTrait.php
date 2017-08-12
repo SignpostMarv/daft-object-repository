@@ -10,21 +10,21 @@ trait ReadTrait
 {
     public function GetFoo() : string
     {
-        return $this->RetrieveFromData('Foo');
+        return $this->RetrievePropertyValueFromData('Foo');
     }
 
     public function GetBar() : float
     {
-        return $this->RetrieveFromData('Bar');
+        return $this->RetrievePropertyValueFromData('Bar');
     }
 
     public function GetBaz() : int
     {
-        return $this->RetrieveFromData('Baz');
+        return $this->RetrievePropertyValueFromData('Baz');
     }
 
     public function GetBat() : ? bool
     {
-        return $this->RetrieveFromData('Bat');
+        return $this->RetrievePropertyValueFromData('Bat');
     }
 }

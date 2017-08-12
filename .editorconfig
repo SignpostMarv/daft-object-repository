@@ -10,3 +10,6 @@ insert_final_newline = true
 
 [phpunit.xml.dist]
 indent_size = 2
+
+[phpdoc.xml.dist]
+indent_size = 2

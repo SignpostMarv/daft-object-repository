@@ -1,11 +1,16 @@
 <?php
 /**
+* Base daft objects
+*
 * @author SignpostMarv
 */
 declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject;
 
+/**
+* Base daft object
+*/
 abstract class AbstractDaftObject
 {
     /**
@@ -25,6 +30,8 @@ abstract class AbstractDaftObject
     /**
     * Maps param $property to the getter method.
     *
+    * @param string $property the property being retrieved
+    *
     * @throws UndefinedPropertyException if a property is undefined
     *
     * @return mixed
@@ -42,7 +49,7 @@ abstract class AbstractDaftObject
     /**
     * Maps param $property to the getter method.
     *
-    *
+    * @param string $property the property being retrieved
     * @param mixed $v
     *
     * @throws UndefinedPropertyException if a property is undefined
@@ -62,9 +69,21 @@ abstract class AbstractDaftObject
         return $this->$expectedMethod($v);
     }
 
-    abstract public function __isset(string $property);
+    /**
+    * required to support isset($foo->bar);
+    *
+    * @param string $property the property being checked
+    */
+    abstract public function __isset(string $property) : bool;
 
-    public function __unset(string $property)
+    /**
+    * required to support unset($foo->bar)
+    *
+    * @param string $property the property being unset
+    *
+    * @see static::NudgePropertyValue()
+    */
+    public function __unset(string $property) : void
     {
         $this->NudgePropertyValue($property, null);
     }
@@ -72,10 +91,11 @@ abstract class AbstractDaftObject
     /**
     * Nudge the state of a given property, marking it as dirty.
     *
-    * @param string $property
-    * @param mixed $value
+    * @param string $property property being nudged
+    * @param mixed $value value to nudge property with
     *
-    * @throws UndefinedPropertyException if $property is not in static::NULLABLE_PROPERTIES
+    * @throws UndefinedPropertyException if $property is not in static::PROPERTIES
+    * @throws PropertyNotNullableException if $property is not in static::NULLABLE_PROPERTIES
     */
     abstract protected function NudgePropertyValue(
         string $property,
@@ -91,6 +111,8 @@ abstract class AbstractDaftObject
 
     /**
     * Mark the specified properties as unchanged.
+    *
+    * @param string ...$properties the property being set as unchanged
     */
     abstract protected function MakePropertiesUnchanged(
         string ...$properties
@@ -98,6 +120,8 @@ abstract class AbstractDaftObject
 
     /**
     * Check if a property exists on an object.
+    *
+    * @param string $property the property being checked
     *
     * @return bool
     */

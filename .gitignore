@@ -2,3 +2,4 @@
 /phpunit/
 /*.tmp
 /.php_cs.cache
+/phpdoc/
