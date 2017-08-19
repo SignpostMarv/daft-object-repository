@@ -33,8 +33,10 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject
     * @param array $data key-value pairs
     * @param bool $writeAll if TRUE, route $data through static::__set()
     */
-    public function __construct(array $data = [], bool $writeAll = false) : void
+    public function __construct(array $data = [], bool $writeAll = false)
     {
+        parent::__construct();
+
         if ($writeAll === true) {
             foreach ($data as $k => $v) {
                 $this->__set($k, $v);

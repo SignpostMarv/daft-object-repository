@@ -6,7 +6,10 @@
     totallyTyped="false"
 >
     <projectFiles>
+        <file name=".php_cs.dist" />
+        <file name="phpunit-bootstrap.php" />
         <directory name="src" />
+        <directory name="tests-src" />
         <directory name="tests" />
     </projectFiles>
 

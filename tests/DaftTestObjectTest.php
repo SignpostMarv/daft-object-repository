@@ -7,12 +7,20 @@ declare(strict_types=1);
 namespace SignpostMarv\DaftObject\Tests;
 
 use PHPUnit\Framework\TestCase;
+use SignpostMarv\DaftObject\DefinesOwnIdPropertiesInterface;
+use SignpostMarv\DaftObject\DefinesOwnIntegerIdInterface;
+use SignpostMarv\DaftObject\DefinesOwnStringIdInterface;
+use SignpostMarv\DaftObject\DefinesOwnUntypedIdInterface;
 use SignpostMarv\DaftObject\PropertyNotNullableException;
 use SignpostMarv\DaftObject\PropertyNotWriteableException;
 use SignpostMarv\DaftObject\ReadOnly;
+use SignpostMarv\DaftObject\ReadOnlyBad;
+use SignpostMarv\DaftObject\ReadOnlyBadDefinesOwnId;
+use SignpostMarv\DaftObject\ReadOnlyInsuficientIdProperties;
 use SignpostMarv\DaftObject\ReadWrite;
 use SignpostMarv\DaftObject\UndefinedPropertyException;
 use SignpostMarv\DaftObject\WriteOnly;
+use TypeError;
 
 class DaftTestObjectTest extends TestCase
 {
@@ -180,7 +188,76 @@ class DaftTestObjectTest extends TestCase
                 false,
                 true,
             ],
+            [
+                ReadOnlyBad::class,
+                TypeError::class,
+                (
+                    ReadOnlyBad::class .
+                    '::DaftObjectIdProperties() does not return string[]'
+                ),
+                [
+                    'Foo' => 'Bar',
+                ],
+                true,
+                false,
+            ],
+            [
+                ReadOnlyBad::class,
+                TypeError::class,
+                (
+                    ReadOnlyBad::class .
+                    ' already determined to be incorrectly implemented'
+                ),
+                [
+                    'Foo' => 'Bar',
+                ],
+                true,
+                false,
+            ],
+            [
+                ReadOnlyBadDefinesOwnId::class,
+                TypeError::class,
+                (
+                    ReadOnlyBadDefinesOwnId::class .
+                    ' does not implement ' .
+                    DefinesOwnIdPropertiesInterface::class
+                ),
+                [
+                    'Foo' => 'Bar',
+                ],
+                true,
+                false,
+            ],
+            [
+                ReadOnlyInsuficientIdProperties::class,
+                TypeError::class,
+                (
+                    ReadOnlyInsuficientIdProperties::class .
+                    '::DaftObjectIdProperties() must return at least one property'
+                ),
+                [
+                    'Foo' => 'Bar',
+                ],
+                true,
+                false,
+            ],
         ];
+    }
+
+    public function DefinesOwnUntypedIdInterfaceProvider() : array
+    {
+        $out = [];
+
+        foreach ($this->GoodDataProvider() as $args) {
+            if (
+                is_a($args[0], DefinesOwnUntypedIdInterface::class, true) &&
+                $args[2] === true
+            ) {
+                $out[] = [$args[0], $args[1]];
+            }
+        }
+
+        return $out;
     }
 
     /**
@@ -261,7 +338,7 @@ class DaftTestObjectTest extends TestCase
                 if (
                     in_array(
                         $property,
-                        $implementation::NULLABLE_PROPERTIES,
+                        $implementation::DaftObjectNullableProperties(),
                         true
                     )
                 ) {
@@ -297,6 +374,26 @@ class DaftTestObjectTest extends TestCase
             $this->expectException($expectedExceptionType);
             $this->expectExceptionMessage($expectedExceptionMessage);
             $obj = new $implementation($params, $writeable);
+        }
+    }
+
+    /**
+    * @dataProvider DefinesOwnUntypedIdInterfaceProvider
+    */
+    public function testDefinesOwnUntypedIdInterface(
+        string $implementation,
+        array $params
+    ) : void {
+        $obj = new $implementation($params, false);
+        $val = $obj->id;
+        $key = $implementation::DaftObjectIdProperties()[0];
+
+        $this->assertSame($val, $obj->$key);
+
+        if ($obj instanceof DefinesOwnStringIdInterface) {
+            $this->assertInternalType('string', $val);
+        } elseif ($obj instanceof DefinesOwnIntegerIdInterface) {
+            $this->assertInternalType('int', $val);
         }
     }
 }

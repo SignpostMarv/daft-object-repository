@@ -8,33 +8,33 @@ namespace SignpostMarv\DaftObject;
 
 trait WriteTrait
 {
-    public function SetFoo(string $value)
+    public function SetFoo(string $value) : void
     {
-        return $this->NudgePropertyValue('Foo', $value);
+        $this->NudgePropertyValue('Foo', $value);
     }
 
-    public function SetFooNotNullable(? string $value)
+    public function SetFooNotNullable(? string $value) : void
     {
-        return $this->NudgePropertyValue('Foo', $value);
+        $this->NudgePropertyValue('Foo', $value);
     }
 
-    public function SetBar(float $value)
+    public function SetBar(float $value) : void
     {
-        return $this->NudgePropertyValue('Bar', $value);
+        $this->NudgePropertyValue('Bar', $value);
     }
 
-    public function SetBarUndefined(float $value)
+    public function SetBarUndefined(float $value) : void
     {
-        return $this->NudgePropertyValue('BarUndefined', $value);
+        $this->NudgePropertyValue('BarUndefined', $value);
     }
 
-    public function SetBaz(int $value)
+    public function SetBaz(int $value) : void
     {
-        return $this->NudgePropertyValue('Baz', $value);
+        $this->NudgePropertyValue('Baz', $value);
     }
 
-    public function SetBat(? bool $value)
+    public function SetBat(? bool $value) : void
     {
-        return $this->NudgePropertyValue('Bat', $value);
+        $this->NudgePropertyValue('Bat', $value);
     }
 }

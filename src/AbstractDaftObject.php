@@ -8,10 +8,12 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject;
 
+use TypeError;
+
 /**
 * Base daft object.
 */
-abstract class AbstractDaftObject
+abstract class AbstractDaftObject implements DaftObject
 {
     /**
     * List of properties that can be defined on an implementation.
@@ -26,6 +28,36 @@ abstract class AbstractDaftObject
     * @var string[]
     */
     const NULLABLE_PROPERTIES = [];
+
+    /**
+    * Index of checked types.
+    *
+    * @see self::CheckTypeDefinesOwnIdProperties()
+    *
+    * @var bool[]
+    */
+    private static $checkedTypes = [];
+
+    /**
+    * Does some sanity checking.
+    *
+    * @see DefinesOwnIdPropertiesInterface
+    * @see self::CheckTypeDefinesOwnIdProperties()
+    *
+    * @throws TypeError if static::class was previously determined to be incorrectly implemented
+    */
+    public function __construct()
+    {
+        if (
+            ($this instanceof DefinesOwnIdPropertiesInterface) &&
+            self::CheckTypeDefinesOwnIdProperties($this) === false
+        ) {
+            throw new TypeError(
+                get_class($this) . // phpunit coverage does not pick up static::class here
+                ' already determined to be incorrectly implemented'
+            );
+        }
+    }
 
     /**
     * Maps param $property to the getter method.
@@ -70,13 +102,6 @@ abstract class AbstractDaftObject
     }
 
     /**
-    * required to support isset($foo->bar);.
-    *
-    * @param string $property the property being checked
-    */
-    abstract public function __isset(string $property) : bool;
-
-    /**
     * required to support unset($foo->bar).
     *
     * @param string $property the property being unset
@@ -89,13 +114,33 @@ abstract class AbstractDaftObject
     }
 
     /**
+    * List of properties that can be defined on an implementation.
+    *
+    * @return string[]
+    */
+    final public static function DaftObjectProperties() : array
+    {
+        return static::PROPERTIES;
+    }
+
+    /**
+    * List of nullable properties that can be defined on an implementation.
+    *
+    * @return string[]
+    */
+    final public static function DaftObjectNullableProperties() : array
+    {
+        return static::NULLABLE_PROPERTIES;
+    }
+
+    /**
     * Nudge the state of a given property, marking it as dirty.
     *
     * @param string $property property being nudged
     * @param mixed $value value to nudge property with
     *
-    * @throws UndefinedPropertyException if $property is not in static::PROPERTIES
-    * @throws PropertyNotNullableException if $property is not in static::NULLABLE_PROPERTIES
+    * @throws UndefinedPropertyException if $property is not in static::DaftObjectProperties()
+    * @throws PropertyNotNullableException if $property is not in static::DaftObjectNullableProperties()
     */
     abstract protected function NudgePropertyValue(
         string $property,
@@ -103,27 +148,68 @@ abstract class AbstractDaftObject
     ) : void;
 
     /**
-    * Get the changed properties on an object.
+    * Checks if a type correctly defines it's own id.
     *
-    * @return string[]
+    * @param DaftObject $object
+    *
+    * @throws TypeError if $object::DaftObjectIdProperties() does not contain at least one property
+    * @throws TypeError if $object::DaftObjectIdProperties() is not string[]
+    * @throws UndefinedPropertyException if an id property is not in $object::DaftObjectIdProperties()
     */
-    abstract protected function ChangedProperties() : array;
+    final protected static function CheckTypeDefinesOwnIdProperties(
+        DaftObject $object
+    ) : bool {
+        static $checkedTypes = [];
 
-    /**
-    * Mark the specified properties as unchanged.
-    *
-    * @param string ...$properties the property being set as unchanged
-    */
-    abstract protected function MakePropertiesUnchanged(
-        string ...$properties
-    ) : void;
+        if (isset($checkedTypes[get_class($object)]) === false) {
+            $checkedTypes[get_class($object)] = false;
 
-    /**
-    * Check if a property exists on an object.
-    *
-    * @param string $property the property being checked
-    *
-    * @return bool
-    */
-    abstract protected function HasPropertyChanged(string $property) : bool;
+            if (($object instanceof DefinesOwnIdPropertiesInterface) === false) {
+                throw new TypeError(
+                    get_class($object) .
+                    ' does not implement ' .
+                    DefinesOwnIdPropertiesInterface::class
+                );
+            }
+
+            $properties = $object::DaftObjectIdProperties();
+
+            /**
+            * @var DaftObject $object
+            */
+            $object = $object;
+
+            if (count($properties) < 1) {
+                throw new TypeError(
+                    get_class($object) .
+                    '::DaftObjectIdProperties() must return at least one' .
+                    ' property'
+                );
+            }
+
+            foreach ($properties as $property) {
+                if (is_string($property) === false) {
+                    throw new TypeError(
+                        get_class($object) .
+                        '::DaftObjectIdProperties() does not return string[]'
+                    );
+                } elseif (
+                    in_array(
+                        $property,
+                        $object::DaftObjectProperties(),
+                        true
+                    ) === false
+                ) {
+                    throw new UndefinedPropertyException(
+                        get_class($object),
+                        $property
+                    );
+                }
+            }
+
+            $checkedTypes[get_class($object)] = true;
+        }
+
+        return $checkedTypes[get_class($object)];
+    }
 }
