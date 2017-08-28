@@ -8,6 +8,7 @@ namespace SignpostMarv\DaftObject;
 
 class ReadOnly extends AbstractTestObject implements DefinesOwnStringIdInterface
 {
+    use DaftObjectIdValuesHashLazyInt;
     use DefineIdPropertiesCorrectlyTrait;
     use ReadTrait;
 }

@@ -14,35 +14,25 @@ interface DaftObjectRepository
         DefinesOwnIdPropertiesInterface $object
     ) : void;
 
-    public function RememberAllNotForgotten() : void;
-
-    public function RetrieveById($id) : DefinesOwnIdPropertiesInterface;
-
-    public function RetrieveDaftObject(
-        DefinesOwnIdPropertiesInterface $object
-    ) : DefinesOwnIdPropertiesInterface;
-
-    public function ForgetById($id) : void;
-
     public function ForgetDaftObject(
         DefinesOwnIdPropertiesInterface $object
     ) : void;
 
-    public function RemoveById($id) : void;
+    public function ForgetDaftObjectById($id) : void;
 
     public function RemoveDaftObject(
         DefinesOwnIdPropertiesInterface $object
     ) : void;
 
-    public function UpdateDaftObject(
-        DefinesOwnIdPropertiesInterface $object
-    ) : void;
+    public function RemoveDaftObjectById($id) : void;
 
-    public static function GetRepositoryForDaftObject(
-        DefinesOwnIdPropertiesInterface $object
+    public function RecallDaftObject($id) : ? DaftObject;
+
+    public static function DaftObjectRepositoryByType(
+        string $type
     ) : DaftObjectRepository;
 
-    public static function GetRepositoryForImplementation(
-        string $implementation
+    public static function DaftObjectRepositoryByDaftObject(
+        DefinesOwnIdPropertiesInterface $object
     ) : DaftObjectRepository;
 }

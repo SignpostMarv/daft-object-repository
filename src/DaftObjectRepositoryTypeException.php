@@ -1,13 +1,15 @@
 <?php
 /**
+* Base daft objects.
+*
 * @author SignpostMarv
 */
 declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject;
 
-class WriteOnly extends AbstractTestObject
+use TypeError;
+
+class DaftObjectRepositoryTypeException extends TypeError
 {
-    use DaftObjectIdValuesHashLazyInt;
-    use WriteTrait;
 }

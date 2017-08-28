@@ -8,184 +8,105 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject;
 
-use InvalidArgumentException;
-
-class DaftObjectMemoryRepository implements DaftObjectRepository
+class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
 {
     /**
     * @var DefinesOwnIdPropertiesInterface[]
     */
-    private $memory = [];
+    protected $memory = [];
 
     /**
-    * @var string
+    * mixed[][].
     */
-    private $implementation;
-
-    protected function __construct(string $implementation)
-    {
-        $this->implementation = $implementation;
-    }
+    protected $data = [];
 
     public function RememberDaftObject(
         DefinesOwnIdPropertiesInterface $object
     ) : void {
-        if (is_a($object, $this->implementation, true) === false) {
-            throw new InvalidArgumentException(
+        if (is_a($object, $this->type, true) === false) {
+            throw new DaftObjectRepositoryTypeException(
                 'Argument 1 passed to ' .
                 static::class .
                 '::' .
-                __METHOD__ .
-                '() must be of type ' .
-                $this->implementation .
-                ', not ' .
-                get_class($object)
+                __FUNCTION__ .
+                '() must be an instance of ' .
+                $this->type .
+                ', ' .
+                get_class($object) .
+                ' given.'
             );
         }
 
-        $memory = &$this->memory;
-        $props = $object::DaftObjectIdProperties();
-        $lastProp = array_pop($props);
+        $hashId = $object::DaftObjectIdHash($object);
 
-        foreach ($props as $prop) {
-            if (isset($memory[$object->$prop]) === false) {
-                $memory[$object->$prop] = [];
+        $this->memory[$hashId] = $object;
+
+        if (isset($this->data[$hashId]) === false) {
+            $this->data[$hashId] = [];
+        }
+
+        foreach ($object::DaftObjectProperties() as $property) {
+            $getter = 'Get' . ucfirst($property);
+
+            if (
+                method_exists($object, $getter) === true &&
+                isset($object->$property)
+            ) {
+                $this->data[$hashId][$property] = $object->$getter();
+            }
+        }
+    }
+
+    public function ForgetDaftObjectById($id) : void
+    {
+        $id = is_array($id) ? $id : [$id];
+
+        $hashId = ($this->type)::DaftObjectIdValuesHash($id);
+
+        $this->ForgetDaftObjectByHashId($hashId);
+    }
+
+    public function RemoveDaftObjectById($id) : void
+    {
+        $id = is_array($id) ? $id : [$id];
+
+        $hashId = ($this->type)::DaftObjectIdValuesHash($id);
+
+        $this->RemoveDaftObjectByHashId($hashId);
+    }
+
+    public function RecallDaftObject($id) : ? DaftObject
+    {
+        $id = is_array($id) ? $id : [$id];
+
+        $hashId = ($this->type)::DaftObjectIdValuesHash($id);
+
+        if (isset($this->memory[$hashId]) === false) {
+            if (isset($this->data[$hashId]) === true) {
+                $type = $this->type;
+
+                return new $type($this->data[$hashId]);
             }
 
-            $memory = &$memory[$object->$prop];
+            return null;
         }
 
-        $memory[$object->$lastProp] = $object;
+        return $this->memory[$hashId];
     }
 
-    public function RememberAllNotForgotten() : void
+    private function ForgetDaftObjectByHashId(string $hashId) : void
     {
+        if (isset($this->memory[$hashId]) === true) {
+            unset($this->memory[$hashId]);
+        }
     }
 
-    public function RetrieveById($id) : DefinesOwnIdPropertiesInterface
+    private function RemoveDaftObjectByHashId(string $hashId) : void
     {
-        $memory = $this->memory;
+        $this->ForgetDaftObjectByHashId($hashId);
 
-        if (is_array($id)) {
-            $lastVal = array_pop($id);
-
-            foreach ($id as $val) {
-                $memory = $memory[$val];
-            }
-        } else {
-            $lastVal = $id;
+        if (isset($this->data[$hashId]) === true) {
+            unset($this->data[$hashId]);
         }
-
-        return $memory[$lastVal];
-    }
-
-    public function RetrieveDaftObject(
-        DefinesOwnIdPropertiesInterface $object
-    ) : DefinesOwnIdPropertiesInterface {
-        $idVal = $this->IdPropValsFromType($object);
-
-        return $this->RetrieveById($idVal);
-    }
-
-    public function ForgetById($id) : void
-    {
-        $memory = &$this->memory;
-
-        if (is_array($id)) {
-            $lastVal = array_pop($id);
-
-            foreach ($id as $val) {
-                $memory = &$memory[$val];
-            }
-        } else {
-            $lastVal = $id;
-        }
-
-        unset($memory[$lastVal]);
-    }
-
-    public function ForgetDaftObject(
-        DefinesOwnIdPropertiesInterface $object
-    ) : void {
-        $idVal = $this->IdPropValsFromType($object);
-
-        $this->ForgetById($idVal);
-    }
-
-    public function RemoveById($id) : void
-    {
-        $this->ForgetById($id);
-    }
-
-    public function RemoveDaftObject(
-        DefinesOwnIdPropertiesInterface $object
-    ) : void {
-        $this->ForgetDaftObject($object);
-    }
-
-    public function UpdateDaftObject(
-        DefinesOwnIdPropertiesInterface $object
-    ) : void {
-        $this->RememberDaftObject($object);
-    }
-
-    public static function GetRepositoryForDaftObject(
-        DefinesOwnIdPropertiesInterface $object
-    ) : DaftObjectRepository {
-        return static::GetRepositoryForImplementation(get_class($object));
-    }
-
-    public static function GetRepositoryForImplementation(
-        string $implementation
-    ) : DaftObjectRepository {
-        static $repositories = [];
-
-        if (
-            is_a(
-                $implementation,
-                DefinesOwnIdPropertiesInterface::class,
-                false
-            )
-        ) {
-            throw new InvalidArgumentException(
-                'Argument 1 passed to ' .
-                static::class .
-                '::' .
-                __METHOD__ .
-                '() must be of type ' .
-                DefinesOwnIdPropertiesInterface::class .
-                ', not ' .
-                $implementation
-            );
-        } elseif (isset($repositories[$implementation]) === false) {
-            $repositories[$implementation] = new static($implementation);
-        }
-
-        return $repositories[$implementation];
-    }
-
-    private function IdPropValsFromType(
-        DefinesOwnIdPropertiesInterface $object
-    ) : array {
-        if (is_a($object, $this->implementation, true) === false) {
-            throw new InvalidArgumentException(
-                'Argument 1 passed to ' .
-                static::class .
-                '::' .
-                __METHOD__ .
-                '() must be of type ' .
-                $this->implementation .
-                ', not ' .
-                get_class($object)
-            );
-        }
-
-        $idVal = [];
-
-        foreach ($object::DaftObjectIdProperties() as $prop) {
-            $idVal[] = $object->$prop;
-        }
-
-        return $idVal;
     }
 }

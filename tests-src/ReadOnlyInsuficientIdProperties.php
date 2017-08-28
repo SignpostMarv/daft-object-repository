@@ -8,6 +8,7 @@ namespace SignpostMarv\DaftObject;
 
 class ReadOnlyInsuficientIdProperties extends AbstractTestObject implements DefinesOwnIdPropertiesInterface
 {
+    use DaftObjectIdValuesHashLazyInt;
     use DefineIdPropertiesInsufficientlyTrait;
     use ReadTrait;
 }

@@ -14,6 +14,18 @@ namespace SignpostMarv\DaftObject;
 interface DefinesOwnIdPropertiesInterface extends DaftObject
 {
     /**
+    * Get the hash of the id properties.
+    */
+    public static function DaftObjectIdHash(
+        DefinesOwnIdPropertiesInterface $object
+    ) : string;
+
+    /**
+    * Get the hash of the id properties.
+    */
+    public static function DaftObjectIdValuesHash(array $id) : string;
+
+    /**
     * Returns the property used in defining the unique id of an object.
     *
     * @return string[]
