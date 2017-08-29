@@ -173,11 +173,6 @@ abstract class AbstractDaftObject implements DaftObject
 
             $properties = $object::DaftObjectIdProperties();
 
-            /**
-            * @var DaftObject $object
-            */
-            $object = $object;
-
             if (count($properties) < 1) {
                 throw new IncorrectlyImplementedTypeError(
                     get_class($object) .
