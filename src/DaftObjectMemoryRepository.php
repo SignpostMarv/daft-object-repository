@@ -57,15 +57,6 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
         }
     }
 
-    private function ObjectHashId($id) : string
-    {
-        $id = is_array($id) ? $id : [$id];
-
-        $type = $this->type;
-
-        return $type::DaftObjectIdValuesHash($id);
-    }
-
     public function ForgetDaftObjectById($id) : void
     {
         $this->ForgetDaftObjectByHashId($this->ObjectHashId($id));
@@ -91,6 +82,15 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
         }
 
         return $this->memory[$hashId];
+    }
+
+    private function ObjectHashId($id) : string
+    {
+        $id = is_array($id) ? $id : [$id];
+
+        $type = $this->type;
+
+        return $type::DaftObjectIdValuesHash($id);
     }
 
     private function ForgetDaftObjectByHashId(string $hashId) : void
