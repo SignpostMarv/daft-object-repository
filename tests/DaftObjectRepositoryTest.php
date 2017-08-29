@@ -139,6 +139,13 @@ class DaftObjectRepositoryTest extends TestCase
 
             $retrieved = $repo->RecallDaftObject($ids);
 
+            $this->assertNotNull($retrieved);
+
+            /**
+            * @var DefinesOwnIdPropertiesInterface $retrieved
+            */
+            $retrieved = $retrieved;
+
             $this->assertSame(
                 $objImplementation::DaftObjectIdHash($obj),
                 $objImplementation::DaftObjectIdHash($retrieved)
