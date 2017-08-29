@@ -91,7 +91,6 @@ abstract class AbstractDaftObject implements DaftObject
     public function __set(string $property, $v)
     {
         $expectedMethod = 'Set' . ucfirst($property);
-        $expectedGetter = 'Get' . ucfirst($property);
         if (
             method_exists($this, $expectedMethod) !== true
         ) {
