@@ -9,12 +9,11 @@ declare(strict_types=1);
 namespace SignpostMarv\DaftObject;
 
 use Throwable;
-use TypeError;
 
 /**
 * Exception thrown when a property is not writeable.
 */
-class PropertyNotWriteableException extends TypeError
+class PropertyNotWriteableException extends AbstractPropertyNotThingableError
 {
     /**
     * Wraps to TypeError::__construct().
@@ -31,11 +30,9 @@ class PropertyNotWriteableException extends TypeError
         Throwable $previous = null
     ) {
         parent::__construct(
-            sprintf(
-                'Property not writeable: %s::$%s',
-                $className,
-                $property
-            ),
+            'writeable',
+            $className,
+            $property,
             $code,
             $previous
         );

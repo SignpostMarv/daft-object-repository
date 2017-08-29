@@ -9,12 +9,11 @@ declare(strict_types=1);
 namespace SignpostMarv\DaftObject;
 
 use Throwable;
-use TypeError;
 
 /**
 * Exception thrown when a property is not nullable.
 */
-class PropertyNotNullableException extends TypeError
+class PropertyNotNullableException extends AbstractPropertyNotThingableError
 {
     /**
     * Wraps to TypeError::__construct().
@@ -31,11 +30,9 @@ class PropertyNotNullableException extends TypeError
         Throwable $previous = null
     ) {
         parent::__construct(
-            sprintf(
-                'Property not nullable: %s::$%s',
-                $className,
-                $property
-            ),
+            'nullable',
+            $className,
+            $property,
             $code,
             $previous
         );
