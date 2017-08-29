@@ -13,3 +13,6 @@ indent_size = 2
 
 [phpdoc.xml.dist]
 indent_size = 2
+
+[.scrutinizer.yml]
+indent_size = 2
