@@ -52,7 +52,7 @@ abstract class AbstractDaftObject implements DaftObject
             ($this instanceof DefinesOwnIdPropertiesInterface) &&
             self::CheckTypeDefinesOwnIdProperties($this) === false
         ) {
-            throw new TypeError(
+            throw new IncorrectlyImplementedTypeError(
                 get_class($this) . // phpunit coverage does not pick up static::class here
                 ' already determined to be incorrectly implemented'
             );
@@ -165,7 +165,7 @@ abstract class AbstractDaftObject implements DaftObject
             $checkedTypes[get_class($object)] = false;
 
             if (($object instanceof DefinesOwnIdPropertiesInterface) === false) {
-                throw new TypeError(
+                throw new IncorrectlyImplementedTypeError(
                     get_class($object) .
                     ' does not implement ' .
                     DefinesOwnIdPropertiesInterface::class
@@ -180,7 +180,7 @@ abstract class AbstractDaftObject implements DaftObject
             $object = $object;
 
             if (count($properties) < 1) {
-                throw new TypeError(
+                throw new IncorrectlyImplementedTypeError(
                     get_class($object) .
                     '::DaftObjectIdProperties() must return at least one' .
                     ' property'
@@ -189,7 +189,7 @@ abstract class AbstractDaftObject implements DaftObject
 
             foreach ($properties as $property) {
                 if (is_string($property) === false) {
-                    throw new TypeError(
+                    throw new IncorrectlyImplementedTypeError(
                         get_class($object) .
                         '::DaftObjectIdProperties() does not return string[]'
                     );
