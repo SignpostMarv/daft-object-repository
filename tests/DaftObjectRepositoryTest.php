@@ -9,6 +9,7 @@ namespace SignpostMarv\DaftObject\Tests;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use SignpostMarv\DaftObject\DaftObjectMemoryRepository;
+use SignpostMarv\DaftObject\DaftObjectRepository;
 use SignpostMarv\DaftObject\DaftObjectRepositoryTypeException;
 use SignpostMarv\DaftObject\DefinesOwnIdPropertiesInterface;
 use SignpostMarv\DaftObject\ReadOnly;
@@ -16,11 +17,26 @@ use SignpostMarv\DaftObject\ReadWrite;
 
 class DaftObjectRepositoryTest extends TestCase
 {
+    public static function DaftObjectRepositoryByType(
+        string $type
+    ) : DaftObjectRepository {
+        return DaftObjectMemoryRepository::DaftObjectRepositoryByType(
+            $type
+        );
+    }
+
+    public static function DaftObjectRepositoryByDaftObject(
+        DefinesOwnIdPropertiesInterface $object
+    ) : DaftObjectRepository {
+        return DaftObjectMemoryRepository::DaftObjectRepositoryByDaftObject(
+            $object
+        );
+    }
+
     public function RepositoryDataProvider() : array
     {
         return [
             [
-                DaftObjectMemoryRepository::class,
                 ReadWrite::class,
                 true,
                 true,
@@ -58,20 +74,10 @@ class DaftObjectRepositoryTest extends TestCase
         ];
     }
 
-    public function DaftObjectRepositoryTypeExceptionByTypeDataProvider(
-    ) : array {
-        return [
-            [
-                DaftObjectMemoryRepository::class,
-            ],
-        ];
-    }
-
     public function DaftObjectRepositoryTypeExceptionForgetRemoveDataProvider(
     ) : array {
         return [
             [
-                DaftObjectMemoryRepository::class,
                 ReadWrite::class,
                 ReadOnly::class,
                 [
@@ -88,13 +94,12 @@ class DaftObjectRepositoryTest extends TestCase
     * @dataProvider RepositoryDataProvider
     */
     public function testRepositoryForImplementaion(
-        string $repoImplementation,
         string $objImplementation,
         bool $readable,
         bool $writeable,
         array ...$paramsArray
     ) : void {
-        $repo = DaftObjectMemoryRepository::DaftObjectRepositoryByType(
+        $repo = static::DaftObjectRepositoryByType(
             $objImplementation
         );
 
@@ -107,7 +112,7 @@ class DaftObjectRepositoryTest extends TestCase
         foreach ($paramsArray as $params) {
             $obj = new $objImplementation($params, $writeable);
 
-            $repoByObject = DaftObjectMemoryRepository::DaftObjectRepositoryByDaftObject(
+            $repoByObject = static::DaftObjectRepositoryByDaftObject(
                 $obj
             );
 
@@ -159,13 +164,13 @@ class DaftObjectRepositoryTest extends TestCase
         }
     }
 
-    /**
-    * @dataProvider DaftObjectRepositoryTypeExceptionByTypeDataProvider
-    */
     public function testRepositoryForDaftObjectRepositoryTypeException(
-        string $implementation
     ) : void {
         static $type = '-foo';
+
+        $implementation = get_class(
+            static::DaftObjectRepositoryByType(ReadOnly::class)
+        );
 
         $this->expectException(DaftObjectRepositoryTypeException::class);
         $this->expectExceptionMessage(
@@ -178,14 +183,13 @@ class DaftObjectRepositoryTest extends TestCase
             ' given.'
         );
 
-        $implementation::DaftObjectRepositoryByType($type);
+        static::DaftObjectRepositoryByType($type);
     }
 
     /**
     * @dataProvider DaftObjectRepositoryTypeExceptionForgetRemoveDataProvider
     */
     public function testForgetDaftObjectRepositoryTypeException(
-        string $repoImplementation,
         string $objectTypeA,
         string $objectTypeB,
         array $dataTypeA,
@@ -194,12 +198,12 @@ class DaftObjectRepositoryTest extends TestCase
         $A = new $objectTypeA($dataTypeA);
         $B = new $objectTypeB($dataTypeB);
 
-        $repo = $repoImplementation::DaftObjectRepositoryByDaftObject($A);
+        $repo = static::DaftObjectRepositoryByDaftObject($A);
 
         $this->expectException(DaftObjectRepositoryTypeException::class);
         $this->expectExceptionMessage(
             'Argument 1 passed to ' .
-            $repoImplementation .
+            get_class($repo) .
             '::ForgetDaftObject() must be an instance of ' .
             $objectTypeA .
             ', ' .
@@ -214,7 +218,6 @@ class DaftObjectRepositoryTest extends TestCase
     * @dataProvider DaftObjectRepositoryTypeExceptionForgetRemoveDataProvider
     */
     public function testRemoveDaftObjectRepositoryTypeException(
-        string $repoImplementation,
         string $objectTypeA,
         string $objectTypeB,
         array $dataTypeA,
@@ -223,12 +226,12 @@ class DaftObjectRepositoryTest extends TestCase
         $A = new $objectTypeA($dataTypeA);
         $B = new $objectTypeB($dataTypeB);
 
-        $repo = $repoImplementation::DaftObjectRepositoryByDaftObject($A);
+        $repo = static::DaftObjectRepositoryByDaftObject($A);
 
         $this->expectException(DaftObjectRepositoryTypeException::class);
         $this->expectExceptionMessage(
             'Argument 1 passed to ' .
-            $repoImplementation .
+            get_class($repo) .
             '::RemoveDaftObject() must be an instance of ' .
             $objectTypeA .
             ', ' .
@@ -243,7 +246,6 @@ class DaftObjectRepositoryTest extends TestCase
     * @dataProvider DaftObjectRepositoryTypeExceptionForgetRemoveDataProvider
     */
     public function testRememberDaftObjectRepositoryTypeException(
-        string $repoImplementation,
         string $objectTypeA,
         string $objectTypeB,
         array $dataTypeA,
@@ -252,12 +254,12 @@ class DaftObjectRepositoryTest extends TestCase
         $A = new $objectTypeA($dataTypeA);
         $B = new $objectTypeB($dataTypeB);
 
-        $repo = $repoImplementation::DaftObjectRepositoryByDaftObject($A);
+        $repo = static::DaftObjectRepositoryByDaftObject($A);
 
         $this->expectException(DaftObjectRepositoryTypeException::class);
         $this->expectExceptionMessage(
             'Argument 1 passed to ' .
-            $repoImplementation .
+            get_class($repo) .
             '::RememberDaftObject() must be an instance of ' .
             $objectTypeA .
             ', ' .
