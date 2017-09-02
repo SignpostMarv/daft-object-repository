@@ -44,6 +44,27 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
         $this->RememberDaftObjectData($object);
     }
 
+    public function ForgetDaftObjectById($id) : void
+    {
+        $this->ForgetDaftObjectByHashId($this->ObjectHashId($id));
+    }
+
+    public function RemoveDaftObjectById($id) : void
+    {
+        $this->RemoveDaftObjectByHashId($this->ObjectHashId($id));
+    }
+
+    public function RecallDaftObject($id) : ? DaftObject
+    {
+        $hashId = $this->ObjectHashId($id);
+
+        if (isset($this->memory[$hashId]) === false) {
+            return $this->RecallDaftObjectFromData($id);
+        }
+
+        return $this->memory[$hashId];
+    }
+
     protected function RememberDaftObjectData(
         DefinesOwnIdPropertiesInterface $object
     ) : void {
@@ -65,16 +86,6 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
         }
     }
 
-    public function ForgetDaftObjectById($id) : void
-    {
-        $this->ForgetDaftObjectByHashId($this->ObjectHashId($id));
-    }
-
-    public function RemoveDaftObjectById($id) : void
-    {
-        $this->RemoveDaftObjectByHashId($this->ObjectHashId($id));
-    }
-
     protected function RecallDaftObjectFromData($id) : ? DaftObject
     {
         $hashId = $this->ObjectHashId($id);
@@ -85,17 +96,6 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
         }
 
         return null;
-    }
-
-    public function RecallDaftObject($id) : ? DaftObject
-    {
-        $hashId = $this->ObjectHashId($id);
-
-        if (isset($this->memory[$hashId]) === false) {
-            return $this->RecallDaftObjectFromData($id);
-        }
-
-        return $this->memory[$hashId];
     }
 
     private function ObjectHashId($id) : string
