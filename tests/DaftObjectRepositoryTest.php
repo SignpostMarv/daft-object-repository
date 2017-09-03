@@ -14,6 +14,7 @@ use SignpostMarv\DaftObject\DaftObjectRepositoryTypeException;
 use SignpostMarv\DaftObject\DefinesOwnIdPropertiesInterface;
 use SignpostMarv\DaftObject\ReadOnly;
 use SignpostMarv\DaftObject\ReadWrite;
+use SignpostMarv\DaftObject\ReadWriteTwoColumnPrimaryKey;
 
 class DaftObjectRepositoryTest extends TestCase
 {
@@ -69,6 +70,51 @@ class DaftObjectRepositoryTest extends TestCase
                 ],
                 [
                     'Foo' => '10',
+                ],
+            ],
+            [
+                ReadWriteTwoColumnPrimaryKey::class,
+                true,
+                true,
+                [
+                    'Foo' => '1',
+                    'Bar' => 1.0,
+                ],
+                [
+                    'Foo' => '2',
+                    'Bar' => 2.0,
+                ],
+                [
+                    'Foo' => '3',
+                    'Bar' => 3.0,
+                ],
+                [
+                    'Foo' => '4',
+                    'Bar' => 4.0,
+                ],
+                [
+                    'Foo' => '5',
+                    'Bar' => 5.0,
+                ],
+                [
+                    'Foo' => '6',
+                    'Bar' => 6.0,
+                ],
+                [
+                    'Foo' => '7',
+                    'Bar' => 7.0,
+                ],
+                [
+                    'Foo' => '8',
+                    'Bar' => 8.0,
+                ],
+                [
+                    'Foo' => '9',
+                    'Bar' => 9.0,
+                ],
+                [
+                    'Foo' => '10',
+                    'Bar' => 10.0,
                 ],
             ],
         ];

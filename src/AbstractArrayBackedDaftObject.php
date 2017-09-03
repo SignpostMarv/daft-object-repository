@@ -100,6 +100,17 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject
     */
     protected function RetrievePropertyValueFromData(string $property)
     {
+        if (
+            array_key_exists($property, $this->data) === false &&
+            in_array($property, static::NULLABLE_PROPERTIES) === false
+        ) {
+            throw new PropertyNotNullableException(static::class, $property);
+        } elseif (
+            in_array($property, static::NULLABLE_PROPERTIES)
+        ) {
+            return $this->data[$property] ?? null;
+        }
+
         return $this->data[$property];
     }
 

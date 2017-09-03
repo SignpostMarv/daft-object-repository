@@ -17,7 +17,9 @@ use SignpostMarv\DaftObject\ReadOnly;
 use SignpostMarv\DaftObject\ReadOnlyBad;
 use SignpostMarv\DaftObject\ReadOnlyBadDefinesOwnId;
 use SignpostMarv\DaftObject\ReadOnlyInsuficientIdProperties;
+use SignpostMarv\DaftObject\ReadOnlyTwoColumnPrimaryKey;
 use SignpostMarv\DaftObject\ReadWrite;
+use SignpostMarv\DaftObject\ReadWriteTwoColumnPrimaryKey;
 use SignpostMarv\DaftObject\UndefinedPropertyException;
 use SignpostMarv\DaftObject\WriteOnly;
 use TypeError;
@@ -51,6 +53,72 @@ class DaftTestObjectTest extends TestCase
             ],
             [
                 ReadOnly::class,
+                [
+                    'Foo' => 'Foo',
+                    'Bar' => 3.0,
+                    'Baz' => 4,
+                    'Bat' => null,
+                ],
+                true,
+                false,
+            ],
+            [
+                ReadOnlyTwoColumnPrimaryKey::class,
+                [
+                    'Foo' => 'Foo',
+                    'Bar' => 1.0,
+                    'Baz' => 2,
+                    'Bat' => true,
+                ],
+                true,
+                false,
+            ],
+            [
+                ReadOnlyTwoColumnPrimaryKey::class,
+                [
+                    'Foo' => 'Foo',
+                    'Bar' => 2.0,
+                    'Baz' => 3,
+                    'Bat' => false,
+                ],
+                true,
+                false,
+            ],
+            [
+                ReadOnlyTwoColumnPrimaryKey::class,
+                [
+                    'Foo' => 'Foo',
+                    'Bar' => 3.0,
+                    'Baz' => 4,
+                    'Bat' => null,
+                ],
+                true,
+                false,
+            ],
+            [
+                ReadWriteTwoColumnPrimaryKey::class,
+                [
+                    'Foo' => 'Foo',
+                    'Bar' => 1.0,
+                    'Baz' => 2,
+                    'Bat' => true,
+                ],
+                true,
+                false,
+            ],
+            [
+                ReadWriteTwoColumnPrimaryKey::class,
+                [
+                    'Foo' => 'Foo',
+                    'Bar' => 2.0,
+                    'Baz' => 3,
+                    'Bat' => false,
+                ],
+                true,
+                false,
+            ],
+            [
+                ReadWriteTwoColumnPrimaryKey::class,
                 [
                     'Foo' => 'Foo',
                     'Bar' => 3.0,
@@ -386,14 +454,73 @@ class DaftTestObjectTest extends TestCase
     ) : void {
         $obj = new $implementation($params, false);
         $val = $obj->id;
-        $key = $implementation::DaftObjectIdProperties()[0];
+        $keys = $implementation::DaftObjectIdProperties();
 
+        if (count($keys) < 2) {
+            $key = $keys[0];
         $this->assertSame($val, $obj->$key);
+        } else {
+            $this->assertTrue(is_array($val));
+            $keyVals = [];
+            foreach ($keys as $i => $key) {
+                $this->assertSame($val[$i], $obj->$key);
+            }
+        }
+
 
         if ($obj instanceof DefinesOwnStringIdInterface) {
             $this->assertInternalType('string', $val);
         } elseif ($obj instanceof DefinesOwnIntegerIdInterface) {
             $this->assertInternalType('int', $val);
         }
+    }
+
+    public function RetrievePropertyValueFromDataNotNullableExceptionDataProvider() : array
+    {
+        return [
+            [
+                ReadOnly::class,
+            ],
+        ];
+    }
+
+    /**
+    * @dataProvider RetrievePropertyValueFromDataNotNullableExceptionDataProvider
+    */
+    public function testRetrievePropertyValueFromDataNotNullableException(
+        string $implementation
+    ) : void {
+        $obj = new $implementation();
+
+        $props = $implementation::DaftObjectProperties();
+        $nullables = $implementation::DaftObjectNullableProperties();
+
+        $allNullable = true;
+
+        foreach ($props as $prop) {
+            if (in_array($prop, $nullables) === false) {
+                $allNullable = false;
+                break;
+            }
+        }
+
+        if ($allNullable) {
+            $this->markTestSkipped(
+                'Cannot test for not nullable exception if all properties are nullable'
+            );
+        }
+
+        $prop = $props[0];
+
+        $this->expectException(PropertyNotNullableException::class);
+        $this->expectExceptionMessage(
+            sprintf(
+                'Property not nullable: %s::$%s',
+                $implementation,
+                $prop
+            )
+        );
+
+        $obj->$prop;
     }
 }
