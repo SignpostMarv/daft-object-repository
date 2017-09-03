@@ -15,16 +15,34 @@ trait ReadTrait
 
     public function GetBar() : float
     {
-        return $this->RetrievePropertyValueFromData('Bar');
+        $out = $this->RetrievePropertyValueFromData('Bar');
+
+        if (is_string($out) === true && is_numeric($out)) {
+            return (float) $out;
+        }
+
+        return $out;
     }
 
     public function GetBaz() : int
     {
-        return $this->RetrievePropertyValueFromData('Baz');
+        $out = $this->RetrievePropertyValueFromData('Baz');
+
+        if (is_string($out) === true && is_numeric($out)) {
+            return (int) $out;
+        }
+
+        return $out;
     }
 
     public function GetBat() : ? bool
     {
-        return $this->RetrievePropertyValueFromData('Bat');
+        $out = $this->RetrievePropertyValueFromData('Bat');
+
+        if (is_string($out) === true && is_numeric($out)) {
+            return (bool) ((int) $out);
+        }
+
+        return $out;
     }
 }
