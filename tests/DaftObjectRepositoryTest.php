@@ -234,9 +234,52 @@ class DaftObjectRepositoryTest extends TestCase
             $this->assertSame(get_class($obj), get_class($retrieved));
             $this->assertNotSame($obj, $retrieved);
 
+            foreach ($objImplementation::DaftObjectProperties() as $prop) {
+                if (
+                    method_exists($obj, 'Get' . ucfirst($prop)) === true &&
+                    method_exists($retrieved, 'Get' . ucfirst($prop)) === true
+                ) {
+                    $this->assertSame($obj->$prop, $retrieved->$prop);
+                }
+            }
+
             $repo->RemoveDaftObject($obj);
 
             $this->assertNull($repo->RecallDaftObject($ids));
+
+            foreach ($objImplementation::DaftObjectProperties() as $prop) {
+                if (
+                    in_array($prop, $idProps, true) === false &&
+                    method_exists($obj, 'Set' . ucfirst($prop)) === true &&
+                    method_exists(
+                        $retrieved, 'Get' . ucfirst($prop)
+                    ) === true &&
+                    is_numeric($obj->$prop) === true
+                ) {
+                    $retrieved->$prop *= 2;
+                }
+            }
+
+            $repo->RememberDaftObject($retrieved);
+            $repo->ForgetDaftObject($retrieved);
+
+            /**
+            * @var DefinesOwnIdPropertiesInterface $retrieved
+            */
+            $retrieved = $repo->RecallDaftObject($obj->id);
+
+            foreach ($objImplementation::DaftObjectProperties() as $prop) {
+                if (
+                    in_array($prop, $idProps, true) === false &&
+                    method_exists($obj, 'Set' . ucfirst($prop)) === true &&
+                    method_exists(
+                        $retrieved, 'Get' . ucfirst($prop)
+                    ) === true &&
+                    is_numeric($obj->$prop) === true
+                ) {
+                    $this->assertSame($obj->$prop * 2, $retrieved->$prop);
+                }
+            }
         }
     }
 
