@@ -102,11 +102,11 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject
     {
         if (
             array_key_exists($property, $this->data) === false &&
-            in_array($property, static::NULLABLE_PROPERTIES) === false
+            in_array($property, static::NULLABLE_PROPERTIES, true) === false
         ) {
             throw new PropertyNotNullableException(static::class, $property);
         } elseif (
-            in_array($property, static::NULLABLE_PROPERTIES)
+            in_array($property, static::NULLABLE_PROPERTIES, true)
         ) {
             return $this->data[$property] ?? null;
         }

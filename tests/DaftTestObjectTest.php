@@ -460,13 +460,12 @@ class DaftTestObjectTest extends TestCase
             $key = $keys[0];
             $this->assertSame($val, $obj->$key);
         } else {
-            $this->assertTrue(is_array($val));
+            $this->assertInternalType('array', $val);
             $keyVals = [];
             foreach ($keys as $i => $key) {
                 $this->assertSame($val[$i], $obj->$key);
             }
         }
-
 
         if ($obj instanceof DefinesOwnStringIdInterface) {
             $this->assertInternalType('string', $val);
@@ -498,7 +497,7 @@ class DaftTestObjectTest extends TestCase
         $allNullable = true;
 
         foreach ($props as $prop) {
-            if (in_array($prop, $nullables) === false) {
+            if (in_array($prop, $nullables, true) === false) {
                 $allNullable = false;
                 break;
             }
