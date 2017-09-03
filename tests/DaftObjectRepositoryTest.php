@@ -43,33 +43,53 @@ class DaftObjectRepositoryTest extends TestCase
                 true,
                 [
                     'Foo' => '1',
+                    'Bar' => 1.0,
+                    'Baz' => 1,
                 ],
                 [
                     'Foo' => '2',
+                    'Bar' => 2.0,
+                    'Baz' => 2,
                 ],
                 [
                     'Foo' => '3',
+                    'Bar' => 3.0,
+                    'Baz' => 3,
                 ],
                 [
                     'Foo' => '4',
+                    'Bar' => 4.0,
+                    'Baz' => 4,
                 ],
                 [
                     'Foo' => '5',
+                    'Bar' => 5.0,
+                    'Baz' => 5,
                 ],
                 [
                     'Foo' => '6',
+                    'Bar' => 6.0,
+                    'Baz' => 6,
                 ],
                 [
                     'Foo' => '7',
+                    'Bar' => 7.0,
+                    'Baz' => 7,
                 ],
                 [
                     'Foo' => '8',
+                    'Bar' => 8.0,
+                    'Baz' => 8,
                 ],
                 [
                     'Foo' => '9',
+                    'Bar' => 9.0,
+                    'Baz' => 9,
                 ],
                 [
                     'Foo' => '10',
+                    'Bar' => 10.0,
+                    'Baz' => 10,
                 ],
             ],
             [
@@ -79,42 +99,52 @@ class DaftObjectRepositoryTest extends TestCase
                 [
                     'Foo' => '1',
                     'Bar' => 1.0,
+                    'Baz' => 1,
                 ],
                 [
                     'Foo' => '2',
                     'Bar' => 2.0,
+                    'Baz' => 2,
                 ],
                 [
                     'Foo' => '3',
                     'Bar' => 3.0,
+                    'Baz' => 3,
                 ],
                 [
                     'Foo' => '4',
                     'Bar' => 4.0,
+                    'Baz' => 4,
                 ],
                 [
                     'Foo' => '5',
                     'Bar' => 5.0,
+                    'Baz' => 5,
                 ],
                 [
                     'Foo' => '6',
                     'Bar' => 6.0,
+                    'Baz' => 6,
                 ],
                 [
                     'Foo' => '7',
                     'Bar' => 7.0,
+                    'Baz' => 7,
                 ],
                 [
                     'Foo' => '8',
                     'Bar' => 8.0,
+                    'Baz' => 8,
                 ],
                 [
                     'Foo' => '9',
                     'Bar' => 9.0,
+                    'Baz' => 9,
                 ],
                 [
                     'Foo' => '10',
                     'Bar' => 10.0,
+                    'Baz' => 10,
                 ],
             ],
         ];
