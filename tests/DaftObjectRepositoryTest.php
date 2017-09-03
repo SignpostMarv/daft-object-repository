@@ -280,6 +280,10 @@ class DaftObjectRepositoryTest extends TestCase
                     $this->assertSame($obj->$prop * 2, $retrieved->$prop);
                 }
             }
+
+            $repo->RemoveDaftObject($retrieved);
+
+            $this->assertNull($repo->RecallDaftObject($ids));
         }
     }
 
