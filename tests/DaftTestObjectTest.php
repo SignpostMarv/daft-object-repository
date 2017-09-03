@@ -458,7 +458,7 @@ class DaftTestObjectTest extends TestCase
 
         if (count($keys) < 2) {
             $key = $keys[0];
-        $this->assertSame($val, $obj->$key);
+            $this->assertSame($val, $obj->$key);
         } else {
             $this->assertTrue(is_array($val));
             $keyVals = [];
