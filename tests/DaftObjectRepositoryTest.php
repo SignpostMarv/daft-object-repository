@@ -261,12 +261,15 @@ class DaftObjectRepositoryTest extends TestCase
             }
 
             $repo->RememberDaftObject($retrieved);
+            $repo->ForgetDaftObject($obj);
             $repo->ForgetDaftObject($retrieved);
 
             /**
             * @var DefinesOwnIdPropertiesInterface $retrieved
             */
-            $retrieved = $repo->RecallDaftObject($obj->id);
+            $retrieved = $repo->RecallDaftObject($ids);
+
+            $this->assertInstanceOf($objImplementation, $retrieved);
 
             foreach ($objImplementation::DaftObjectProperties() as $prop) {
                 if (
@@ -278,8 +281,11 @@ class DaftObjectRepositoryTest extends TestCase
                     is_numeric($obj->$prop) === true
                 ) {
                     $this->assertSame($obj->$prop * 2, $retrieved->$prop);
+                    $retrieved->$prop /= 2;
                 }
             }
+
+            $repo->RememberDaftObject($retrieved);
 
             $repo->RemoveDaftObject($retrieved);
 
