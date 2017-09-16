@@ -24,16 +24,12 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
         DefinesOwnIdPropertiesInterface $object
     ) : void {
         if (false === is_a($object, $this->type, true)) {
-            throw new DaftObjectRepositoryTypeException(
-                'Argument 1 passed to ' .
-                static::class .
-                '::' .
-                __FUNCTION__ .
-                '() must be an instance of ' .
-                $this->type .
-                ', ' .
-                get_class($object) .
-                ' given.'
+            throw new DaftObjectRepositoryTypeByClassMethodAndTypeException(
+                1,
+                static::class,
+                __FUNCTION__,
+                $this->type,
+                get_class($object)
             );
         }
 

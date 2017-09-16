@@ -52,9 +52,8 @@ abstract class AbstractDaftObject implements DaftObject
             ($this instanceof DefinesOwnIdPropertiesInterface) &&
             false === self::CheckTypeDefinesOwnIdProperties($this)
         ) {
-            throw new IncorrectlyImplementedTypeError(
-                get_class($this) . // phpunit coverage does not pick up static::class here
-                ' already determined to be incorrectly implemented'
+            throw new AlreadyIncorrectlyImplementedTypeError(
+                get_class($this) // phpunit coverage does not pick up static::class here
             );
         }
     }
@@ -164,9 +163,8 @@ abstract class AbstractDaftObject implements DaftObject
             $checkedTypes[get_class($object)] = false;
 
             if (false === ($object instanceof DefinesOwnIdPropertiesInterface)) {
-                throw new IncorrectlyImplementedTypeError(
-                    get_class($object) .
-                    ' does not implement ' .
+                throw new ClassDoesNotImplementClassException(
+                    get_class($object),
                     DefinesOwnIdPropertiesInterface::class
                 );
             }
@@ -179,18 +177,17 @@ abstract class AbstractDaftObject implements DaftObject
             $properties = $object::DaftObjectIdProperties();
 
             if (count($properties) < 1) {
-                throw new IncorrectlyImplementedTypeError(
-                    get_class($object) .
-                    '::DaftObjectIdProperties() must return at least one' .
-                    ' property'
+                throw new ClassMethodReturnHasZeroArrayCountException(
+                    get_class($object),
+                    'DaftObjectIdProperties'
                 );
             }
 
             foreach ($properties as $property) {
                 if (false === is_string($property)) {
-                    throw new IncorrectlyImplementedTypeError(
-                        get_class($object) .
-                        '::DaftObjectIdProperties() does not return string[]'
+                    throw new ClassMethodReturnIsNotArrayOfStringsException(
+                        get_class($object),
+                        'DaftObjectIdProperties'
                     );
                 } elseif (
                     false === in_array(

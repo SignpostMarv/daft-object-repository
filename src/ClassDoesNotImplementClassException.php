@@ -1,0 +1,31 @@
+<?php
+/**
+* Base daft objects.
+*
+* @author SignpostMarv
+*/
+declare(strict_types=1);
+
+namespace SignpostMarv\DaftObject;
+
+use Throwable;
+
+class ClassDoesNotImplementClassException extends IncorrectlyImplementedTypeError
+{
+    public function __construct(
+        string $class,
+        string $doesNotImplementClass,
+        int $code = 0,
+        Throwable $previous = null
+    ) {
+        parent::__construct(
+            sprintf(
+                '%s does not implement %s',
+                $class,
+                $doesNotImplementClass
+            ),
+            $code,
+            $previous
+        );
+    }
+}

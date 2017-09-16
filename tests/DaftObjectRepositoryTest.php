@@ -355,7 +355,7 @@ class DaftObjectRepositoryTest extends TestCase
         $this->expectExceptionMessage(
             'Argument 1 passed to ' .
             get_class($repo) .
-            '::ForgetDaftObject() must be an instance of ' .
+            '::ForgetDaftObject() must be an implementation of ' .
             $objectTypeA .
             ', ' .
             $objectTypeB .
@@ -383,7 +383,7 @@ class DaftObjectRepositoryTest extends TestCase
         $this->expectExceptionMessage(
             'Argument 1 passed to ' .
             get_class($repo) .
-            '::RemoveDaftObject() must be an instance of ' .
+            '::RemoveDaftObject() must be an implementation of ' .
             $objectTypeA .
             ', ' .
             $objectTypeB .
@@ -411,7 +411,7 @@ class DaftObjectRepositoryTest extends TestCase
         $this->expectExceptionMessage(
             'Argument 1 passed to ' .
             get_class($repo) .
-            '::RememberDaftObject() must be an instance of ' .
+            '::RememberDaftObject() must be an implementation of ' .
             $objectTypeA .
             ', ' .
             $objectTypeB .

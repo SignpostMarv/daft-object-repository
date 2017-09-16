@@ -1,0 +1,31 @@
+<?php
+/**
+* Base daft objects.
+*
+* @author SignpostMarv
+*/
+declare(strict_types=1);
+
+namespace SignpostMarv\DaftObject;
+
+use Throwable;
+
+class ClassMethodReturnIsNotArrayOfStringsException extends IncorrectlyImplementedTypeError
+{
+    public function __construct(
+        string $class,
+        string $method,
+        int $code = 0,
+        Throwable $previous = null
+    ) {
+        parent::__construct(
+            sprintf(
+                '%s::%s() does not return string[]',
+                $class,
+                $method
+            ),
+            $code,
+            $previous
+        );
+    }
+}
