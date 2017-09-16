@@ -33,7 +33,7 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
     public function ForgetDaftObject(
         DefinesOwnIdPropertiesInterface $object
     ) : void {
-        if (is_a($object, $this->type, true) === false) {
+        if (false === is_a($object, $this->type, true)) {
             throw new DaftObjectRepositoryTypeException(
                 'Argument 1 passed to ' .
                 static::class .
@@ -59,7 +59,7 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
     public function RemoveDaftObject(
         DefinesOwnIdPropertiesInterface $object
     ) : void {
-        if (is_a($object, $this->type, true) === false) {
+        if (false === is_a($object, $this->type, true)) {
             throw new DaftObjectRepositoryTypeException(
                 'Argument 1 passed to ' .
                 static::class .
@@ -86,11 +86,11 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
         string $type
     ) : DaftObjectRepository {
         if (
-            is_a(
+            false === is_a(
                 $type,
                 DefinesOwnIdPropertiesInterface::class,
                 true
-            ) === false
+            )
         ) {
             throw new DaftObjectRepositoryTypeException(
                 'Argument 1 passed to ' .

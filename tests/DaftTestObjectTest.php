@@ -14,8 +14,8 @@ use SignpostMarv\DaftObject\DefinesOwnIntegerIdInterface;
 use SignpostMarv\DaftObject\DefinesOwnStringIdInterface;
 use SignpostMarv\DaftObject\DefinesOwnUntypedIdInterface;
 use SignpostMarv\DaftObject\PropertyNotNullableException;
-use SignpostMarv\DaftObject\PropertyNotWriteableException;
 use SignpostMarv\DaftObject\PropertyNotRewriteableException;
+use SignpostMarv\DaftObject\PropertyNotWriteableException;
 use SignpostMarv\DaftObject\ReadOnly;
 use SignpostMarv\DaftObject\ReadOnlyBad;
 use SignpostMarv\DaftObject\ReadOnlyBadDefinesOwnId;
@@ -346,7 +346,7 @@ class DaftTestObjectTest extends TestCase
         foreach ($this->GoodDataProvider() as $args) {
             if (
                 is_a($args[0], DefinesOwnUntypedIdInterface::class, true) &&
-                $args[2] === true
+                true === $args[2]
             ) {
                 $out[] = [$args[0], $args[1]];
             }
@@ -371,7 +371,7 @@ class DaftTestObjectTest extends TestCase
         */
         $implementation = $implementation;
 
-        if ($readable === true) {
+        if (true === $readable) {
             $this->assertSame(
                 ($writeable ? count($params) : 0),
                 count($obj->ChangedProperties())
@@ -552,7 +552,7 @@ class DaftTestObjectTest extends TestCase
         $allNullable = true;
 
         foreach ($props as $prop) {
-            if (in_array($prop, $nullables, true) === false) {
+            if (false === in_array($prop, $nullables, true)) {
                 $allNullable = false;
                 break;
             }

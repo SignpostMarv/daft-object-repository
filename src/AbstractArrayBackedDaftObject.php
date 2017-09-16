@@ -28,7 +28,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject
     private $changedProperties = [];
 
     /**
-    * List of changed properties, for write-once read-many
+    * List of changed properties, for write-once read-many.
     *
     * @var bool[]
     */
@@ -44,7 +44,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject
     {
         parent::__construct();
 
-        if ($writeAll === true) {
+        if (true === $writeAll) {
             foreach ($data as $k => $v) {
                 $this->__set($k, $v);
             }
@@ -95,7 +95,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject
     {
         return
             isset($this->changedProperties[$property]) &&
-            $this->changedProperties[$property] === true;
+            true === $this->changedProperties[$property];
     }
 
     /**
@@ -108,8 +108,8 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject
     protected function RetrievePropertyValueFromData(string $property)
     {
         if (
-            array_key_exists($property, $this->data) === false &&
-            in_array($property, static::NULLABLE_PROPERTIES, true) === false
+            false === array_key_exists($property, $this->data) &&
+            false === in_array($property, static::NULLABLE_PROPERTIES, true)
         ) {
             throw new PropertyNotNullableException(static::class, $property);
         } elseif (
@@ -126,11 +126,11 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject
     */
     protected function NudgePropertyValue(string $property, $value) : void
     {
-        if (in_array($property, static::PROPERTIES, true) !== true) {
+        if (true !== in_array($property, static::PROPERTIES, true)) {
             throw new UndefinedPropertyException(static::class, $property);
         } elseif (
-            is_null($value) === true &&
-            in_array($property, static::NULLABLE_PROPERTIES, true) !== true
+            true === is_null($value) &&
+            true !== in_array($property, static::NULLABLE_PROPERTIES, true)
         ) {
             throw new PropertyNotNullableException(static::class, $property);
         } elseif (
@@ -139,7 +139,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject
                 $this->HasPropertyChanged($property) ||
                 (
                     isset($this->wormProperties[$property]) &&
-                    $this->wormProperties[$property] === true
+                    true === $this->wormProperties[$property]
                 )
             )
         ) {
@@ -150,13 +150,13 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject
         }
 
         $isChanged = (
-            array_key_exists($property, $this->data) === false ||
+            false === array_key_exists($property, $this->data) ||
             $this->data[$property] !== $value
         );
 
         $this->data[$property] = $value;
 
-        if ($isChanged && isset($this->changedProperties[$property]) !== true) {
+        if ($isChanged && true !== isset($this->changedProperties[$property])) {
             $this->changedProperties[$property] = true;
             $this->wormProperties[$property] = true;
         }

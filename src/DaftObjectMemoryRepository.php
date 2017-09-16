@@ -23,7 +23,7 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     public function RememberDaftObject(
         DefinesOwnIdPropertiesInterface $object
     ) : void {
-        if (is_a($object, $this->type, true) === false) {
+        if (false === is_a($object, $this->type, true)) {
             throw new DaftObjectRepositoryTypeException(
                 'Argument 1 passed to ' .
                 static::class .
@@ -58,7 +58,7 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     {
         $hashId = $this->ObjectHashId($id);
 
-        if (isset($this->memory[$hashId]) === false) {
+        if (false === isset($this->memory[$hashId])) {
             return $this->RecallDaftObjectFromData($id);
         }
 
@@ -70,7 +70,7 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     ) : void {
         $hashId = $object::DaftObjectIdHash($object);
 
-        if (isset($this->data[$hashId]) === false) {
+        if (false === isset($this->data[$hashId])) {
             $this->data[$hashId] = [];
         }
 
@@ -78,7 +78,7 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
             $getter = 'Get' . ucfirst($property);
 
             if (
-                method_exists($object, $getter) === true &&
+                true === method_exists($object, $getter) &&
                 isset($object->$property)
             ) {
                 $this->data[$hashId][$property] = $object->$getter();
@@ -87,14 +87,14 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     }
 
     /**
-    * Recalls the corresponding daft object instance from cached data
+    * Recalls the corresponding daft object instance from cached data.
     *
     * @param mixed $id
     */
     protected function RecallDaftObjectFromData($id) : ? DaftObject
     {
         $hashId = $this->ObjectHashId($id);
-        if (isset($this->data[$hashId]) === true) {
+        if (true === isset($this->data[$hashId])) {
             $type = $this->type;
 
             return new $type($this->data[$hashId]);
@@ -104,7 +104,7 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     }
 
     /**
-    * Converts an id to a unique-enough-for-now string
+    * Converts an id to a unique-enough-for-now string.
     *
     * @param mixed $id
     */
@@ -122,7 +122,7 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
 
     private function ForgetDaftObjectByHashId(string $hashId) : void
     {
-        if (isset($this->memory[$hashId]) === true) {
+        if (true === isset($this->memory[$hashId])) {
             unset($this->memory[$hashId]);
         }
     }
@@ -131,7 +131,7 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     {
         $this->ForgetDaftObjectByHashId($hashId);
 
-        if (isset($this->data[$hashId]) === true) {
+        if (true === isset($this->data[$hashId])) {
             unset($this->data[$hashId]);
         }
     }

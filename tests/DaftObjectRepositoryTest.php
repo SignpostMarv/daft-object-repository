@@ -177,11 +177,11 @@ class DaftObjectRepositoryTest extends TestCase
         array ...$paramsArray
     ) : void {
         if (
-            is_a(
+            false === is_a(
                 $objImplementation,
                 DefinesOwnIdPropertiesInterface::class,
                 true
-            ) === false
+            )
         ) {
             throw new InvalidArgumentException(
                 sprintf(
@@ -226,7 +226,7 @@ class DaftObjectRepositoryTest extends TestCase
                 $ids[] = $obj->$prop;
             }
 
-            if (count($ids) === 1) {
+            if (1 === count($ids)) {
                 $this->assertSame($obj, $repo->RecallDaftObject($ids[0]));
             }
 
@@ -258,8 +258,8 @@ class DaftObjectRepositoryTest extends TestCase
 
             foreach ($objImplementation::DaftObjectProperties() as $prop) {
                 if (
-                    method_exists($obj, 'Get' . ucfirst($prop)) === true &&
-                    method_exists($retrieved, 'Get' . ucfirst($prop)) === true
+                    true === method_exists($obj, 'Get' . ucfirst($prop)) &&
+                    true === method_exists($retrieved, 'Get' . ucfirst($prop))
                 ) {
                     $this->assertSame($obj->$prop, $retrieved->$prop);
                 }
@@ -271,12 +271,12 @@ class DaftObjectRepositoryTest extends TestCase
 
             foreach ($objImplementation::DaftObjectProperties() as $prop) {
                 if (
-                    in_array($prop, $idProps, true) === false &&
-                    method_exists($obj, 'Set' . ucfirst($prop)) === true &&
-                    method_exists(
+                    false === in_array($prop, $idProps, true) &&
+                    true === method_exists($obj, 'Set' . ucfirst($prop)) &&
+                    true === method_exists(
                         $retrieved, 'Get' . ucfirst($prop)
-                    ) === true &&
-                    is_numeric($obj->$prop) === true
+                    ) &&
+                    true === is_numeric($obj->$prop)
                 ) {
                     $retrieved->$prop *= 2;
                 }
@@ -295,12 +295,12 @@ class DaftObjectRepositoryTest extends TestCase
 
             foreach ($objImplementation::DaftObjectProperties() as $prop) {
                 if (
-                    in_array($prop, $idProps, true) === false &&
-                    method_exists($obj, 'Set' . ucfirst($prop)) === true &&
-                    method_exists(
+                    false === in_array($prop, $idProps, true) &&
+                    true === method_exists($obj, 'Set' . ucfirst($prop)) &&
+                    true === method_exists(
                         $retrieved, 'Get' . ucfirst($prop)
-                    ) === true &&
-                    is_numeric($obj->$prop) === true
+                    ) &&
+                    true === is_numeric($obj->$prop)
                 ) {
                     $this->assertSame($obj->$prop * 2, $retrieved->$prop);
                     $retrieved->$prop /= 2;

@@ -50,7 +50,7 @@ abstract class AbstractDaftObject implements DaftObject
     {
         if (
             ($this instanceof DefinesOwnIdPropertiesInterface) &&
-            self::CheckTypeDefinesOwnIdProperties($this) === false
+            false === self::CheckTypeDefinesOwnIdProperties($this)
         ) {
             throw new IncorrectlyImplementedTypeError(
                 get_class($this) . // phpunit coverage does not pick up static::class here
@@ -71,7 +71,7 @@ abstract class AbstractDaftObject implements DaftObject
     public function __get(string $property)
     {
         $expectedMethod = 'Get' . ucfirst($property);
-        if (method_exists($this, $expectedMethod) !== true) {
+        if (true !== method_exists($this, $expectedMethod)) {
             throw new UndefinedPropertyException(static::class, $property);
         }
 
@@ -92,7 +92,7 @@ abstract class AbstractDaftObject implements DaftObject
     {
         $expectedMethod = 'Set' . ucfirst($property);
         if (
-            method_exists($this, $expectedMethod) !== true
+            true !== method_exists($this, $expectedMethod)
         ) {
             throw new PropertyNotWriteableException(static::class, $property);
         }
@@ -160,10 +160,10 @@ abstract class AbstractDaftObject implements DaftObject
     ) : bool {
         static $checkedTypes = [];
 
-        if (isset($checkedTypes[get_class($object)]) === false) {
+        if (false === isset($checkedTypes[get_class($object)])) {
             $checkedTypes[get_class($object)] = false;
 
-            if (($object instanceof DefinesOwnIdPropertiesInterface) === false) {
+            if (false === ($object instanceof DefinesOwnIdPropertiesInterface)) {
                 throw new IncorrectlyImplementedTypeError(
                     get_class($object) .
                     ' does not implement ' .
@@ -187,17 +187,17 @@ abstract class AbstractDaftObject implements DaftObject
             }
 
             foreach ($properties as $property) {
-                if (is_string($property) === false) {
+                if (false === is_string($property)) {
                     throw new IncorrectlyImplementedTypeError(
                         get_class($object) .
                         '::DaftObjectIdProperties() does not return string[]'
                     );
                 } elseif (
-                    in_array(
+                    false === in_array(
                         $property,
                         $object::DaftObjectProperties(),
                         true
-                    ) === false
+                    )
                 ) {
                     throw new UndefinedPropertyException(
                         get_class($object),

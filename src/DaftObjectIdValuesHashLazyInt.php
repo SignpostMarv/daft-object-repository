@@ -34,7 +34,7 @@ trait DaftObjectIdValuesHashLazyInt
 
         $className = static::class;
 
-        if (isset($ids[$className]) === false) {
+        if (false === isset($ids[$className])) {
             $ids[$className] = [];
         }
 
@@ -46,7 +46,7 @@ trait DaftObjectIdValuesHashLazyInt
             $objectIds .= (string) $idVal;
         }
 
-        if (isset($ids[$className][$objectIds]) === false) {
+        if (false === isset($ids[$className][$objectIds])) {
             $ids[$className][$objectIds] = (string) count($ids[$className]);
         }
 
