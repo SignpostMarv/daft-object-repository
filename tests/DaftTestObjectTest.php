@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace SignpostMarv\DaftObject\Tests;
 
 use PHPUnit\Framework\TestCase;
+use SignpostMarv\DaftObject\DaftObject;
 use SignpostMarv\DaftObject\DaftObjectWorm;
 use SignpostMarv\DaftObject\DefinesOwnIdPropertiesInterface;
 use SignpostMarv\DaftObject\DefinesOwnIntegerIdInterface;
@@ -365,6 +366,11 @@ class DaftTestObjectTest extends TestCase
     ) : void {
         $obj = new $implementation($params, $writeable);
 
+        /**
+        * @var DaftObject $implementation
+        */
+        $implementation = $implementation;
+
         if ($readable === true) {
             $this->assertSame(
                 ($writeable ? count($params) : 0),
@@ -378,7 +384,7 @@ class DaftTestObjectTest extends TestCase
                     $params[$k],
                     $obj->$getterMethod(),
                     (
-                        $implementation .
+                        (string) $implementation .
                         '::' .
                         $getterMethod .
                         '() does not match supplied $params'
@@ -388,7 +394,7 @@ class DaftTestObjectTest extends TestCase
                     $params[$k],
                     $obj->$k,
                     (
-                        $implementation .
+                        (string) $implementation .
                         '::$' .
                         $k .
                         ' does not match supplied $params'
@@ -399,7 +405,7 @@ class DaftTestObjectTest extends TestCase
                     (is_null($params[$k]) ? false : true),
                     isset($obj->$k),
                     (
-                        $implementation .
+                        (string) $implementation .
                         '::$' .
                         $k .
                         ' was not found as ' .
@@ -414,7 +420,7 @@ class DaftTestObjectTest extends TestCase
                 $writeable,
                 $obj->HasPropertyChanged($property),
                 (
-                    $implementation .
+                    (string) $implementation .
                     '::$' .
                     $property .
                     ' was' .
@@ -492,6 +498,12 @@ class DaftTestObjectTest extends TestCase
     ) : void {
         $obj = new $implementation($params, false);
         $val = $obj->id;
+
+        /**
+        * @var DefinesOwnIdPropertiesInterface $implementation
+        */
+        $implementation = $implementation;
+
         $keys = $implementation::DaftObjectIdProperties();
 
         if (count($keys) < 2) {
@@ -528,6 +540,11 @@ class DaftTestObjectTest extends TestCase
         string $implementation
     ) : void {
         $obj = new $implementation();
+
+        /**
+        * @var DaftObject $implementation
+        */
+        $implementation = $implementation;
 
         $props = $implementation::DaftObjectProperties();
         $nullables = $implementation::DaftObjectNullableProperties();

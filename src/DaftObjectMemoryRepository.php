@@ -86,6 +86,11 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
         }
     }
 
+    /**
+    * Recalls the corresponding daft object instance from cached data
+    *
+    * @param mixed $id
+    */
     protected function RecallDaftObjectFromData($id) : ? DaftObject
     {
         $hashId = $this->ObjectHashId($id);
@@ -98,10 +103,18 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
         return null;
     }
 
+    /**
+    * Converts an id to a unique-enough-for-now string
+    *
+    * @param mixed $id
+    */
     private function ObjectHashId($id) : string
     {
         $id = is_array($id) ? $id : [$id];
 
+        /**
+        * @var DefinesOwnIdPropertiesInterface $type
+        */
         $type = $this->type;
 
         return $type::DaftObjectIdValuesHash($id);

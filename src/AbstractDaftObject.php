@@ -171,6 +171,11 @@ abstract class AbstractDaftObject implements DaftObject
                 );
             }
 
+            /**
+            * @var DefinesOwnIdPropertiesInterface $object
+            */
+            $object = $object;
+
             $properties = $object::DaftObjectIdProperties();
 
             if (count($properties) < 1) {

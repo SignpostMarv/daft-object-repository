@@ -6,6 +6,7 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject\Tests;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use SignpostMarv\DaftObject\DaftObjectMemoryRepository;
@@ -175,8 +176,29 @@ class DaftObjectRepositoryTest extends TestCase
         bool $writeable,
         array ...$paramsArray
     ) : void {
+        if (
+            is_a(
+                $objImplementation,
+                DefinesOwnIdPropertiesInterface::class,
+                true
+            ) === false
+        ) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Argument 1 passed to %s must be an implementation of %s',
+                    __METHOD__,
+                    DefinesOwnIdPropertiesInterface::class
+                )
+            );
+        }
+
+        /**
+        * @var DefinesOwnIdPropertiesInterface $objImplementation
+        */
+        $objImplementation = $objImplementation;
+
         $repo = static::DaftObjectRepositoryByType(
-            $objImplementation
+            (string) $objImplementation
         );
 
         $idProps = [];
@@ -269,7 +291,7 @@ class DaftObjectRepositoryTest extends TestCase
             */
             $retrieved = $repo->RecallDaftObject($ids);
 
-            $this->assertInstanceOf($objImplementation, $retrieved);
+            $this->assertInstanceOf((string) $objImplementation, $retrieved);
 
             foreach ($objImplementation::DaftObjectProperties() as $prop) {
                 if (
