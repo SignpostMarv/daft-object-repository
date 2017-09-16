@@ -7,12 +7,14 @@ declare(strict_types=1);
 namespace SignpostMarv\DaftObject\Tests;
 
 use PHPUnit\Framework\TestCase;
+use SignpostMarv\DaftObject\DaftObjectWorm;
 use SignpostMarv\DaftObject\DefinesOwnIdPropertiesInterface;
 use SignpostMarv\DaftObject\DefinesOwnIntegerIdInterface;
 use SignpostMarv\DaftObject\DefinesOwnStringIdInterface;
 use SignpostMarv\DaftObject\DefinesOwnUntypedIdInterface;
 use SignpostMarv\DaftObject\PropertyNotNullableException;
 use SignpostMarv\DaftObject\PropertyNotWriteableException;
+use SignpostMarv\DaftObject\PropertyNotRewriteableException;
 use SignpostMarv\DaftObject\ReadOnly;
 use SignpostMarv\DaftObject\ReadOnlyBad;
 use SignpostMarv\DaftObject\ReadOnlyBadDefinesOwnId;
@@ -20,8 +22,10 @@ use SignpostMarv\DaftObject\ReadOnlyInsuficientIdProperties;
 use SignpostMarv\DaftObject\ReadOnlyTwoColumnPrimaryKey;
 use SignpostMarv\DaftObject\ReadWrite;
 use SignpostMarv\DaftObject\ReadWriteTwoColumnPrimaryKey;
+use SignpostMarv\DaftObject\ReadWriteWorm;
 use SignpostMarv\DaftObject\UndefinedPropertyException;
 use SignpostMarv\DaftObject\WriteOnly;
+use SignpostMarv\DaftObject\WriteOnlyWorm;
 use TypeError;
 
 class DaftTestObjectTest extends TestCase
@@ -192,6 +196,28 @@ class DaftTestObjectTest extends TestCase
                     'Bat' => null,
                 ],
                 true,
+                true,
+            ],
+            [
+                ReadWriteWorm::class,
+                [
+                    'Foo' => 'Foo',
+                    'Bar' => 3.0,
+                    'Baz' => 4,
+                    'Bat' => null,
+                ],
+                true,
+                true,
+            ],
+            [
+                WriteOnlyWorm::class,
+                [
+                    'Foo' => 'Foo',
+                    'Bar' => 3.0,
+                    'Baz' => 4,
+                    'Bat' => null,
+                ],
+                false,
                 true,
             ],
         ];
@@ -410,6 +436,18 @@ class DaftTestObjectTest extends TestCase
                         true
                     )
                 ) {
+                    if ($obj instanceof DaftObjectWorm) {
+                        $this->expectException(
+                            PropertyNotRewriteableException::class
+                        );
+                        $this->expectExceptionMessage(
+                            sprintf(
+                                'Property not rewriteable: %s::$%s',
+                                $implementation,
+                                $property
+                            )
+                        );
+                    }
                     unset($obj->$property);
                     $obj->$property = null;
                 }

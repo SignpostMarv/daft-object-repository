@@ -28,6 +28,13 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject
     private $changedProperties = [];
 
     /**
+    * List of changed properties, for write-once read-many
+    *
+    * @var bool[]
+    */
+    private $wormProperties = [];
+
+    /**
     * Create an array-backed daft object.
     *
     * @param array $data key-value pairs
@@ -126,6 +133,20 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject
             in_array($property, static::NULLABLE_PROPERTIES, true) !== true
         ) {
             throw new PropertyNotNullableException(static::class, $property);
+        } elseif (
+            $this instanceof DaftObjectWorm &&
+            (
+                $this->HasPropertyChanged($property) ||
+                (
+                    isset($this->wormProperties[$property]) &&
+                    $this->wormProperties[$property] === true
+                )
+            )
+        ) {
+            throw new PropertyNotRewriteableException(
+                static::class,
+                $property
+            );
         }
 
         $isChanged = (
@@ -137,6 +158,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject
 
         if ($isChanged && isset($this->changedProperties[$property]) !== true) {
             $this->changedProperties[$property] = true;
+            $this->wormProperties[$property] = true;
         }
     }
 }
