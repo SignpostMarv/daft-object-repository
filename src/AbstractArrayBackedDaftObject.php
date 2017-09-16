@@ -21,7 +21,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject
     private $data = [];
 
     /**
-    * List of changes properties.
+    * List of changed properties.
     *
     * @var bool[]
     */
