@@ -97,7 +97,12 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
         if (true === isset($this->data[$hashId])) {
             $type = $this->type;
 
-            return new $type($this->data[$hashId]);
+            /**
+            * @var DaftObject $out
+            */
+            $out = new $type($this->data[$hashId]);
+
+            return $out;
         }
 
         return null;
