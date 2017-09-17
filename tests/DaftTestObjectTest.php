@@ -7,6 +7,10 @@ declare(strict_types=1);
 namespace SignpostMarv\DaftObject\Tests;
 
 use PHPUnit\Framework\TestCase;
+use SignpostMarv\DaftObject\AlreadyIncorrectlyImplementedTypeException;
+use SignpostMarv\DaftObject\ClassDoesNotImplementClassException;
+use SignpostMarv\DaftObject\ClassMethodReturnHasZeroArrayCountException;
+use SignpostMarv\DaftObject\ClassMethodReturnIsNotArrayOfStringsException;
 use SignpostMarv\DaftObject\DaftObject;
 use SignpostMarv\DaftObject\DaftObjectWorm;
 use SignpostMarv\DaftObject\DefinesOwnIdPropertiesInterface;
@@ -285,7 +289,7 @@ class DaftTestObjectTest extends TestCase
             ],
             [
                 ReadOnlyBad::class,
-                TypeError::class,
+                ClassMethodReturnIsNotArrayOfStringsException::class,
                 (
                     ReadOnlyBad::class .
                     '::DaftObjectIdProperties() does not return string[]'
@@ -298,7 +302,7 @@ class DaftTestObjectTest extends TestCase
             ],
             [
                 ReadOnlyBad::class,
-                TypeError::class,
+                AlreadyIncorrectlyImplementedTypeException::class,
                 (
                     ReadOnlyBad::class .
                     ' already determined to be incorrectly implemented'
@@ -311,7 +315,7 @@ class DaftTestObjectTest extends TestCase
             ],
             [
                 ReadOnlyBadDefinesOwnId::class,
-                TypeError::class,
+                ClassDoesNotImplementClassException::class,
                 (
                     ReadOnlyBadDefinesOwnId::class .
                     ' does not implement ' .
@@ -325,7 +329,7 @@ class DaftTestObjectTest extends TestCase
             ],
             [
                 ReadOnlyInsuficientIdProperties::class,
-                TypeError::class,
+                ClassMethodReturnHasZeroArrayCountException::class,
                 (
                     ReadOnlyInsuficientIdProperties::class .
                     '::DaftObjectIdProperties() must return at least one property'

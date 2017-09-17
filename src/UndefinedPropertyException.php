@@ -8,21 +8,21 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject;
 
-use RuntimeException;
+use Exception;
 use Throwable;
 
 /**
 * Exception thrown when a property is not defined.
 */
-class UndefinedPropertyException extends RuntimeException
+class UndefinedPropertyException extends Exception
 {
     /**
-    * Wraps to TypeError::__construct().
+    * Wraps to Exception::__construct().
     *
     * @param string $className name of the class on which the property is not defined
     * @param string $property name of the property which is not defined
-    * @param int $code @see TypeError::__construct()
-    * @param Throwable|null $previous @see TypeError::__construct()
+    * @param int $code @see Exception::__construct()
+    * @param Throwable|null $previous @see Exception::__construct()
     */
     public function __construct(
         string $className,

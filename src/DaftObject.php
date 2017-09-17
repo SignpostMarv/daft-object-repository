@@ -30,7 +30,7 @@ interface DaftObject
     * @param string $property the property being retrieved
     * @param mixed $v
     *
-    * @throws UndefinedPropertyException if a property is undefined
+    * @throws PropertyNotWriteableException if a property is undefined
     *
     * @return mixed
     */
@@ -47,8 +47,6 @@ interface DaftObject
     * required to support unset($foo->bar).
     *
     * @param string $property the property being unset
-    *
-    * @see static::NudgePropertyValue()
     */
     public function __unset(string $property) : void;
 

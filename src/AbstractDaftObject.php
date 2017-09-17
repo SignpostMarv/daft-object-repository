@@ -8,8 +8,6 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject;
 
-use TypeError;
-
 /**
 * Base daft object.
 */
@@ -44,7 +42,7 @@ abstract class AbstractDaftObject implements DaftObject
     * @see DefinesOwnIdPropertiesInterface
     * @see self::CheckTypeDefinesOwnIdProperties()
     *
-    * @throws TypeError if static::class was previously determined to be incorrectly implemented
+    * @throws AlreadyIncorrectlyImplementedTypeException if static::class was previously determined to be incorrectly implemented
     */
     public function __construct()
     {
@@ -52,20 +50,14 @@ abstract class AbstractDaftObject implements DaftObject
             ($this instanceof DefinesOwnIdPropertiesInterface) &&
             false === self::CheckTypeDefinesOwnIdProperties($this)
         ) {
-            throw new AlreadyIncorrectlyImplementedTypeError(
+            throw new AlreadyIncorrectlyImplementedTypeException(
                 get_class($this) // phpunit coverage does not pick up static::class here
             );
         }
     }
 
     /**
-    * Maps param $property to the getter method.
-    *
-    * @param string $property the property being retrieved
-    *
-    * @throws UndefinedPropertyException if a property is undefined
-    *
-    * @return mixed
+    * {@inheritdoc}
     */
     public function __get(string $property)
     {
@@ -78,14 +70,7 @@ abstract class AbstractDaftObject implements DaftObject
     }
 
     /**
-    * Maps param $property to the getter method.
-    *
-    * @param string $property the property being retrieved
-    * @param mixed $v
-    *
-    * @throws UndefinedPropertyException if a property is undefined
-    *
-    * @return mixed
+    * {@inheritdoc}
     */
     public function __set(string $property, $v)
     {
@@ -100,9 +85,7 @@ abstract class AbstractDaftObject implements DaftObject
     }
 
     /**
-    * required to support unset($foo->bar).
-    *
-    * @param string $property the property being unset
+    * {@inheritdoc}
     *
     * @see static::NudgePropertyValue()
     */
@@ -122,9 +105,7 @@ abstract class AbstractDaftObject implements DaftObject
     }
 
     /**
-    * List of nullable properties that can be defined on an implementation.
-    *
-    * @return string[]
+    * {@inheritdoc}
     */
     final public static function DaftObjectNullableProperties() : array
     {
@@ -139,6 +120,7 @@ abstract class AbstractDaftObject implements DaftObject
     *
     * @throws UndefinedPropertyException if $property is not in static::DaftObjectProperties()
     * @throws PropertyNotNullableException if $property is not in static::DaftObjectNullableProperties()
+    * @throws PropertyNotRewriteableException if class is write-once read-many and $property was already changed
     */
     abstract protected function NudgePropertyValue(
         string $property,
@@ -150,8 +132,9 @@ abstract class AbstractDaftObject implements DaftObject
     *
     * @param DaftObject $object
     *
-    * @throws TypeError if $object::DaftObjectIdProperties() does not contain at least one property
-    * @throws TypeError if $object::DaftObjectIdProperties() is not string[]
+    * @throws ClassDoesNotImplementClassException if $object is not an implementation of DefinesOwnIdPropertiesInterface
+    * @throws ClassMethodReturnHasZeroArrayCountException if $object::DaftObjectIdProperties() does not contain at least one property
+    * @throws ClassMethodReturnIsNotArrayOfStringsException if $object::DaftObjectIdProperties() is not string[]
     * @throws UndefinedPropertyException if an id property is not in $object::DaftObjectIdProperties()
     */
     final protected static function CheckTypeDefinesOwnIdProperties(

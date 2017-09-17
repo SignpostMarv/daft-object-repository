@@ -10,7 +10,7 @@ namespace SignpostMarv\DaftObject;
 
 use Throwable;
 
-class ClassMethodReturnIsNotArrayOfStringsException extends IncorrectlyImplementedTypeError
+class ClassMethodReturnIsNotArrayOfStringsException extends IncorrectlyImplementedTypeException
 {
     public function __construct(
         string $class,

@@ -10,7 +10,7 @@ namespace SignpostMarv\DaftObject;
 
 use Throwable;
 
-class AlreadyIncorrectlyImplementedTypeError extends IncorrectlyImplementedTypeError
+class AlreadyIncorrectlyImplementedTypeException extends IncorrectlyImplementedTypeException
 {
     public function __construct(
         string $class,

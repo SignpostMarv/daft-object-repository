@@ -10,7 +10,7 @@ namespace SignpostMarv\DaftObject;
 
 use Throwable;
 
-class ClassMethodReturnHasZeroArrayCountException extends IncorrectlyImplementedTypeError
+class ClassMethodReturnHasZeroArrayCountException extends IncorrectlyImplementedTypeException
 {
     public function __construct(
         string $class,

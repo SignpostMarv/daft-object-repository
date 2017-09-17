@@ -8,8 +8,8 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject;
 
-use TypeError;
+use Exception;
 
-class DaftObjectRepositoryTypeException extends TypeError
+class DaftObjectRepositoryTypeException extends Exception
 {
 }

@@ -13,15 +13,15 @@ use Throwable;
 /**
 * Exception thrown when a property is not nullable.
 */
-class PropertyNotNullableException extends AbstractPropertyNotThingableError
+class PropertyNotNullableException extends AbstractPropertyNotThingableException
 {
     /**
-    * Wraps to TypeError::__construct().
+    * Wraps to AbstractPropertyNotThingableException::__construct().
     *
     * @param string $className name of the class on which the property is not nullable
     * @param string $property name of the property which is not nullable
-    * @param int $code @see TypeError::__construct()
-    * @param Throwable|null $previous @see TypeError::__construct()
+    * @param int $code @see Exception::__construct()
+    * @param Throwable|null $previous @see Exception::__construct()
     */
     public function __construct(
         string $className,
