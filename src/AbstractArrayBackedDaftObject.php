@@ -100,9 +100,9 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     *
     * @param string $property the property being retrieved
     *
-    * @return mixed the property value
-    *
     * @throws PropertyNotNullableException if value is not set and $property is not listed as nullabe
+    *
+    * @return mixed the property value
     */
     protected function RetrievePropertyValueFromData(string $property)
     {

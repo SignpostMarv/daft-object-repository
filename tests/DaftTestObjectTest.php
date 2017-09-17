@@ -31,7 +31,6 @@ use SignpostMarv\DaftObject\ReadWriteWorm;
 use SignpostMarv\DaftObject\UndefinedPropertyException;
 use SignpostMarv\DaftObject\WriteOnly;
 use SignpostMarv\DaftObject\WriteOnlyWorm;
-use TypeError;
 
 class DaftTestObjectTest extends TestCase
 {
