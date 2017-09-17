@@ -11,7 +11,7 @@ namespace SignpostMarv\DaftObject;
 /**
 * Array-backed daft objects.
 */
-abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject
+abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implements DaftObjectCreatedByArray
 {
     /**
     * data for this instance.
@@ -35,10 +35,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject
     private $wormProperties = [];
 
     /**
-    * Create an array-backed daft object.
-    *
-    * @param array $data key-value pairs
-    * @param bool $writeAll if TRUE, route $data through static::__set()
+    * {@inheritdoc}
     */
     public function __construct(array $data = [], bool $writeAll = false)
     {

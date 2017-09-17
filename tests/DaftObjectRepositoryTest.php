@@ -315,28 +315,6 @@ class DaftObjectRepositoryTest extends TestCase
         }
     }
 
-    public function testRepositoryForDaftObjectRepositoryTypeException(
-    ) : void {
-        static $type = '-foo';
-
-        $implementation = get_class(
-            static::DaftObjectRepositoryByType(ReadOnly::class)
-        );
-
-        $this->expectException(DaftObjectRepositoryTypeException::class);
-        $this->expectExceptionMessage(
-            'Argument 1 passed to ' .
-            $implementation .
-            '::DaftObjectRepositoryByType() must be an implementation of ' .
-            DefinesOwnIdPropertiesInterface::class .
-            ', ' .
-            $type .
-            ' given.'
-        );
-
-        static::DaftObjectRepositoryByType($type);
-    }
-
     /**
     * @dataProvider DaftObjectRepositoryTypeExceptionForgetRemoveDataProvider
     */
