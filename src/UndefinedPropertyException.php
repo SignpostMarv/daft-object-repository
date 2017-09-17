@@ -8,16 +8,15 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject;
 
-use Exception;
 use Throwable;
 
 /**
 * Exception thrown when a property is not defined.
 */
-class UndefinedPropertyException extends Exception
+class UndefinedPropertyException extends AbstractPropertyNotThingableException
 {
     /**
-    * Wraps to Exception::__construct().
+    * Wraps to AbstractPropertyNotThingableException::__construct().
     *
     * @param string $className name of the class on which the property is not defined
     * @param string $property name of the property which is not defined
@@ -31,11 +30,9 @@ class UndefinedPropertyException extends Exception
         Throwable $previous = null
     ) {
         parent::__construct(
-            sprintf(
-                'Undefined property: %s::$%s',
-                $className,
-                $property
-            ),
+            'defined',
+            $className,
+            $property,
             $code,
             $previous
         );

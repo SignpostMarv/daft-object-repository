@@ -234,7 +234,7 @@ class DaftTestObjectTest extends TestCase
                 ReadOnly::class,
                 UndefinedPropertyException::class,
                 (
-                    'Undefined property: ' .
+                    'Property not defined: ' .
                     ReadOnly::class .
                     '::$NotFoo'
                 ),
@@ -276,7 +276,7 @@ class DaftTestObjectTest extends TestCase
                 WriteOnly::class,
                 UndefinedPropertyException::class,
                 (
-                    'Undefined property: ' .
+                    'Property not defined: ' .
                     WriteOnly::class .
                     '::$BarUndefined'
                 ),
