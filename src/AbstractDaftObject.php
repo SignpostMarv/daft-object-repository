@@ -63,18 +63,7 @@ abstract class AbstractDaftObject implements DaftObject
     */
     public function __get(string $property)
     {
-        static $scopes = [];
-        $expectedMethod = 'Get' . ucfirst($property);
-        if (true !== method_exists($this, $expectedMethod)) {
-            throw new UndefinedPropertyException(static::class, $property);
-        } elseif (false === $this->CheckPublicScope($expectedMethod)) {
-            throw new NotPublicGetterPropertyException(
-                static::class,
-                $property
-            );
-        }
-
-        return $this->$expectedMethod();
+        return $this->DoGetSet($property, true);
     }
 
     /**
@@ -82,20 +71,7 @@ abstract class AbstractDaftObject implements DaftObject
     */
     public function __set(string $property, $v)
     {
-        static $scopes = [];
-        $expectedMethod = 'Set' . ucfirst($property);
-        if (
-            true !== method_exists($this, $expectedMethod)
-        ) {
-            throw new PropertyNotWriteableException(static::class, $property);
-        } elseif (false === $this->CheckPublicScope($expectedMethod)) {
-            throw new NotPublicSetterPropertyException(
-                static::class,
-                $property
-            );
-        }
-
-        return $this->$expectedMethod($v);
+        return $this->DoGetSet($property, false, $v);
     }
 
     /**
@@ -204,6 +180,47 @@ abstract class AbstractDaftObject implements DaftObject
         }
 
         return $checkedTypes[get_class($object)];
+    }
+
+    /**
+    * @param mixed $v
+    *
+    * @return mixed
+    */
+    private function DoGetSet(
+        string $property,
+        bool $getNotSet,
+        $v = null
+    ) {
+        static $scopes = [];
+        $expectedMethod = ($getNotSet ? 'Get' : 'Set') . ucfirst($property);
+
+        if ($getNotSet) {
+            if (true !== method_exists($this, $expectedMethod)) {
+                throw new UndefinedPropertyException(static::class, $property);
+            } elseif (false === $this->CheckPublicScope($expectedMethod)) {
+                throw new NotPublicGetterPropertyException(
+                    static::class,
+                    $property
+                );
+            }
+
+            return $this->$expectedMethod();
+        } elseif (
+            true !== method_exists($this, $expectedMethod)
+        ) {
+            throw new PropertyNotWriteableException(
+                static::class,
+                $property
+            );
+        } elseif (false === $this->CheckPublicScope($expectedMethod)) {
+            throw new NotPublicSetterPropertyException(
+                static::class,
+                $property
+            );
+        }
+
+        return $this->$expectedMethod($v);
     }
 
     private function CheckPublicScope(string $expectedMethod) : bool
