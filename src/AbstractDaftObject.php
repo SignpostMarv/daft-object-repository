@@ -8,6 +8,8 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject;
 
+use ReflectionClass;
+
 /**
 * Base daft object.
 */
@@ -61,9 +63,15 @@ abstract class AbstractDaftObject implements DaftObject
     */
     public function __get(string $property)
     {
+        static $scopes = [];
         $expectedMethod = 'Get' . ucfirst($property);
         if (true !== method_exists($this, $expectedMethod)) {
             throw new UndefinedPropertyException(static::class, $property);
+        } elseif (false === $this->CheckPublicScope($property, true)) {
+            throw new NotPublicGetterPropertyException(
+                static::class,
+                $property
+            );
         }
 
         return $this->$expectedMethod();
@@ -74,11 +82,17 @@ abstract class AbstractDaftObject implements DaftObject
     */
     public function __set(string $property, $v)
     {
+        static $scopes = [];
         $expectedMethod = 'Set' . ucfirst($property);
         if (
             true !== method_exists($this, $expectedMethod)
         ) {
             throw new PropertyNotWriteableException(static::class, $property);
+        } elseif (false === $this->CheckPublicScope($property, false)) {
+            throw new NotPublicSetterPropertyException(
+                static::class,
+                $property
+            );
         }
 
         return $this->$expectedMethod($v);
@@ -190,5 +204,20 @@ abstract class AbstractDaftObject implements DaftObject
         }
 
         return $checkedTypes[get_class($object)];
+    }
+
+    private function CheckPublicScope(string $property, bool $getter) : bool
+    {
+        static $scopes = [];
+        $expectedMethod = ($getter ? 'Get' : 'Set') . ucwords($property);
+        if (false === isset($scopes[$expectedMethod])) {
+            $scopes[$expectedMethod] = (
+                (
+                    new ReflectionClass(static::class)
+                )->getMethod($expectedMethod)
+            )->isPublic();
+        }
+
+        return $scopes[$expectedMethod];
     }
 }
