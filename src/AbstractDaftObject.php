@@ -67,7 +67,7 @@ abstract class AbstractDaftObject implements DaftObject
         $expectedMethod = 'Get' . ucfirst($property);
         if (true !== method_exists($this, $expectedMethod)) {
             throw new UndefinedPropertyException(static::class, $property);
-        } elseif (false === $this->CheckPublicScope($property, true)) {
+        } elseif (false === $this->CheckPublicScope($expectedMethod)) {
             throw new NotPublicGetterPropertyException(
                 static::class,
                 $property
@@ -88,7 +88,7 @@ abstract class AbstractDaftObject implements DaftObject
             true !== method_exists($this, $expectedMethod)
         ) {
             throw new PropertyNotWriteableException(static::class, $property);
-        } elseif (false === $this->CheckPublicScope($property, false)) {
+        } elseif (false === $this->CheckPublicScope($expectedMethod)) {
             throw new NotPublicSetterPropertyException(
                 static::class,
                 $property
@@ -206,10 +206,9 @@ abstract class AbstractDaftObject implements DaftObject
         return $checkedTypes[get_class($object)];
     }
 
-    private function CheckPublicScope(string $property, bool $getter) : bool
+    private function CheckPublicScope(string $expectedMethod) : bool
     {
         static $scopes = [];
-        $expectedMethod = ($getter ? 'Get' : 'Set') . ucwords($property);
         if (false === isset($scopes[$expectedMethod])) {
             $scopes[$expectedMethod] = (
                 (
