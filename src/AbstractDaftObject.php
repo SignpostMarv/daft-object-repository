@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject;
 
-use ReflectionClass;
+use ReflectionMethod;
 
 /**
 * Base daft object.
@@ -211,9 +211,7 @@ abstract class AbstractDaftObject implements DaftObject
         static $scopes = [];
         if (false === isset($scopes[$expectedMethod])) {
             $scopes[$expectedMethod] = (
-                (
-                    new ReflectionClass(static::class)
-                )->getMethod($expectedMethod)
+                new ReflectionMethod(static::class, $expectedMethod)
             )->isPublic();
         }
 
