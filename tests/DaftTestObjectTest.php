@@ -7,7 +7,6 @@ declare(strict_types=1);
 namespace SignpostMarv\DaftObject\Tests;
 
 use PHPUnit\Framework\TestCase;
-use SignpostMarv\DaftObject\AlreadyIncorrectlyImplementedTypeException;
 use SignpostMarv\DaftObject\ClassDoesNotImplementClassException;
 use SignpostMarv\DaftObject\ClassMethodReturnHasZeroArrayCountException;
 use SignpostMarv\DaftObject\ClassMethodReturnIsNotArrayOfStringsException;
@@ -19,7 +18,6 @@ use SignpostMarv\DaftObject\DefinesOwnStringIdInterface;
 use SignpostMarv\DaftObject\DefinesOwnUntypedIdInterface;
 use SignpostMarv\DaftObject\PropertyNotNullableException;
 use SignpostMarv\DaftObject\PropertyNotRewriteableException;
-use SignpostMarv\DaftObject\PropertyNotWriteableException;
 use SignpostMarv\DaftObject\ReadOnly;
 use SignpostMarv\DaftObject\ReadOnlyBad;
 use SignpostMarv\DaftObject\ReadOnlyBadDefinesOwnId;

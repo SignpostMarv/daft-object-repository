@@ -9,7 +9,6 @@ namespace SignpostMarv\DaftObject\Tests;
 use PHPUnit\Framework\TestCase;
 use SignpostMarv\DaftObject\NudgesIncorrectly;
 use SignpostMarv\DaftObject\ReadOnly;
-use SignpostMarv\DaftObject\ReadOnlyBadDefinesOwnId;
 use SignpostMarv\DaftObject\UndefinedPropertyException;
 use SignpostMarv\DaftObject\WriteOnly;
 

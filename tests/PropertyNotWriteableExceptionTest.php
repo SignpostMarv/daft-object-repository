@@ -7,8 +7,8 @@ declare(strict_types=1);
 namespace SignpostMarv\DaftObject\Tests;
 
 use PHPUnit\Framework\TestCase;
-use SignpostMarv\DaftObject\ReadOnly;
 use SignpostMarv\DaftObject\PropertyNotWriteableException;
+use SignpostMarv\DaftObject\ReadOnly;
 
 class PropertyNotWriteableExceptionTest extends TestCase
 {
