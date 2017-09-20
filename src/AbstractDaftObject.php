@@ -49,7 +49,12 @@ abstract class AbstractDaftObject implements DaftObject
     */
     public function __get(string $property)
     {
-        return $this->DoGetSet($property, true);
+        return $this->DoGetSet(
+            $property,
+            'Get' . ucfirst($property),
+            PropertyNotReadableException::class,
+            NotPublicGetterPropertyException::class
+        );
     }
 
     /**
@@ -57,7 +62,13 @@ abstract class AbstractDaftObject implements DaftObject
     */
     public function __set(string $property, $v)
     {
-        return $this->DoGetSet($property, false, $v);
+        return $this->DoGetSet(
+            $property,
+            'Set' . ucfirst($property),
+            PropertyNotWriteableException::class,
+            NotPublicSetterPropertyException::class,
+            $v
+        );
     }
 
     /**
@@ -154,7 +165,9 @@ abstract class AbstractDaftObject implements DaftObject
     */
     private function DoGetSet(
         string $property,
-        bool $getNotSet,
+        string $expectedMethod,
+        string $notExists,
+        string $notPublic,
         $v = null
     ) {
         if (
@@ -165,20 +178,7 @@ abstract class AbstractDaftObject implements DaftObject
             false === in_array($property, static::DaftObjectProperties(), true)
         ) {
             throw new UndefinedPropertyException(static::class, $property);
-        }
-
-        $method = ucfirst($property);
-        $expectedMethod = 'Set' . $method;
-        $notExists = PropertyNotWriteableException::class;
-        $notPublic = NotPublicSetterPropertyException::class;
-
-        if ($getNotSet) {
-            $expectedMethod = 'Get' . $method;
-            $notExists = PropertyNotReadableException::class;
-            $notPublic = NotPublicGetterPropertyException::class;
-        }
-
-        if (false === method_exists($this, $expectedMethod)) {
+        } elseif (false === method_exists($this, $expectedMethod)) {
             throw new $notExists(
                 static::class,
                 $property
