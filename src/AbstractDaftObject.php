@@ -168,7 +168,6 @@ abstract class AbstractDaftObject implements DaftObject
         bool $getNotSet,
         $v = null
     ) {
-        static $scopes = [];
         $expectedMethod = ($getNotSet ? 'Get' : 'Set') . ucfirst($property);
 
         if (
