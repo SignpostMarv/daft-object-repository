@@ -116,46 +116,46 @@ abstract class AbstractDaftObject implements DaftObject
     final protected static function CheckTypeDefinesOwnIdProperties(
         DaftObject $object
     ) : void {
-            if (false === ($object instanceof DefinesOwnIdPropertiesInterface)) {
-                throw new ClassDoesNotImplementClassException(
-                    get_class($object),
-                    DefinesOwnIdPropertiesInterface::class
-                );
-            }
+        if (false === ($object instanceof DefinesOwnIdPropertiesInterface)) {
+            throw new ClassDoesNotImplementClassException(
+                get_class($object),
+                DefinesOwnIdPropertiesInterface::class
+            );
+        }
 
-            /**
-            * @var DefinesOwnIdPropertiesInterface $object
-            */
-            $object = $object;
+        /**
+        * @var DefinesOwnIdPropertiesInterface $object
+        */
+        $object = $object;
 
-            $properties = $object::DaftObjectIdProperties();
+        $properties = $object::DaftObjectIdProperties();
 
-            if (count($properties) < 1) {
-                throw new ClassMethodReturnHasZeroArrayCountException(
+        if (count($properties) < 1) {
+            throw new ClassMethodReturnHasZeroArrayCountException(
+                get_class($object),
+                'DaftObjectIdProperties'
+            );
+        }
+
+        foreach ($properties as $property) {
+            if (false === is_string($property)) {
+                throw new ClassMethodReturnIsNotArrayOfStringsException(
                     get_class($object),
                     'DaftObjectIdProperties'
                 );
+            } elseif (
+                false === in_array(
+                    $property,
+                    $object::DaftObjectProperties(),
+                    true
+                )
+            ) {
+                throw new UndefinedPropertyException(
+                    get_class($object),
+                    $property
+                );
             }
-
-            foreach ($properties as $property) {
-                if (false === is_string($property)) {
-                    throw new ClassMethodReturnIsNotArrayOfStringsException(
-                        get_class($object),
-                        'DaftObjectIdProperties'
-                    );
-                } elseif (
-                    false === in_array(
-                        $property,
-                        $object::DaftObjectProperties(),
-                        true
-                    )
-                ) {
-                    throw new UndefinedPropertyException(
-                        get_class($object),
-                        $property
-                    );
-                }
-            }
+        }
     }
 
     /**
@@ -190,16 +190,16 @@ abstract class AbstractDaftObject implements DaftObject
                     $property
                 );
             }
-                throw new PropertyNotWriteableException(
-                    static::class,
-                    $property
-                );
-        } elseif (false === $this->CheckPublicScope($expectedMethod)) {
-            if ($getNotSet) {
-            throw new NotPublicGetterPropertyException(
+            throw new PropertyNotWriteableException(
                 static::class,
                 $property
             );
+        } elseif (false === $this->CheckPublicScope($expectedMethod)) {
+            if ($getNotSet) {
+                throw new NotPublicGetterPropertyException(
+                    static::class,
+                    $property
+                );
             }
             throw new NotPublicSetterPropertyException(
                 static::class,
