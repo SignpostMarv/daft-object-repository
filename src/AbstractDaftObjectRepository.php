@@ -77,34 +77,27 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
     public static function DaftObjectRepositoryByType(
         string $type
     ) : DaftObjectRepository {
-        if (
+        foreach (
+            [
+                DaftObjectCreatedByArray::class,
+                DefinesOwnIdPropertiesInterface::class,
+            ] as $checkFor
+        ) {
+            if (
             false === is_a(
                 $type,
-                DaftObjectCreatedByArray::class,
+                $checkFor,
                 true
             )
-        ) {
+            ) {
             throw new DaftObjectRepositoryTypeByClassMethodAndTypeException(
                 1,
                 static::class,
                 __FUNCTION__,
-                DaftObjectCreatedByArray::class,
+                $checkFor,
                 $type
             );
-        } elseif (
-            false === is_a(
-                $type,
-                DefinesOwnIdPropertiesInterface::class,
-                true
-            )
-        ) {
-            throw new DaftObjectRepositoryTypeByClassMethodAndTypeException(
-                1,
-                static::class,
-                __FUNCTION__,
-                DefinesOwnIdPropertiesInterface::class,
-                $type
-            );
+            }
         }
 
         return new static($type);
