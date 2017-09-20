@@ -90,7 +90,7 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
     ) : void {
         if (false === is_a($object, $type, is_string($object))) {
             throw new DaftObjectRepositoryTypeByClassMethodAndTypeException(
-                1,
+                $argument,
                 static::class,
                 $function,
                 $type,
