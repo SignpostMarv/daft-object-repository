@@ -51,6 +51,11 @@ interface DaftObject
     public function __unset(string $property) : void;
 
     /**
+    * required to support var_dump(<DaftObject>);.
+    */
+    public function __debugInfo() : array;
+
+    /**
     * Get the changed properties on an object.
     *
     * @return string[]
@@ -88,4 +93,11 @@ interface DaftObject
     * @return string[]
     */
     public static function DaftObjectNullableProperties() : array;
+
+    /**
+    * List of exportable properties that can be defined on an implementation.
+    *
+    * @return string[]
+    */
+    public static function DaftObjectExportableProperties() : array;
 }

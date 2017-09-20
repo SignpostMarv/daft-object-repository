@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace SignpostMarv\DaftObject\Tests;
 
 use PHPUnit\Framework\TestCase;
+use ReflectionMethod;
 use SignpostMarv\DaftObject\ClassDoesNotImplementClassException;
 use SignpostMarv\DaftObject\ClassMethodReturnHasZeroArrayCountException;
 use SignpostMarv\DaftObject\ClassMethodReturnIsNotArrayOfStringsException;
@@ -317,6 +318,7 @@ class DaftTestObjectTest extends TestCase
 
     /**
     * @dataProvider GoodDataProvider
+    * @psalm-suppress ForbiddenCode
     */
     public function testGood(
         string $implementation,
@@ -421,6 +423,78 @@ class DaftTestObjectTest extends TestCase
         }
 
         $obj->MakePropertiesUnchanged(...array_keys($params));
+
+        ob_start();
+        var_dump($obj);
+
+        $debugInfo = ob_get_clean();
+
+        $props = [];
+
+        foreach ($obj::DaftObjectExportableProperties() as $prop) {
+            $expectedMethod = 'Get' . ucfirst($prop);
+            if (
+                $obj->__isset($prop) &&
+                method_exists($obj, $expectedMethod) &&
+                (
+                    new ReflectionMethod($obj, $expectedMethod)
+                )->isPublic()
+            ) {
+                $props[$prop] = $obj->$expectedMethod();
+            }
+        }
+
+        $regex =
+            '/class ' .
+            preg_quote(get_class($obj) . '#', '/') .
+            '\d+ \(' .
+            preg_quote((string) count($props), '/') .
+            '\) \{.+';
+
+        foreach ($props as $prop => $val) {
+            $regex .=
+                ' public ' .
+                preg_quote('$' . $prop . ' =', '/') .
+                '>.+' .
+                preg_quote(
+                    (
+                        (
+                            is_int($val)
+                                ? 'int'
+                                : (
+                                    is_bool($val)
+                                        ? 'bool'
+                                        : gettype($val)
+                                )
+                        ) .
+                        '(' .
+                        (
+                            is_string($val)
+                                ? mb_strlen($val, '8bit')
+                                : (
+                                    is_numeric($val)
+                                        ? (string) $val
+                                        : var_export($val, true)
+                                )
+                        ) .
+                        ')' .
+                        (
+                            is_string($val)
+                                ? (' "' . $val . '"')
+                                : ''
+                        )
+                    ),
+                    '/'
+                ) .
+                '.+';
+        }
+
+        $regex .= '\}.+$/s';
+
+        $this->assertRegExp(
+            $regex,
+            str_replace("\n", ' ', (string) $debugInfo)
+        );
     }
 
     /**

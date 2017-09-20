@@ -19,4 +19,11 @@ abstract class AbstractTestObject extends AbstractArrayBackedDaftObject
     const NULLABLE_PROPERTIES = [
         'Bat',
     ];
+
+    const EXPORTABLE_PROPERTIES = [
+        'Foo',
+        'Bar',
+        'Baz',
+        'Bat',
+    ];
 }

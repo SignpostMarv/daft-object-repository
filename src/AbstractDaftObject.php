@@ -30,6 +30,13 @@ abstract class AbstractDaftObject implements DaftObject
     const NULLABLE_PROPERTIES = [];
 
     /**
+    * List of exportable properties that can be defined on an implementation.
+    *
+    * @var string[]
+    */
+    const EXPORTABLE_PROPERTIES = [];
+
+    /**
     * Does some sanity checking.
     *
     * @see DefinesOwnIdPropertiesInterface
@@ -82,6 +89,28 @@ abstract class AbstractDaftObject implements DaftObject
     }
 
     /**
+    * {@inheritdoc}
+    */
+    public function __debugInfo() : array
+    {
+        $out = [];
+        foreach (static::DaftObjectExportableProperties() as $prop) {
+            $expectedMethod = 'Get' . ucfirst($prop);
+            if (
+                $this->__isset($prop) &&
+                method_exists($this, $expectedMethod) &&
+                (
+                    new ReflectionMethod(static::class, $expectedMethod)
+                )->isPublic()
+            ) {
+                $out[$prop] = $this->$expectedMethod();
+            }
+        }
+
+        return $out;
+    }
+
+    /**
     * List of properties that can be defined on an implementation.
     *
     * @return string[]
@@ -97,6 +126,14 @@ abstract class AbstractDaftObject implements DaftObject
     final public static function DaftObjectNullableProperties() : array
     {
         return static::NULLABLE_PROPERTIES;
+    }
+
+    /**
+    * {@inheritdoc}
+    */
+    final public static function DaftObjectExportableProperties() : array
+    {
+        return static::EXPORTABLE_PROPERTIES;
     }
 
     /**
