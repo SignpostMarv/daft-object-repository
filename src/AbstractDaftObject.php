@@ -30,15 +30,6 @@ abstract class AbstractDaftObject implements DaftObject
     const NULLABLE_PROPERTIES = [];
 
     /**
-    * Index of checked types.
-    *
-    * @see self::CheckTypeDefinesOwnIdProperties()
-    *
-    * @var bool[]
-    */
-    private static $checkedTypes = [];
-
-    /**
     * Does some sanity checking.
     *
     * @see DefinesOwnIdPropertiesInterface
@@ -124,12 +115,7 @@ abstract class AbstractDaftObject implements DaftObject
     */
     final protected static function CheckTypeDefinesOwnIdProperties(
         DaftObject $object
-    ) : bool {
-        $checkedTypes = [];
-
-        if (false === isset($checkedTypes[get_class($object)])) {
-            $checkedTypes[get_class($object)] = false;
-
+    ) : void {
             if (false === ($object instanceof DefinesOwnIdPropertiesInterface)) {
                 throw new ClassDoesNotImplementClassException(
                     get_class($object),
@@ -170,11 +156,6 @@ abstract class AbstractDaftObject implements DaftObject
                     );
                 }
             }
-
-            $checkedTypes[get_class($object)] = true;
-        }
-
-        return $checkedTypes[get_class($object)];
     }
 
     /**
