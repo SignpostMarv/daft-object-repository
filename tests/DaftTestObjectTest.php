@@ -231,24 +231,10 @@ class DaftTestObjectTest extends TestCase
     {
         return [
             [
-                ReadOnly::class,
+                WriteOnly::class,
                 UndefinedPropertyException::class,
                 (
                     'Property not defined: ' .
-                    ReadOnly::class .
-                    '::$NotFoo'
-                ),
-                [
-                    'NotFoo' => 1,
-                ],
-                true,
-                false,
-            ],
-            [
-                WriteOnly::class,
-                PropertyNotWriteableException::class,
-                (
-                    'Property not writeable: ' .
                     WriteOnly::class .
                     '::$NotFoo'
                 ),
@@ -273,38 +259,11 @@ class DaftTestObjectTest extends TestCase
                 true,
             ],
             [
-                WriteOnly::class,
-                UndefinedPropertyException::class,
-                (
-                    'Property not defined: ' .
-                    WriteOnly::class .
-                    '::$BarUndefined'
-                ),
-                [
-                    'BarUndefined' => 1,
-                ],
-                false,
-                true,
-            ],
-            [
                 ReadOnlyBad::class,
                 ClassMethodReturnIsNotArrayOfStringsException::class,
                 (
                     ReadOnlyBad::class .
                     '::DaftObjectIdProperties() does not return string[]'
-                ),
-                [
-                    'Foo' => 'Bar',
-                ],
-                true,
-                false,
-            ],
-            [
-                ReadOnlyBad::class,
-                AlreadyIncorrectlyImplementedTypeException::class,
-                (
-                    ReadOnlyBad::class .
-                    ' already determined to be incorrectly implemented'
                 ),
                 [
                     'Foo' => 'Bar',

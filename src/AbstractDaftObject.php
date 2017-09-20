@@ -43,18 +43,13 @@ abstract class AbstractDaftObject implements DaftObject
     *
     * @see DefinesOwnIdPropertiesInterface
     * @see self::CheckTypeDefinesOwnIdProperties()
-    *
-    * @throws AlreadyIncorrectlyImplementedTypeException if static::class was previously determined to be incorrectly implemented
     */
     public function __construct()
     {
         if (
-            ($this instanceof DefinesOwnIdPropertiesInterface) &&
-            false === self::CheckTypeDefinesOwnIdProperties($this)
+            ($this instanceof DefinesOwnIdPropertiesInterface)
         ) {
-            throw new AlreadyIncorrectlyImplementedTypeException(
-                get_class($this) // phpunit coverage does not pick up static::class here
-            );
+            self::CheckTypeDefinesOwnIdProperties($this);
         }
     }
 
@@ -130,7 +125,7 @@ abstract class AbstractDaftObject implements DaftObject
     final protected static function CheckTypeDefinesOwnIdProperties(
         DaftObject $object
     ) : bool {
-        static $checkedTypes = [];
+        $checkedTypes = [];
 
         if (false === isset($checkedTypes[get_class($object)])) {
             $checkedTypes[get_class($object)] = false;
@@ -195,25 +190,36 @@ abstract class AbstractDaftObject implements DaftObject
         static $scopes = [];
         $expectedMethod = ($getNotSet ? 'Get' : 'Set') . ucfirst($property);
 
-        if ($getNotSet) {
-            if (true !== method_exists($this, $expectedMethod)) {
-                throw new UndefinedPropertyException(static::class, $property);
-            } elseif (false === $this->CheckPublicScope($expectedMethod)) {
-                throw new NotPublicGetterPropertyException(
+        if (
+            false === (
+                'id' === $property &&
+                is_a(
+                    static::class,
+                    DefinesOwnIdPropertiesInterface::class,
+                    true
+                )
+            ) &&
+            false === in_array($property, static::DaftObjectProperties(), true)
+        ) {
+            throw new UndefinedPropertyException(static::class, $property);
+        } elseif (false === method_exists($this, $expectedMethod)) {
+            if ($getNotSet) {
+                throw new PropertyNotReadableException(
                     static::class,
                     $property
                 );
             }
-
-            return $this->$expectedMethod();
-        } elseif (
-            true !== method_exists($this, $expectedMethod)
-        ) {
-            throw new PropertyNotWriteableException(
+                throw new PropertyNotWriteableException(
+                    static::class,
+                    $property
+                );
+        } elseif (false === $this->CheckPublicScope($expectedMethod)) {
+            if ($getNotSet) {
+            throw new NotPublicGetterPropertyException(
                 static::class,
                 $property
             );
-        } elseif (false === $this->CheckPublicScope($expectedMethod)) {
+            }
             throw new NotPublicSetterPropertyException(
                 static::class,
                 $property
