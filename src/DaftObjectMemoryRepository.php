@@ -58,7 +58,7 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     ) : void {
         $hashId = $object::DaftObjectIdHash($object);
 
-            $this->data[$hashId] = [];
+        $this->data[$hashId] = [];
 
         foreach ($object::DaftObjectProperties() as $property) {
             $getter = 'Get' . ucfirst($property);
