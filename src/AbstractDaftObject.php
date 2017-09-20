@@ -168,8 +168,6 @@ abstract class AbstractDaftObject implements DaftObject
         bool $getNotSet,
         $v = null
     ) {
-        $expectedMethod = ($getNotSet ? 'Get' : 'Set') . ucfirst($property);
-
         if (
             false === (
                 'id' === $property &&
@@ -184,6 +182,7 @@ abstract class AbstractDaftObject implements DaftObject
             throw new UndefinedPropertyException(static::class, $property);
         }
 
+        $expectedMethod = ($getNotSet ? 'Get' : 'Set') . ucfirst($property);
         $notExists = PropertyNotWriteableException::class;
         $notPublic = NotPublicSetterPropertyException::class;
 
@@ -197,7 +196,11 @@ abstract class AbstractDaftObject implements DaftObject
                 static::class,
                 $property
             );
-        } elseif (false === $this->CheckPublicScope($expectedMethod)) {
+        } elseif (
+            false === (
+                new ReflectionMethod(static::class, $expectedMethod)
+            )->isPublic()
+        ) {
             throw new $notPublic(
                 static::class,
                 $property
@@ -205,17 +208,5 @@ abstract class AbstractDaftObject implements DaftObject
         }
 
         return $this->$expectedMethod($v);
-    }
-
-    private function CheckPublicScope(string $expectedMethod) : bool
-    {
-        static $scopes = [];
-        if (false === isset($scopes[$expectedMethod])) {
-            $scopes[$expectedMethod] = (
-                new ReflectionMethod(static::class, $expectedMethod)
-            )->isPublic();
-        }
-
-        return $scopes[$expectedMethod];
     }
 }
