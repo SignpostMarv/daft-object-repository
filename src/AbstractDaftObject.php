@@ -167,11 +167,13 @@ abstract class AbstractDaftObject implements DaftObject
             throw new UndefinedPropertyException(static::class, $property);
         }
 
-        $expectedMethod = ($getNotSet ? 'Get' : 'Set') . ucfirst($property);
+        $method = ucfirst($property);
+        $expectedMethod = 'Set' . $method;
         $notExists = PropertyNotWriteableException::class;
         $notPublic = NotPublicSetterPropertyException::class;
 
         if ($getNotSet) {
+            $expectedMethod = 'Get' . $method;
             $notExists = PropertyNotReadableException::class;
             $notPublic = NotPublicGetterPropertyException::class;
         }
