@@ -143,17 +143,6 @@ abstract class AbstractDaftObject implements DaftObject
                     get_class($object),
                     'DaftObjectIdProperties'
                 );
-            } elseif (
-                false === in_array(
-                    $property,
-                    $object::DaftObjectProperties(),
-                    true
-                )
-            ) {
-                throw new UndefinedPropertyException(
-                    get_class($object),
-                    $property
-                );
             }
         }
     }
@@ -169,13 +158,9 @@ abstract class AbstractDaftObject implements DaftObject
         $v = null
     ) {
         if (
-            false === (
-                'id' === $property &&
-                is_a(
-                    static::class,
-                    DefinesOwnIdPropertiesInterface::class,
-                    true
-                )
+            (
+                'id' !== $property ||
+                false === ($this instanceof DefinesOwnIdPropertiesInterface)
             ) &&
             false === in_array($property, static::DaftObjectProperties(), true)
         ) {
