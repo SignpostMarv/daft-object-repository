@@ -30,18 +30,30 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
         $this->type = $type;
     }
 
-    public function ForgetDaftObject(
-        DefinesOwnIdPropertiesInterface $object
+    /**
+    * @param DaftObject|string $object
+    */
+    private static function ThrowIfNotType(
+        $object,
+        string $type,
+        int $argument,
+        string $function
     ) : void {
-        if (false === is_a($object, $this->type, true)) {
+        if (false === is_a($object, $type, is_string($object))) {
             throw new DaftObjectRepositoryTypeByClassMethodAndTypeException(
                 1,
                 static::class,
-                __FUNCTION__,
-                $this->type,
-                get_class($object)
+                $function,
+                $type,
+                is_string($object) ? $object : get_class($object)
             );
         }
+    }
+
+    public function ForgetDaftObject(
+        DefinesOwnIdPropertiesInterface $object
+    ) : void {
+        static::ThrowIfNotType($object, $this->type, 1, __FUNCTION__);
 
         $id = [];
 
@@ -55,15 +67,7 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
     public function RemoveDaftObject(
         DefinesOwnIdPropertiesInterface $object
     ) : void {
-        if (false === is_a($object, $this->type, true)) {
-            throw new DaftObjectRepositoryTypeByClassMethodAndTypeException(
-                1,
-                static::class,
-                __FUNCTION__,
-                $this->type,
-                get_class($object)
-            );
-        }
+        static::ThrowIfNotType($object, $this->type, 1, __FUNCTION__);
 
         $id = [];
 
@@ -83,21 +87,7 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
                 DefinesOwnIdPropertiesInterface::class,
             ] as $checkFor
         ) {
-            if (
-                false === is_a(
-                    $type,
-                    $checkFor,
-                    true
-                )
-            ) {
-                throw new DaftObjectRepositoryTypeByClassMethodAndTypeException(
-                    1,
-                    static::class,
-                    __FUNCTION__,
-                    $checkFor,
-                    $type
-                );
-            }
+            static::ThrowIfNotType($type, $checkFor, 1, __FUNCTION__);
         }
 
         return new static($type);
