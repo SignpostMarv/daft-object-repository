@@ -82,7 +82,7 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
     /**
     * @param DaftObject|string $object
     */
-    private static function ThrowIfNotType(
+    protected static function ThrowIfNotType(
         $object,
         string $type,
         int $argument,

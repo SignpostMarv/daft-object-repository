@@ -23,15 +23,7 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     public function RememberDaftObject(
         DefinesOwnIdPropertiesInterface $object
     ) : void {
-        if (false === is_a($object, $this->type, true)) {
-            throw new DaftObjectRepositoryTypeByClassMethodAndTypeException(
-                1,
-                static::class,
-                __FUNCTION__,
-                $this->type,
-                get_class($object)
-            );
-        }
+        static::ThrowIfNotType($object, $this->type, 1, __FUNCTION__);
 
         $hashId = $object::DaftObjectIdHash($object);
 
