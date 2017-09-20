@@ -30,26 +30,6 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
         $this->type = $type;
     }
 
-    /**
-    * @param DaftObject|string $object
-    */
-    private static function ThrowIfNotType(
-        $object,
-        string $type,
-        int $argument,
-        string $function
-    ) : void {
-        if (false === is_a($object, $type, is_string($object))) {
-            throw new DaftObjectRepositoryTypeByClassMethodAndTypeException(
-                1,
-                static::class,
-                $function,
-                $type,
-                is_string($object) ? $object : get_class($object)
-            );
-        }
-    }
-
     public function ForgetDaftObject(
         DefinesOwnIdPropertiesInterface $object
     ) : void {
@@ -97,5 +77,25 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
         DefinesOwnIdPropertiesInterface $object
     ) : DaftObjectRepository {
         return static::DaftObjectRepositoryByType(get_class($object));
+    }
+
+    /**
+    * @param DaftObject|string $object
+    */
+    private static function ThrowIfNotType(
+        $object,
+        string $type,
+        int $argument,
+        string $function
+    ) : void {
+        if (false === is_a($object, $type, is_string($object))) {
+            throw new DaftObjectRepositoryTypeByClassMethodAndTypeException(
+                1,
+                static::class,
+                $function,
+                $type,
+                is_string($object) ? $object : get_class($object)
+            );
+        }
     }
 }
