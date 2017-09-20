@@ -127,9 +127,10 @@ abstract class AbstractDaftObject implements DaftObject
     final protected static function CheckTypeDefinesOwnIdProperties(
         DaftObject $object
     ) : void {
+        $class = get_class($object);
         if (false === ($object instanceof DefinesOwnIdPropertiesInterface)) {
             throw new ClassDoesNotImplementClassException(
-                get_class($object),
+                $class,
                 DefinesOwnIdPropertiesInterface::class
             );
         }
@@ -143,7 +144,7 @@ abstract class AbstractDaftObject implements DaftObject
 
         if (count($properties) < 1) {
             throw new ClassMethodReturnHasZeroArrayCountException(
-                get_class($object),
+                $class,
                 'DaftObjectIdProperties'
             );
         }
@@ -151,7 +152,7 @@ abstract class AbstractDaftObject implements DaftObject
         foreach ($properties as $property) {
             if (false === is_string($property)) {
                 throw new ClassMethodReturnIsNotArrayOfStringsException(
-                    get_class($object),
+                    $class,
                     'DaftObjectIdProperties'
                 );
             }
