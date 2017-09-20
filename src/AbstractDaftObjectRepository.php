@@ -84,19 +84,19 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
             ] as $checkFor
         ) {
             if (
-            false === is_a(
-                $type,
-                $checkFor,
-                true
-            )
+                false === is_a(
+                    $type,
+                    $checkFor,
+                    true
+                )
             ) {
-            throw new DaftObjectRepositoryTypeByClassMethodAndTypeException(
-                1,
-                static::class,
-                __FUNCTION__,
-                $checkFor,
-                $type
-            );
+                throw new DaftObjectRepositoryTypeByClassMethodAndTypeException(
+                    1,
+                    static::class,
+                    __FUNCTION__,
+                    $checkFor,
+                    $type
+                );
             }
         }
 
