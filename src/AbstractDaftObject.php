@@ -183,25 +183,23 @@ abstract class AbstractDaftObject implements DaftObject
             false === in_array($property, static::DaftObjectProperties(), true)
         ) {
             throw new UndefinedPropertyException(static::class, $property);
-        } elseif (false === method_exists($this, $expectedMethod)) {
-            if ($getNotSet) {
-                throw new PropertyNotReadableException(
-                    static::class,
-                    $property
-                );
-            }
-            throw new PropertyNotWriteableException(
+        }
+
+        $notExists = PropertyNotWriteableException::class;
+        $notPublic = NotPublicSetterPropertyException::class;
+
+        if ($getNotSet) {
+            $notExists = PropertyNotReadableException::class;
+            $notPublic = NotPublicGetterPropertyException::class;
+        }
+
+        if (false === method_exists($this, $expectedMethod)) {
+            throw new $notExists(
                 static::class,
                 $property
             );
         } elseif (false === $this->CheckPublicScope($expectedMethod)) {
-            if ($getNotSet) {
-                throw new NotPublicGetterPropertyException(
-                    static::class,
-                    $property
-                );
-            }
-            throw new NotPublicSetterPropertyException(
+            throw new $notPublic(
                 static::class,
                 $property
             );
