@@ -13,19 +13,9 @@ trait WriteTrait
         $this->NudgePropertyValue('Foo', $value);
     }
 
-    public function SetFooNotNullable(? string $value) : void
-    {
-        $this->NudgePropertyValue('Foo', $value);
-    }
-
     public function SetBar(float $value) : void
     {
         $this->NudgePropertyValue('Bar', $value);
-    }
-
-    public function SetBarUndefined(float $value) : void
-    {
-        $this->NudgePropertyValue('BarUndefined', $value);
     }
 
     public function SetBaz(int $value) : void

@@ -10,7 +10,6 @@ abstract class AbstractTestObject extends AbstractArrayBackedDaftObject
 {
     const PROPERTIES = [
         'Foo',
-        'FooNotNullable',
         'Bar',
         'Baz',
         'Bat',

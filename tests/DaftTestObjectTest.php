@@ -244,20 +244,6 @@ class DaftTestObjectTest extends TestCase
                 true,
             ],
             [
-                WriteOnly::class,
-                PropertyNotNullableException::class,
-                (
-                    'Property not nullable: ' .
-                    WriteOnly::class .
-                    '::$Foo'
-                ),
-                [
-                    'FooNotNullable' => null,
-                ],
-                false,
-                true,
-            ],
-            [
                 ReadOnlyBad::class,
                 ClassMethodReturnIsNotArrayOfStringsException::class,
                 (
@@ -445,28 +431,37 @@ class DaftTestObjectTest extends TestCase
         }
 
         $regex =
-            '/class ' .
-            preg_quote(get_class($obj) . '#', '/') .
+            '/(?:class |object\()' .
+            preg_quote(get_class($obj), '/') .
+            '[\)]{0,1}#' .
             '\d+ \(' .
             preg_quote((string) count($props), '/') .
             '\) \{.+';
 
         foreach ($props as $prop => $val) {
             $regex .=
-                ' public ' .
-                preg_quote('$' . $prop . ' =', '/') .
+                ' (?:public ' .
+                preg_quote('$' . $prop, '/') .
+                '|' .
+                preg_quote('["' . $prop . '"]', '/') .
+                ')[ ]{0,1}' .
+                preg_quote('=', '/') .
                 '>.+' .
+                (
+                    is_int($val)
+                        ? 'int'
+                        : (
+                            is_bool($val)
+                                ? 'bool'
+                                : (
+                                    is_float($val)
+                                        ? '(?:float|double)'
+                                        : preg_quote(gettype($val), '/')
+                                )
+                        )
+                ) .
                 preg_quote(
                     (
-                        (
-                            is_int($val)
-                                ? 'int'
-                                : (
-                                    is_bool($val)
-                                        ? 'bool'
-                                        : gettype($val)
-                                )
-                        ) .
                         '(' .
                         (
                             is_string($val)
