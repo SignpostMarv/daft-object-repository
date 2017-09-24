@@ -1596,12 +1596,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "74c3cf832859aee18252464568d7f5e7322739c9"
+                "reference": "3586c4fb8d318932edd20af8fdce05b57359764f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/74c3cf832859aee18252464568d7f5e7322739c9",
-                "reference": "74c3cf832859aee18252464568d7f5e7322739c9",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/3586c4fb8d318932edd20af8fdce05b57359764f",
+                "reference": "3586c4fb8d318932edd20af8fdce05b57359764f",
                 "shasum": ""
             },
             "require": {
@@ -1645,7 +1645,7 @@
                 "MIT"
             ],
             "description": "PHPStan - PHP Static Analysis Tool",
-            "time": "2017-09-14T21:25:45+00:00"
+            "time": "2017-09-24T08:28:56+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -1898,16 +1898,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "5.7.21",
+            "version": "5.7.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "3b91adfb64264ddec5a2dee9851f354aa66327db"
+                "reference": "10df877596c9906d4110b5b905313829043f2ada"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/3b91adfb64264ddec5a2dee9851f354aa66327db",
-                "reference": "3b91adfb64264ddec5a2dee9851f354aa66327db",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/10df877596c9906d4110b5b905313829043f2ada",
+                "reference": "10df877596c9906d4110b5b905313829043f2ada",
                 "shasum": ""
             },
             "require": {
@@ -1976,7 +1976,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-06-21T08:11:54+00:00"
+            "time": "2017-09-24T07:23:38+00:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -3450,12 +3450,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/vimeo/psalm.git",
-                "reference": "6f911c7386dff066f0607f21e104fa68c6f5ac83"
+                "reference": "5bd62287088bc427299e4d8738851b3265b82ae0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vimeo/psalm/zipball/6f911c7386dff066f0607f21e104fa68c6f5ac83",
-                "reference": "6f911c7386dff066f0607f21e104fa68c6f5ac83",
+                "url": "https://api.github.com/repos/vimeo/psalm/zipball/5bd62287088bc427299e4d8738851b3265b82ae0",
+                "reference": "5bd62287088bc427299e4d8738851b3265b82ae0",
                 "shasum": ""
             },
             "require": {
@@ -3493,7 +3493,7 @@
                 "inspection",
                 "php"
             ],
-            "time": "2017-09-20T15:22:17+00:00"
+            "time": "2017-09-24T12:17:27+00:00"
         },
         {
             "name": "webmozart/assert",
