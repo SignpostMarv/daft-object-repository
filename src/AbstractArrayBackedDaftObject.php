@@ -134,72 +134,6 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     }
 
     /**
-    * Retrieve a property from data.
-    *
-    * @param string $property the property being retrieved
-    *
-    * @throws PropertyNotNullableException if value is not set and $property is not listed as nullabe
-    *
-    * @return mixed the property value
-    */
-    protected function RetrievePropertyValueFromData(string $property)
-    {
-        if (
-            false === array_key_exists($property, $this->data) &&
-            false === in_array($property, static::NULLABLE_PROPERTIES, true)
-        ) {
-            throw new PropertyNotNullableException(static::class, $property);
-        } elseif (
-            in_array($property, static::NULLABLE_PROPERTIES, true)
-        ) {
-            return $this->data[$property] ?? null;
-        }
-
-        return $this->data[$property];
-    }
-
-    /**
-    * {@inheritdoc}
-    */
-    protected function NudgePropertyValue(string $property, $value) : void
-    {
-        if (true !== in_array($property, static::PROPERTIES, true)) {
-            throw new UndefinedPropertyException(static::class, $property);
-        } elseif (
-            true === is_null($value) &&
-            true !== in_array($property, static::NULLABLE_PROPERTIES, true)
-        ) {
-            throw new PropertyNotNullableException(static::class, $property);
-        } elseif (
-            $this instanceof DaftObjectWorm &&
-            (
-                $this->HasPropertyChanged($property) ||
-                (
-                    isset($this->wormProperties[$property]) &&
-                    true === $this->wormProperties[$property]
-                )
-            )
-        ) {
-            throw new PropertyNotRewriteableException(
-                static::class,
-                $property
-            );
-        }
-
-        $isChanged = (
-            false === array_key_exists($property, $this->data) ||
-            $this->data[$property] !== $value
-        );
-
-        $this->data[$property] = $value;
-
-        if ($isChanged && true !== isset($this->changedProperties[$property])) {
-            $this->changedProperties[$property] = true;
-            $this->wormProperties[$property] = true;
-        }
-    }
-
-    /**
     * {@inheritdoc}
     */
     final public static function DaftObjectFromJsonArray(
@@ -316,7 +250,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
 
         $out = new static($in, $writeAll);
 
-        if (!($out instanceof DaftJson)) { // here to trick phpstan
+        if ( ! ($out instanceof DaftJson)) { // here to trick phpstan
             exit;
         }
 
@@ -334,5 +268,71 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         }
 
         return static::DaftObjectFromJsonArray(json_decode($string, true));
+    }
+
+    /**
+    * Retrieve a property from data.
+    *
+    * @param string $property the property being retrieved
+    *
+    * @throws PropertyNotNullableException if value is not set and $property is not listed as nullabe
+    *
+    * @return mixed the property value
+    */
+    protected function RetrievePropertyValueFromData(string $property)
+    {
+        if (
+            false === array_key_exists($property, $this->data) &&
+            false === in_array($property, static::NULLABLE_PROPERTIES, true)
+        ) {
+            throw new PropertyNotNullableException(static::class, $property);
+        } elseif (
+            in_array($property, static::NULLABLE_PROPERTIES, true)
+        ) {
+            return $this->data[$property] ?? null;
+        }
+
+        return $this->data[$property];
+    }
+
+    /**
+    * {@inheritdoc}
+    */
+    protected function NudgePropertyValue(string $property, $value) : void
+    {
+        if (true !== in_array($property, static::PROPERTIES, true)) {
+            throw new UndefinedPropertyException(static::class, $property);
+        } elseif (
+            true === is_null($value) &&
+            true !== in_array($property, static::NULLABLE_PROPERTIES, true)
+        ) {
+            throw new PropertyNotNullableException(static::class, $property);
+        } elseif (
+            $this instanceof DaftObjectWorm &&
+            (
+                $this->HasPropertyChanged($property) ||
+                (
+                    isset($this->wormProperties[$property]) &&
+                    true === $this->wormProperties[$property]
+                )
+            )
+        ) {
+            throw new PropertyNotRewriteableException(
+                static::class,
+                $property
+            );
+        }
+
+        $isChanged = (
+            false === array_key_exists($property, $this->data) ||
+            $this->data[$property] !== $value
+        );
+
+        $this->data[$property] = $value;
+
+        if ($isChanged && true !== isset($this->changedProperties[$property])) {
+            $this->changedProperties[$property] = true;
+            $this->wormProperties[$property] = true;
+        }
     }
 }

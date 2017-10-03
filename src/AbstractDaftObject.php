@@ -38,7 +38,7 @@ abstract class AbstractDaftObject implements DaftObject
     const EXPORTABLE_PROPERTIES = [];
 
     /**
-    * import/export definition for DaftJson
+    * import/export definition for DaftJson.
     */
     const JSON_PROPERTIES = [];
 
@@ -154,6 +154,7 @@ abstract class AbstractDaftObject implements DaftObject
                 DaftJson::class
             );
         }
+
         return static::JSON_PROPERTIES;
     }
 

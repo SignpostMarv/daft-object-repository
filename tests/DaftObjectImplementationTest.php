@@ -944,123 +944,6 @@ class DaftObjectImplementationTest extends TestCase
         }
     }
 
-    protected static function RegexForObject(DaftObject\DaftObject $obj) : string
-    {
-        $props = [];
-
-        foreach ($obj::DaftObjectExportableProperties() as $prop) {
-            $expectedMethod = 'Get' . ucfirst($prop);
-            if (
-                $obj->__isset($prop) &&
-                method_exists($obj, $expectedMethod) &&
-                (
-                    new ReflectionMethod($obj, $expectedMethod)
-                )->isPublic()
-            ) {
-                $props[$prop] = $obj->$expectedMethod();
-            }
-        }
-
-        return static::RegexForArray(get_class($obj), $props);
-    }
-
-    protected static function RegexForArray(string $className, array $props) : string
-    {
-        $regex =
-            '(?:class |object\()' .
-            preg_quote($className, '/') .
-            '[\)]{0,1}#' .
-            '\d+ \(' .
-            preg_quote((string) count($props), '/') .
-            '\) \{.+';
-
-        foreach ($props as $prop => $val) {
-            $regex .=
-                ' (?:public ' .
-                preg_quote('$' . $prop, '/') .
-                '|' .
-                preg_quote('["' . $prop . '"]', '/') .
-                ')[ ]{0,1}' .
-                preg_quote('=', '/') .
-                '>.+' .
-                static::RegexForVal($val) .
-                '.+';
-        }
-
-        $regex .= '.+';
-
-        return $regex;
-    }
-
-    /**
-    * @param mixed $val
-    */
-    protected static function RegexForVal($val) : string
-    {
-        if (is_array($val)) {
-            $out = '(?:';
-
-            foreach ($val as $v) {
-                $out .= static::RegexForVal($v);
-            }
-
-            $out .= ')';
-
-            return $out;
-        }
-
-        return
-                (
-                    is_int($val)
-                        ? 'int'
-                        : (
-                            is_bool($val)
-                                ? 'bool'
-                                : (
-                                    is_float($val)
-                                        ? '(?:float|double)'
-                                        : (
-                                            is_object($val)
-                                                ? ''
-                                        : preg_quote(gettype($val), '/')
-                                        )
-                                )
-                        )
-                ) .
-                (
-                    ($val instanceof DaftObject\DaftObject)
-                        ? (
-                            '(?:' .
-                                static::RegexForObject(
-                                    $val
-                                ) .
-                            ')'
-                        )
-                    :
-                preg_quote(
-                    (
-                        '(' .
-                        (
-                            is_string($val)
-                                ? mb_strlen($val, '8bit')
-                                : (
-                                    is_numeric($val)
-                                        ? (string) $val
-                                        : var_export($val, true)
-                                )
-                        ) .
-                        ')' .
-                        (
-                            is_string($val)
-                                ? (' "' . $val . '"')
-                                : ''
-                        )
-                    ),
-                    '/'
-                )
-            );
-    }
-
     /**
     * @dataProvider dataProviderNonAbstractGoodFuzzingHasSetters
     *
@@ -1183,7 +1066,7 @@ class DaftObjectImplementationTest extends TestCase
         array $getters,
         array $setters
     ) : void {
-        if(
+        if (
             false === is_a($className, DaftObject\DaftJson::class, true) &&
             is_a(
                 $className,
@@ -1230,7 +1113,7 @@ class DaftObjectImplementationTest extends TestCase
         array $getters,
         array $setters
     ) : void {
-        if(
+        if (
             false === is_a($className, DaftObject\DaftJson::class, true) &&
             is_a(
                 $className,
@@ -1354,7 +1237,7 @@ class DaftObjectImplementationTest extends TestCase
                     sprintf(
                         (
                             'Properties listed in' .
-                            ' '.
+                            ' ' .
                             '%s::DaftObjectJsonProperties() must also be' .
                             ' ' .
                             'listed in %s::DaftObjectExportableProperties()'
@@ -1486,6 +1369,123 @@ class DaftObjectImplementationTest extends TestCase
 
             $method->invoke(new $className(), $property, null);
         }
+    }
+
+    protected static function RegexForObject(DaftObject\DaftObject $obj) : string
+    {
+        $props = [];
+
+        foreach ($obj::DaftObjectExportableProperties() as $prop) {
+            $expectedMethod = 'Get' . ucfirst($prop);
+            if (
+                $obj->__isset($prop) &&
+                method_exists($obj, $expectedMethod) &&
+                (
+                    new ReflectionMethod($obj, $expectedMethod)
+                )->isPublic()
+            ) {
+                $props[$prop] = $obj->$expectedMethod();
+            }
+        }
+
+        return static::RegexForArray(get_class($obj), $props);
+    }
+
+    protected static function RegexForArray(string $className, array $props) : string
+    {
+        $regex =
+            '(?:class |object\()' .
+            preg_quote($className, '/') .
+            '[\)]{0,1}#' .
+            '\d+ \(' .
+            preg_quote((string) count($props), '/') .
+            '\) \{.+';
+
+        foreach ($props as $prop => $val) {
+            $regex .=
+                ' (?:public ' .
+                preg_quote('$' . $prop, '/') .
+                '|' .
+                preg_quote('["' . $prop . '"]', '/') .
+                ')[ ]{0,1}' .
+                preg_quote('=', '/') .
+                '>.+' .
+                static::RegexForVal($val) .
+                '.+';
+        }
+
+        $regex .= '.+';
+
+        return $regex;
+    }
+
+    /**
+    * @param mixed $val
+    */
+    protected static function RegexForVal($val) : string
+    {
+        if (is_array($val)) {
+            $out = '(?:';
+
+            foreach ($val as $v) {
+                $out .= static::RegexForVal($v);
+            }
+
+            $out .= ')';
+
+            return $out;
+        }
+
+        return
+                (
+                    is_int($val)
+                        ? 'int'
+                        : (
+                            is_bool($val)
+                                ? 'bool'
+                                : (
+                                    is_float($val)
+                                        ? '(?:float|double)'
+                                        : (
+                                            is_object($val)
+                                                ? ''
+                                        : preg_quote(gettype($val), '/')
+                                        )
+                                )
+                        )
+                ) .
+                (
+                    ($val instanceof DaftObject\DaftObject)
+                        ? (
+                            '(?:' .
+                                static::RegexForObject(
+                                    $val
+                                ) .
+                            ')'
+                        )
+                    :
+                preg_quote(
+                    (
+                        '(' .
+                        (
+                            is_string($val)
+                                ? mb_strlen($val, '8bit')
+                                : (
+                                    is_numeric($val)
+                                        ? (string) $val
+                                        : var_export($val, true)
+                                )
+                        ) .
+                        ')' .
+                        (
+                            is_string($val)
+                                ? (' "' . $val . '"')
+                                : ''
+                        )
+                    ),
+                    '/'
+                )
+            );
     }
 
     /**
