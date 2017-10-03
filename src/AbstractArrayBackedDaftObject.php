@@ -8,8 +8,6 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject;
 
-use BadMethodCallException;
-
 /**
 * Array-backed daft objects.
 */
@@ -103,10 +101,8 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     public function jsonSerialize() : array
     {
         if (false === ($this instanceof DaftJson)) {
-            throw new BadMethodCallException(
-                static::class .
-                ' does not implement ' .
-                DaftJson::class
+            throw new DaftObjectNotDaftJsonBadMethodCallException(
+                static::class
             );
         }
 
@@ -141,10 +137,8 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         bool $writeAll = false
     ) : DaftJson {
         if (false === is_a(static::class, DaftJson::class, true)) {
-            throw new BadMethodCallException(
-                static::class .
-                ' does not implement ' .
-                DaftJson::class
+            throw new DaftObjectNotDaftJsonBadMethodCallException(
+                static::class
             );
         }
 
@@ -260,10 +254,8 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     public static function DaftObjectFromJsonString(string $string) : DaftJson
     {
         if (false === is_a(static::class, DaftJson::class, true)) {
-            throw new BadMethodCallException(
-                static::class .
-                ' does not implement ' .
-                DaftJson::class
+            throw new DaftObjectNotDaftJsonBadMethodCallException(
+                static::class
             );
         }
 

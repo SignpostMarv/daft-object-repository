@@ -6,7 +6,6 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject\Tests;
 
-use BadMethodCallException;
 use Generator;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -967,7 +966,7 @@ class DaftObjectImplementationTest extends TestCase
             false === ($obj instanceof DaftObject\DaftJson)
         ) {
             if (method_exists($obj, 'jsonSerialize')) {
-                $this->expectException(BadMethodCallException::class);
+                $this->expectException(DaftObject\DaftObjectNotDaftJsonBadMethodCallException::class);
                 $this->expectExceptionMessage(
                     sprintf(
                         '%s does not implement %s',
@@ -1074,7 +1073,7 @@ class DaftObjectImplementationTest extends TestCase
                 true
             )
         ) {
-            $this->expectException(BadMethodCallException::class);
+            $this->expectException(DaftObject\DaftObjectNotDaftJsonBadMethodCallException::class);
             $this->expectExceptionMessage(
                 sprintf(
                     '%s does not implement %s',
@@ -1121,7 +1120,7 @@ class DaftObjectImplementationTest extends TestCase
                 true
             )
         ) {
-            $this->expectException(BadMethodCallException::class);
+            $this->expectException(DaftObject\DaftObjectNotDaftJsonBadMethodCallException::class);
             $this->expectExceptionMessage(
                 sprintf(
                     '%s does not implement %s',
@@ -1254,7 +1253,7 @@ class DaftObjectImplementationTest extends TestCase
                 true
             )
         ) {
-            $this->expectException(BadMethodCallException::class);
+            $this->expectException(DaftObject\DaftObjectNotDaftJsonBadMethodCallException::class);
             $this->expectExceptionMessage(
                 sprintf(
                     '%s does not implement %s',

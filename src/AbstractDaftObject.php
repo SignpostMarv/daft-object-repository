@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject;
 
-use BadMethodCallException;
 use ReflectionMethod;
 
 /**
@@ -148,10 +147,8 @@ abstract class AbstractDaftObject implements DaftObject
     final public static function DaftObjectJsonProperties() : array
     {
         if (false === is_a(static::class, DaftJson::class, true)) {
-            throw new BadMethodCallException(
-                static::class .
-                ' does not implement ' .
-                DaftJson::class
+            throw new DaftObjectNotDaftJsonBadMethodCallException(
+                static::class
             );
         }
 
