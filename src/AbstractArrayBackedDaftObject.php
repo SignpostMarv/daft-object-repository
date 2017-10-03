@@ -186,14 +186,42 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
             } elseif (is_null($array[$prop])) {
                 continue;
             } elseif (isset($jsonDef[$prop])) {
-                $jsonType = $jsonDef[$prop];
+                $in[$prop] = static::DaftObjectFromJsonType(
+                    $prop,
+                    $jsonDef[$prop],
+                    $array[$prop],
+                    $writeAll
+                );
+            } else {
+                $in[$prop] = $array[$prop];
+            }
+        }
+
+        $out = new static($in, $writeAll);
+
+        if ( ! ($out instanceof DaftJson)) { // here to trick phpstan
+            exit;
+        }
+
+        return $out;
+    }
+
+    /**
+    * @param mixed $propVal
+    */
+    protected static function DaftObjectFromJsonType(
+        string $prop,
+        string $jsonType,
+        $propVal,
+        bool $writeAll
+    ) {
                 $isArray = false;
                 if ('[]' === mb_substr($jsonType, -2)) {
                     $isArray = true;
                     $jsonType = mb_substr($jsonType, 0, -2);
                 }
 
-                if ($isArray && false === is_array($array[$prop])) {
+                if ($isArray && false === is_array($propVal)) {
                     throw new PropertyNotJsonDecodableShouldBeArrayException(
                         static::class,
                         $prop
@@ -211,11 +239,11 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
                 $jsonType = $jsonType;
 
                 if ($isArray) {
-                    $in[$prop] = [];
+                    $out = [];
 
-                    foreach ($array[$prop] as $i => $val) {
+                    foreach ($propVal as $i => $val) {
                         if (is_array($val)) {
-                            $in[$prop][] = $jsonType::DaftObjectFromJsonArray(
+                            $out[] = $jsonType::DaftObjectFromJsonArray(
                                 $val,
                                 $writeAll
                             );
@@ -226,9 +254,11 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
                             );
                         }
                     }
-                } elseif (is_array($array[$prop])) {
-                    $in[$prop] = $jsonType::DaftObjectFromJsonArray(
-                        $array[$prop],
+
+                    return $out;
+                } elseif (is_array($propVal)) {
+                    return $jsonType::DaftObjectFromJsonArray(
+                        $propVal,
                         $writeAll
                     );
                 } else {
@@ -237,18 +267,6 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
                         $prop
                     );
                 }
-            } else {
-                $in[$prop] = $array[$prop];
-            }
-        }
-
-        $out = new static($in, $writeAll);
-
-        if ( ! ($out instanceof DaftJson)) { // here to trick phpstan
-            exit;
-        }
-
-        return $out;
     }
 
     public static function DaftObjectFromJsonString(string $string) : DaftJson
