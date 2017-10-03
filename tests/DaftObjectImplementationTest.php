@@ -6,6 +6,7 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject\Tests;
 
+use BadMethodCallException;
 use Generator;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -884,80 +885,11 @@ class DaftObjectImplementationTest extends TestCase
 
         $debugInfo = ob_get_clean();
 
-        $props = [];
-
-        foreach ($obj::DaftObjectExportableProperties() as $prop) {
-            $expectedMethod = 'Get' . ucfirst($prop);
-            if (
-                $obj->__isset($prop) &&
-                method_exists($obj, $expectedMethod) &&
-                (
-                    new ReflectionMethod($obj, $expectedMethod)
-                )->isPublic()
-            ) {
-                $props[$prop] = $obj->$expectedMethod();
-            }
-        }
-
-        $regex =
-            '/(?:class |object\()' .
-            preg_quote(get_class($obj), '/') .
-            '[\)]{0,1}#' .
-            '\d+ \(' .
-            preg_quote((string) count($props), '/') .
-            '\) \{.+';
-
-        foreach ($props as $prop => $val) {
-            $regex .=
-                ' (?:public ' .
-                preg_quote('$' . $prop, '/') .
-                '|' .
-                preg_quote('["' . $prop . '"]', '/') .
-                ')[ ]{0,1}' .
-                preg_quote('=', '/') .
-                '>.+' .
-                (
-                    is_int($val)
-                        ? 'int'
-                        : (
-                            is_bool($val)
-                                ? 'bool'
-                                : (
-                                    is_float($val)
-                                        ? '(?:float|double)'
-                                        : preg_quote(gettype($val), '/')
-                                )
-                        )
-                ) .
-                preg_quote(
-                    (
-                        '(' .
-                        (
-                            is_string($val)
-                                ? mb_strlen($val, '8bit')
-                                : (
-                                    is_numeric($val)
-                                        ? (string) $val
-                                        : var_export($val, true)
-                                )
-                        ) .
-                        ')' .
-                        (
-                            is_string($val)
-                                ? (' "' . $val . '"')
-                                : ''
-                        )
-                    ),
-                    '/'
-                ) .
-                '.+';
-        }
-
-        $regex .= '\}.+$/s';
+        $regex = '/' . static::RegexForObject($obj) . '$/s';
 
         $this->assertRegExp(
             $regex,
-            str_replace("\n", ' ', (string) $debugInfo)
+            str_replace(["\n"], ' ', (string) $debugInfo)
         );
 
         foreach ($setters as $property) {
@@ -1009,6 +941,451 @@ class DaftObjectImplementationTest extends TestCase
                     )
                 );
             }
+        }
+    }
+
+    protected static function RegexForObject(DaftObject\DaftObject $obj) : string
+    {
+        $props = [];
+
+        foreach ($obj::DaftObjectExportableProperties() as $prop) {
+            $expectedMethod = 'Get' . ucfirst($prop);
+            if (
+                $obj->__isset($prop) &&
+                method_exists($obj, $expectedMethod) &&
+                (
+                    new ReflectionMethod($obj, $expectedMethod)
+                )->isPublic()
+            ) {
+                $props[$prop] = $obj->$expectedMethod();
+            }
+        }
+
+        return static::RegexForArray(get_class($obj), $props);
+    }
+
+    protected static function RegexForArray(string $className, array $props) : string
+    {
+        $regex =
+            '(?:class |object\()' .
+            preg_quote($className, '/') .
+            '[\)]{0,1}#' .
+            '\d+ \(' .
+            preg_quote((string) count($props), '/') .
+            '\) \{.+';
+
+        foreach ($props as $prop => $val) {
+            $regex .=
+                ' (?:public ' .
+                preg_quote('$' . $prop, '/') .
+                '|' .
+                preg_quote('["' . $prop . '"]', '/') .
+                ')[ ]{0,1}' .
+                preg_quote('=', '/') .
+                '>.+' .
+                static::RegexForVal($val) .
+                '.+';
+        }
+
+        $regex .= '.+';
+
+        return $regex;
+    }
+
+    /**
+    * @param mixed $val
+    */
+    protected static function RegexForVal($val) : string
+    {
+        if (is_array($val)) {
+            $out = '(?:';
+
+            foreach ($val as $v) {
+                $out .= static::RegexForVal($v);
+            }
+
+            $out .= ')';
+
+            return $out;
+        }
+
+        return
+                (
+                    is_int($val)
+                        ? 'int'
+                        : (
+                            is_bool($val)
+                                ? 'bool'
+                                : (
+                                    is_float($val)
+                                        ? '(?:float|double)'
+                                        : (
+                                            is_object($val)
+                                                ? ''
+                                        : preg_quote(gettype($val), '/')
+                                        )
+                                )
+                        )
+                ) .
+                (
+                    ($val instanceof DaftObject\DaftObject)
+                        ? (
+                            '(?:' .
+                                static::RegexForObject(
+                                    $val
+                                ) .
+                            ')'
+                        )
+                    :
+                preg_quote(
+                    (
+                        '(' .
+                        (
+                            is_string($val)
+                                ? mb_strlen($val, '8bit')
+                                : (
+                                    is_numeric($val)
+                                        ? (string) $val
+                                        : var_export($val, true)
+                                )
+                        ) .
+                        ')' .
+                        (
+                            is_string($val)
+                                ? (' "' . $val . '"')
+                                : ''
+                        )
+                    ),
+                    '/'
+                )
+            );
+    }
+
+    /**
+    * @dataProvider dataProviderNonAbstractGoodFuzzingHasSetters
+    *
+    * @depends testHasDefinedImplementationCorrectly
+    */
+    final public function testProviderNonAbstractGoodFuzzingSetFromBlankThenJsonSerialiseMaybeFailure(
+        string $className,
+        ReflectionClass $reflector,
+        array $args,
+        array $getters,
+        array $setters
+    ) : void {
+        /**
+        * @var DaftObject\DaftObject $className
+        */
+        $className = $className;
+
+        $obj = new $className($args);
+
+        if (
+            false === ($obj instanceof DaftObject\DaftJson)
+        ) {
+            if (method_exists($obj, 'jsonSerialize')) {
+                $this->expectException(BadMethodCallException::class);
+                $this->expectExceptionMessage(
+                    sprintf(
+                        '%s does not implement %s',
+                        (string) $className,
+                        DaftObject\DaftJson::class
+                    )
+                );
+            } else {
+                $this->markTestSkipped(
+                    sprintf(
+                        '%s does not implement %s or %s::jsonSerialize()',
+                        (string) $className,
+                        DaftObject\DaftJson::class,
+                        (string) $className
+                    )
+                );
+
+                return;
+            }
+        }
+
+        $obj->jsonSerialize();
+
+        $json = json_encode($obj);
+
+        if (
+            false === ($obj instanceof DaftObject\DaftJson)
+        ) {
+            return;
+        }
+
+        $this->assertInternalType(
+            'string',
+            $json,
+            (
+                'Instances of ' .
+                (string) $className .
+                ' should resolve to a string when passed to json_encode()'
+            )
+        );
+
+        /**
+        * @var DaftObject\DaftJson $className
+        */
+        $className = $className;
+
+        $decoded = json_decode((string) $json, true);
+
+        $this->assertInternalType(
+            'array',
+            $decoded,
+            (
+                'JSON-encoded implementations of ' .
+                DaftObject\DaftJson::class .
+                ' (' .
+                (string) $className .
+                ')' .
+                ' must decode to an array!'
+            )
+        );
+
+        $objFromJson = $className::DaftObjectFromJsonArray($decoded);
+
+        $this->assertSame(
+            $json,
+            json_encode($objFromJson),
+            (
+                'JSON-encoded implementations of ' .
+                DaftObject\DaftJson::class .
+                ' must encode($obj) the same as encode(decode($str))'
+            )
+        );
+
+        $objFromJson = $className::DaftObjectFromJsonString($json);
+
+        $this->assertSame(
+            $json,
+            json_encode($objFromJson),
+            (
+                'JSON-encoded implementations of ' .
+                DaftObject\DaftJson::class .
+                ' must encode($obj) the same as encode(decode($str))'
+            )
+        );
+    }
+
+    /**
+    * @dataProvider dataProviderNonAbstractGoodFuzzingHasSetters
+    *
+    * @depends testHasDefinedImplementationCorrectly
+    */
+    final public function testProviderNonAbstractGoodFuzzingJsonFromArrayFailure(
+        string $className,
+        ReflectionClass $reflector,
+        array $args,
+        array $getters,
+        array $setters
+    ) : void {
+        if(
+            false === is_a($className, DaftObject\DaftJson::class, true) &&
+            is_a(
+                $className,
+                DaftObject\AbstractArrayBackedDaftObject::class,
+                true
+            )
+        ) {
+            $this->expectException(BadMethodCallException::class);
+            $this->expectExceptionMessage(
+                sprintf(
+                    '%s does not implement %s',
+                    $className,
+                    DaftObject\DaftJson::class
+                )
+            );
+
+            /**
+            * @var DaftObject\DaftJson $className
+            */
+            $className = $className;
+
+            $className::DaftObjectFromJsonArray([]);
+        } else {
+            $this->markTestSkipped(
+                sprintf(
+                    '%s is not an implementation of %s or %s',
+                    $className,
+                    DaftObject\DaftJson::class,
+                    DaftObject\AbstractArrayBackedDaftObject::class
+                )
+            );
+        }
+    }
+
+    /**
+    * @dataProvider dataProviderNonAbstractGoodFuzzingHasSetters
+    *
+    * @depends testHasDefinedImplementationCorrectly
+    */
+    final public function testProviderNonAbstractGoodFuzzingJsonFromStringFailure(
+        string $className,
+        ReflectionClass $reflector,
+        array $args,
+        array $getters,
+        array $setters
+    ) : void {
+        if(
+            false === is_a($className, DaftObject\DaftJson::class, true) &&
+            is_a(
+                $className,
+                DaftObject\AbstractArrayBackedDaftObject::class,
+                true
+            )
+        ) {
+            $this->expectException(BadMethodCallException::class);
+            $this->expectExceptionMessage(
+                sprintf(
+                    '%s does not implement %s',
+                    $className,
+                    DaftObject\DaftJson::class
+                )
+            );
+
+            /**
+            * @var DaftObject\DaftJson $className
+            */
+            $className = $className;
+
+            $className::DaftObjectFromJsonString('{}');
+        } else {
+            $this->markTestSkipped(
+                sprintf(
+                    '%s is not an implementation of %s or %s',
+                    $className,
+                    DaftObject\DaftJson::class,
+                    DaftObject\AbstractArrayBackedDaftObject::class
+                )
+            );
+        }
+    }
+
+    /**
+    * @dataProvider dataProviderNonAbstractGoodFuzzingHasSetters
+    *
+    * @depends testHasDefinedAllExportablesCorrectly
+    * @depends testHasDefinedImplementationCorrectly
+    */
+    final public function testProviderNonAbstractGoodFuzzingSetFromBlankThenJsonSerialiseMaybePropertiesFailure(
+        string $className,
+        ReflectionClass $reflector,
+        array $args,
+        array $getters,
+        array $setters
+    ) : void {
+        /**
+        * @var DaftObject\DaftObject $className
+        */
+        $className = $className;
+
+        if (is_a($className, DaftObject\DaftJson::class, true)) {
+            /**
+            * @var DaftObject\DaftJson $className
+            */
+            $className = $className;
+
+            $exportables = $className::DaftObjectExportableProperties();
+
+            foreach ($className::DaftObjectJsonProperties() as $k => $v) {
+                $prop = $v;
+
+                if (is_string($k)) {
+                    $this->assertInternalType(
+                        'string',
+                        $v,
+                        sprintf(
+                            (
+                                '%s::DaftObjectJsonProperties()' .
+                                ' ' .
+                                'key-value pairs' .
+                                ' ' .
+                                'must be either array<int, string>' .
+                                ' or ' .
+                                'array<string, string>'
+                            ),
+                            (string) $className
+                        )
+                    );
+
+                    if ('[]' === mb_substr($v, -2)) {
+                        $v = mb_substr($v, 0, -2);
+                    }
+
+                    $this->assertTrue(
+                        class_exists($v),
+                        sprintf(
+                            (
+                                'When %s::DaftObjectJsonProperties()' .
+                                ' ' .
+                                'key-value pair is array<string, string>' .
+                                ' ' .
+                                'the value must refer to a class.'
+                            ),
+                            (string) $className
+                        )
+                    );
+
+                    $this->assertTrue(
+                        is_a($v, DaftObject\DaftJson::class, true),
+                        sprintf(
+                            (
+                                'When %s::DaftObjectJsonProperties()' .
+                                ' ' .
+                                'key-value pair is array<string, string>' .
+                                ' ' .
+                                'the value must be an implementation of %s'
+                            ),
+                            (string) $className,
+                            DaftObject\DaftJson::class
+                        )
+                    );
+
+                    $prop = $k;
+                }
+
+                $this->assertContains(
+                    $prop,
+                    $exportables,
+                    sprintf(
+                        (
+                            'Properties listed in' .
+                            ' '.
+                            '%s::DaftObjectJsonProperties() must also be' .
+                            ' ' .
+                            'listed in %s::DaftObjectExportableProperties()'
+                        ),
+                        (string) $className,
+                        (string) $className
+                    )
+                );
+            }
+        } elseif (
+            is_a(
+                $className,
+                DaftObject\AbstractArrayBackedDaftObject::class,
+                true
+            )
+        ) {
+            $this->expectException(BadMethodCallException::class);
+            $this->expectExceptionMessage(
+                sprintf(
+                    '%s does not implement %s',
+                    (string) $className,
+                    DaftObject\DaftJson::class
+                )
+            );
+
+            /**
+            * @var DaftObject\DaftJson $className
+            */
+            $className = $className;
+
+            $className::DaftObjectJsonProperties();
         }
     }
 
@@ -1158,6 +1535,59 @@ class DaftObjectImplementationTest extends TestCase
                 DaftObject\PasswordHashTestObject::class,
                 [
                     'password' => 'foo',
+                ],
+            ],
+            [
+                DaftObject\ReadWriteJsonJson::class,
+                [
+                    'json' => new DaftObject\ReadWriteJson([
+                        'Foo' => 'Foo',
+                        'Bar' => 1.0,
+                        'Baz' => 2,
+                        'Bat' => true,
+                    ]),
+                ],
+            ],
+            [
+                DaftObject\ReadWriteJsonJson::class,
+                [
+                    'json' => new DaftObject\ReadWriteJson([
+                        'Foo' => 'Foo',
+                        'Bar' => 2.0,
+                        'Baz' => 3,
+                        'Bat' => false,
+                    ]),
+                ],
+            ],
+            [
+                DaftObject\ReadWriteJsonJsonArray::class,
+                [
+                    'json' => [
+                        new DaftObject\ReadWriteJson([
+                            'Foo' => 'Foo',
+                            'Bar' => 3.0,
+                            'Baz' => 4,
+                            'Bat' => null,
+                        ]),
+                        new DaftObject\ReadWriteJson([
+                            'Foo' => 'Foo',
+                            'Bar' => 1.0,
+                            'Baz' => 2,
+                            'Bat' => true,
+                        ]),
+                        new DaftObject\ReadWriteJson([
+                            'Foo' => 'Foo',
+                            'Bar' => 2.0,
+                            'Baz' => 3,
+                            'Bat' => false,
+                        ]),
+                        new DaftObject\ReadWriteJson([
+                            'Foo' => 'Foo',
+                            'Bar' => 3.0,
+                            'Baz' => 4,
+                            'Bat' => null,
+                        ]),
+                    ],
                 ],
             ],
         ];

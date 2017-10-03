@@ -25,4 +25,6 @@ abstract class AbstractTestObject extends AbstractArrayBackedDaftObject
         'Baz',
         'Bat',
     ];
+
+    const JSON_PROPERTIES = self::EXPORTABLE_PROPERTIES;
 }

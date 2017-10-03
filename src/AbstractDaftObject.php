@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject;
 
+use BadMethodCallException;
 use ReflectionMethod;
 
 /**
@@ -35,6 +36,11 @@ abstract class AbstractDaftObject implements DaftObject
     * @var string[]
     */
     const EXPORTABLE_PROPERTIES = [];
+
+    /**
+    * import/export definition for DaftJson
+    */
+    const JSON_PROPERTIES = [];
 
     /**
     * Does some sanity checking.
@@ -137,6 +143,21 @@ abstract class AbstractDaftObject implements DaftObject
     }
 
     /**
+    * {@inheritdoc}
+    */
+    final public static function DaftObjectJsonProperties() : array
+    {
+        if (false === is_a(static::class, DaftJson::class, true)) {
+            throw new BadMethodCallException(
+                static::class .
+                ' does not implement ' .
+                DaftJson::class
+            );
+        }
+        return static::JSON_PROPERTIES;
+    }
+
+    /**
     * Nudge the state of a given property, marking it as dirty.
     *
     * @param string $property property being nudged
@@ -201,7 +222,7 @@ abstract class AbstractDaftObject implements DaftObject
     *
     * @return mixed
     */
-    private function DoGetSet(
+    protected function DoGetSet(
         string $property,
         string $expectedMethod,
         string $notExists,
