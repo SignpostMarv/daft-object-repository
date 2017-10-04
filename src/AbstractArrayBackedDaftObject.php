@@ -198,6 +198,13 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         return $out;
     }
 
+    public static function DaftObjectFromJsonString(string $string) : DaftJson
+    {
+        static::ThrowIfNotDaftJson();
+
+        return static::DaftObjectFromJsonArray(json_decode($string, true));
+    }
+
     /**
     * @param mixed $propVal
     *
@@ -263,22 +270,6 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         );
     }
 
-    private static function ThrowIfNotDaftJson() : void
-    {
-        if (false === is_a(static::class, DaftJson::class, true)) {
-            throw new DaftObjectNotDaftJsonBadMethodCallException(
-                static::class
-            );
-        }
-    }
-
-    public static function DaftObjectFromJsonString(string $string) : DaftJson
-    {
-        static::ThrowIfNotDaftJson();
-
-        return static::DaftObjectFromJsonArray(json_decode($string, true));
-    }
-
     /**
     * Retrieve a property from data.
     *
@@ -342,6 +333,15 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         if ($isChanged && true !== isset($this->changedProperties[$property])) {
             $this->changedProperties[$property] = true;
             $this->wormProperties[$property] = true;
+        }
+    }
+
+    private static function ThrowIfNotDaftJson() : void
+    {
+        if (false === is_a(static::class, DaftJson::class, true)) {
+            throw new DaftObjectNotDaftJsonBadMethodCallException(
+                static::class
+            );
         }
     }
 }
