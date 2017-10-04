@@ -100,11 +100,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     */
     public function jsonSerialize() : array
     {
-        if (false === ($this instanceof DaftJson)) {
-            throw new DaftObjectNotDaftJsonBadMethodCallException(
-                static::class
-            );
-        }
+        static::ThrowIfNotDaftJson();
 
         $out = [];
 
@@ -136,11 +132,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         array $array,
         bool $writeAll = false
     ) : DaftJson {
-        if (false === is_a(static::class, DaftJson::class, true)) {
-            throw new DaftObjectNotDaftJsonBadMethodCallException(
-                static::class
-            );
-        }
+        static::ThrowIfNotDaftJson();
 
         $in = [];
 
@@ -269,13 +261,18 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         );
     }
 
-    public static function DaftObjectFromJsonString(string $string) : DaftJson
+    private static function ThrowIfNotDaftJson() : void
     {
         if (false === is_a(static::class, DaftJson::class, true)) {
             throw new DaftObjectNotDaftJsonBadMethodCallException(
                 static::class
             );
         }
+    }
+
+    public static function DaftObjectFromJsonString(string $string) : DaftJson
+    {
+        static::ThrowIfNotDaftJson();
 
         return static::DaftObjectFromJsonArray(json_decode($string, true));
     }
