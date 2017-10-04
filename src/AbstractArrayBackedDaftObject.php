@@ -240,6 +240,9 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         $jsonType = $jsonType;
 
         if ($isArray) {
+            /**
+            * @var DaftJson[] $out
+            */
             $out = [];
 
             foreach ($propVal as $i => $val) {
