@@ -200,6 +200,8 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
 
     /**
     * @param mixed $propVal
+    *
+    * @return DaftJson|DaftJson[]
     */
     protected static function DaftObjectFromJsonType(
         string $prop,
