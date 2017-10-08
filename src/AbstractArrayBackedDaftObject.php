@@ -173,7 +173,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     }
 
     /**
-    * @return DaftJson|DaftJson[]
+    * @return DaftJson[]|DaftJson
     */
     final protected static function DaftObjectFromJsonArrayTyped(
         string $jsonType,
