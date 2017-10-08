@@ -290,23 +290,23 @@ abstract class AbstractDaftObject implements DaftObject
         bool $throwIfNotImplementation = false
     ) : void {
         if (is_a($class, DefinesOwnIdPropertiesInterface::class, true)) {
-        $properties = $class::DaftObjectIdProperties();
+            $properties = $class::DaftObjectIdProperties();
 
-        if (count($properties) < 1) {
-            throw new ClassMethodReturnHasZeroArrayCountException(
-                $class,
-                'DaftObjectIdProperties'
-            );
-        }
-
-        foreach ($properties as $property) {
-            if (false === is_string($property)) {
-                throw new ClassMethodReturnIsNotArrayOfStringsException(
+            if (count($properties) < 1) {
+                throw new ClassMethodReturnHasZeroArrayCountException(
                     $class,
                     'DaftObjectIdProperties'
                 );
             }
-        }
+
+            foreach ($properties as $property) {
+                if (false === is_string($property)) {
+                    throw new ClassMethodReturnIsNotArrayOfStringsException(
+                        $class,
+                        'DaftObjectIdProperties'
+                    );
+                }
+            }
         } elseif ($throwIfNotImplementation) {
             throw new ClassDoesNotImplementClassException(
                 $class,
