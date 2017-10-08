@@ -315,7 +315,10 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
                     $jsonType = $jsonDef[$prop];
 
                     if (false === is_array($propVal)) {
-                        static::ThrowBecauseArrayJsonTypeNotValid($jsonType, $prop);
+                        static::ThrowBecauseArrayJsonTypeNotValid(
+                            $jsonType,
+                            $prop
+                        );
                     }
                 }
                 $out[$prop] = $propVal;
@@ -329,16 +332,16 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         string $jsonType,
         string $prop
     ) : void {
-                        if ('[]' === mb_substr($jsonType, -2)) {
-                            throw new PropertyNotJsonDecodableShouldBeArrayException(
-                                static::class,
-                                $prop
-                            );
-                        }
-                        throw new PropertyNotJsonDecodableShouldBeArrayException(
-                            $jsonType,
-                            $prop
-                        );
+        if ('[]' === mb_substr($jsonType, -2)) {
+            throw new PropertyNotJsonDecodableShouldBeArrayException(
+                static::class,
+                $prop
+            );
+        }
+        throw new PropertyNotJsonDecodableShouldBeArrayException(
+            $jsonType,
+            $prop
+        );
     }
 
     private static function ThrowIfNotJsonType(string $jsonType) : void
