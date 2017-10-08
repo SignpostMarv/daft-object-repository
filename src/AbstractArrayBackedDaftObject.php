@@ -284,10 +284,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
             $this instanceof DaftObjectWorm &&
             (
                 $this->HasPropertyChanged($property) ||
-                (
-                    isset($this->wormProperties[$property]) &&
-                    true === $this->wormProperties[$property]
-                )
+                false === empty($this->wormProperties[$property])
             )
         ) {
             throw new PropertyNotRewriteableException(
