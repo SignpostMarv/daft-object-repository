@@ -30,7 +30,7 @@ interface DaftObject
     * @param string $property the property being retrieved
     * @param mixed $v
     *
-    * @throws PropertyNotWriteableException if a property is undefined
+    * @throws NotPublicSetterPropertyException if a property is not publicly settable
     *
     * @return mixed
     */
@@ -100,4 +100,14 @@ interface DaftObject
     * @return string[]
     */
     public static function DaftObjectExportableProperties() : array;
+
+    /**
+    * List of public getter properties
+    */
+    public static function DaftObjectPublicGetters() : array;
+
+    /**
+    * List of public setter properties
+    */
+    public static function DaftObjectPublicSetters() : array;
 }

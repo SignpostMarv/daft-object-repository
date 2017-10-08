@@ -60,15 +60,9 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
 
         $this->data[$hashId] = [];
 
-        foreach ($object::DaftObjectProperties() as $property) {
+        foreach ($object::DaftObjectPublicGetters() as $property) {
             $getter = 'Get' . ucfirst($property);
-
-            if (
-                true === method_exists($object, $getter) &&
-                isset($object->$property)
-            ) {
                 $this->data[$hashId][$property] = $object->$getter();
-            }
         }
     }
 

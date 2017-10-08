@@ -112,8 +112,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
 
             $val = $this->DoGetSet(
                 $property,
-                'Get' . ucfirst($property),
-                PropertyNotReadableException::class,
+                false,
                 NotPublicGetterPropertyException::class
             );
 

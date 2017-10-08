@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject;
 
+use ReflectionClass;
 use ReflectionMethod;
 
 /**
@@ -63,8 +64,7 @@ abstract class AbstractDaftObject implements DaftObject
     {
         return $this->DoGetSet(
             $property,
-            'Get' . ucfirst($property),
-            PropertyNotReadableException::class,
+            false,
             NotPublicGetterPropertyException::class
         );
     }
@@ -76,8 +76,7 @@ abstract class AbstractDaftObject implements DaftObject
     {
         return $this->DoGetSet(
             $property,
-            'Set' . ucfirst($property),
-            PropertyNotWriteableException::class,
+            true,
             NotPublicSetterPropertyException::class,
             $v
         );
@@ -99,14 +98,12 @@ abstract class AbstractDaftObject implements DaftObject
     public function __debugInfo() : array
     {
         $out = [];
+        $publicGetters = static::DaftObjectPublicGetters();
         foreach (static::DaftObjectExportableProperties() as $prop) {
             $expectedMethod = 'Get' . ucfirst($prop);
             if (
                 $this->__isset($prop) &&
-                method_exists($this, $expectedMethod) &&
-                (
-                    new ReflectionMethod(static::class, $expectedMethod)
-                )->isPublic()
+                in_array($prop, $publicGetters, true)
             ) {
                 $out[$prop] = $this->$expectedMethod();
             }
@@ -139,6 +136,98 @@ abstract class AbstractDaftObject implements DaftObject
     final public static function DaftObjectExportableProperties() : array
     {
         return static::EXPORTABLE_PROPERTIES;
+    }
+
+    /**
+    * @var string[][]
+    */
+    private static $publicGetters = [];
+
+    /**
+    * @var string[][]
+    */
+    private static $publicSetters = [];
+
+    protected static function CachePublicGettersAndSetters() : void
+    {
+        $refreshGetters = false === isset(self::$publicGetters[static::class]);
+        $refreshSetters = false === isset(self::$publicSetters[static::class]);
+
+        if ($refreshGetters) {
+            self::$publicGetters[static::class] = [];
+
+            if (
+                is_a(
+                    static::class,
+                    DefinesOwnIdPropertiesInterface::class,
+                    true
+                )
+            ) {
+                self::$publicGetters[static::class][] = 'id';
+            }
+        }
+
+        if ($refreshSetters) {
+            self::$publicSetters[static::class] = [];
+        }
+
+        if ($refreshGetters || $refreshSetters) {
+            $classReflection = new ReflectionClass(static::class);
+
+            foreach (static::DaftObjectProperties() as $property) {
+                $getter = 'Get' . ucfirst($property);
+
+                $setter = 'Set' . ucfirst($property);
+
+                if (
+                    $refreshGetters &&
+                    $classReflection->hasMethod($getter) &&
+                    (
+                        $methodReflection = new ReflectionMethod(
+                            static::class,
+                            $getter
+                        )
+                    )->isPublic() &&
+                    false === $methodReflection->isStatic()
+                ) {
+                    self::$publicGetters[static::class][] = $property;
+                }
+
+                if (
+                    $refreshSetters &&
+                    $classReflection->hasMethod($setter) &&
+                    (
+                        $methodReflection = new ReflectionMethod(
+                            static::class,
+                            $setter
+                        )
+                    )->isPublic() &&
+                    false === $methodReflection->isStatic()
+                ) {
+                    self::$publicSetters[static::class][] = $property;
+                }
+            }
+        }
+    }
+
+    /**
+    * {@inheritdoc}
+    */
+    final public static function DaftObjectPublicGetters() : array
+    {
+        static::CachePublicGettersAndSetters();
+
+        return self::$publicGetters[static::class];
+    }
+
+    /**
+    * {@inheritdoc}
+    */
+    final public static function DaftObjectPublicSetters() : array
+    {
+        static::CachePublicGettersAndSetters();
+
+        return self::$publicSetters[static::class];
     }
 
     /**
@@ -222,8 +311,7 @@ abstract class AbstractDaftObject implements DaftObject
     */
     protected function DoGetSet(
         string $property,
-        string $expectedMethod,
-        string $notExists,
+        bool $SetNotGet,
         string $notPublic,
         $v = null
     ) {
@@ -235,21 +323,26 @@ abstract class AbstractDaftObject implements DaftObject
             false === in_array($property, static::DaftObjectProperties(), true)
         ) {
             throw new UndefinedPropertyException(static::class, $property);
-        } elseif (false === method_exists($this, $expectedMethod)) {
-            throw new $notExists(
-                static::class,
-                $property
-            );
         } elseif (
             false === (
-                new ReflectionMethod(static::class, $expectedMethod)
-            )->isPublic()
+                in_array(
+                    $property,
+                    (
+                        $SetNotGet
+                            ? static::DaftObjectPublicSetters()
+                            : static::DaftObjectPublicGetters()
+                    ),
+                    true
+                )
+            )
         ) {
             throw new $notPublic(
                 static::class,
                 $property
             );
         }
+
+        $expectedMethod = ($SetNotGet ? 'Set' : 'Get') . ucfirst($property);
 
         return $this->$expectedMethod($v);
     }
