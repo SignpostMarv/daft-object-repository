@@ -247,9 +247,11 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     }
 
     /**
-    * {@inheritdoc}
+    * @param mixed $value
+    *
+    * @see AbstractArrayBackedDaftObject::NudgePropertyValue()
     */
-    protected function NudgePropertyValue(string $property, $value) : void
+    private function MaybeThrowOnNudge(string $property, $value) : void
     {
         if (true !== in_array($property, static::PROPERTIES, true)) {
             throw new UndefinedPropertyException(static::class, $property);
@@ -273,6 +275,14 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
                 $property
             );
         }
+    }
+
+    /**
+    * {@inheritdoc}
+    */
+    protected function NudgePropertyValue(string $property, $value) : void
+    {
+        $this->MaybeThrowOnNudge($property, $value);
 
         $isChanged = (
             false === array_key_exists($property, $this->data) ||
