@@ -323,15 +323,21 @@ abstract class AbstractDaftObject implements DaftObject
             false === in_array($property, static::DaftObjectProperties(), true)
         ) {
             throw new UndefinedPropertyException(static::class, $property);
-        } elseif (
+        }
+
+        $expectedMethod = 'Get' . ucfirst($property);
+        $thingers = static::DaftObjectPublicGetters();
+
+        if ($SetNotGet) {
+            $expectedMethod = 'Set' . ucfirst($property);
+            $thingers = static::DaftObjectPublicSetters();
+        }
+
+        if (
             false === (
                 in_array(
                     $property,
-                    (
-                        $SetNotGet
-                            ? static::DaftObjectPublicSetters()
-                            : static::DaftObjectPublicGetters()
-                    ),
+                    $thingers,
                     true
                 )
             )
@@ -341,8 +347,6 @@ abstract class AbstractDaftObject implements DaftObject
                 $property
             );
         }
-
-        $expectedMethod = ($SetNotGet ? 'Set' : 'Get') . ucfirst($property);
 
         return $this->$expectedMethod($v);
     }
