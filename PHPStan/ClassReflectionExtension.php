@@ -10,10 +10,9 @@ namespace SignpostMarv\DaftObject\PHPStan;
 
 use PHPStan\Broker\Broker;
 use PHPStan\Reflection\BrokerAwareClassReflectionExtension;
-use PHPStan\Reflection\ClassReflection ;
+use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\PropertiesClassReflectionExtension;
 use PHPStan\Reflection\PropertyReflection;
-use PHPStan\Type\Type;
 use SignpostMarv\DaftObject\DaftObject;
 
 class ClassReflectionExtension implements

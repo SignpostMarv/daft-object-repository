@@ -9,8 +9,8 @@ declare(strict_types=1);
 namespace SignpostMarv\DaftObject\PHPStan;
 
 use InvalidArgumentException;
-use PHPStan\Broker\Broker ;
-use PHPStan\Reflection\ClassReflection ;
+use PHPStan\Broker\Broker;
+use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\PropertyReflection;
 use PHPStan\Type\MixedType;
 use PHPStan\Type\Type;
@@ -49,7 +49,6 @@ class PropertyReflectionExtension implements PropertyReflection
     * @var ClassReflection
     */
     private $writeableDeclaringClass;
-
 
     public function __construct(
         ClassReflection $classReflection,
