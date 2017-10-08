@@ -134,12 +134,22 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
 
         foreach (array_keys($array) as $prop) {
             if (isset($jsonDef[$prop])) {
-                $in[$prop] = static::DaftObjectFromJsonArrayTyped(
-                    $jsonDef[$prop],
-                    $prop,
-                    $array,
-                    $writeAll
-                );
+                $jsonType = $jsonDef[$prop];
+
+                if ('[]' === mb_substr($jsonType, -2)) {
+                    $in[$prop] = static::DaftObjectFromJsonTypeArray(
+                        mb_substr($jsonType, 0, -2),
+                        $prop,
+                        $array[$prop],
+                        $writeAll
+                    );
+                } else {
+                    $in[$prop] = static::DaftObjectFromJsonType(
+                        $jsonType,
+                        $array[$prop],
+                        $writeAll
+                    );
+                }
             } else {
                 $in[$prop] = $array[$prop];
             }
@@ -170,41 +180,6 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
                 $this->HasPropertyChanged($property) ||
                 false === empty($wormProperties[$property])
             );
-    }
-
-    /**
-    * @return DaftJson[]|DaftJson
-    */
-    final protected static function DaftObjectFromJsonArrayTyped(
-        string $jsonType,
-        string $prop,
-        array $array,
-        bool $writeAll = false
-    ) {
-        if ('[]' === mb_substr($jsonType, -2)) {
-            /**
-            * @var DaftJson[] $out
-            */
-            $out = static::DaftObjectFromJsonTypeArray(
-                mb_substr($jsonType, 0, -2),
-                $prop,
-                $array[$prop],
-                $writeAll
-            );
-
-            return $out;
-        }
-
-        /**
-        * @var DaftJson $out
-        */
-        $out = static::DaftObjectFromJsonType(
-            $jsonType,
-            $array[$prop],
-            $writeAll
-        );
-
-        return $out;
     }
 
     /**
