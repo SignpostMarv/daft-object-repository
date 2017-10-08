@@ -926,65 +926,64 @@ class DaftObjectImplementationTest extends TestCase
         if (
             ($obj instanceof DaftObject\DaftJson)
         ) {
+            $obj->jsonSerialize();
 
-        $obj->jsonSerialize();
+            $json = json_encode($obj);
 
-        $json = json_encode($obj);
+            if (
+                false === ($obj instanceof DaftObject\DaftJson)
+            ) {
+                return;
+            }
 
-        if (
-            false === ($obj instanceof DaftObject\DaftJson)
-        ) {
-            return;
-        }
+            $this->assertInternalType(
+                'string',
+                $json,
+                (
+                    'Instances of ' .
+                    $className .
+                    ' should resolve to a string when passed to json_encode()'
+                )
+            );
 
-        $this->assertInternalType(
-            'string',
-            $json,
-            (
-                'Instances of ' .
-                $className .
-                ' should resolve to a string when passed to json_encode()'
-            )
-        );
+            $decoded = json_decode((string) $json, true);
 
-        $decoded = json_decode((string) $json, true);
+            $this->assertInternalType(
+                'array',
+                $decoded,
+                (
+                    'JSON-encoded implementations of ' .
+                    DaftObject\DaftJson::class .
+                    ' (' .
+                    $className .
+                    ')' .
+                    ' must decode to an array!'
+                )
+            );
 
-        $this->assertInternalType(
-            'array',
-            $decoded,
-            (
-                'JSON-encoded implementations of ' .
-                DaftObject\DaftJson::class .
-                ' (' .
-                $className .
-                ')' .
-                ' must decode to an array!'
-            )
-        );
+            $objFromJson = $className::DaftObjectFromJsonArray($decoded);
 
-        $objFromJson = $className::DaftObjectFromJsonArray($decoded);
+            $this->assertSame(
+                $json,
+                json_encode($objFromJson),
+                (
+                    'JSON-encoded implementations of ' .
+                    DaftObject\DaftJson::class .
+                    ' must encode($obj) the same as encode(decode($str))'
+                )
+            );
 
-        $this->assertSame(
-            $json,
-            json_encode($objFromJson),
-            (
-                'JSON-encoded implementations of ' .
-                DaftObject\DaftJson::class .
-                ' must encode($obj) the same as encode(decode($str))'
-            )
-        );
+            $objFromJson = $className::DaftObjectFromJsonString($json);
 
-        $objFromJson = $className::DaftObjectFromJsonString($json);
-
-        $this->assertSame(
-            $json,
-            json_encode($objFromJson),
-            (
-                'JSON-encoded implementations of ' .
-                DaftObject\DaftJson::class .
-                ' must encode($obj) the same as encode(decode($str))'
-            )
-        );
+            $this->assertSame(
+                $json,
+                json_encode($objFromJson),
+                (
+                    'JSON-encoded implementations of ' .
+                    DaftObject\DaftJson::class .
+                    ' must encode($obj) the same as encode(decode($str))'
+                )
+            );
         } else {
             if (method_exists($obj, 'jsonSerialize')) {
                 $this->expectException(DaftObject\DaftObjectNotDaftJsonBadMethodCallException::class);
@@ -1397,55 +1396,55 @@ class DaftObjectImplementationTest extends TestCase
         }
 
         return
+            (
+                is_int($val)
+                    ? 'int'
+                    : (
+                        is_bool($val)
+                            ? 'bool'
+                            : (
+                                is_float($val)
+                                    ? '(?:float|double)'
+                                    : (
+                                        is_object($val)
+                                            ? ''
+                                    : preg_quote(gettype($val), '/')
+                                    )
+                            )
+                    )
+            ) .
+            (
+                ($val instanceof DaftObject\DaftObject)
+                    ? (
+                        '(?:' .
+                            static::RegexForObject(
+                                $val
+                            ) .
+                        ')'
+                    )
+                :
+            preg_quote(
                 (
-                    is_int($val)
-                        ? 'int'
-                        : (
-                            is_bool($val)
-                                ? 'bool'
-                                : (
-                                    is_float($val)
-                                        ? '(?:float|double)'
-                                        : (
-                                            is_object($val)
-                                                ? ''
-                                        : preg_quote(gettype($val), '/')
-                                        )
-                                )
-                        )
-                ) .
-                (
-                    ($val instanceof DaftObject\DaftObject)
-                        ? (
-                            '(?:' .
-                                static::RegexForObject(
-                                    $val
-                                ) .
-                            ')'
-                        )
-                    :
-                preg_quote(
+                    '(' .
                     (
-                        '(' .
-                        (
-                            is_string($val)
-                                ? mb_strlen($val, '8bit')
-                                : (
-                                    is_numeric($val)
-                                        ? (string) $val
-                                        : var_export($val, true)
-                                )
-                        ) .
-                        ')' .
-                        (
-                            is_string($val)
-                                ? (' "' . $val . '"')
-                                : ''
-                        )
-                    ),
-                    '/'
-                )
-            );
+                        is_string($val)
+                            ? mb_strlen($val, '8bit')
+                            : (
+                                is_numeric($val)
+                                    ? (string) $val
+                                    : var_export($val, true)
+                            )
+                    ) .
+                    ')' .
+                    (
+                        is_string($val)
+                            ? (' "' . $val . '"')
+                            : ''
+                    )
+                ),
+                '/'
+            )
+        );
     }
 
     /**
