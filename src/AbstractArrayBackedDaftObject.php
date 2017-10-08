@@ -125,22 +125,13 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         return $out;
     }
 
-    /**
-    * {@inheritdoc}
-    */
-    final public static function DaftObjectFromJsonArray(
-        array $array,
-        bool $writeAll = false
-    ) : DaftJson {
-        static::ThrowIfNotDaftJson();
-
-        $in = [];
+    private static function ThrowIfJsonDefNotValid(array $array) : array
+    {
+        $jsonProps = [];
 
         $props = static::DaftObjectJsonProperties();
         $jsonDef = static::DaftObjectJsonProperties();
         $nullableProps = static::DaftObjectNullableProperties();
-
-        $jsonProps = [];
 
         foreach ($jsonDef as $k => $v) {
             if (is_string($k)) {
@@ -162,6 +153,8 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
             }
         }
 
+        $out = [];
+
         foreach (array_keys($array) as $prop) {
             if (
                 false === in_array($prop, $props, true) &&
@@ -175,29 +168,53 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
                     static::class,
                     $prop
                 );
-            } elseif (is_null($array[$prop])) {
-                continue;
-            } elseif (isset($jsonDef[$prop])) {
-                $jsonType = $jsonDef[$prop];
+            } elseif (false === is_null($array[$prop])) {
+                if (isset($jsonDef[$prop])) {
+                    $jsonType = $jsonDef[$prop];
 
-                if ('[]' === mb_substr($jsonType, -2)) {
                     if (false === is_array($array[$prop])) {
+                        if ('[]' === mb_substr($jsonType, -2)) {
+                            throw new PropertyNotJsonDecodableShouldBeArrayException(
+                                static::class,
+                                $prop
+                            );
+                        }
                         throw new PropertyNotJsonDecodableShouldBeArrayException(
-                            static::class,
+                            $jsonType,
                             $prop
                         );
                     }
+                }
+                $out[$prop] = $array[$prop];
+            }
+        }
 
+        return $out;
+    }
+
+    /**
+    * {@inheritdoc}
+    */
+    final public static function DaftObjectFromJsonArray(
+        array $array,
+        bool $writeAll = false
+    ) : DaftJson {
+        static::ThrowIfNotDaftJson();
+        $array = static::ThrowIfJsonDefNotValid($array);
+        $in = [];
+
+        $jsonDef = static::DaftObjectJsonProperties();
+
+        foreach (array_keys($array) as $prop) {
+            if (isset($jsonDef[$prop])) {
+                $jsonType = $jsonDef[$prop];
+
+                if ('[]' === mb_substr($jsonType, -2)) {
                     $in[$prop] = static::DaftObjectFromJsonTypeArray(
                         mb_substr($jsonType, 0, -2),
                         $prop,
                         $array[$prop],
                         $writeAll
-                    );
-                } elseif (false === is_array($array[$prop])) {
-                    throw new PropertyNotJsonDecodableShouldBeArrayException(
-                        (string) $jsonType,
-                        $prop
                     );
                 } else {
                     $in[$prop] = static::DaftObjectFromJsonType(
