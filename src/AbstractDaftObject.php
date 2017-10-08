@@ -172,13 +172,18 @@ abstract class AbstractDaftObject implements DaftObject
     */
     final public static function DaftObjectJsonProperties() : array
     {
+        static::ThrowIfNotDaftJson();
+
+        return static::JSON_PROPERTIES;
+    }
+
+    protected static function ThrowIfNotDaftJson() : void
+    {
         if (false === is_a(static::class, DaftJson::class, true)) {
             throw new DaftObjectNotDaftJsonBadMethodCallException(
                 static::class
             );
         }
-
-        return static::JSON_PROPERTIES;
     }
 
     /**

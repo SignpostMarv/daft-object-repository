@@ -369,13 +369,4 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
             $writeAll
         );
     }
-
-    private static function ThrowIfNotDaftJson() : void
-    {
-        if (false === is_a(static::class, DaftJson::class, true)) {
-            throw new DaftObjectNotDaftJsonBadMethodCallException(
-                static::class
-            );
-        }
-    }
 }
