@@ -43,6 +43,16 @@ abstract class AbstractDaftObject implements DaftObject
     const JSON_PROPERTIES = [];
 
     /**
+    * @var string[][]
+    */
+    private static $publicGetters = [];
+
+    /**
+    * @var string[][]
+    */
+    private static $publicSetters = [];
+
+    /**
     * Does some sanity checking.
     *
     * @see DefinesOwnIdPropertiesInterface
@@ -139,14 +149,38 @@ abstract class AbstractDaftObject implements DaftObject
     }
 
     /**
-    * @var string[][]
+    * {@inheritdoc}
     */
-    private static $publicGetters = [];
+    final public static function DaftObjectPublicGetters() : array
+    {
+        static::CachePublicGettersAndSetters();
+
+        return self::$publicGetters[static::class];
+    }
 
     /**
-    * @var string[][]
+    * {@inheritdoc}
     */
-    private static $publicSetters = [];
+    final public static function DaftObjectPublicSetters() : array
+    {
+        static::CachePublicGettersAndSetters();
+
+        return self::$publicSetters[static::class];
+    }
+
+    /**
+    * {@inheritdoc}
+    */
+    final public static function DaftObjectJsonProperties() : array
+    {
+        if (false === is_a(static::class, DaftJson::class, true)) {
+            throw new DaftObjectNotDaftJsonBadMethodCallException(
+                static::class
+            );
+        }
+
+        return static::JSON_PROPERTIES;
+    }
 
     protected static function CachePublicGettersAndSetters() : void
     {
@@ -208,40 +242,6 @@ abstract class AbstractDaftObject implements DaftObject
                 }
             }
         }
-    }
-
-    /**
-    * {@inheritdoc}
-    */
-    final public static function DaftObjectPublicGetters() : array
-    {
-        static::CachePublicGettersAndSetters();
-
-        return self::$publicGetters[static::class];
-    }
-
-    /**
-    * {@inheritdoc}
-    */
-    final public static function DaftObjectPublicSetters() : array
-    {
-        static::CachePublicGettersAndSetters();
-
-        return self::$publicSetters[static::class];
-    }
-
-    /**
-    * {@inheritdoc}
-    */
-    final public static function DaftObjectJsonProperties() : array
-    {
-        if (false === is_a(static::class, DaftJson::class, true)) {
-            throw new DaftObjectNotDaftJsonBadMethodCallException(
-                static::class
-            );
-        }
-
-        return static::JSON_PROPERTIES;
     }
 
     /**

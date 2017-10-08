@@ -102,12 +102,12 @@ interface DaftObject
     public static function DaftObjectExportableProperties() : array;
 
     /**
-    * List of public getter properties
+    * List of public getter properties.
     */
     public static function DaftObjectPublicGetters() : array;
 
     /**
-    * List of public setter properties
+    * List of public setter properties.
     */
     public static function DaftObjectPublicSetters() : array;
 }
