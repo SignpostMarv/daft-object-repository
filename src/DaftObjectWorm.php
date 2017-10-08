@@ -13,4 +13,5 @@ namespace SignpostMarv\DaftObject;
 */
 interface DaftObjectWorm extends DaftObject
 {
+    public function DaftObjectWormPropertyWritten(string $property) : bool;
 }

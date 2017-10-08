@@ -266,6 +266,18 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         }
     }
 
+    public function DaftObjectWormPropertyWritten(string $property) : bool
+    {
+        $wormProperties = $this->wormProperties;
+        return (
+            ($this instanceof DaftObjectWorm) &&
+            (
+                $this->HasPropertyChanged($property) ||
+                false === empty($wormProperties[$property])
+            )
+        );
+    }
+
     /**
     * @param mixed $value
     *
@@ -280,13 +292,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
             true !== in_array($property, static::NULLABLE_PROPERTIES, true)
         ) {
             throw new PropertyNotNullableException(static::class, $property);
-        } elseif (
-            $this instanceof DaftObjectWorm &&
-            (
-                $this->HasPropertyChanged($property) ||
-                false === empty($this->wormProperties[$property])
-            )
-        ) {
+        } elseif ($this->DaftObjectWormPropertyWritten($property)) {
             throw new PropertyNotRewriteableException(
                 static::class,
                 $property
