@@ -60,11 +60,10 @@ abstract class AbstractDaftObject implements DaftObject
     */
     public function __construct()
     {
-        if (
+        self::CheckTypeDefinesOwnIdProperties(
+            static::class,
             ($this instanceof DefinesOwnIdPropertiesInterface)
-        ) {
-            self::CheckTypeDefinesOwnIdProperties($this);
-        }
+        );
     }
 
     /**
@@ -281,30 +280,17 @@ abstract class AbstractDaftObject implements DaftObject
     /**
     * Checks if a type correctly defines it's own id.
     *
-    * @param DaftObject $object
-    *
-    * @throws ClassDoesNotImplementClassException if $object is not an implementation of DefinesOwnIdPropertiesInterface
-    * @throws ClassMethodReturnHasZeroArrayCountException if $object::DaftObjectIdProperties() does not contain at least one property
-    * @throws ClassMethodReturnIsNotArrayOfStringsException if $object::DaftObjectIdProperties() is not string[]
-    * @throws UndefinedPropertyException if an id property is not in $object::DaftObjectIdProperties()
+    * @throws ClassDoesNotImplementClassException if $class is not an implementation of DefinesOwnIdPropertiesInterface
+    * @throws ClassMethodReturnHasZeroArrayCountException if $class::DaftObjectIdProperties() does not contain at least one property
+    * @throws ClassMethodReturnIsNotArrayOfStringsException if $class::DaftObjectIdProperties() is not string[]
+    * @throws UndefinedPropertyException if an id property is not in $class::DaftObjectIdProperties()
     */
     final protected static function CheckTypeDefinesOwnIdProperties(
-        DaftObject $object
+        string $class,
+        bool $throwIfNotImplementation = false
     ) : void {
-        $class = get_class($object);
-        if (false === ($object instanceof DefinesOwnIdPropertiesInterface)) {
-            throw new ClassDoesNotImplementClassException(
-                $class,
-                DefinesOwnIdPropertiesInterface::class
-            );
-        }
-
-        /**
-        * @var DefinesOwnIdPropertiesInterface $object
-        */
-        $object = $object;
-
-        $properties = $object::DaftObjectIdProperties();
+        if (is_a($class, DefinesOwnIdPropertiesInterface::class, true)) {
+        $properties = $class::DaftObjectIdProperties();
 
         if (count($properties) < 1) {
             throw new ClassMethodReturnHasZeroArrayCountException(
@@ -320,6 +306,12 @@ abstract class AbstractDaftObject implements DaftObject
                     'DaftObjectIdProperties'
                 );
             }
+        }
+        } elseif ($throwIfNotImplementation) {
+            throw new ClassDoesNotImplementClassException(
+                $class,
+                DefinesOwnIdPropertiesInterface::class
+            );
         }
     }
 
