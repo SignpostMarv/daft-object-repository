@@ -120,57 +120,57 @@ class PropertyReflectionExtension implements PropertyReflection
     private function SetGetterProps(
         ReflectionMethod $refMethod
     ) : ClassReflection {
-            $this->readable = true;
+        $this->readable = true;
 
-            if ($refMethod->isStatic()) {
-                throw new InvalidArgumentException(
-                    'Implementations of ' .
-                    DaftObject::class .
-                    ' must not contain static getters.'
-                );
-            }
+        if ($refMethod->isStatic()) {
+            throw new InvalidArgumentException(
+                'Implementations of ' .
+                DaftObject::class .
+                ' must not contain static getters.'
+            );
+        }
 
-            if ($refMethod->hasReturnType()) {
-                $type = TypehintHelper::decideTypeFromReflection(
-                    $refMethod->getReturnType()
-                );
-            }
+        if ($refMethod->hasReturnType()) {
+            $type = TypehintHelper::decideTypeFromReflection(
+                $refMethod->getReturnType()
+            );
+        }
 
         return static::DetermineDeclaringClass(
             $this->broker,
             $refMethod
-            );
+        );
     }
 
     private function SetSetterProps(
         string $className,
         ReflectionMethod $refMethod
     ) : ClassReflection {
-            $this->writeable = true;
+        $this->writeable = true;
 
-            if ($refMethod->getNumberOfRequiredParameters() < 1) {
-                throw new InvalidArgumentException(
-                    'Implementations of ' .
-                    DaftObject::class .
-                    ' must require at least one parameter on all setters!'
-                );
-            }
+        if ($refMethod->getNumberOfRequiredParameters() < 1) {
+            throw new InvalidArgumentException(
+                'Implementations of ' .
+                DaftObject::class .
+                ' must require at least one parameter on all setters!'
+            );
+        }
 
-            $refParam = $refMethod->getParameters()[0];
+        $refParam = $refMethod->getParameters()[0];
 
-            if ($refParam->hasType()) {
-                $type = TypehintHelper::decideTypeFromReflection(
-                    $refParam->getType(),
-                    null,
-                    $className,
-                    false
-                );
-            }
+        if ($refParam->hasType()) {
+            $type = TypehintHelper::decideTypeFromReflection(
+                $refParam->getType(),
+                null,
+                $className,
+                false
+            );
+        }
 
         return static::DetermineDeclaringClass(
             $this->broker,
             $refMethod
-            );
+        );
     }
 
     public function getType() : Type
