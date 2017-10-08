@@ -153,31 +153,6 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         return $out;
     }
 
-    /**
-    * @return DaftJson|DaftJson[]
-    */
-    final protected static function DaftObjectFromJsonArrayTyped(
-        string $jsonType,
-        string $prop,
-        array $array,
-        bool $writeAll = false
-    ) {
-                if ('[]' === mb_substr($jsonType, -2)) {
-                    return static::DaftObjectFromJsonTypeArray(
-                        mb_substr($jsonType, 0, -2),
-                        $prop,
-                        $array[$prop],
-                        $writeAll
-                    );
-                } else {
-                    return static::DaftObjectFromJsonType(
-                        $jsonType,
-                        $array[$prop],
-                        $writeAll
-                    );
-                }
-    }
-
     public static function DaftObjectFromJsonString(string $string) : DaftJson
     {
         static::ThrowIfNotDaftJson();
@@ -194,6 +169,31 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
             (
                 $this->HasPropertyChanged($property) ||
                 false === empty($wormProperties[$property])
+            );
+    }
+
+    /**
+    * @return DaftJson|DaftJson[]
+    */
+    final protected static function DaftObjectFromJsonArrayTyped(
+        string $jsonType,
+        string $prop,
+        array $array,
+        bool $writeAll = false
+    ) {
+        if ('[]' === mb_substr($jsonType, -2)) {
+            return static::DaftObjectFromJsonTypeArray(
+                mb_substr($jsonType, 0, -2),
+                $prop,
+                $array[$prop],
+                $writeAll
+            );
+        }
+
+        return static::DaftObjectFromJsonType(
+                $jsonType,
+                $array[$prop],
+                $writeAll
             );
     }
 
