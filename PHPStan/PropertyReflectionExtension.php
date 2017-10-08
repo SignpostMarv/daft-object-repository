@@ -26,6 +26,11 @@ class PropertyReflectionExtension implements PropertyReflection
     private $type;
 
     /**
+    * @var Broker
+    */
+    private $broker;
+
+    /**
     * @var bool
     */
     private $readable = false;
@@ -69,6 +74,8 @@ class PropertyReflectionExtension implements PropertyReflection
             );
         }
 
+        $this->broker = $broker;
+
         $className = $classReflection->getName();
 
         $this->public =
@@ -92,9 +99,28 @@ class PropertyReflectionExtension implements PropertyReflection
         $this->writeableDeclaringClass = $classReflection;
 
         if ($classReflection->getNativeReflection()->hasMethod($getter)) {
-            $this->readable = true;
-
             $refMethod = new ReflectionMethod($className, $getter);
+
+            $this->readableDeclaringClass = $this->SetGetterProps($refMethod);
+        }
+
+        if ($classReflection->getNativeReflection()->hasMethod($setter)) {
+
+            $refMethod = new ReflectionMethod($className, $setter);
+
+            $this->writeableDeclaringClass = $this->SetSetterProps(
+                $className,
+                $refMethod
+            );
+        }
+
+        $this->type = $type;
+    }
+
+    private function SetGetterProps(
+        ReflectionMethod $refMethod
+    ) : ClassReflection {
+            $this->readable = true;
 
             if ($refMethod->isStatic()) {
                 throw new InvalidArgumentException(
@@ -110,16 +136,17 @@ class PropertyReflectionExtension implements PropertyReflection
                 );
             }
 
-            $this->readableDeclaringClass = $broker->getClassFromReflection(
-                $refMethod->getDeclaringClass(),
-                $refMethod->getDeclaringClass()->getName()
+        return static::DetermineDeclaringClass(
+            $this->broker,
+            $refMethod
             );
-        }
+    }
 
-        if ($classReflection->getNativeReflection()->hasMethod($setter)) {
+    private function SetSetterProps(
+        string $className,
+        ReflectionMethod $refMethod
+    ) : ClassReflection {
             $this->writeable = true;
-
-            $refMethod = new ReflectionMethod($className, $setter);
 
             if ($refMethod->getNumberOfRequiredParameters() < 1) {
                 throw new InvalidArgumentException(
@@ -140,13 +167,10 @@ class PropertyReflectionExtension implements PropertyReflection
                 );
             }
 
-            $this->writeableDeclaringClass = $broker->getClassFromReflection(
-                $refMethod->getDeclaringClass(),
-                $refMethod->getDeclaringClass()->getName()
+        return static::DetermineDeclaringClass(
+            $this->broker,
+            $refMethod
             );
-        }
-
-        $this->type = $type;
     }
 
     public function getType() : Type
@@ -186,5 +210,15 @@ class PropertyReflectionExtension implements PropertyReflection
         }
 
         return $this->writeableDeclaringClass;
+    }
+
+    private static function DetermineDeclaringClass(
+        Broker $broker,
+        ReflectionMethod $refMethod
+    ) : ClassReflection {
+        return $broker->getClassFromReflection(
+            $refMethod->getDeclaringClass(),
+            $refMethod->getDeclaringClass()->getName()
+        );
     }
 }
