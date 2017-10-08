@@ -105,7 +105,6 @@ class PropertyReflectionExtension implements PropertyReflection
         }
 
         if ($classReflection->getNativeReflection()->hasMethod($setter)) {
-
             $refMethod = new ReflectionMethod($className, $setter);
 
             $this->writeableDeclaringClass = $this->SetSetterProps(
@@ -115,6 +114,45 @@ class PropertyReflectionExtension implements PropertyReflection
         }
 
         $this->type = $type;
+    }
+
+    public function getType() : Type
+    {
+        return $this->type;
+    }
+
+    public function isReadable() : bool
+    {
+        return $this->readable;
+    }
+
+    public function isWritable() : bool
+    {
+        return $this->writeable;
+    }
+
+    public function isPublic() : bool
+    {
+        return $this->public;
+    }
+
+    public function isPrivate() : bool
+    {
+        return false === $this->isPublic();
+    }
+
+    public function isStatic() : bool
+    {
+        return false;
+    }
+
+    public function getDeclaringClass() : ClassReflection
+    {
+        if ($this->readable) {
+            return $this->readableDeclaringClass;
+        }
+
+        return $this->writeableDeclaringClass;
     }
 
     private function SetGetterProps(
@@ -171,45 +209,6 @@ class PropertyReflectionExtension implements PropertyReflection
             $this->broker,
             $refMethod
         );
-    }
-
-    public function getType() : Type
-    {
-        return $this->type;
-    }
-
-    public function isReadable() : bool
-    {
-        return $this->readable;
-    }
-
-    public function isWritable() : bool
-    {
-        return $this->writeable;
-    }
-
-    public function isPublic() : bool
-    {
-        return $this->public;
-    }
-
-    public function isPrivate() : bool
-    {
-        return false === $this->isPublic();
-    }
-
-    public function isStatic() : bool
-    {
-        return false;
-    }
-
-    public function getDeclaringClass() : ClassReflection
-    {
-        if ($this->readable) {
-            return $this->readableDeclaringClass;
-        }
-
-        return $this->writeableDeclaringClass;
     }
 
     private static function DetermineDeclaringClass(
