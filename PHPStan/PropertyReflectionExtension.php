@@ -90,7 +90,7 @@ class PropertyReflectionExtension implements PropertyReflection
                 true
             );
 
-        $type = new MixedType();
+        $this->type = new MixedType();
 
         $getter = 'Get' . ucfirst($propertyName);
         $setter = 'Set' . ucfirst($propertyName);
@@ -112,8 +112,6 @@ class PropertyReflectionExtension implements PropertyReflection
                 $refMethod
             );
         }
-
-        $this->type = $type;
     }
 
     public function getType() : Type
@@ -169,7 +167,7 @@ class PropertyReflectionExtension implements PropertyReflection
         }
 
         if ($refMethod->hasReturnType()) {
-            $type = TypehintHelper::decideTypeFromReflection(
+            $this->type = TypehintHelper::decideTypeFromReflection(
                 $refMethod->getReturnType()
             );
         }
@@ -197,7 +195,7 @@ class PropertyReflectionExtension implements PropertyReflection
         $refParam = $refMethod->getParameters()[0];
 
         if ($refParam->hasType()) {
-            $type = TypehintHelper::decideTypeFromReflection(
+            $this->type = TypehintHelper::decideTypeFromReflection(
                 $refParam->getType(),
                 null,
                 $className,
