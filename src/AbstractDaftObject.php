@@ -228,7 +228,7 @@ abstract class AbstractDaftObject implements DaftObject
                 if (
                     static::HasPublicMethod(
                         $classReflection,
-                        'Get' . ucfirst($property)
+                        static::DaftObjectMethodNameFromProperty($property)
                     )
                 ) {
                     self::$publicGetters[static::class][] = $property;
@@ -237,7 +237,10 @@ abstract class AbstractDaftObject implements DaftObject
                 if (
                     static::HasPublicMethod(
                         $classReflection,
-                        'Set' . ucfirst($property)
+                        static::DaftObjectMethodNameFromProperty(
+                            $property,
+                            true
+                        )
                     )
                 ) {
                     self::$publicSetters[static::class][] = $property;
@@ -306,6 +309,13 @@ abstract class AbstractDaftObject implements DaftObject
         }
     }
 
+    protected static function DaftObjectMethodNameFromProperty(
+        string $property,
+        bool $SetNotGet = false
+    ) : string {
+        return ($SetNotGet ? 'Set' : 'Get') . ucfirst($property);
+    }
+
     /**
     * @param mixed $v
     *
@@ -327,11 +337,13 @@ abstract class AbstractDaftObject implements DaftObject
             throw new UndefinedPropertyException(static::class, $property);
         }
 
-        $expectedMethod = 'Get' . ucfirst($property);
+        $expectedMethod = static::DaftObjectMethodNameFromProperty(
+            $property,
+            $SetNotGet
+        );
         $thingers = static::DaftObjectPublicGetters();
 
         if ($SetNotGet) {
-            $expectedMethod = 'Set' . ucfirst($property);
             $thingers = static::DaftObjectPublicSetters();
         }
 
