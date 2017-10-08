@@ -292,7 +292,6 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     {
         $jsonProps = [];
 
-        $props = static::DaftObjectJsonProperties();
         $jsonDef = static::DaftObjectJsonProperties();
         $nullableProps = static::DaftObjectNullableProperties();
 
