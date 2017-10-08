@@ -247,6 +247,26 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     }
 
     /**
+    * {@inheritdoc}
+    */
+    protected function NudgePropertyValue(string $property, $value) : void
+    {
+        $this->MaybeThrowOnNudge($property, $value);
+
+        $isChanged = (
+            false === array_key_exists($property, $this->data) ||
+            $this->data[$property] !== $value
+        );
+
+        $this->data[$property] = $value;
+
+        if ($isChanged && true !== isset($this->changedProperties[$property])) {
+            $this->changedProperties[$property] = true;
+            $this->wormProperties[$property] = true;
+        }
+    }
+
+    /**
     * @param mixed $value
     *
     * @see AbstractArrayBackedDaftObject::NudgePropertyValue()
@@ -274,26 +294,6 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
                 static::class,
                 $property
             );
-        }
-    }
-
-    /**
-    * {@inheritdoc}
-    */
-    protected function NudgePropertyValue(string $property, $value) : void
-    {
-        $this->MaybeThrowOnNudge($property, $value);
-
-        $isChanged = (
-            false === array_key_exists($property, $this->data) ||
-            $this->data[$property] !== $value
-        );
-
-        $this->data[$property] = $value;
-
-        if ($isChanged && true !== isset($this->changedProperties[$property])) {
-            $this->changedProperties[$property] = true;
-            $this->wormProperties[$property] = true;
         }
     }
 
