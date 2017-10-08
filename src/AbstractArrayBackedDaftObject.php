@@ -315,7 +315,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
 
         $out = [];
 
-        foreach (array_keys($array) as $prop) {
+        foreach ($array as $prop => $propVal) {
             if (
                 false === in_array($prop, $jsonProps, true)
             ) {
@@ -323,11 +323,11 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
                     static::class,
                     $prop
                 );
-            } elseif (false === is_null($array[$prop])) {
+            } elseif (false === is_null($propVal)) {
                 if (isset($jsonDef[$prop])) {
                     $jsonType = $jsonDef[$prop];
 
-                    if (false === is_array($array[$prop])) {
+                    if (false === is_array($propVal)) {
                         if ('[]' === mb_substr($jsonType, -2)) {
                             throw new PropertyNotJsonDecodableShouldBeArrayException(
                                 static::class,
@@ -340,7 +340,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
                         );
                     }
                 }
-                $out[$prop] = $array[$prop];
+                $out[$prop] = $propVal;
             }
         }
 
