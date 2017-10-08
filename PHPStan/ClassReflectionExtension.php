@@ -21,7 +21,7 @@ class ClassReflectionExtension implements
     PropertiesClassReflectionExtension
 {
     /**
-    * @var Broker
+    * @var Broker|null
     */
     private $broker;
 
@@ -56,9 +56,14 @@ class ClassReflectionExtension implements
         ClassReflection $classReflection,
         string $propertyName
     ) : PropertyReflection {
+        /**
+        * @var Broker $broker
+        */
+        $broker = $this->broker;
+
         return new PropertyReflectionExtension(
             $classReflection,
-            $this->broker,
+            $broker,
             $propertyName
         );
     }

@@ -89,6 +89,9 @@ class PropertyReflectionExtension implements PropertyReflection
         $getter = 'Get' . ucfirst($propertyName);
         $setter = 'Set' . ucfirst($propertyName);
 
+        $this->readableDeclaringClass = $classReflection;
+        $this->writeableDeclaringClass = $classReflection;
+
         if ($classReflection->getNativeReflection()->hasMethod($getter)) {
             $this->readable = true;
 
