@@ -920,7 +920,6 @@ class DaftObjectImplementationTest extends TestCase
         array $getters,
         array $setters
     ) : void {
-
         $obj = new $className($args);
 
         if (
@@ -998,8 +997,8 @@ class DaftObjectImplementationTest extends TestCase
                 $obj->jsonSerialize();
 
                 return;
-            } else {
-                $this->markTestSkipped(
+            }
+            $this->markTestSkipped(
                     sprintf(
                         '%s does not implement %s or %s::jsonSerialize()',
                         $className,
@@ -1008,8 +1007,7 @@ class DaftObjectImplementationTest extends TestCase
                     )
                 );
 
-                return;
-            }
+            return;
         }
     }
 
