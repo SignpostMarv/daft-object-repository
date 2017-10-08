@@ -999,13 +999,13 @@ class DaftObjectImplementationTest extends TestCase
                 return;
             }
             $this->markTestSkipped(
-                    sprintf(
-                        '%s does not implement %s or %s::jsonSerialize()',
-                        $className,
-                        DaftObject\DaftJson::class,
-                        $className
-                    )
-                );
+                sprintf(
+                    '%s does not implement %s or %s::jsonSerialize()',
+                    $className,
+                    DaftObject\DaftJson::class,
+                    $className
+                )
+            );
 
             return;
         }
