@@ -204,9 +204,7 @@ abstract class AbstractDaftObject implements DaftObject
 
     final protected static function CachePublicGettersAndSetters() : void
     {
-        $refresh = false === isset(self::$publicGetters[static::class]);
-
-        if ($refresh) {
+        if (false === isset(self::$publicGetters[static::class])) {
             self::$publicGetters[static::class] = [];
             self::$publicSetters[static::class] = [];
 
@@ -219,9 +217,7 @@ abstract class AbstractDaftObject implements DaftObject
             ) {
                 self::$publicGetters[static::class][] = 'id';
             }
-        }
 
-        if ($refresh) {
             $classReflection = new ReflectionClass(static::class);
 
             foreach (static::DaftObjectProperties() as $property) {
