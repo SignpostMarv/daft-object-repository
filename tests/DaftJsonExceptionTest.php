@@ -149,7 +149,7 @@ class DaftJsonExceptionTest extends TestCase
 
         $obj = $implementation::DaftObjectFromJsonArray($args, $writeAll);
 
-        foreach (array_keys($args) as $arg) {
+        foreach ($implementation::DaftObjectPublicGetters() as $arg) {
             $obj->$arg;
         }
     }

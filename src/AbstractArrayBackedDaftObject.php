@@ -296,21 +296,10 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
 
     private static function ThrowIfJsonDefNotValid(array $array) : array
     {
-        $jsonProps = [];
+        $jsonProps = static::DaftObjectJsonPropertyNames();
 
         $jsonDef = static::DaftObjectJsonProperties();
         $nullableProps = static::DaftObjectNullableProperties();
-
-        foreach (static::DaftObjectJsonPropertyNames() as $prop) {
-            if (
-                false === array_key_exists($prop, $array) &&
-                false === in_array($prop, $nullableProps, true)
-            ) {
-                throw new PropertyNotNullableException(static::class, $prop);
-            }
-
-            $jsonProps[] = $prop;
-        }
 
         $out = [];
 
