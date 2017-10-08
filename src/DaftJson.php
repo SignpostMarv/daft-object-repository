@@ -18,7 +18,7 @@ interface DaftJson extends DaftObject, JsonSerializable
     /**
     * @return string[]
     */
-    public static function DaftObjectJsonProperties();
+    public static function DaftObjectJsonProperties() : array;
 
     public static function DaftObjectFromJsonArray(
         array $array,
