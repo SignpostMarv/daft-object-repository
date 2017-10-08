@@ -182,13 +182,34 @@ abstract class AbstractDaftObject implements DaftObject
         return static::JSON_PROPERTIES;
     }
 
-    protected static function CachePublicGettersAndSetters() : void
-    {
-        $refreshGetters = false === isset(self::$publicGetters[static::class]);
-        $refreshSetters = false === isset(self::$publicSetters[static::class]);
+    final protected static function HasPublicMethod(
+        ReflectionClass $classReflection,
+        string $method
+    ) : bool {
+        if (
+            $classReflection->hasMethod($method)
+        ) {
+            $methodReflection = new ReflectionMethod(
+                static::class,
+                $method
+            );
 
-        if ($refreshGetters) {
+            return (
+                $methodReflection->isPublic() &&
+                false === $methodReflection->isStatic()
+            );
+        }
+
+        return false;
+    }
+
+    final protected static function CachePublicGettersAndSetters() : void
+    {
+        $refresh = false === isset(self::$publicGetters[static::class]);
+
+        if ($refresh) {
             self::$publicGetters[static::class] = [];
+            self::$publicSetters[static::class] = [];
 
             if (
                 is_a(
@@ -201,42 +222,24 @@ abstract class AbstractDaftObject implements DaftObject
             }
         }
 
-        if ($refreshSetters) {
-            self::$publicSetters[static::class] = [];
-        }
-
-        if ($refreshGetters || $refreshSetters) {
+        if ($refresh) {
             $classReflection = new ReflectionClass(static::class);
 
             foreach (static::DaftObjectProperties() as $property) {
-                $getter = 'Get' . ucfirst($property);
-
-                $setter = 'Set' . ucfirst($property);
-
                 if (
-                    $refreshGetters &&
-                    $classReflection->hasMethod($getter) &&
-                    (
-                        $methodReflection = new ReflectionMethod(
-                            static::class,
-                            $getter
-                        )
-                    )->isPublic() &&
-                    false === $methodReflection->isStatic()
+                    static::HasPublicMethod(
+                        $classReflection,
+                        'Get' . ucfirst($property)
+                    )
                 ) {
                     self::$publicGetters[static::class][] = $property;
                 }
 
                 if (
-                    $refreshSetters &&
-                    $classReflection->hasMethod($setter) &&
-                    (
-                        $methodReflection = new ReflectionMethod(
-                            static::class,
-                            $setter
-                        )
-                    )->isPublic() &&
-                    false === $methodReflection->isStatic()
+                    static::HasPublicMethod(
+                        $classReflection,
+                        'Set' . ucfirst($property)
+                    )
                 ) {
                     self::$publicSetters[static::class][] = $property;
                 }
