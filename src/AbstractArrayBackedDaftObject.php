@@ -303,10 +303,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
 
         foreach (static::DaftObjectJsonPropertyNames() as $prop) {
             if (
-                (
-                    false === isset($array[$prop]) ||
-                    is_null($array[$prop])
-                ) &&
+                false === array_key_exists($prop, $array) &&
                 false === in_array($prop, $nullableProps, true)
             ) {
                 throw new PropertyNotNullableException(static::class, $prop);
