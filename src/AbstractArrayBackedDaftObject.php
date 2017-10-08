@@ -230,7 +230,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     /**
     * @param mixed $propVal
     *
-    * @return DaftJson|DaftJson[]
+    * @return DaftJson
     */
     protected static function DaftObjectFromJsonType(
         string $jsonType,
@@ -242,6 +242,9 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         return static::ArrayToJsonType($jsonType, $propVal, $writeAll);
     }
 
+    /**
+    * @return DaftJson[]
+    */
     protected static function DaftObjectFromJsonTypeArray(
         string $jsonType,
         string $prop,
