@@ -333,16 +333,6 @@ abstract class AbstractDaftObject implements DaftObject
         string $notPublic,
         $v = null
     ) {
-        if (
-            (
-                'id' !== $property ||
-                false === ($this instanceof DefinesOwnIdPropertiesInterface)
-            ) &&
-            false === in_array($property, static::DaftObjectProperties(), true)
-        ) {
-            throw new UndefinedPropertyException(static::class, $property);
-        }
-
         $expectedMethod = static::DaftObjectMethodNameFromProperty(
             $property,
             $SetNotGet
@@ -362,6 +352,15 @@ abstract class AbstractDaftObject implements DaftObject
                 )
             )
         ) {
+            if (
+                false === in_array(
+                    $property,
+                    static::DaftObjectProperties(),
+                    true
+                )
+            ) {
+                throw new UndefinedPropertyException(static::class, $property);
+            }
             throw new $notPublic(
                 static::class,
                 $property
