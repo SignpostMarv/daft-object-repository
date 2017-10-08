@@ -176,6 +176,18 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         return static::DaftObjectFromJsonArray(json_decode($string, true));
     }
 
+    public function DaftObjectWormPropertyWritten(string $property) : bool
+    {
+        $wormProperties = $this->wormProperties;
+
+        return
+            ($this instanceof DaftObjectWorm) &&
+            (
+                $this->HasPropertyChanged($property) ||
+                false === empty($wormProperties[$property])
+            );
+    }
+
     /**
     * @param mixed $propVal
     *
@@ -264,18 +276,6 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
             $this->changedProperties[$property] = true;
             $this->wormProperties[$property] = true;
         }
-    }
-
-    public function DaftObjectWormPropertyWritten(string $property) : bool
-    {
-        $wormProperties = $this->wormProperties;
-        return (
-            ($this instanceof DaftObjectWorm) &&
-            (
-                $this->HasPropertyChanged($property) ||
-                false === empty($wormProperties[$property])
-            )
-        );
     }
 
     /**
