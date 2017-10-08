@@ -296,14 +296,10 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         $nullableProps = static::DaftObjectNullableProperties();
 
         foreach ($jsonDef as $k => $v) {
+            $prop = $v;
             if (is_string($k)) {
-                $jsonProps[] = $k;
-            } else {
-                $jsonProps[] = $v;
+                $prop = $k;
             }
-        }
-
-        foreach ($jsonProps as $prop) {
             if (
                 (
                     false === isset($array[$prop]) ||
@@ -313,6 +309,8 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
             ) {
                 throw new PropertyNotNullableException(static::class, $prop);
             }
+
+            $jsonProps[] = $prop;
         }
 
         $out = [];
