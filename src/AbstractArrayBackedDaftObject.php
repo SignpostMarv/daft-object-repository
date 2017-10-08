@@ -178,12 +178,35 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
             } elseif (is_null($array[$prop])) {
                 continue;
             } elseif (isset($jsonDef[$prop])) {
+                $jsonType = $jsonDef[$prop];
+
+                if ('[]' === mb_substr($jsonType, -2)) {
+                    if (false === is_array($array[$prop])) {
+                        throw new PropertyNotJsonDecodableShouldBeArrayException(
+                            static::class,
+                            $prop
+                        );
+                    }
+
+                    $in[$prop] = static::DaftObjectFromJsonTypeArray(
+                        mb_substr($jsonType, 0, -2),
+                        $prop,
+                        $array[$prop],
+                        $writeAll
+                    );
+                } elseif (false === is_array($array[$prop])) {
+                    throw new PropertyNotJsonDecodableShouldBeArrayException(
+                        (string) $jsonType,
+                        $prop
+                    );
+                } else {
+
                 $in[$prop] = static::DaftObjectFromJsonType(
-                    $prop,
-                    $jsonDef[$prop],
+                    $jsonType,
                     $array[$prop],
                     $writeAll
                 );
+                }
             } else {
                 $in[$prop] = $array[$prop];
             }
@@ -205,72 +228,71 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         return static::DaftObjectFromJsonArray(json_decode($string, true));
     }
 
+    private static function ThrowIfNotJsonType(string $jsonType) : void
+    {
+        if (false === is_a($jsonType, DaftJson::class, true)) {
+            throw new ClassDoesNotImplementClassException(
+                $jsonType,
+                DaftJson::class
+            );
+        }
+    }
+
+    private static function ArrayToJsonType(
+        string $jsonType,
+        array $propVal,
+        bool $writeAll
+    ) : DaftJson {
+        /**
+        * @var DaftJson $jsonType
+        */
+        $jsonType = $jsonType;
+
+            return $jsonType::DaftObjectFromJsonArray(
+                $propVal,
+                $writeAll
+            );
+    }
+
     /**
     * @param mixed $propVal
     *
     * @return DaftJson|DaftJson[]
     */
     protected static function DaftObjectFromJsonType(
-        string $prop,
         string $jsonType,
-        $propVal,
+        array $propVal,
         bool $writeAll
     ) {
-        $isArray = false;
-        if ('[]' === mb_substr($jsonType, -2)) {
-            $isArray = true;
-            $jsonType = mb_substr($jsonType, 0, -2);
-        }
+        static::ThrowIfNotJsonType($jsonType);
+        return static::ArrayToJsonType($jsonType, $propVal, $writeAll);
+    }
 
-        if ($isArray && false === is_array($propVal)) {
-            throw new PropertyNotJsonDecodableShouldBeArrayException(
-                static::class,
-                $prop
-            );
-        } elseif (false === is_a($jsonType, DaftJson::class, true)) {
-            throw new ClassDoesNotImplementClassException(
-                $jsonType,
-                DaftJson::class
-            );
-        }
+    protected static function DaftObjectFromJsonTypeArray(
+        string $jsonType,
+        string $prop,
+        array $propVal,
+        bool $writeAll
+    ) : array {
+        static::ThrowIfNotJsonType($jsonType);
 
-        /**
-        * @var DaftJson $jsonType
-        */
-        $jsonType = $jsonType;
+        $out = [];
 
-        if ($isArray) {
-            /**
-            * @var DaftJson[] $out
-            */
-            $out = [];
-
-            foreach ($propVal as $i => $val) {
-                if (is_array($val)) {
-                    $out[] = $jsonType::DaftObjectFromJsonArray(
-                        $val,
-                        $writeAll
-                    );
-                } else {
-                    throw new PropertyNotJsonDecodableShouldBeArrayException(
-                        (string) $jsonType,
-                        ($prop . '[' . $i . ']')
-                    );
-                }
+        foreach ($propVal as $val) {
+            if (false === is_array($val)) {
+                throw new PropertyNotJsonDecodableShouldBeArrayException(
+                    $jsonType,
+                    $prop
+                );
             }
-
-            return $out;
-        } elseif (is_array($propVal)) {
-            return $jsonType::DaftObjectFromJsonArray(
-                $propVal,
+            $out[] = static::ArrayToJsonType(
+                $jsonType,
+                $val,
                 $writeAll
             );
         }
 
-        throw new PropertyNotJsonDecodableShouldBeArrayException(
-            (string) $jsonType,
-            $prop
-        );
+        return $out;
     }
 
     /**
