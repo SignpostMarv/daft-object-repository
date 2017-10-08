@@ -227,32 +227,6 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         return static::DaftObjectFromJsonArray(json_decode($string, true));
     }
 
-    private static function ThrowIfNotJsonType(string $jsonType) : void
-    {
-        if (false === is_a($jsonType, DaftJson::class, true)) {
-            throw new ClassDoesNotImplementClassException(
-                $jsonType,
-                DaftJson::class
-            );
-        }
-    }
-
-    private static function ArrayToJsonType(
-        string $jsonType,
-        array $propVal,
-        bool $writeAll
-    ) : DaftJson {
-        /**
-        * @var DaftJson $jsonType
-        */
-        $jsonType = $jsonType;
-
-        return $jsonType::DaftObjectFromJsonArray(
-            $propVal,
-            $writeAll
-        );
-    }
-
     /**
     * @param mixed $propVal
     *
@@ -264,6 +238,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         bool $writeAll
     ) {
         static::ThrowIfNotJsonType($jsonType);
+
         return static::ArrayToJsonType($jsonType, $propVal, $writeAll);
     }
 
@@ -358,6 +333,32 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
             $this->changedProperties[$property] = true;
             $this->wormProperties[$property] = true;
         }
+    }
+
+    private static function ThrowIfNotJsonType(string $jsonType) : void
+    {
+        if (false === is_a($jsonType, DaftJson::class, true)) {
+            throw new ClassDoesNotImplementClassException(
+                $jsonType,
+                DaftJson::class
+            );
+        }
+    }
+
+    private static function ArrayToJsonType(
+        string $jsonType,
+        array $propVal,
+        bool $writeAll
+    ) : DaftJson {
+        /**
+        * @var DaftJson $jsonType
+        */
+        $jsonType = $jsonType;
+
+        return $jsonType::DaftObjectFromJsonArray(
+            $propVal,
+            $writeAll
+        );
     }
 
     private static function ThrowIfNotDaftJson() : void
