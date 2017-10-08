@@ -200,12 +200,11 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
                         $prop
                     );
                 } else {
-
-                $in[$prop] = static::DaftObjectFromJsonType(
-                    $jsonType,
-                    $array[$prop],
-                    $writeAll
-                );
+                    $in[$prop] = static::DaftObjectFromJsonType(
+                        $jsonType,
+                        $array[$prop],
+                        $writeAll
+                    );
                 }
             } else {
                 $in[$prop] = $array[$prop];
@@ -248,10 +247,10 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         */
         $jsonType = $jsonType;
 
-            return $jsonType::DaftObjectFromJsonArray(
-                $propVal,
-                $writeAll
-            );
+        return $jsonType::DaftObjectFromJsonArray(
+            $propVal,
+            $writeAll
+        );
     }
 
     /**
