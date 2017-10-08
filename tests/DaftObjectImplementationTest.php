@@ -1131,6 +1131,10 @@ class DaftObjectImplementationTest extends TestCase
 
             $exportables = $className::DaftObjectExportableProperties();
 
+            $propertyNames = $className::DaftObjectJsonPropertyNames();
+
+            $jsonProps = [];
+
             foreach ($className::DaftObjectJsonProperties() as $k => $v) {
                 $prop = $v;
 
@@ -1198,6 +1202,44 @@ class DaftObjectImplementationTest extends TestCase
                             '%s::DaftObjectJsonProperties() must also be' .
                             ' ' .
                             'listed in %s::DaftObjectExportableProperties()'
+                        ),
+                        $className,
+                        $className
+                    )
+                );
+
+                $this->assertContains(
+                    $prop,
+                    $propertyNames,
+                    sprintf(
+                        (
+                            'Properties listed in' .
+                            ' ' .
+                            '%s::DaftObjectJsonProperties() must also be' .
+                            ' ' .
+                            'listed in %s::DaftObjectJsonPropertyNames()'
+                        ),
+                        $className,
+                        $className
+                    )
+                );
+
+                $jsonProps[] = $prop;
+            }
+
+            foreach ($propertyNames as $prop) {
+                $this->assertContains(
+                    $prop,
+                    $propertyNames,
+                    sprintf(
+                        (
+                            'Properties listed in' .
+                            ' ' .
+                            '%s::DaftObjectJsonPropertyNames() must also be' .
+                            ' ' .
+                            'listed or referenced in' .
+                            ' ' .
+                            '%s::DaftObjectJsonProperties()'
                         ),
                         $className,
                         $className

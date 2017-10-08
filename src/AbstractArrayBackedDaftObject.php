@@ -104,12 +104,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
 
         $out = [];
 
-        foreach (static::DaftObjectJsonProperties() as $k => $v) {
-            $property = $v;
-            if (is_string($k)) {
-                $property = $k;
-            }
-
+        foreach (static::DaftObjectJsonPropertyNames() as $property) {
             $val = $this->DoGetSet(
                 $property,
                 false,
@@ -306,11 +301,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         $jsonDef = static::DaftObjectJsonProperties();
         $nullableProps = static::DaftObjectNullableProperties();
 
-        foreach ($jsonDef as $k => $v) {
-            $prop = $v;
-            if (is_string($k)) {
-                $prop = $k;
-            }
+        foreach (static::DaftObjectJsonPropertyNames() as $prop) {
             if (
                 (
                     false === isset($array[$prop]) ||

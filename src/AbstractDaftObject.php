@@ -182,6 +182,24 @@ abstract class AbstractDaftObject implements DaftObject
         return static::JSON_PROPERTIES;
     }
 
+    /**
+    * {@inheritdoc}
+    */
+    final public static function DaftObjectJsonPropertyNames() : array
+    {
+        $out = [];
+
+        foreach (static::DaftObjectJsonProperties() as $k => $prop) {
+            if (is_string($k)) {
+                $prop = $k;
+            }
+
+            $out[] = $prop;
+        }
+
+        return $out;
+    }
+
     final protected static function HasPublicMethod(
         ReflectionClass $classReflection,
         string $method
