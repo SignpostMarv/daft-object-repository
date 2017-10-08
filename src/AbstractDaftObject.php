@@ -177,15 +177,6 @@ abstract class AbstractDaftObject implements DaftObject
         return static::JSON_PROPERTIES;
     }
 
-    protected static function ThrowIfNotDaftJson() : void
-    {
-        if (false === is_a(static::class, DaftJson::class, true)) {
-            throw new DaftObjectNotDaftJsonBadMethodCallException(
-                static::class
-            );
-        }
-    }
-
     /**
     * {@inheritdoc}
     */
@@ -202,6 +193,15 @@ abstract class AbstractDaftObject implements DaftObject
         }
 
         return $out;
+    }
+
+    protected static function ThrowIfNotDaftJson() : void
+    {
+        if (false === is_a(static::class, DaftJson::class, true)) {
+            throw new DaftObjectNotDaftJsonBadMethodCallException(
+                static::class
+            );
+        }
     }
 
     final protected static function HasPublicMethod(
