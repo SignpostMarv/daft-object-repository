@@ -320,11 +320,6 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
 
         foreach (array_keys($array) as $prop) {
             if (
-                false === in_array($prop, $props, true) &&
-                false === isset($jsonDef[$prop])
-            ) {
-                throw new UndefinedPropertyException(static::class, $prop);
-            } elseif (
                 false === in_array($prop, $jsonProps, true)
             ) {
                 throw new PropertyNotJsonDecodableException(
