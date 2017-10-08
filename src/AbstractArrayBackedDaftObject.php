@@ -134,22 +134,12 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
 
         foreach (array_keys($array) as $prop) {
             if (isset($jsonDef[$prop])) {
-                $jsonType = $jsonDef[$prop];
-
-                if ('[]' === mb_substr($jsonType, -2)) {
-                    $in[$prop] = static::DaftObjectFromJsonTypeArray(
-                        mb_substr($jsonType, 0, -2),
-                        $prop,
-                        $array[$prop],
-                        $writeAll
-                    );
-                } else {
-                    $in[$prop] = static::DaftObjectFromJsonType(
-                        $jsonType,
-                        $array[$prop],
-                        $writeAll
-                    );
-                }
+                $in[$prop] = static::DaftObjectFromJsonArrayTyped(
+                    $jsonDef[$prop],
+                    $prop,
+                    $array,
+                    $writeAll
+                );
             } else {
                 $in[$prop] = $array[$prop];
             }
@@ -161,6 +151,31 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         $out = new static($in, $writeAll);
 
         return $out;
+    }
+
+    /**
+    * @return DaftJson|DaftJson[]
+    */
+    final protected static function DaftObjectFromJsonArrayTyped(
+        string $jsonType,
+        string $prop,
+        array $array,
+        bool $writeAll = false
+    ) {
+                if ('[]' === mb_substr($jsonType, -2)) {
+                    return static::DaftObjectFromJsonTypeArray(
+                        mb_substr($jsonType, 0, -2),
+                        $prop,
+                        $array[$prop],
+                        $writeAll
+                    );
+                } else {
+                    return static::DaftObjectFromJsonType(
+                        $jsonType,
+                        $array[$prop],
+                        $writeAll
+                    );
+                }
     }
 
     public static function DaftObjectFromJsonString(string $string) : DaftJson
