@@ -314,11 +314,6 @@ class DaftTestObjectTest extends TestCase
     ) : void {
         $obj = new $implementation($params, $writeable);
 
-        /**
-        * @var DaftObject $implementation
-        */
-        $implementation = $implementation;
-
         if (true === $readable) {
             $this->assertSame(
                 ($writeable ? count($params) : 0),
@@ -332,7 +327,7 @@ class DaftTestObjectTest extends TestCase
                     $params[$k],
                     $obj->$getterMethod(),
                     (
-                        (string) $implementation .
+                        $implementation .
                         '::' .
                         $getterMethod .
                         '() does not match supplied $params'
@@ -342,7 +337,7 @@ class DaftTestObjectTest extends TestCase
                     $params[$k],
                     $obj->$k,
                     (
-                        (string) $implementation .
+                        $implementation .
                         '::$' .
                         $k .
                         ' does not match supplied $params'
@@ -353,7 +348,7 @@ class DaftTestObjectTest extends TestCase
                     (is_null($params[$k]) ? false : true),
                     isset($obj->$k),
                     (
-                        (string) $implementation .
+                        $implementation .
                         '::$' .
                         $k .
                         ' was not found as ' .
@@ -368,7 +363,7 @@ class DaftTestObjectTest extends TestCase
                 $writeable,
                 $obj->HasPropertyChanged($property),
                 (
-                    (string) $implementation .
+                    $implementation .
                     '::$' .
                     $property .
                     ' was' .

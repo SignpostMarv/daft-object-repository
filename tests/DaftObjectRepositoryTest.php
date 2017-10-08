@@ -192,13 +192,8 @@ class DaftObjectRepositoryTest extends TestCase
             );
         }
 
-        /**
-        * @var DefinesOwnIdPropertiesInterface $objImplementation
-        */
-        $objImplementation = $objImplementation;
-
         $repo = static::DaftObjectRepositoryByType(
-            (string) $objImplementation
+            $objImplementation
         );
 
         $idProps = [];
@@ -291,7 +286,14 @@ class DaftObjectRepositoryTest extends TestCase
             */
             $retrieved = $repo->RecallDaftObject($ids);
 
-            $this->assertInstanceOf((string) $objImplementation, $retrieved);
+            $this->assertTrue(
+                is_a($retrieved, $objImplementation, true),
+                (
+                    get_class($repo) .
+                    '::RecallDaftObject() must return an implementation of ' .
+                    $objImplementation
+                )
+            );
 
             foreach ($objImplementation::DaftObjectProperties() as $prop) {
                 if (

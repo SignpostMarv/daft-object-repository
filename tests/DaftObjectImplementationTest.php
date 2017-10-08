@@ -345,11 +345,6 @@ class DaftObjectImplementationTest extends TestCase
         string $className,
         ReflectionClass $reflector
     ) : void {
-        /**
-        * @var DaftObject\DaftObject $className
-        */
-        $className = $className;
-
         $properties = $className::DaftObjectProperties();
 
         foreach ($properties as $property) {
@@ -357,7 +352,7 @@ class DaftObjectImplementationTest extends TestCase
                 'string',
                 $property,
                 (
-                    (string) $className .
+                    $className .
                     '::DaftObjectProperties()' .
                     ' must return an array of strings'
                 )
@@ -371,17 +366,12 @@ class DaftObjectImplementationTest extends TestCase
                 true
             )
         ) {
-            /**
-            * @var DaftObject\DefinesOwnIdPropertiesInterface $className
-            */
-            $className = $className;
-
             foreach ($className::DaftObjectIdProperties() as $property) {
                 $this->assertInternalType(
                     'string',
                     $property,
                     (
-                        (string) $className .
+                        $className .
                         '::DaftObjectIdProperties()' .
                         ' must return an array of strings'
                     )
@@ -389,11 +379,11 @@ class DaftObjectImplementationTest extends TestCase
                 $this->assertTrue(
                     in_array($property, $properties, true),
                     (
-                        (string) $className .
+                        $className .
                         '::DaftObjectIdProperties() defines as property (' .
                         $property .
                         ') that is not defined on ' .
-                        (string) $className .
+                        $className .
                         '::DaftObjectProperties()'
                     )
                 );
@@ -410,11 +400,6 @@ class DaftObjectImplementationTest extends TestCase
         string $className,
         ReflectionClass $reflector
     ) : void {
-        /**
-        * @var DaftObject\DaftObject $className
-        */
-        $className = $className;
-
         $nullables = $className::DaftObjectNullableProperties();
 
         foreach ($nullables as $nullable) {
@@ -422,7 +407,7 @@ class DaftObjectImplementationTest extends TestCase
                 'string',
                 $nullable,
                 (
-                    (string) $className .
+                    $className .
                     '::DaftObjectNullableProperties()' .
                     ' must return an array of strings'
                 )
@@ -435,13 +420,13 @@ class DaftObjectImplementationTest extends TestCase
             $this->assertTrue(
                 in_array($nullable, $properties, true),
                 (
-                    (string) $className .
+                    $className .
                     '::DaftObjectNullableProperties()' .
                     ' ' .
                     'a nullable property (' .
                     $nullable .
                     ') that was not defined as a property on ' .
-                    (string) $className .
+                    $className .
                     '::DaftObjectProperties()'
                 )
             );
@@ -457,11 +442,6 @@ class DaftObjectImplementationTest extends TestCase
         string $className,
         ReflectionClass $reflector
     ) : void {
-        /**
-        * @var DaftObject\DaftObject $className
-        */
-        $className = $className;
-
         $exportables = $className::DaftObjectExportableProperties();
 
         foreach ($exportables as $exportable) {
@@ -469,7 +449,7 @@ class DaftObjectImplementationTest extends TestCase
                 'string',
                 $exportable,
                 (
-                    (string) $className .
+                    $className .
                     '::DaftObjectExportableProperties()' .
                     ' must return an array of strings'
                 )
@@ -482,13 +462,13 @@ class DaftObjectImplementationTest extends TestCase
             $this->assertTrue(
                 in_array($exportable, $properties, true),
                 (
-                    (string) $className .
+                    $className .
                     '::DaftObjectNullableProperties()' .
                     ' ' .
                     'a nullable property (' .
                     $exportable .
                     ') that was not defined as a property on ' .
-                    (string) $className .
+                    $className .
                     '::DaftObjectProperties()'
                 )
             );
@@ -505,11 +485,6 @@ class DaftObjectImplementationTest extends TestCase
         string $className,
         ReflectionClass $reflector
     ) : void {
-        /**
-        * @var DaftObject\DaftObject $className
-        */
-        $className = $className;
-
         $properties = $className::DaftObjectProperties();
 
         $nullables = $className::DaftObjectNullableProperties();
@@ -532,9 +507,9 @@ class DaftObjectImplementationTest extends TestCase
             $this->assertTrue(
                 $hasAny,
                 (
-                    (string) $className .
+                    $className .
                     ' must implement at least a getter or setter for ' .
-                    (string) $className .
+                    $className .
                     '::$' .
                     $property
                 )
@@ -563,9 +538,9 @@ class DaftObjectImplementationTest extends TestCase
             $this->assertTrue(
                 $anyPublic,
                 (
-                    (string) $className .
+                    $className .
                     ' must implement at least a public getter or setter for ' .
-                    (string) $className .
+                    $className .
                     '::$' .
                     $property
                 )
@@ -721,11 +696,6 @@ class DaftObjectImplementationTest extends TestCase
         string $className,
         ReflectionMethod $reflector
     ) : void {
-        /**
-        * @var DaftObject\DaftObject $className
-        */
-        $className = $className;
-
         $property = mb_substr($reflector->getName(), 3);
 
         $properties = $className::DaftObjectProperties();
@@ -764,7 +734,7 @@ class DaftObjectImplementationTest extends TestCase
                     '::' .
                     $reflector->getName() .
                     '() was not defined in ' .
-                    (string) $className .
+                    $className .
                     '::DaftObjectProperties()'
                 )
             );
@@ -796,18 +766,13 @@ class DaftObjectImplementationTest extends TestCase
             return;
         }
 
-        /**
-        * @var DaftObject\DaftObject $className
-        */
-        $className = $className;
-
         $obj = new $className($args);
 
         $this->assertSame(
             0,
             count($obj->ChangedProperties()),
             (
-                (string) $className .
+                $className .
                 '::ChangedProperties() must be empty after instantiation'
             )
         );
@@ -818,7 +783,7 @@ class DaftObjectImplementationTest extends TestCase
             0,
             count($obj->ChangedProperties()),
             (
-                (string) $className .
+                $className .
                 '::ChangedProperties() must be empty after instantiation'
             )
         );
@@ -829,7 +794,7 @@ class DaftObjectImplementationTest extends TestCase
             $this->assertFalse(
                 $obj->HasPropertyChanged($property),
                 (
-                    (string) $className .
+                    $className .
                     '::$' .
                     $property .
                     ' should not be marked as changed' .
@@ -843,7 +808,7 @@ class DaftObjectImplementationTest extends TestCase
                 $this->assertTrue(
                     $obj->HasPropertyChanged($property),
                     (
-                        (string) $className .
+                        $className .
                         '::$' .
                         $property .
                         ' should be marked as changed.'
@@ -855,11 +820,11 @@ class DaftObjectImplementationTest extends TestCase
                 $this->assertFalse(
                     $obj->HasPropertyChanged($property),
                     (
-                        (string) $className .
+                        $className .
                         '::$' .
                         $property .
                         ' should be marked as unchanged after calling ' .
-                        (string) $className .
+                        $className .
                         '::MakePropertiesUnchanged()'
                     )
                 );
@@ -895,7 +860,7 @@ class DaftObjectImplementationTest extends TestCase
             $this->assertTrue(
                 in_array($property, $obj->ChangedProperties(), true),
                 (
-                    (string) $className .
+                    $className .
                     '::ChangedProperties() must contain changed properties'
                 )
             );
@@ -913,11 +878,11 @@ class DaftObjectImplementationTest extends TestCase
                     $this->assertTrue(
                         isset($obj->$property),
                         (
-                            (string) $className .
+                            $className .
                             '::__isset(' .
                             $property .
                             ') must return true after ' .
-                            (string) $className .
+                            $className .
                             '::$' .
                             $property .
                             ' has been set'
@@ -933,7 +898,7 @@ class DaftObjectImplementationTest extends TestCase
                     null,
                     $obj->$property,
                     (
-                        (string) $className .
+                        $className .
                         '::$' .
                         $property .
                         ' must be null after being unset'
@@ -955,38 +920,12 @@ class DaftObjectImplementationTest extends TestCase
         array $getters,
         array $setters
     ) : void {
-        /**
-        * @var DaftObject\DaftObject $className
-        */
-        $className = $className;
 
         $obj = new $className($args);
 
         if (
-            false === ($obj instanceof DaftObject\DaftJson)
+            ($obj instanceof DaftObject\DaftJson)
         ) {
-            if (method_exists($obj, 'jsonSerialize')) {
-                $this->expectException(DaftObject\DaftObjectNotDaftJsonBadMethodCallException::class);
-                $this->expectExceptionMessage(
-                    sprintf(
-                        '%s does not implement %s',
-                        (string) $className,
-                        DaftObject\DaftJson::class
-                    )
-                );
-            } else {
-                $this->markTestSkipped(
-                    sprintf(
-                        '%s does not implement %s or %s::jsonSerialize()',
-                        (string) $className,
-                        DaftObject\DaftJson::class,
-                        (string) $className
-                    )
-                );
-
-                return;
-            }
-        }
 
         $obj->jsonSerialize();
 
@@ -1003,15 +942,10 @@ class DaftObjectImplementationTest extends TestCase
             $json,
             (
                 'Instances of ' .
-                (string) $className .
+                $className .
                 ' should resolve to a string when passed to json_encode()'
             )
         );
-
-        /**
-        * @var DaftObject\DaftJson $className
-        */
-        $className = $className;
 
         $decoded = json_decode((string) $json, true);
 
@@ -1022,7 +956,7 @@ class DaftObjectImplementationTest extends TestCase
                 'JSON-encoded implementations of ' .
                 DaftObject\DaftJson::class .
                 ' (' .
-                (string) $className .
+                $className .
                 ')' .
                 ' must decode to an array!'
             )
@@ -1051,6 +985,33 @@ class DaftObjectImplementationTest extends TestCase
                 ' must encode($obj) the same as encode(decode($str))'
             )
         );
+        } else {
+            if (method_exists($obj, 'jsonSerialize')) {
+                $this->expectException(DaftObject\DaftObjectNotDaftJsonBadMethodCallException::class);
+                $this->expectExceptionMessage(
+                    sprintf(
+                        '%s does not implement %s',
+                        $className,
+                        DaftObject\DaftJson::class
+                    )
+                );
+
+                $obj->jsonSerialize();
+
+                return;
+            } else {
+                $this->markTestSkipped(
+                    sprintf(
+                        '%s does not implement %s or %s::jsonSerialize()',
+                        $className,
+                        DaftObject\DaftJson::class,
+                        $className
+                    )
+                );
+
+                return;
+            }
+        }
     }
 
     /**
@@ -1190,7 +1151,7 @@ class DaftObjectImplementationTest extends TestCase
                                 ' or ' .
                                 'array<string, string>'
                             ),
-                            (string) $className
+                            $className
                         )
                     );
 
@@ -1208,7 +1169,7 @@ class DaftObjectImplementationTest extends TestCase
                                 ' ' .
                                 'the value must refer to a class.'
                             ),
-                            (string) $className
+                            $className
                         )
                     );
 
@@ -1222,7 +1183,7 @@ class DaftObjectImplementationTest extends TestCase
                                 ' ' .
                                 'the value must be an implementation of %s'
                             ),
-                            (string) $className,
+                            $className,
                             DaftObject\DaftJson::class
                         )
                     );
@@ -1241,8 +1202,8 @@ class DaftObjectImplementationTest extends TestCase
                             ' ' .
                             'listed in %s::DaftObjectExportableProperties()'
                         ),
-                        (string) $className,
-                        (string) $className
+                        $className,
+                        $className
                     )
                 );
             }
@@ -1257,7 +1218,7 @@ class DaftObjectImplementationTest extends TestCase
             $this->expectExceptionMessage(
                 sprintf(
                     '%s does not implement %s',
-                    (string) $className,
+                    $className,
                     DaftObject\DaftJson::class
                 )
             );
