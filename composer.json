@@ -26,14 +26,12 @@
     },
     "scripts": {
         "tests": [
-            "composer install",
             "php ./vendor/phpunit/phpunit/phpunit",
             "php ./vendor/phpstan/phpstan/bin/phpstan analyse -l7 .php_cs.dist src tests",
             "php ./vendor/vimeo/psalm/bin/psalm",
             "php ./vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --verbose --allow-risky=yes --dry-run"
         ],
         "check-coverage-on-tests": [
-            "composer install",
             "php ./vendor/phpunit/phpunit/phpunit -vc ./phpunit-coverage-on-tests.xml"
         ]
     },
