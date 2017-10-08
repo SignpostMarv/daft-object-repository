@@ -194,10 +194,9 @@ abstract class AbstractDaftObject implements DaftObject
                 $method
             );
 
-            return (
+            return
                 $methodReflection->isPublic() &&
-                false === $methodReflection->isStatic()
-            );
+                false === $methodReflection->isStatic();
         }
 
         return false;
