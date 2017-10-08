@@ -125,73 +125,6 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         return $out;
     }
 
-    private static function ThrowIfJsonDefNotValid(array $array) : array
-    {
-        $jsonProps = [];
-
-        $props = static::DaftObjectJsonProperties();
-        $jsonDef = static::DaftObjectJsonProperties();
-        $nullableProps = static::DaftObjectNullableProperties();
-
-        foreach ($jsonDef as $k => $v) {
-            if (is_string($k)) {
-                $jsonProps[] = $k;
-            } else {
-                $jsonProps[] = $v;
-            }
-        }
-
-        foreach ($jsonProps as $prop) {
-            if (
-                (
-                    false === isset($array[$prop]) ||
-                    is_null($array[$prop])
-                ) &&
-                false === in_array($prop, $nullableProps, true)
-            ) {
-                throw new PropertyNotNullableException(static::class, $prop);
-            }
-        }
-
-        $out = [];
-
-        foreach (array_keys($array) as $prop) {
-            if (
-                false === in_array($prop, $props, true) &&
-                false === isset($jsonDef[$prop])
-            ) {
-                throw new UndefinedPropertyException(static::class, $prop);
-            } elseif (
-                false === in_array($prop, $jsonProps, true)
-            ) {
-                throw new PropertyNotJsonDecodableException(
-                    static::class,
-                    $prop
-                );
-            } elseif (false === is_null($array[$prop])) {
-                if (isset($jsonDef[$prop])) {
-                    $jsonType = $jsonDef[$prop];
-
-                    if (false === is_array($array[$prop])) {
-                        if ('[]' === mb_substr($jsonType, -2)) {
-                            throw new PropertyNotJsonDecodableShouldBeArrayException(
-                                static::class,
-                                $prop
-                            );
-                        }
-                        throw new PropertyNotJsonDecodableShouldBeArrayException(
-                            $jsonType,
-                            $prop
-                        );
-                    }
-                }
-                $out[$prop] = $array[$prop];
-            }
-        }
-
-        return $out;
-    }
-
     /**
     * {@inheritdoc}
     */
@@ -353,6 +286,73 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
             $this->changedProperties[$property] = true;
             $this->wormProperties[$property] = true;
         }
+    }
+
+    private static function ThrowIfJsonDefNotValid(array $array) : array
+    {
+        $jsonProps = [];
+
+        $props = static::DaftObjectJsonProperties();
+        $jsonDef = static::DaftObjectJsonProperties();
+        $nullableProps = static::DaftObjectNullableProperties();
+
+        foreach ($jsonDef as $k => $v) {
+            if (is_string($k)) {
+                $jsonProps[] = $k;
+            } else {
+                $jsonProps[] = $v;
+            }
+        }
+
+        foreach ($jsonProps as $prop) {
+            if (
+                (
+                    false === isset($array[$prop]) ||
+                    is_null($array[$prop])
+                ) &&
+                false === in_array($prop, $nullableProps, true)
+            ) {
+                throw new PropertyNotNullableException(static::class, $prop);
+            }
+        }
+
+        $out = [];
+
+        foreach (array_keys($array) as $prop) {
+            if (
+                false === in_array($prop, $props, true) &&
+                false === isset($jsonDef[$prop])
+            ) {
+                throw new UndefinedPropertyException(static::class, $prop);
+            } elseif (
+                false === in_array($prop, $jsonProps, true)
+            ) {
+                throw new PropertyNotJsonDecodableException(
+                    static::class,
+                    $prop
+                );
+            } elseif (false === is_null($array[$prop])) {
+                if (isset($jsonDef[$prop])) {
+                    $jsonType = $jsonDef[$prop];
+
+                    if (false === is_array($array[$prop])) {
+                        if ('[]' === mb_substr($jsonType, -2)) {
+                            throw new PropertyNotJsonDecodableShouldBeArrayException(
+                                static::class,
+                                $prop
+                            );
+                        }
+                        throw new PropertyNotJsonDecodableShouldBeArrayException(
+                            $jsonType,
+                            $prop
+                        );
+                    }
+                }
+                $out[$prop] = $array[$prop];
+            }
+        }
+
+        return $out;
     }
 
     private static function ThrowIfNotJsonType(string $jsonType) : void
