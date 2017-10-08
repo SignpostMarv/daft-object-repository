@@ -161,11 +161,10 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
             }
         }
 
+        /**
+        * @var DaftJson $out
+        */
         $out = new static($in, $writeAll);
-
-        if ( ! ($out instanceof DaftJson)) { // here to trick phpstan
-            exit;
-        }
 
         return $out;
     }
