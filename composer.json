@@ -17,6 +17,7 @@
     "autoload-dev": {
         "psr-4": {
             "SignpostMarv\\DaftObject\\": "./tests-src/",
+            "SignpostMarv\\DaftObject\\PHPStan\\": "./PHPStan/",
             "SignpostMarv\\DaftObject\\Tests\\": "./tests/"
         }
     },
@@ -27,7 +28,7 @@
     "scripts": {
         "tests": [
             "php ./vendor/phpunit/phpunit/phpunit",
-            "php ./vendor/phpstan/phpstan/bin/phpstan analyse -l7 .php_cs.dist src tests",
+            "php ./vendor/phpstan/phpstan/bin/phpstan analyse -c ./phpstan.neon -- .php_cs.dist src tests",
             "php ./vendor/vimeo/psalm/bin/psalm",
             "php ./vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --verbose --allow-risky=yes --dry-run"
         ],
