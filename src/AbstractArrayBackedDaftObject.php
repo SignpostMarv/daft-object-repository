@@ -182,19 +182,29 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         bool $writeAll = false
     ) {
         if ('[]' === mb_substr($jsonType, -2)) {
-            return static::DaftObjectFromJsonTypeArray(
+            /**
+            * @var DaftJson[] $out
+            */
+            $out = static::DaftObjectFromJsonTypeArray(
                 mb_substr($jsonType, 0, -2),
                 $prop,
                 $array[$prop],
                 $writeAll
             );
+
+            return $out;
         }
 
-        return static::DaftObjectFromJsonType(
+        /**
+        * @var DaftJson $out
+        */
+        $out = static::DaftObjectFromJsonType(
             $jsonType,
             $array[$prop],
             $writeAll
         );
+
+        return $out;
     }
 
     /**
