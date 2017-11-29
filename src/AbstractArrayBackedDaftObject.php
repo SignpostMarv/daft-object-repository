@@ -183,7 +183,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     }
 
     /**
-    * @param mixed $propVal
+    * @param mixed[] $propVal
     *
     * @return DaftJson
     */
