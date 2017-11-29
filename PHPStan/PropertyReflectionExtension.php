@@ -215,7 +215,8 @@ class PropertyReflectionExtension implements PropertyReflection
     ) : ClassReflection {
         return $broker->getClassFromReflection(
             $refMethod->getDeclaringClass(),
-            $refMethod->getDeclaringClass()->getName()
+            $refMethod->getDeclaringClass()->getName(),
+            $refMethod->getDeclaringClass()->isAnonymous()
         );
     }
 }
