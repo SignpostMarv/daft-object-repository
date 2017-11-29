@@ -244,7 +244,7 @@ class DaftObjectImplementationTest extends TestCase
                 $setters,
             ]
         ) {
-            if (count($setters)) {
+            if (count($setters) > 0) {
                 yield [
                     $className,
                     $reflector,
