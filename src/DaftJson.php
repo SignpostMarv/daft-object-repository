@@ -25,7 +25,7 @@ interface DaftJson extends DaftObject, JsonSerializable
     public static function DaftObjectFromJsonArray(
         array $array,
         bool $writeAll = false
-    ) : DaftJson;
+    ) : self;
 
-    public static function DaftObjectFromJsonString(string $string) : DaftJson;
+    public static function DaftObjectFromJsonString(string $string) : self;
 }

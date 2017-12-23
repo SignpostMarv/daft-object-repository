@@ -39,9 +39,9 @@ interface DaftObjectRepository
 
     public static function DaftObjectRepositoryByType(
         string $type
-    ) : DaftObjectRepository;
+    ) : self;
 
     public static function DaftObjectRepositoryByDaftObject(
         DefinesOwnIdPropertiesInterface $object
-    ) : DaftObjectRepository;
+    ) : self;
 }

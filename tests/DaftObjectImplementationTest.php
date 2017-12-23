@@ -894,8 +894,7 @@ class DaftObjectImplementationTest extends TestCase
             }
 
             if ($checkGetterIsNull) {
-                $this->assertSame(
-                    null,
+                $this->assertNull(
                     $obj->$property,
                     (
                         $className .

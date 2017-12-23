@@ -376,7 +376,7 @@ class DaftTestObjectTest extends TestCase
 
             if ($writeable) {
                 $obj->MakePropertiesUnchanged($property);
-                $this->assertSame(false, $obj->HasPropertyChanged($property));
+                $this->assertFalse($obj->HasPropertyChanged($property));
 
                 if (
                     in_array(
