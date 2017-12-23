@@ -32,16 +32,25 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
         $this->RememberDaftObjectData($object);
     }
 
+    /**
+    * @param mixed $id
+    */
     public function ForgetDaftObjectById($id) : void
     {
         $this->ForgetDaftObjectByHashId($this->ObjectHashId($id));
     }
 
+    /**
+    * @param mixed $id
+    */
     public function RemoveDaftObjectById($id) : void
     {
         $this->RemoveDaftObjectByHashId($this->ObjectHashId($id));
     }
 
+    /**
+    * @param mixed $id
+    */
     public function RecallDaftObject($id) : ? DaftObject
     {
         $hashId = $this->ObjectHashId($id);
