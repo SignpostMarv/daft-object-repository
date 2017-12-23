@@ -929,12 +929,6 @@ class DaftObjectImplementationTest extends TestCase
 
             $json = json_encode($obj);
 
-            if (
-                false === ($obj instanceof DaftObject\DaftJson)
-            ) {
-                return;
-            }
-
             $this->assertInternalType(
                 'string',
                 $json,
