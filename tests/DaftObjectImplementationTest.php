@@ -359,9 +359,11 @@ class DaftObjectImplementationTest extends TestCase
             );
         }
 
+        $interfaceCheck = $className;
+
         if (
             is_a(
-                $className,
+                $interfaceCheck,
                 DaftObject\DefinesOwnIdPropertiesInterface::class,
                 true
             )
@@ -755,7 +757,9 @@ class DaftObjectImplementationTest extends TestCase
         array $getters,
         array $setters
     ) : void {
-        if (is_a($className, DaftObject\DaftObjectWorm::class, true)) {
+        $interfaceCheck = $className;
+
+        if (is_a($interfaceCheck, DaftObject\DaftObjectWorm::class, true)) {
             $this->markTestSkipped(
                 $className .
                 ' is an implementation of ' .
@@ -831,6 +835,9 @@ class DaftObjectImplementationTest extends TestCase
             }
         }
 
+        /**
+        * @var DaftObject\DaftObject $obj
+        */
         $obj = new $className([]);
 
         foreach ($setters as $property) {
@@ -1008,6 +1015,8 @@ class DaftObjectImplementationTest extends TestCase
     * @dataProvider dataProviderNonAbstractGoodFuzzingHasSetters
     *
     * @depends testHasDefinedImplementationCorrectly
+    *
+    * @psalm-suppress TypeDoesNotContainType
     */
     final public function testProviderNonAbstractGoodFuzzingJsonFromArrayFailure(
         string $className,
@@ -1055,6 +1064,8 @@ class DaftObjectImplementationTest extends TestCase
     * @dataProvider dataProviderNonAbstractGoodFuzzingHasSetters
     *
     * @depends testHasDefinedImplementationCorrectly
+    *
+    * @psalm-suppress TypeDoesNotContainType
     */
     final public function testProviderNonAbstractGoodFuzzingJsonFromStringFailure(
         string $className,
@@ -1328,6 +1339,8 @@ class DaftObjectImplementationTest extends TestCase
 
     /**
     * @dataProvider dataProviderNonAbstractGoodFuzzingHasSettersPerPropertyNotNullable
+    *
+    * @psalm-suppress TypeDoesNotContainType
     */
     final public function testNonAbstractGoodFuzzingHasSettersPerPropertyNotNullable(
         string $className,

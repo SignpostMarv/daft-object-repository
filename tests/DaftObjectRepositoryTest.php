@@ -176,9 +176,11 @@ class DaftObjectRepositoryTest extends TestCase
         bool $writeable,
         array ...$paramsArray
     ) : void {
+        $interfaceCheck = $objImplementation;
+
         if (
             false === is_a(
-                $objImplementation,
+                $interfaceCheck,
                 DefinesOwnIdPropertiesInterface::class,
                 true
             )
@@ -203,6 +205,9 @@ class DaftObjectRepositoryTest extends TestCase
         }
 
         foreach ($paramsArray as $params) {
+            /**
+            * @var DefinesOwnIdPropertiesInterface $obj
+            */
             $obj = new $objImplementation($params, $writeable);
 
             $repoByObject = static::DaftObjectRepositoryByDaftObject(
@@ -319,6 +324,8 @@ class DaftObjectRepositoryTest extends TestCase
 
     /**
     * @dataProvider DaftObjectRepositoryTypeExceptionForgetRemoveDataProvider
+    *
+    * @psalm-suppress TypeCoercion
     */
     public function testForgetDaftObjectRepositoryTypeException(
         string $objectTypeA,
@@ -347,6 +354,8 @@ class DaftObjectRepositoryTest extends TestCase
 
     /**
     * @dataProvider DaftObjectRepositoryTypeExceptionForgetRemoveDataProvider
+    *
+    * @psalm-suppress TypeCoercion
     */
     public function testRemoveDaftObjectRepositoryTypeException(
         string $objectTypeA,
@@ -375,6 +384,8 @@ class DaftObjectRepositoryTest extends TestCase
 
     /**
     * @dataProvider DaftObjectRepositoryTypeExceptionForgetRemoveDataProvider
+    *
+    * @psalm-suppress TypeCoercion
     */
     public function testRememberDaftObjectRepositoryTypeException(
         string $objectTypeA,

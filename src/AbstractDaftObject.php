@@ -8,8 +8,10 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject;
 
+use BadMethodCallException;
 use ReflectionClass;
 use ReflectionMethod;
+use Throwable;
 
 /**
 * Base daft object.
@@ -294,7 +296,9 @@ abstract class AbstractDaftObject implements DaftObject
         string $class,
         bool $throwIfNotImplementation = false
     ) : void {
-        if (is_a($class, DefinesOwnIdPropertiesInterface::class, true)) {
+        $interfaceCheck = $class;
+
+        if (is_a($interfaceCheck, DefinesOwnIdPropertiesInterface::class, true)) {
             $properties = $class::DaftObjectIdProperties();
 
             if (count($properties) < 1) {
@@ -331,6 +335,8 @@ abstract class AbstractDaftObject implements DaftObject
     * @param mixed $v
     *
     * @return mixed
+    *
+    * @psalm-suppress InvalidThrow
     */
     protected function DoGetSet(
         string $property,
@@ -365,7 +371,19 @@ abstract class AbstractDaftObject implements DaftObject
                 )
             ) {
                 throw new UndefinedPropertyException(static::class, $property);
+            } elseif ( ! is_a($notPublic, Throwable::class, true)) {
+                throw new BadMethodCallException(
+                    'Argument 3 passed to ' .
+                    __METHOD__ .
+                    ' must be an implementation of ' .
+                    Throwable::class .
+                    ', "' .
+                    $notPublic .
+                    '" given.'
+                );
             }
+
+
             throw new $notPublic(
                 static::class,
                 $property
