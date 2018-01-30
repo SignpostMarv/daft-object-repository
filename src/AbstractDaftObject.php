@@ -383,7 +383,6 @@ abstract class AbstractDaftObject implements DaftObject
                 );
             }
 
-
             throw new $notPublic(
                 static::class,
                 $property
