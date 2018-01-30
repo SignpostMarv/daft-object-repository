@@ -75,8 +75,7 @@ abstract class AbstractDaftObject implements DaftObject
     {
         return $this->DoGetSet(
             $property,
-            false,
-            NotPublicGetterPropertyException::class
+            false
         );
     }
 
@@ -88,7 +87,6 @@ abstract class AbstractDaftObject implements DaftObject
         return $this->DoGetSet(
             $property,
             true,
-            NotPublicSetterPropertyException::class,
             $v
         );
     }
@@ -335,13 +333,10 @@ abstract class AbstractDaftObject implements DaftObject
     * @param mixed $v
     *
     * @return mixed
-    *
-    * @psalm-suppress InvalidThrow
     */
     protected function DoGetSet(
         string $property,
         bool $SetNotGet,
-        string $notPublic,
         $v = null
     ) {
         $expectedMethod = static::DaftObjectMethodNameFromProperty(
@@ -371,19 +366,14 @@ abstract class AbstractDaftObject implements DaftObject
                 )
             ) {
                 throw new UndefinedPropertyException(static::class, $property);
-            } elseif ( ! is_a($notPublic, Throwable::class, true)) {
-                throw new BadMethodCallException(
-                    'Argument 3 passed to ' .
-                    __METHOD__ .
-                    ' must be an implementation of ' .
-                    Throwable::class .
-                    ', "' .
-                    $notPublic .
-                    '" given.'
+            } elseif ($SetNotGet) {
+                throw new NotPublicSetterPropertyException(
+                    static::class,
+                    $property
                 );
             }
 
-            throw new $notPublic(
+            throw new NotPublicGetterPropertyException(
                 static::class,
                 $property
             );

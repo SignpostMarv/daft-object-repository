@@ -107,8 +107,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         foreach (static::DaftObjectJsonPropertyNames() as $property) {
             $val = $this->DoGetSet(
                 $property,
-                false,
-                NotPublicGetterPropertyException::class
+                false
             );
 
             if (false === is_null($val)) {
