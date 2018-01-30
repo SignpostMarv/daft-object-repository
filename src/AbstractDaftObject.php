@@ -8,10 +8,8 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject;
 
-use BadMethodCallException;
 use ReflectionClass;
 use ReflectionMethod;
-use Throwable;
 
 /**
 * Base daft object.
