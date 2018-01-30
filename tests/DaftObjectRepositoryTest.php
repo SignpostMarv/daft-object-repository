@@ -324,8 +324,6 @@ class DaftObjectRepositoryTest extends TestCase
 
     /**
     * @dataProvider DaftObjectRepositoryTypeExceptionForgetRemoveDataProvider
-    *
-    * @psalm-suppress TypeCoercion
     */
     public function testForgetDaftObjectRepositoryTypeException(
         string $objectTypeA,
@@ -333,7 +331,14 @@ class DaftObjectRepositoryTest extends TestCase
         array $dataTypeA,
         array $dataTypeB
     ) : void {
+        /**
+        * @var DefinesOwnIdPropertiesInterface $A
+        */
         $A = new $objectTypeA($dataTypeA);
+
+        /**
+        * @var DefinesOwnIdPropertiesInterface $B
+        */
         $B = new $objectTypeB($dataTypeB);
 
         $repo = static::DaftObjectRepositoryByDaftObject($A);
@@ -354,8 +359,6 @@ class DaftObjectRepositoryTest extends TestCase
 
     /**
     * @dataProvider DaftObjectRepositoryTypeExceptionForgetRemoveDataProvider
-    *
-    * @psalm-suppress TypeCoercion
     */
     public function testRemoveDaftObjectRepositoryTypeException(
         string $objectTypeA,
@@ -363,7 +366,14 @@ class DaftObjectRepositoryTest extends TestCase
         array $dataTypeA,
         array $dataTypeB
     ) : void {
+        /**
+        * @var DefinesOwnIdPropertiesInterface $A
+        */
         $A = new $objectTypeA($dataTypeA);
+
+        /**
+        * @var DefinesOwnIdPropertiesInterface $B
+        */
         $B = new $objectTypeB($dataTypeB);
 
         $repo = static::DaftObjectRepositoryByDaftObject($A);
@@ -384,8 +394,6 @@ class DaftObjectRepositoryTest extends TestCase
 
     /**
     * @dataProvider DaftObjectRepositoryTypeExceptionForgetRemoveDataProvider
-    *
-    * @psalm-suppress TypeCoercion
     */
     public function testRememberDaftObjectRepositoryTypeException(
         string $objectTypeA,
@@ -393,7 +401,14 @@ class DaftObjectRepositoryTest extends TestCase
         array $dataTypeA,
         array $dataTypeB
     ) : void {
+        /**
+        * @var DefinesOwnIdPropertiesInterface $A
+        */
         $A = new $objectTypeA($dataTypeA);
+
+        /**
+        * @var DefinesOwnIdPropertiesInterface $B
+        */
         $B = new $objectTypeB($dataTypeB);
 
         $repo = static::DaftObjectRepositoryByDaftObject($A);
