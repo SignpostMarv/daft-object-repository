@@ -97,6 +97,39 @@ class DaftObjectImplementationTest extends TestCase
         }
     }
 
+    final public function dataProviderNonAbstractGoodNullableImplementations() : Generator
+    {
+        foreach ($this->dataProviderNonAbstractGoodImplementations() as $args) {
+            list($className) = $args;
+
+            if (count($className::DaftObjectNullableProperties()) > 0) {
+                yield $args;
+            }
+        }
+    }
+
+    final public function dataProviderNonAbstractGoodExportableImplementations() : Generator
+    {
+        foreach ($this->dataProviderNonAbstractGoodImplementations() as $args) {
+            list($className) = $args;
+
+            if (count($className::DaftObjectExportableProperties()) > 0) {
+                yield $args;
+            }
+        }
+    }
+
+    final public function dataProviderNonAbstractGoodPropertiesImplementations() : Generator
+    {
+        foreach ($this->dataProviderNonAbstractGoodImplementations() as $args) {
+            list($className) = $args;
+
+            if (count($className::DaftObjectProperties()) > 0) {
+                yield $args;
+            }
+        }
+    }
+
     final public function dataProviderNonAbstractGetterSetters() : Generator
     {
         foreach (
@@ -389,11 +422,17 @@ class DaftObjectImplementationTest extends TestCase
                     )
                 );
             }
+        } else {
+            $this->markTestSkipped(
+                $interfaceCheck .
+                ' does not implement ' .
+                DaftObject\DefinesOwnIdPropertiesInterface::class
+            );
         }
     }
 
     /**
-    * @dataProvider dataProviderNonAbstractGoodImplementations
+    * @dataProvider dataProviderNonAbstractGoodNullableImplementations
     *
     * @depends testHasDefinedAllPropertiesCorrectly
     */
@@ -435,7 +474,7 @@ class DaftObjectImplementationTest extends TestCase
     }
 
     /**
-    * @dataProvider dataProviderNonAbstractGoodImplementations
+    * @dataProvider dataProviderNonAbstractGoodExportableImplementations
     *
     * @depends testHasDefinedAllPropertiesCorrectly
     */
@@ -477,7 +516,7 @@ class DaftObjectImplementationTest extends TestCase
     }
 
     /**
-    * @dataProvider dataProviderNonAbstractGoodImplementations
+    * @dataProvider dataProviderNonAbstractGoodPropertiesImplementations
     *
     * @depends testHasDefinedAllNullablesCorrectly
     * @depends testHasDefinedAllExportablesCorrectly
