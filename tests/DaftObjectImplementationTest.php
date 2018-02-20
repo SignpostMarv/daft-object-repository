@@ -1493,9 +1493,6 @@ class DaftObjectImplementationTest extends TestCase
         );
     }
 
-    /**
-    * @return string[]
-    */
     protected function InvalidImplementations() : array
     {
         return [
