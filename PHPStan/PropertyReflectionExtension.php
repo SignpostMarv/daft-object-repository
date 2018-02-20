@@ -184,14 +184,6 @@ class PropertyReflectionExtension implements PropertyReflection
     ) : ClassReflection {
         $this->writeable = true;
 
-        if ($refMethod->getNumberOfRequiredParameters() < 1) {
-            throw new InvalidArgumentException(
-                'Implementations of ' .
-                DaftObject::class .
-                ' must require at least one parameter on all setters!'
-            );
-        }
-
         $refParam = $refMethod->getParameters()[0];
 
         if ($refParam->hasType()) {
