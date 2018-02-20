@@ -7,7 +7,6 @@ declare(strict_types=1);
 namespace SignpostMarv\DaftObject\Tests;
 
 use Generator;
-use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionMethod;
 use SignpostMarv\DaftObject;

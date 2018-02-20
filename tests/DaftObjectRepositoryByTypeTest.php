@@ -6,7 +6,6 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject\Tests;
 
-use PHPUnit\Framework\TestCase;
 use SignpostMarv\DaftObject\DaftObjectCreatedByArray;
 use SignpostMarv\DaftObject\DaftObjectMemoryRepository;
 use SignpostMarv\DaftObject\DaftObjectNullStub;

@@ -6,7 +6,6 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject\Tests;
 
-use PHPUnit\Framework\TestCase;
 use SignpostMarv\DaftObject\NudgesIncorrectly;
 use SignpostMarv\DaftObject\ReadOnly;
 use SignpostMarv\DaftObject\UndefinedPropertyException;

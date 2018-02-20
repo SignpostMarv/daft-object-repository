@@ -7,7 +7,6 @@ declare(strict_types=1);
 namespace SignpostMarv\DaftObject\Tests;
 
 use Generator;
-use PHPUnit\Framework\TestCase;
 use SignpostMarv\DaftObject\NotPublicGetterPropertyException;
 use SignpostMarv\DaftObject\NotPublicSetterPropertyException;
 use SignpostMarv\DaftObject\PasswordHashTestObject;

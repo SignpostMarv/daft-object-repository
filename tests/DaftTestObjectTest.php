@@ -6,7 +6,6 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject\Tests;
 
-use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
 use SignpostMarv\DaftObject\ClassDoesNotImplementClassException;
 use SignpostMarv\DaftObject\ClassMethodReturnHasZeroArrayCountException;

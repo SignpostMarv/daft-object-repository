@@ -7,7 +7,6 @@ declare(strict_types=1);
 namespace SignpostMarv\DaftObject\Tests;
 
 use InvalidArgumentException;
-use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use SignpostMarv\DaftObject\DaftObjectMemoryRepository;
 use SignpostMarv\DaftObject\DaftObjectRepository;
