@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "7d91e2a144d303a373a40f2e6a04ac72",
+    "content-hash": "b38aa85a3c964a28b33f9f89d3296908",
     "packages": [],
     "packages-dev": [
         {
@@ -3751,16 +3751,16 @@
         },
         {
             "name": "vimeo/psalm",
-            "version": "0.3.93",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vimeo/psalm.git",
-                "reference": "a8ab9728898f529914c83d968f8b3d14af862e65"
+                "reference": "051fe0e9def4220134705dd86e91dafd6602c5de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vimeo/psalm/zipball/a8ab9728898f529914c83d968f8b3d14af862e65",
-                "reference": "a8ab9728898f529914c83d968f8b3d14af862e65",
+                "url": "https://api.github.com/repos/vimeo/psalm/zipball/051fe0e9def4220134705dd86e91dafd6602c5de",
+                "reference": "051fe0e9def4220134705dd86e91dafd6602c5de",
                 "shasum": ""
             },
             "require": {
@@ -3776,6 +3776,9 @@
                 "php-coveralls/php-coveralls": "^2.0",
                 "phpunit/phpunit": "^5.7.4",
                 "squizlabs/php_codesniffer": "^3.0"
+            },
+            "suggest": {
+                "ext-igbinary": "^2.0.5"
             },
             "bin": [
                 "psalm",
@@ -3802,7 +3805,7 @@
                 "inspection",
                 "php"
             ],
-            "time": "2018-02-08T20:30:24+00:00"
+            "time": "2018-02-22T18:46:26+00:00"
         },
         {
             "name": "webmozart/assert",
