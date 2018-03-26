@@ -311,6 +311,9 @@ class DaftTestObjectTest extends TestCase
         bool $readable = false,
         bool $writeable = false
     ) : void {
+        /**
+        * @var DaftObject $obj
+        */
         $obj = new $implementation($params, $writeable);
 
         if (true === $readable) {
