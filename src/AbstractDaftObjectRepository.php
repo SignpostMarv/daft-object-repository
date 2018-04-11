@@ -16,7 +16,7 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
     protected $memory = [];
 
     /**
-    * mixed[][].
+    * @var array<string, array<string, mixed>>
     */
     protected $data = [];
 
@@ -30,9 +30,8 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
         $this->type = $type;
     }
 
-    public function ForgetDaftObject(
-        DefinesOwnIdPropertiesInterface $object
-    ) : void {
+    public function ForgetDaftObject(DefinesOwnIdPropertiesInterface $object) : void
+    {
         static::ThrowIfNotType($object, $this->type, 1, __FUNCTION__);
 
         $id = [];
@@ -44,9 +43,8 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
         $this->ForgetDaftObjectById($id);
     }
 
-    public function RemoveDaftObject(
-        DefinesOwnIdPropertiesInterface $object
-    ) : void {
+    public function RemoveDaftObject(DefinesOwnIdPropertiesInterface $object) : void
+    {
         static::ThrowIfNotType($object, $this->type, 1, __FUNCTION__);
 
         $id = [];
@@ -58,9 +56,8 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
         $this->RemoveDaftObjectById($id);
     }
 
-    public static function DaftObjectRepositoryByType(
-        string $type
-    ) : DaftObjectRepository {
+    public static function DaftObjectRepositoryByType(string $type) : DaftObjectRepository
+    {
         foreach (
             [
                 DaftObjectCreatedByArray::class,

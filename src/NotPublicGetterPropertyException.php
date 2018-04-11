@@ -29,12 +29,6 @@ class NotPublicGetterPropertyException extends AbstractPropertyNotThingableExcep
         int $code = 0,
         Throwable $previous = null
     ) {
-        parent::__construct(
-            'a public getter',
-            $className,
-            $property,
-            $code,
-            $previous
-        );
+        parent::__construct('a public getter', $className, $property, $code, $previous);
     }
 }

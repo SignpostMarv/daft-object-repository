@@ -13,19 +13,8 @@ use Throwable;
 
 class DaftObjectNotDaftJsonBadMethodCallException extends BadMethodCallException
 {
-    public function __construct(
-        string $class,
-        int $code = 0,
-        Throwable $previous = null
-    ) {
-        parent::__construct(
-            (
-                $class .
-                ' does not implement ' .
-                DaftJson::class
-            ),
-            $code,
-            $previous
-        );
+    public function __construct(string $class, int $code = 0, Throwable $previous = null)
+    {
+        parent::__construct(($class . ' does not implement ' . DaftJson::class), $code, $previous);
     }
 }

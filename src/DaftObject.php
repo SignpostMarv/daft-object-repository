@@ -67,9 +67,7 @@ interface DaftObject
     *
     * @param string ...$properties the property being set as unchanged
     */
-    public function MakePropertiesUnchanged(
-        string ...$properties
-    ) : void;
+    public function MakePropertiesUnchanged(string ...$properties) : void;
 
     /**
     * Check if a property exists on an object.
@@ -90,14 +88,14 @@ interface DaftObject
     /**
     * List of nullable properties that can be defined on an implementation.
     *
-    * @return string[]
+    * @return array<int, string>
     */
     public static function DaftObjectNullableProperties() : array;
 
     /**
     * List of exportable properties that can be defined on an implementation.
     *
-    * @return string[]
+    * @return array<int, string>
     */
     public static function DaftObjectExportableProperties() : array;
 

@@ -16,16 +16,22 @@ use JsonSerializable;
 interface DaftJson extends DaftObject, JsonSerializable
 {
     /**
-    * @return string[]
+    * @return array<string|int, string>
     */
     public static function DaftObjectJsonProperties() : array;
 
+    /**
+    * @return array<int, string>
+    */
     public static function DaftObjectJsonPropertyNames() : array;
 
-    public static function DaftObjectFromJsonArray(
-        array $array,
-        bool $writeAll = false
-    ) : self;
+    /**
+    * @return static
+    */
+    public static function DaftObjectFromJsonArray(array $array, bool $writeAll = false) : self;
 
+    /**
+    * @return static
+    */
     public static function DaftObjectFromJsonString(string $string) : self;
 }

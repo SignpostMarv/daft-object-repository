@@ -20,9 +20,8 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     */
     protected $data = [];
 
-    public function RememberDaftObject(
-        DefinesOwnIdPropertiesInterface $object
-    ) : void {
+    public function RememberDaftObject(DefinesOwnIdPropertiesInterface $object) : void
+    {
         static::ThrowIfNotType($object, $this->type, 1, __FUNCTION__);
 
         $hashId = $object::DaftObjectIdHash($object);
@@ -62,9 +61,8 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
         return $this->memory[$hashId];
     }
 
-    protected function RememberDaftObjectData(
-        DefinesOwnIdPropertiesInterface $object
-    ) : void {
+    protected function RememberDaftObjectData(DefinesOwnIdPropertiesInterface $object) : void
+    {
         $hashId = $object::DaftObjectIdHash($object);
 
         $this->data[$hashId] = [];
@@ -87,7 +85,7 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
             $type = $this->type;
 
             /**
-            * @var DaftObjectCreatedByArray $out
+            * @var DaftObject $out
             */
             $out = new $type($this->data[$hashId]);
 

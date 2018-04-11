@@ -33,12 +33,7 @@ abstract class AbstractPropertyNotThingableException extends Exception
         Throwable $previous = null
     ) {
         parent::__construct(
-            sprintf(
-                'Property not %s: %s::$%s',
-                $thing,
-                $className,
-                $property
-            ),
+            sprintf('Property not %s: %s::$%s', $thing, $className, $property),
             $code,
             $previous
         );

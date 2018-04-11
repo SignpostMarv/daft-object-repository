@@ -16,27 +16,24 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     /**
     * data for this instance.
     *
-    * @var array
+    * @var array<string, mixed>
     */
     private $data = [];
 
     /**
     * List of changed properties.
     *
-    * @var bool[]
+    * @var array<string, bool>
     */
     private $changedProperties = [];
 
     /**
     * List of changed properties, for write-once read-many.
     *
-    * @var bool[]
+    * @var array<string, bool>
     */
     private $wormProperties = [];
 
-    /**
-    * {@inheritdoc}
-    */
     public function __construct(array $data = [], bool $writeAll = false)
     {
         parent::__construct();
@@ -52,9 +49,6 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         }
     }
 
-    /**
-    * {@inheritdoc}
-    */
     public function __isset(string $property) : bool
     {
         return
@@ -62,22 +56,11 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
             isset($this->data, $this->data[$property]);
     }
 
-    /**
-    * {@inheritdoc}
-    */
     public function ChangedProperties() : array
     {
-        /**
-        * @var string[] $out
-        */
-        $out = array_keys($this->changedProperties);
-
-        return $out;
+        return array_keys($this->changedProperties);
     }
 
-    /**
-    * {@inheritdoc}
-    */
     public function MakePropertiesUnchanged(string ...$properties) : void
     {
         foreach ($properties as $property) {
@@ -85,9 +68,6 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         }
     }
 
-    /**
-    * {@inheritdoc}
-    */
     public function HasPropertyChanged(string $property) : bool
     {
         return
@@ -95,9 +75,6 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
             true === $this->changedProperties[$property];
     }
 
-    /**
-    * {@inheritdoc}
-    */
     public function jsonSerialize() : array
     {
         static::ThrowIfNotDaftJson();
@@ -105,10 +82,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         $out = [];
 
         foreach (static::DaftObjectJsonPropertyNames() as $property) {
-            $val = $this->DoGetSet(
-                $property,
-                false
-            );
+            $val = $this->DoGetSet($property, false);
 
             if (false === is_null($val)) {
                 $out[$property] = $val;
@@ -118,9 +92,6 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         return $out;
     }
 
-    /**
-    * {@inheritdoc}
-    */
     final public static function DaftObjectFromJsonArray(
         array $array,
         bool $writeAll = false
@@ -182,7 +153,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     }
 
     /**
-    * @param mixed[] $propVal
+    * @param array<string, mixed> $propVal
     *
     * @return DaftJson
     */
@@ -197,7 +168,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     }
 
     /**
-    * @return DaftJson[]
+    * @return array<int, DaftJson>
     */
     protected static function DaftObjectFromJsonTypeArray(
         string $jsonType,
@@ -211,16 +182,9 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
 
         foreach ($propVal as $val) {
             if (false === is_array($val)) {
-                throw new PropertyNotJsonDecodableShouldBeArrayException(
-                    $jsonType,
-                    $prop
-                );
+                throw new PropertyNotJsonDecodableShouldBeArrayException($jsonType, $prop);
             }
-            $out[] = static::ArrayToJsonType(
-                $jsonType,
-                $val,
-                $writeAll
-            );
+            $out[] = static::ArrayToJsonType($jsonType, $val, $writeAll);
         }
 
         return $out;
@@ -251,9 +215,6 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         return $this->data[$property];
     }
 
-    /**
-    * {@inheritdoc}
-    */
     protected function NudgePropertyValue(string $property, $value) : void
     {
         $this->MaybeThrowOnNudge($property, $value);
@@ -286,10 +247,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         ) {
             throw new PropertyNotNullableException(static::class, $property);
         } elseif ($this->DaftObjectWormPropertyWritten($property)) {
-            throw new PropertyNotRewriteableException(
-                static::class,
-                $property
-            );
+            throw new PropertyNotRewriteableException(static::class, $property);
         }
     }
 
@@ -305,19 +263,13 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
             if (
                 false === in_array($prop, $jsonProps, true)
             ) {
-                throw new PropertyNotJsonDecodableException(
-                    static::class,
-                    $prop
-                );
+                throw new PropertyNotJsonDecodableException(static::class, $prop);
             } elseif (false === is_null($propVal)) {
                 if (isset($jsonDef[$prop])) {
                     $jsonType = $jsonDef[$prop];
 
                     if (false === is_array($propVal)) {
-                        static::ThrowBecauseArrayJsonTypeNotValid(
-                            $jsonType,
-                            $prop
-                        );
+                        static::ThrowBecauseArrayJsonTypeNotValid($jsonType, $prop);
                     }
                 }
                 $out[$prop] = $propVal;
@@ -332,24 +284,15 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         string $prop
     ) : void {
         if ('[]' === mb_substr($jsonType, -2)) {
-            throw new PropertyNotJsonDecodableShouldBeArrayException(
-                static::class,
-                $prop
-            );
+            throw new PropertyNotJsonDecodableShouldBeArrayException(static::class, $prop);
         }
-        throw new PropertyNotJsonDecodableShouldBeArrayException(
-            $jsonType,
-            $prop
-        );
+        throw new PropertyNotJsonDecodableShouldBeArrayException($jsonType, $prop);
     }
 
     private static function ThrowIfNotJsonType(string $jsonType) : void
     {
         if (false === is_a($jsonType, DaftJson::class, true)) {
-            throw new ClassDoesNotImplementClassException(
-                $jsonType,
-                DaftJson::class
-            );
+            throw new ClassDoesNotImplementClassException($jsonType, DaftJson::class);
         }
     }
 
@@ -363,9 +306,6 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         */
         $jsonType = $jsonType;
 
-        return $jsonType::DaftObjectFromJsonArray(
-            $propVal,
-            $writeAll
-        );
+        return $jsonType::DaftObjectFromJsonArray($propVal, $writeAll);
     }
 }

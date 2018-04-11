@@ -10,22 +10,16 @@ namespace SignpostMarv\DaftObject;
 
 interface DaftObjectRepository
 {
-    public function RememberDaftObject(
-        DefinesOwnIdPropertiesInterface $object
-    ) : void;
+    public function RememberDaftObject(DefinesOwnIdPropertiesInterface $object) : void;
 
-    public function ForgetDaftObject(
-        DefinesOwnIdPropertiesInterface $object
-    ) : void;
+    public function ForgetDaftObject(DefinesOwnIdPropertiesInterface $object) : void;
 
     /**
     * @param mixed $id
     */
     public function ForgetDaftObjectById($id) : void;
 
-    public function RemoveDaftObject(
-        DefinesOwnIdPropertiesInterface $object
-    ) : void;
+    public function RemoveDaftObject(DefinesOwnIdPropertiesInterface $object) : void;
 
     /**
     * @param mixed $id
@@ -37,10 +31,14 @@ interface DaftObjectRepository
     */
     public function RecallDaftObject($id) : ? DaftObject;
 
-    public static function DaftObjectRepositoryByType(
-        string $type
-    ) : self;
+    /**
+    * @return static
+    */
+    public static function DaftObjectRepositoryByType(string $type) : self;
 
+    /**
+    * @return static
+    */
     public static function DaftObjectRepositoryByDaftObject(
         DefinesOwnIdPropertiesInterface $object
     ) : self;

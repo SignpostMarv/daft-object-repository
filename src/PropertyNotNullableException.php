@@ -29,12 +29,6 @@ class PropertyNotNullableException extends AbstractPropertyNotThingableException
         int $code = 0,
         Throwable $previous = null
     ) {
-        parent::__construct(
-            'nullable',
-            $className,
-            $property,
-            $code,
-            $previous
-        );
+        parent::__construct('nullable', $className, $property, $code, $previous);
     }
 }

@@ -20,12 +20,7 @@ class ClassMethodReturnHasZeroArrayCountException extends IncorrectlyImplemented
         Throwable $previous = null
     ) {
         parent::__construct(
-            sprintf(
-                '%s::%s() must return at least one %s',
-                $class,
-                $method,
-                $labelOfReturnType
-            ),
+            sprintf('%s::%s() must return at least one %s', $class, $method, $labelOfReturnType),
             $code,
             $previous
         );

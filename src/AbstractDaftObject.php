@@ -19,36 +19,38 @@ abstract class AbstractDaftObject implements DaftObject
     /**
     * List of properties that can be defined on an implementation.
     *
-    * @var string[]
+    * @var array<int, string>
     */
     const PROPERTIES = [];
 
     /**
     * List of nullable properties that can be defined on an implementation.
     *
-    * @var string[]
+    * @var array<int, string>
     */
     const NULLABLE_PROPERTIES = [];
 
     /**
     * List of exportable properties that can be defined on an implementation.
     *
-    * @var string[]
+    * @var array<int, string>
     */
     const EXPORTABLE_PROPERTIES = [];
 
     /**
     * import/export definition for DaftJson.
+    *
+    * @var array<int, string>
     */
     const JSON_PROPERTIES = [];
 
     /**
-    * @var string[][]
+    * @var array<string, array<int, string>>
     */
     private static $publicGetters = [];
 
     /**
-    * @var string[][]
+    * @var array<string, array<int, string>>
     */
     private static $publicSetters = [];
 
@@ -66,32 +68,17 @@ abstract class AbstractDaftObject implements DaftObject
         );
     }
 
-    /**
-    * {@inheritdoc}
-    */
     public function __get(string $property)
     {
-        return $this->DoGetSet(
-            $property,
-            false
-        );
+        return $this->DoGetSet($property, false);
     }
 
-    /**
-    * {@inheritdoc}
-    */
     public function __set(string $property, $v)
     {
-        return $this->DoGetSet(
-            $property,
-            true,
-            $v
-        );
+        return $this->DoGetSet($property, true, $v);
     }
 
     /**
-    * {@inheritdoc}
-    *
     * @see static::NudgePropertyValue()
     */
     public function __unset(string $property) : void
@@ -100,13 +87,22 @@ abstract class AbstractDaftObject implements DaftObject
     }
 
     /**
-    * {@inheritdoc}
+    * @return array<string, mixed>
     */
     public function __debugInfo() : array
     {
+        /**
+        * @var array<string, mixed> $out
+        */
         $out = [];
         $publicGetters = static::DaftObjectPublicGetters();
         foreach (static::DaftObjectExportableProperties() as $prop) {
+            if ( ! is_string($prop)) {
+                throw new IncorrectlyImplementedTypeException(sprintf(
+                    '%s contains non-string properties!',
+                    static::class
+                ));
+            }
             $expectedMethod = 'Get' . ucfirst($prop);
             if (
                 $this->__isset($prop) &&
@@ -122,32 +118,23 @@ abstract class AbstractDaftObject implements DaftObject
     /**
     * List of properties that can be defined on an implementation.
     *
-    * @return string[]
+    * @return array<int, string>
     */
     final public static function DaftObjectProperties() : array
     {
         return static::PROPERTIES;
     }
 
-    /**
-    * {@inheritdoc}
-    */
     final public static function DaftObjectNullableProperties() : array
     {
         return static::NULLABLE_PROPERTIES;
     }
 
-    /**
-    * {@inheritdoc}
-    */
     final public static function DaftObjectExportableProperties() : array
     {
         return static::EXPORTABLE_PROPERTIES;
     }
 
-    /**
-    * {@inheritdoc}
-    */
     final public static function DaftObjectPublicGetters() : array
     {
         static::CachePublicGettersAndSetters();
@@ -155,9 +142,6 @@ abstract class AbstractDaftObject implements DaftObject
         return self::$publicGetters[static::class];
     }
 
-    /**
-    * {@inheritdoc}
-    */
     final public static function DaftObjectPublicSetters() : array
     {
         static::CachePublicGettersAndSetters();
@@ -165,9 +149,6 @@ abstract class AbstractDaftObject implements DaftObject
         return self::$publicSetters[static::class];
     }
 
-    /**
-    * {@inheritdoc}
-    */
     final public static function DaftObjectJsonProperties() : array
     {
         static::ThrowIfNotDaftJson();
@@ -175,9 +156,6 @@ abstract class AbstractDaftObject implements DaftObject
         return static::JSON_PROPERTIES;
     }
 
-    /**
-    * {@inheritdoc}
-    */
     final public static function DaftObjectJsonPropertyNames() : array
     {
         $out = [];
@@ -209,10 +187,7 @@ abstract class AbstractDaftObject implements DaftObject
         if (
             $classReflection->hasMethod($method)
         ) {
-            $methodReflection = new ReflectionMethod(
-                static::class,
-                $method
-            );
+            $methodReflection = new ReflectionMethod(static::class, $method);
 
             return
                 $methodReflection->isPublic() &&
@@ -228,13 +203,7 @@ abstract class AbstractDaftObject implements DaftObject
             self::$publicGetters[static::class] = [];
             self::$publicSetters[static::class] = [];
 
-            if (
-                is_a(
-                    static::class,
-                    DefinesOwnIdPropertiesInterface::class,
-                    true
-                )
-            ) {
+            if (is_a(static::class, DefinesOwnIdPropertiesInterface::class, true)) {
                 self::$publicGetters[static::class][] = 'id';
             }
 
@@ -253,10 +222,7 @@ abstract class AbstractDaftObject implements DaftObject
                 if (
                     static::HasPublicMethod(
                         $classReflection,
-                        static::DaftObjectMethodNameFromProperty(
-                            $property,
-                            true
-                        )
+                        static::DaftObjectMethodNameFromProperty($property, true)
                     )
                 ) {
                     self::$publicSetters[static::class][] = $property;
@@ -275,10 +241,7 @@ abstract class AbstractDaftObject implements DaftObject
     * @throws PropertyNotNullableException if $property is not in static::DaftObjectNullableProperties()
     * @throws PropertyNotRewriteableException if class is write-once read-many and $property was already changed
     */
-    abstract protected function NudgePropertyValue(
-        string $property,
-        $value
-    ) : void;
+    abstract protected function NudgePropertyValue(string $property, $value) : void;
 
     /**
     * Checks if a type correctly defines it's own id.
@@ -332,49 +295,23 @@ abstract class AbstractDaftObject implements DaftObject
     *
     * @return mixed
     */
-    protected function DoGetSet(
-        string $property,
-        bool $SetNotGet,
-        $v = null
-    ) {
-        $expectedMethod = static::DaftObjectMethodNameFromProperty(
-            $property,
-            $SetNotGet
-        );
+    protected function DoGetSet(string $property, bool $SetNotGet, $v = null)
+    {
+        $expectedMethod = static::DaftObjectMethodNameFromProperty($property, $SetNotGet);
         $thingers = static::DaftObjectPublicGetters();
 
         if ($SetNotGet) {
             $thingers = static::DaftObjectPublicSetters();
         }
 
-        if (
-            false === (
-                in_array(
-                    $property,
-                    $thingers,
-                    true
-                )
-            )
-        ) {
-            if (
-                false === in_array(
-                    $property,
-                    static::DaftObjectProperties(),
-                    true
-                )
-            ) {
+        if (false === in_array($property, $thingers, true)) {
+            if (false === in_array($property, static::DaftObjectProperties(), true)) {
                 throw new UndefinedPropertyException(static::class, $property);
             } elseif ($SetNotGet) {
-                throw new NotPublicSetterPropertyException(
-                    static::class,
-                    $property
-                );
+                throw new NotPublicSetterPropertyException(static::class, $property);
             }
 
-            throw new NotPublicGetterPropertyException(
-                static::class,
-                $property
-            );
+            throw new NotPublicGetterPropertyException(static::class, $property);
         }
 
         return $this->$expectedMethod($v);

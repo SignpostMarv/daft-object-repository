@@ -29,12 +29,6 @@ class UndefinedPropertyException extends AbstractPropertyNotThingableException
         int $code = 0,
         Throwable $previous = null
     ) {
-        parent::__construct(
-            'defined',
-            $className,
-            $property,
-            $code,
-            $previous
-        );
+        parent::__construct('defined', $className, $property, $code, $previous);
     }
 }

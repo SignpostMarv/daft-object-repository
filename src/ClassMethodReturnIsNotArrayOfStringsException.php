@@ -19,11 +19,7 @@ class ClassMethodReturnIsNotArrayOfStringsException extends IncorrectlyImplement
         Throwable $previous = null
     ) {
         parent::__construct(
-            sprintf(
-                '%s::%s() does not return string[]',
-                $class,
-                $method
-            ),
+            sprintf('%s::%s() does not return string[]', $class, $method),
             $code,
             $previous
         );

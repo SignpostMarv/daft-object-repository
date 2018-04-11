@@ -29,12 +29,6 @@ class PropertyNotJsonDecodableException extends AbstractPropertyNotThingableExce
         int $code = 0,
         Throwable $previous = null
     ) {
-        parent::__construct(
-            'json-decodable',
-            $className,
-            $property,
-            $code,
-            $previous
-        );
+        parent::__construct('json-decodable', $className, $property, $code, $previous);
     }
 }

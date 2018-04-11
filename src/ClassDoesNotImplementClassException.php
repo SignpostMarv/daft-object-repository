@@ -19,11 +19,7 @@ class ClassDoesNotImplementClassException extends IncorrectlyImplementedTypeExce
         Throwable $previous = null
     ) {
         parent::__construct(
-            sprintf(
-                '%s does not implement %s',
-                $class,
-                $doesNotImplementClass
-            ),
+            sprintf('%s does not implement %s', $class, $doesNotImplementClass),
             $code,
             $previous
         );

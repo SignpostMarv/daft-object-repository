@@ -29,12 +29,6 @@ class PropertyNotRewriteableException extends AbstractPropertyNotThingableExcept
         int $code = 0,
         Throwable $previous = null
     ) {
-        parent::__construct(
-            'rewriteable',
-            $className,
-            $property,
-            $code,
-            $previous
-        );
+        parent::__construct('rewriteable', $className, $property, $code, $previous);
     }
 }

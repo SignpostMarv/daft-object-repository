@@ -13,9 +13,8 @@ trait DaftObjectIdValuesHashLazyInt
     /**
     * @see DefinesOwnIdPropertiesInterface::DaftObjectIdHash()
     */
-    public static function DaftObjectIdHash(
-        DefinesOwnIdPropertiesInterface $object
-    ) : string {
+    public static function DaftObjectIdHash(DefinesOwnIdPropertiesInterface $object) : string
+    {
         $id = [];
 
         foreach ($object::DaftObjectIdProperties() as $prop) {
