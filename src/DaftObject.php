@@ -101,6 +101,8 @@ interface DaftObject
 
     /**
     * List of public getter properties.
+    *
+    * @return array<int, string>
     */
     public static function DaftObjectPublicGetters() : array;
 

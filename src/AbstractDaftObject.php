@@ -91,24 +91,15 @@ abstract class AbstractDaftObject implements DaftObject
     */
     public function __debugInfo() : array
     {
-        /**
-        * @var array<string, mixed> $out
-        */
         $out = [];
         $publicGetters = static::DaftObjectPublicGetters();
         foreach (static::DaftObjectExportableProperties() as $prop) {
-            if ( ! is_string($prop)) {
-                throw new IncorrectlyImplementedTypeException(sprintf(
-                    '%s contains non-string properties!',
-                    static::class
-                ));
-            }
             $expectedMethod = 'Get' . ucfirst($prop);
             if (
                 $this->__isset($prop) &&
                 in_array($prop, $publicGetters, true)
             ) {
-                $out[$prop] = $this->$expectedMethod();
+                $out[(string) $prop] = $this->$expectedMethod();
             }
         }
 
