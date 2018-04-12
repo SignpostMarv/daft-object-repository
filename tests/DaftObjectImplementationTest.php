@@ -493,8 +493,14 @@ class DaftObjectImplementationTest extends TestCase
                             ' had no return type, cannot verify is not nullable.'
                         )
                     );
+
+                    /**
+                    * @var \ReflectionType $returnType
+                    */
+                    $returnType = $method->getReturnType();
+
                     $this->assertFalse(
-                        $method->getReturnType()->allowsNull(),
+                        $returnType->allowsNull(),
                         (
                             $method->getDeclaringClass()->getName() .
                             '::' .
