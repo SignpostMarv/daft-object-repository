@@ -157,14 +157,11 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     *
     * @return DaftJson
     */
-    protected static function DaftObjectFromJsonType(
-        string $jsonType,
-        array $propVal,
-        bool $writeAll
-    ) {
-        static::ThrowIfNotJsonType($jsonType);
+    protected static function DaftObjectFromJsonType(string $type, array $propVal, bool $writeAll)
+    {
+        static::ThrowIfNotJsonType($type);
 
-        return static::ArrayToJsonType($jsonType, $propVal, $writeAll);
+        return static::ArrayToJsonType($type, $propVal, $writeAll);
     }
 
     /**
@@ -260,9 +257,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         $out = [];
 
         foreach ($array as $prop => $propVal) {
-            if (
-                false === in_array($prop, $jsonProps, true)
-            ) {
+            if (false === in_array($prop, $jsonProps, true)) {
                 throw new PropertyNotJsonDecodableException(static::class, $prop);
             } elseif (false === is_null($propVal)) {
                 if (isset($jsonDef[$prop])) {
@@ -279,14 +274,12 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         return $out;
     }
 
-    private static function ThrowBecauseArrayJsonTypeNotValid(
-        string $jsonType,
-        string $prop
-    ) : void {
-        if ('[]' === mb_substr($jsonType, -2)) {
+    private static function ThrowBecauseArrayJsonTypeNotValid(string $type, string $prop) : void
+    {
+        if ('[]' === mb_substr($type, -2)) {
             throw new PropertyNotJsonDecodableShouldBeArrayException(static::class, $prop);
         }
-        throw new PropertyNotJsonDecodableShouldBeArrayException($jsonType, $prop);
+        throw new PropertyNotJsonDecodableShouldBeArrayException($type, $prop);
     }
 
     private static function ThrowIfNotJsonType(string $jsonType) : void
@@ -296,16 +289,13 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         }
     }
 
-    private static function ArrayToJsonType(
-        string $jsonType,
-        array $propVal,
-        bool $writeAll
-    ) : DaftJson {
+    private static function ArrayToJsonType(string $type, array $value, bool $writeAll) : DaftJson
+    {
         /**
-        * @var DaftJson $jsonType
+        * @var DaftJson $type
         */
-        $jsonType = $jsonType;
+        $type = $type;
 
-        return $jsonType::DaftObjectFromJsonArray($propVal, $writeAll);
+        return $type::DaftObjectFromJsonArray($value, $writeAll);
     }
 }

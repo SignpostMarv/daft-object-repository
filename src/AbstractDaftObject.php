@@ -95,10 +95,7 @@ abstract class AbstractDaftObject implements DaftObject
         $publicGetters = static::DaftObjectPublicGetters();
         foreach (static::DaftObjectExportableProperties() as $prop) {
             $expectedMethod = 'Get' . ucfirst($prop);
-            if (
-                $this->__isset($prop) &&
-                in_array($prop, $publicGetters, true)
-            ) {
+            if ($this->__isset($prop) && in_array($prop, $publicGetters, true)) {
                 $out[(string) $prop] = $this->$expectedMethod();
             }
         }
@@ -165,9 +162,7 @@ abstract class AbstractDaftObject implements DaftObject
     protected static function ThrowIfNotDaftJson() : void
     {
         if (false === is_a(static::class, DaftJson::class, true)) {
-            throw new DaftObjectNotDaftJsonBadMethodCallException(
-                static::class
-            );
+            throw new DaftObjectNotDaftJsonBadMethodCallException(static::class);
         }
     }
 
@@ -201,21 +196,17 @@ abstract class AbstractDaftObject implements DaftObject
             $classReflection = new ReflectionClass(static::class);
 
             foreach (static::DaftObjectProperties() as $property) {
-                if (
-                    static::HasPublicMethod(
+                if (static::HasPublicMethod(
                         $classReflection,
                         static::DaftObjectMethodNameFromProperty($property)
-                    )
-                ) {
+                )) {
                     self::$publicGetters[static::class][] = $property;
                 }
 
-                if (
-                    static::HasPublicMethod(
+                if (static::HasPublicMethod(
                         $classReflection,
                         static::DaftObjectMethodNameFromProperty($property, true)
-                    )
-                ) {
+                )) {
                     self::$publicSetters[static::class][] = $property;
                 }
             }

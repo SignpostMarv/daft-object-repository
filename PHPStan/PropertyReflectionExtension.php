@@ -55,18 +55,9 @@ class PropertyReflectionExtension implements PropertyReflection
     */
     private $writeableDeclaringClass;
 
-    public function __construct(
-        ClassReflection $classReflection,
-        Broker $broker,
-        string $propertyName
-    ) {
-        if (
-            false === is_a(
-                $classReflection->getName(),
-                DaftObject::class,
-                true
-            )
-        ) {
+    public function __construct(ClassReflection $classReflection, Broker $broker, string $property)
+    {
+        if (false === is_a($classReflection->getName(), DaftObject::class, true)) {
             throw new InvalidArgumentException(
                 $classReflection->getName() .
                 ' is not an implementation of ' .
@@ -79,21 +70,13 @@ class PropertyReflectionExtension implements PropertyReflection
         $className = $classReflection->getName();
 
         $this->public =
-            in_array(
-                $propertyName,
-                $className::DaftObjectPublicGetters(),
-                true
-            ) ||
-            in_array(
-                $propertyName,
-                $className::DaftObjectPublicSetters(),
-                true
-            );
+            in_array($property, $className::DaftObjectPublicGetters(), true) ||
+            in_array($property, $className::DaftObjectPublicSetters(), true);
 
         $this->type = new MixedType();
 
-        $getter = 'Get' . ucfirst($propertyName);
-        $setter = 'Set' . ucfirst($propertyName);
+        $getter = 'Get' . ucfirst($property);
+        $setter = 'Set' . ucfirst($property);
 
         $this->readableDeclaringClass = $classReflection;
         $this->writeableDeclaringClass = $classReflection;
@@ -107,10 +90,7 @@ class PropertyReflectionExtension implements PropertyReflection
         if ($classReflection->getNativeReflection()->hasMethod($setter)) {
             $refMethod = new ReflectionMethod($className, $setter);
 
-            $this->writeableDeclaringClass = $this->SetSetterProps(
-                $className,
-                $refMethod
-            );
+            $this->writeableDeclaringClass = $this->SetSetterProps($className, $refMethod);
         }
     }
 
@@ -153,9 +133,8 @@ class PropertyReflectionExtension implements PropertyReflection
         return $this->writeableDeclaringClass;
     }
 
-    private function SetGetterProps(
-        ReflectionMethod $refMethod
-    ) : ClassReflection {
+    private function SetGetterProps(ReflectionMethod $refMethod) : ClassReflection
+    {
         $this->readable = true;
 
         if ($refMethod->isStatic()) {
@@ -167,21 +146,14 @@ class PropertyReflectionExtension implements PropertyReflection
         }
 
         if ($refMethod->hasReturnType()) {
-            $this->type = TypehintHelper::decideTypeFromReflection(
-                $refMethod->getReturnType()
-            );
+            $this->type = TypehintHelper::decideTypeFromReflection($refMethod->getReturnType());
         }
 
-        return static::DetermineDeclaringClass(
-            $this->broker,
-            $refMethod
-        );
+        return static::DetermineDeclaringClass($this->broker, $refMethod);
     }
 
-    private function SetSetterProps(
-        string $className,
-        ReflectionMethod $refMethod
-    ) : ClassReflection {
+    private function SetSetterProps(string $class, ReflectionMethod $refMethod) : ClassReflection
+    {
         $this->writeable = true;
 
         $refParam = $refMethod->getParameters()[0];
@@ -190,15 +162,12 @@ class PropertyReflectionExtension implements PropertyReflection
             $this->type = TypehintHelper::decideTypeFromReflection(
                 $refParam->getType(),
                 null,
-                $className,
+                $class,
                 false
             );
         }
 
-        return static::DetermineDeclaringClass(
-            $this->broker,
-            $refMethod
-        );
+        return static::DetermineDeclaringClass($this->broker, $refMethod);
     }
 
     private static function DetermineDeclaringClass(

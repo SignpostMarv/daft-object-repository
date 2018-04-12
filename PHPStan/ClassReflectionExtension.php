@@ -29,10 +29,8 @@ class ClassReflectionExtension implements
         $this->broker = $broker;
     }
 
-    public function hasProperty(
-        ClassReflection $classReflection,
-        string $propertyName
-    ) : bool {
+    public function hasProperty(ClassReflection $classReflection, string $propertyName) : bool
+    {
         $className = $classReflection->getName();
 
         $property = ucfirst($propertyName);
@@ -40,30 +38,18 @@ class ClassReflectionExtension implements
         return
             is_a($className, DaftObject::class, true) &&
             (
-                $classReflection->getNativeReflection()->hasMethod(
-                    'Get' .
-                    $property
-                ) ||
-                $classReflection->getNativeReflection()->hasMethod(
-                    'Set' .
-                    $property
-                )
+                $classReflection->getNativeReflection()->hasMethod('Get' . $property) ||
+                $classReflection->getNativeReflection()->hasMethod('Set' . $property)
             );
     }
 
-    public function getProperty(
-        ClassReflection $classReflection,
-        string $propertyName
-    ) : PropertyReflection {
+    public function getProperty(ClassReflection $ref, string $propertyName) : PropertyReflection
+    {
         /**
         * @var Broker $broker
         */
         $broker = $this->broker;
 
-        return new PropertyReflectionExtension(
-            $classReflection,
-            $broker,
-            $propertyName
-        );
+        return new PropertyReflectionExtension($ref, $broker, $propertyName);
     }
 }
