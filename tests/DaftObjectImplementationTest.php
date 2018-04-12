@@ -104,6 +104,8 @@ class DaftObjectImplementationTest extends TestCase
 
             if (count($className::DaftObjectNullableProperties()) > 0) {
                 yield $args;
+            } else {
+                yield $args;
             }
         }
     }
@@ -114,6 +116,8 @@ class DaftObjectImplementationTest extends TestCase
             list($className) = $args;
 
             if (count($className::DaftObjectExportableProperties()) > 0) {
+                yield $args;
+            } else {
                 yield $args;
             }
         }
@@ -471,6 +475,66 @@ class DaftObjectImplementationTest extends TestCase
                 )
             );
         }
+
+        if (count($properties) > 0 && 0 === count($nullables)) {
+            foreach ($properties as $property) {
+                $getter = 'Get' . $property;
+                $setter = 'Set' . $property;
+
+                if ($reflector->hasMethod($getter)) {
+                    $method = $reflector->getMethod($getter);
+
+                    $this->assertTrue(
+                        $method->hasReturnType(),
+                        (
+                            $method->getDeclaringClass()->getName() .
+                            '::' .
+                            $getter .
+                            ' had no return type, cannot verify is not nullable.'
+                        )
+                    );
+                    $this->assertFalse(
+                        $method->getReturnType()->allowsNull(),
+                        (
+                            $method->getDeclaringClass()->getName() .
+                            '::' .
+                            $getter .
+                            ' defines a nullable return type, but ' .
+                            $className .
+                            ' indicates no nullable properties!'
+                        )
+                    );
+                }
+                if ($reflector->hasMethod($setter)) {
+                    $method = $reflector->getMethod($setter);
+
+                    $this->assertGreaterThan(
+                        0,
+                        $method->getNumberOfParameters(),
+                        (
+                            $method->getDeclaringClass()->getName() .
+                            '::' .
+                            $setter .
+                            ' has no parameters, cannot verify is not nullable!'
+                        )
+                    );
+
+                    foreach ($method->getParameters() as $param) {
+                        $this->assertFalse(
+                            $param->allowsNull(),
+                            (
+                                $method->getDeclaringClass()->getName() .
+                                '::' .
+                                $setter .
+                                ' defines a parameter that allows null, but ' .
+                                $className .
+                                ' indicates no nullable properties!'
+                            )
+                        );
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -510,6 +574,16 @@ class DaftObjectImplementationTest extends TestCase
                     ') that was not defined as a property on ' .
                     $className .
                     '::DaftObjectProperties()'
+                )
+            );
+        }
+
+        if (0 === count($exportables) && count($properties) > 0) {
+            $this->assertFalse(
+                is_a($className, DaftObject\DaftJson::class, true),
+                (
+                    'Implementations with no exportables should not implement ' .
+                    DaftObject\DaftJson::class
                 )
             );
         }
