@@ -98,33 +98,34 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     ) : DaftJson {
         static::ThrowIfNotDaftJson();
         $array = static::ThrowIfJsonDefNotValid($array);
-        $in = [];
-
         $jsonDef = static::DaftObjectJsonProperties();
-
-        foreach (array_keys($array) as $prop) {
+        $mapper =
+            /**
+            * @return mixed
+            */
+            function (string $prop) use ($array, $jsonDef, $writeAll) {
             $jsonType = $jsonDef[$prop] ?? null;
             if (is_string($jsonType)) {
                 if ('[]' === mb_substr($jsonType, -2)) {
-                    $in[$prop] = static::DaftObjectFromJsonTypeArray(
+                    return static::DaftObjectFromJsonTypeArray(
                         mb_substr($jsonType, 0, -2),
                         $prop,
                         $array[$prop],
                         $writeAll
                     );
-                    continue;
                 }
 
-                $in[$prop] = static::DaftObjectFromJsonType($jsonType, $array[$prop], $writeAll);
-                continue;
+                return static::DaftObjectFromJsonType($jsonType, $array[$prop], $writeAll);
             }
-            $in[$prop] = $array[$prop];
-        }
+
+            return $array[$prop];
+        };
+        $props = array_keys($array);
 
         /**
         * @var DaftJson $out
         */
-        $out = new static($in, $writeAll);
+        $out = new static(array_combine($props, array_map($mapper, $props)), $writeAll);
 
         return $out;
     }
