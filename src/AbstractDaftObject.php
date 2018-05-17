@@ -277,19 +277,15 @@ abstract class AbstractDaftObject implements DaftObject
     *
     * @return mixed
     */
-    protected function DoGetSet(string $property, bool $SetNotGet, $v = null)
+    protected function DoGetSet(string $property, bool $setter, $v = null)
     {
-        $expectedMethod = static::DaftObjectMethodNameFromProperty($property, $SetNotGet);
-        $thingers = static::DaftObjectPublicGetters();
+        $expectedMethod = static::DaftObjectMethodNameFromProperty($property, $setter);
+        $props = $setter ? static::DaftObjectPublicSetters() : static::DaftObjectPublicGetters();
 
-        if ($SetNotGet) {
-            $thingers = static::DaftObjectPublicSetters();
-        }
-
-        if (false === in_array($property, $thingers, true)) {
+        if (false === in_array($property, $props, true)) {
             if (false === in_array($property, static::DaftObjectProperties(), true)) {
                 throw new UndefinedPropertyException(static::class, $property);
-            } elseif ($SetNotGet) {
+            } elseif ($setter) {
                 throw new NotPublicSetterPropertyException(static::class, $property);
             }
 
