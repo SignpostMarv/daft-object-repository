@@ -163,8 +163,10 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         bool $writeAll
     ) {
         if ('[]' === mb_substr($jsonType, -2)) {
+            $jsonType = mb_substr($jsonType, 0, -2);
+
             return static::DaftObjectFromJsonTypeArray(
-                mb_substr($jsonType, 0, -2),
+                $jsonType,
                 $prop,
                 $propVal,
                 $writeAll
