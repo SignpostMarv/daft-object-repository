@@ -249,13 +249,11 @@ abstract class AbstractDaftObject implements DaftObject
                 );
             }
 
-            foreach ($properties as $property) {
-                if (false === is_string($property)) {
+            if (count($properties) !== count(array_filter($properties, 'is_string'))) {
                     throw new ClassMethodReturnIsNotArrayOfStringsException(
                         $class,
                         'DaftObjectIdProperties'
                     );
-                }
             }
         } elseif ($throwIfNotImplementation) {
             throw new ClassDoesNotImplementClassException(
