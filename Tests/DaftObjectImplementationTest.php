@@ -440,28 +440,28 @@ class DaftObjectImplementationTest extends TestCase
 
         $this->assertGreaterThan(0, count($properties));
 
-            foreach ($className::DaftObjectIdProperties() as $property) {
-                $this->assertInternalType(
-                    'string',
-                    $property,
-                    (
-                        $className .
-                        '::DaftObjectIdProperties()' .
-                        ' must return an array of strings'
-                    )
-                );
-                $this->assertTrue(
-                    in_array($property, $properties, true),
-                    (
-                        $className .
-                        '::DaftObjectIdProperties() defines as property (' .
-                        $property .
-                        ') that is not defined on ' .
-                        $className .
-                        '::DaftObjectProperties()'
-                    )
-                );
-            }
+        foreach ($className::DaftObjectIdProperties() as $property) {
+            $this->assertInternalType(
+                'string',
+                $property,
+                (
+                    $className .
+                    '::DaftObjectIdProperties()' .
+                    ' must return an array of strings'
+                )
+            );
+            $this->assertTrue(
+                in_array($property, $properties, true),
+                (
+                    $className .
+                    '::DaftObjectIdProperties() defines as property (' .
+                    $property .
+                    ') that is not defined on ' .
+                    $className .
+                    '::DaftObjectProperties()'
+                )
+            );
+        }
     }
 
     /**
