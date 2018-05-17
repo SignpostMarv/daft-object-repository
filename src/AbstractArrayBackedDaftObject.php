@@ -130,10 +130,8 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
             );
     }
 
-    final protected static function DaftJsonClosure(
-        array $array,
-        bool $writeAll
-    ) : Closure {
+    final protected static function DaftJsonClosure(array $array, bool $writeAll) : Closure
+    {
         $jsonDef = static::DaftObjectJsonProperties();
 
         return
