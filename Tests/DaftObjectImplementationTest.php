@@ -97,15 +97,34 @@ class DaftObjectImplementationTest extends TestCase
         }
     }
 
-    final public function dataProviderNonAbstractGoodNullableImplementations() : Generator
+    final public function dataProviderNonAbstractGoodImplementationsWithProperties() : Generator
     {
         foreach ($this->dataProviderNonAbstractGoodImplementations() as $args) {
+            $className = $args[0];
+
+            if (count($className::DaftObjectProperties()) > 0) {
+                yield $args;
+            }
+        }
+    }
+
+    final public function dataProviderNonAbstractDefinesOwnIdGoodImplementations() : Generator
+    {
+        foreach ($this->dataProviderNonAbstractGoodImplementationsWithProperties() as $args) {
+            $className = $args[0];
+
+            if (is_a($className, DaftObject\DefinesOwnIdPropertiesInterface::class, true)) {
+                yield $args;
+            }
+        }
+    }
+
+    final public function dataProviderNonAbstractGoodNullableImplementations() : Generator
+    {
+        foreach ($this->dataProviderNonAbstractGoodImplementationsWithProperties() as $args) {
             list($className) = $args;
 
-            if (
-                count($className::DaftObjectNullableProperties()) > 0 &&
-                count($className::DaftObjectProperties()) > 0
-            ) {
+            if (count($className::DaftObjectNullableProperties()) > 0) {
                 yield $args;
             }
         }
@@ -377,13 +396,15 @@ class DaftObjectImplementationTest extends TestCase
     }
 
     /**
-    * @dataProvider dataProviderNonAbstractGoodImplementations
+    * @dataProvider dataProviderNonAbstractGoodImplementationsWithProperties
     */
     final public function testHasDefinedAllPropertiesCorrectly(
         string $className,
         ReflectionClass $reflector
     ) : void {
         $properties = $className::DaftObjectProperties();
+
+        $this->assertGreaterThan(0, count($properties));
 
         foreach ($properties as $property) {
             $this->assertInternalType(
@@ -396,16 +417,29 @@ class DaftObjectImplementationTest extends TestCase
                 )
             );
         }
+    }
 
+    /**
+    * @dataProvider dataProviderNonAbstractDefinesOwnIdGoodImplementations
+    */
+    final public function testHasDefinedAllIdPropertiesCorrectly(
+        string $className,
+        ReflectionClass $reflector
+    ) : void {
         $interfaceCheck = $className;
 
-        if (
+        $this->assertTrue(
             is_a(
                 $interfaceCheck,
                 DaftObject\DefinesOwnIdPropertiesInterface::class,
                 true
             )
-        ) {
+        );
+
+        $properties = $className::DaftObjectProperties();
+
+        $this->assertGreaterThan(0, count($properties));
+
             foreach ($className::DaftObjectIdProperties() as $property) {
                 $this->assertInternalType(
                     'string',
@@ -428,13 +462,6 @@ class DaftObjectImplementationTest extends TestCase
                     )
                 );
             }
-        } else {
-            $this->markTestSkipped(
-                $interfaceCheck .
-                ' does not implement ' .
-                DaftObject\DefinesOwnIdPropertiesInterface::class
-            );
-        }
     }
 
     /**
