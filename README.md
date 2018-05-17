@@ -1,3 +1,5 @@
+Copyright 2018 SignpostMarv
+
 # daft-object
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/SignpostMarv/daft-object/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/SignpostMarv/daft-object/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/SignpostMarv/daft-object/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/SignpostMarv/daft-object/?branch=master)
