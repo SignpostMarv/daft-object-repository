@@ -8,6 +8,8 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject;
 
+use Closure;
+
 /**
 * Array-backed daft objects.
 */
@@ -92,14 +94,13 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         return $out;
     }
 
-    final public static function DaftObjectFromJsonArray(
+    final protected static function GenerateDaftObjectFromJsonArrayClosure(
         array $array,
-        bool $writeAll = false
-    ) : DaftJson {
-        static::ThrowIfNotDaftJson();
-        $array = static::ThrowIfJsonDefNotValid($array);
+        bool $writeAll
+    ) : Closure {
         $jsonDef = static::DaftObjectJsonProperties();
-        $mapper =
+
+        return (
             /**
             * @return mixed
             */
@@ -119,8 +120,18 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
             }
 
             return $array[$prop];
-        };
+            }
+        );
+    }
+
+    final public static function DaftObjectFromJsonArray(
+        array $array,
+        bool $writeAll = false
+    ) : DaftJson {
+        static::ThrowIfNotDaftJson();
+        $array = static::ThrowIfJsonDefNotValid($array);
         $props = array_keys($array);
+        $mapper = static::GenerateDaftObjectFromJsonArrayClosure($array, $writeAll);
 
         /**
         * @var DaftJson $out
