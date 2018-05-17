@@ -102,9 +102,10 @@ class DaftObjectImplementationTest extends TestCase
         foreach ($this->dataProviderNonAbstractGoodImplementations() as $args) {
             list($className) = $args;
 
-            if (count($className::DaftObjectNullableProperties()) > 0) {
-                yield $args;
-            } else {
+            if (
+                count($className::DaftObjectNullableProperties()) > 0 &&
+                count($className::DaftObjectProperties()) > 0
+            ) {
                 yield $args;
             }
         }
@@ -115,9 +116,10 @@ class DaftObjectImplementationTest extends TestCase
         foreach ($this->dataProviderNonAbstractGoodImplementations() as $args) {
             list($className) = $args;
 
-            if (count($className::DaftObjectExportableProperties()) > 0) {
-                yield $args;
-            } else {
+            if (
+                count($className::DaftObjectExportableProperties()) > 0 &&
+                count($className::DaftObjectProperties()) > 0
+            ) {
                 yield $args;
             }
         }
