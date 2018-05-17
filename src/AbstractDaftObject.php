@@ -247,9 +247,7 @@ abstract class AbstractDaftObject implements DaftObject
                     $class,
                     'DaftObjectIdProperties'
                 );
-            }
-
-            if (count($properties) !== count(array_filter($properties, 'is_string'))) {
+            } elseif (count($properties) !== count(array_filter($properties, 'is_string'))) {
                 throw new ClassMethodReturnIsNotArrayOfStringsException(
                     $class,
                     'DaftObjectIdProperties'
