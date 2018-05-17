@@ -105,21 +105,21 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
             * @return mixed
             */
             function (string $prop) use ($array, $jsonDef, $writeAll) {
-            $jsonType = $jsonDef[$prop] ?? null;
-            if (is_string($jsonType)) {
-                if ('[]' === mb_substr($jsonType, -2)) {
-                    return static::DaftObjectFromJsonTypeArray(
-                        mb_substr($jsonType, 0, -2),
-                        $prop,
-                        $array[$prop],
-                        $writeAll
-                    );
+                $jsonType = $jsonDef[$prop] ?? null;
+                if (is_string($jsonType)) {
+                    if ('[]' === mb_substr($jsonType, -2)) {
+                        return static::DaftObjectFromJsonTypeArray(
+                            mb_substr($jsonType, 0, -2),
+                            $prop,
+                            $array[$prop],
+                            $writeAll
+                        );
+                    }
+
+                    return static::DaftObjectFromJsonType($jsonType, $array[$prop], $writeAll);
                 }
 
-                return static::DaftObjectFromJsonType($jsonType, $array[$prop], $writeAll);
-            }
-
-            return $array[$prop];
+                return $array[$prop];
             }
         );
     }
