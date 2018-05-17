@@ -1,7 +1,7 @@
 <phpunit bootstrap="phpunit-bootstrap.php">
   <testsuites>
     <testsuite name="DaftObject">
-      <directory>./tests/</directory>
+      <directory>./Tests/</directory>
     </testsuite>
   </testsuites>
   <logging>

@@ -18,7 +18,7 @@
         "psr-4": {
             "SignpostMarv\\DaftObject\\": "./tests-src/",
             "SignpostMarv\\DaftObject\\PHPStan\\": "./PHPStan/",
-            "SignpostMarv\\DaftObject\\Tests\\": "./tests/"
+            "SignpostMarv\\DaftObject\\Tests\\": "./Tests/"
         }
     },
     "config": {
@@ -28,9 +28,9 @@
     "scripts": {
         "tests": [
             "phpunit -vvvv",
-            "phpstan analyse -c ./phpstan.neon -- .php_cs.dist src PHPStan tests",
+            "phpstan analyse -c ./phpstan.neon -- .php_cs.dist src PHPStan Tests",
             "psalm",
-            "phpcpd ./src/ ./tests/ ./tests-src/",
+            "phpcpd ./src/ ./Tests/ ./tests-src/",
             "php-cs-fixer fix --verbose --allow-risky=yes --dry-run"
         ],
         "check-coverage-on-tests": [

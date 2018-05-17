@@ -10,7 +10,7 @@
         <file name="phpunit-bootstrap.php" />
         <directory name="src" />
         <directory name="tests-src" />
-        <directory name="tests" />
+        <directory name="Tests" />
         <directory name="PHPStan" />
     </projectFiles>
 

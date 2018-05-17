@@ -13,5 +13,5 @@ return ConfigUsedWithPhpstanWithoutNullableReturn::createWithPaths(
     __DIR__ . '/phpunit-bootstrap.php',
     (__DIR__ . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR),
     (__DIR__ . DIRECTORY_SEPARATOR . 'PHPStan' . DIRECTORY_SEPARATOR),
-    (__DIR__ . DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR)
+    (__DIR__ . DIRECTORY_SEPARATOR . 'Tests' . DIRECTORY_SEPARATOR)
 );
