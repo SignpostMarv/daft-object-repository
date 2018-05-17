@@ -94,36 +94,6 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         return $out;
     }
 
-    final protected static function GenerateDaftObjectFromJsonArrayClosure(
-        array $array,
-        bool $writeAll
-    ) : Closure {
-        $jsonDef = static::DaftObjectJsonProperties();
-
-        return (
-            /**
-            * @return mixed
-            */
-            function (string $prop) use ($array, $jsonDef, $writeAll) {
-                $jsonType = $jsonDef[$prop] ?? null;
-                if (is_string($jsonType)) {
-                    if ('[]' === mb_substr($jsonType, -2)) {
-                        return static::DaftObjectFromJsonTypeArray(
-                            mb_substr($jsonType, 0, -2),
-                            $prop,
-                            $array[$prop],
-                            $writeAll
-                        );
-                    }
-
-                    return static::DaftObjectFromJsonType($jsonType, $array[$prop], $writeAll);
-                }
-
-                return $array[$prop];
-            }
-        );
-    }
-
     final public static function DaftObjectFromJsonArray(
         array $array,
         bool $writeAll = false
@@ -158,6 +128,35 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
                 $this->HasPropertyChanged($property) ||
                 false === empty($wormProperties[$property])
             );
+    }
+
+    final protected static function GenerateDaftObjectFromJsonArrayClosure(
+        array $array,
+        bool $writeAll
+    ) : Closure {
+        $jsonDef = static::DaftObjectJsonProperties();
+
+        return
+            /**
+            * @return mixed
+            */
+            function (string $prop) use ($array, $jsonDef, $writeAll) {
+                $jsonType = $jsonDef[$prop] ?? null;
+                if (is_string($jsonType)) {
+                    if ('[]' === mb_substr($jsonType, -2)) {
+                        return static::DaftObjectFromJsonTypeArray(
+                            mb_substr($jsonType, 0, -2),
+                            $prop,
+                            $array[$prop],
+                            $writeAll
+                        );
+                    }
+
+                    return static::DaftObjectFromJsonType($jsonType, $array[$prop], $writeAll);
+                }
+
+                return $array[$prop];
+            };
     }
 
     /**
