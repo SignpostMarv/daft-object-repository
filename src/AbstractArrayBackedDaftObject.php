@@ -101,7 +101,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         static::ThrowIfNotDaftJson();
         $array = static::ThrowIfJsonDefNotValid($array);
         $props = array_keys($array);
-        $mapper = static::GenerateDaftObjectFromJsonArrayClosure($array, $writeAll);
+        $mapper = static::DaftJsonClosure($array, $writeAll);
 
         /**
         * @var DaftJson $out
@@ -130,7 +130,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
             );
     }
 
-    final protected static function GenerateDaftObjectFromJsonArrayClosure(
+    final protected static function DaftJsonClosure(
         array $array,
         bool $writeAll
     ) : Closure {
