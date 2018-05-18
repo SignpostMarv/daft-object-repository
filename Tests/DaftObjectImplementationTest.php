@@ -353,6 +353,24 @@ class DaftObjectImplementationTest extends TestCase
         }
     }
 
+    final public function dataProviderNonAbstractJsonArrayBackedGoodFuzzingHasSetters() : Generator
+    {
+        foreach ($this->dataProviderNonAbstractGoodFuzzingHasSetters() as $args) {
+            list($className) = $args;
+
+            if (
+                false === is_a($className, DaftObject\DaftJson::class, true) &&
+                is_a(
+                    $className,
+                    DaftObject\AbstractArrayBackedDaftObject::class,
+                    true
+                )
+            ) {
+                yield $args;
+            }
+        }
+    }
+
     final public function dataProviderNonAbstractGoodFuzzingHasSettersPerProperty(
     ) : Generator {
         foreach (
@@ -1169,7 +1187,7 @@ class DaftObjectImplementationTest extends TestCase
     }
 
     /**
-    * @dataProvider dataProviderNonAbstractGoodFuzzingHasSetters
+    * @dataProvider dataProviderNonAbstractJsonArrayBackedGoodFuzzingHasSetters
     *
     * @depends testHasDefinedImplementationCorrectly
     *
@@ -1182,14 +1200,6 @@ class DaftObjectImplementationTest extends TestCase
         array $getters,
         array $setters
     ) : void {
-        if (
-            false === is_a($className, DaftObject\DaftJson::class, true) &&
-            is_a(
-                $className,
-                DaftObject\AbstractArrayBackedDaftObject::class,
-                true
-            )
-        ) {
             $this->expectException(DaftObject\DaftObjectNotDaftJsonBadMethodCallException::class);
             $this->expectExceptionMessage(
                 sprintf(
@@ -1205,16 +1215,6 @@ class DaftObjectImplementationTest extends TestCase
             $className = $className;
 
             $className::DaftObjectFromJsonArray([]);
-        } else {
-            $this->markTestSkipped(
-                sprintf(
-                    '%s is not an implementation of %s or %s',
-                    $className,
-                    DaftObject\DaftJson::class,
-                    DaftObject\AbstractArrayBackedDaftObject::class
-                )
-            );
-        }
     }
 
     /**
