@@ -6,8 +6,12 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject;
 
-class IntegerIdBasedDaftObject extends AbstractArrayBackedDaftObject
+use InvalidArgumentException;
+
+class IntegerIdBasedDaftObject extends AbstractArrayBackedDaftObject implements DefinesOwnUntypedIdInterface
 {
+    use DaftObjectIdValuesHashLazyInt;
+
     const PROPERTIES = [
         'Foo',
     ];
@@ -18,8 +22,36 @@ class IntegerIdBasedDaftObject extends AbstractArrayBackedDaftObject
 
     const JSON_PROPERTIES = self::EXPORTABLE_PROPERTIES;
 
+    public function __construct(array $data = [], bool $writeAll = false)
+    {
+        if (isset($data['Foo']) && ! is_integer($data['Foo'])) {
+            if ( is_string($data['Foo']) && ctype_digit($data['Foo'])) {
+                $data['Foo'] = (int) $data['Foo'];
+            } else {
+                throw new InvalidArgumentException(sprintf(
+                    'Value for %s::$Foo is invalid!',
+                    static::class
+                ));
+            }
+        }
+
+        parent::__construct($data, $writeAll);
+    }
+
     public function GetFoo() : int
     {
         return $this->RetrievePropertyValueFromData('Foo');
+    }
+
+    public function GetId() : int
+    {
+        return $this->GetFoo();
+    }
+
+    public static function DaftObjectIdProperties() : array
+    {
+        return [
+            'Foo',
+        ];
     }
 }
