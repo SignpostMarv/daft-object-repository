@@ -343,7 +343,8 @@ class DaftObjectImplementationTest extends TestCase
         }
     }
 
-    final public function dataProviderNonAbstractNonWormGoodFuzzingHasSetters() : Generator {
+    final public function dataProviderNonAbstractNonWormGoodFuzzingHasSetters() : Generator
+    {
         foreach ($this->dataProviderNonAbstractGoodFuzzingHasSetters() as $args) {
             list($interfaceCheck) = $args;
 
@@ -1200,21 +1201,21 @@ class DaftObjectImplementationTest extends TestCase
         array $getters,
         array $setters
     ) : void {
-            $this->expectException(DaftObject\DaftObjectNotDaftJsonBadMethodCallException::class);
-            $this->expectExceptionMessage(
-                sprintf(
-                    '%s does not implement %s',
-                    $className,
-                    DaftObject\DaftJson::class
-                )
-            );
+        $this->expectException(DaftObject\DaftObjectNotDaftJsonBadMethodCallException::class);
+        $this->expectExceptionMessage(
+            sprintf(
+                '%s does not implement %s',
+                $className,
+                DaftObject\DaftJson::class
+            )
+        );
 
-            /**
-            * @var DaftObject\DaftJson $className
-            */
-            $className = $className;
+        /**
+        * @var DaftObject\DaftJson $className
+        */
+        $className = $className;
 
-            $className::DaftObjectFromJsonArray([]);
+        $className::DaftObjectFromJsonArray([]);
     }
 
     /**
