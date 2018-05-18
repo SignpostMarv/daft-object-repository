@@ -196,17 +196,13 @@ abstract class AbstractDaftObject implements DaftObject
             $classReflection = new ReflectionClass(static::class);
 
             foreach (static::DaftObjectProperties() as $property) {
-                if (static::HasPublicMethod(
-                        $classReflection,
-                        static::DaftObjectMethodNameFromProperty($property)
-                )) {
+                $getter = static::DaftObjectMethodNameFromProperty($property);
+                $setter = static::DaftObjectMethodNameFromProperty($property, true);
+                if (static::HasPublicMethod($classReflection, $getter)) {
                     self::$publicGetters[static::class][] = $property;
                 }
 
-                if (static::HasPublicMethod(
-                        $classReflection,
-                        static::DaftObjectMethodNameFromProperty($property, true)
-                )) {
+                if (static::HasPublicMethod($classReflection, $setter)) {
                     self::$publicSetters[static::class][] = $property;
                 }
             }
