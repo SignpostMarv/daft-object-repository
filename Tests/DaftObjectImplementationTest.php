@@ -343,6 +343,16 @@ class DaftObjectImplementationTest extends TestCase
         }
     }
 
+    final public function dataProviderNonAbstractNonWormGoodFuzzingHasSetters() : Generator {
+        foreach ($this->dataProviderNonAbstractGoodFuzzingHasSetters() as $args) {
+            list($interfaceCheck) = $args;
+
+            if ( ! is_a($interfaceCheck, DaftObject\DaftObjectWorm::class, true)) {
+                yield $args;
+            }
+        }
+    }
+
     final public function dataProviderNonAbstractGoodFuzzingHasSettersPerProperty(
     ) : Generator {
         foreach (
@@ -902,7 +912,7 @@ class DaftObjectImplementationTest extends TestCase
     }
 
     /**
-    * @dataProvider dataProviderNonAbstractGoodFuzzingHasSetters
+    * @dataProvider dataProviderNonAbstractNonWormGoodFuzzingHasSetters
     *
     * @depends testHasDefinedImplementationCorrectly
     *
@@ -916,17 +926,6 @@ class DaftObjectImplementationTest extends TestCase
         array $setters
     ) : void {
         $interfaceCheck = $className;
-
-        if (is_a($interfaceCheck, DaftObject\DaftObjectWorm::class, true)) {
-            $this->markTestSkipped(
-                $className .
-                ' is an implementation of ' .
-                DaftObject\DaftObjectWorm::class .
-                ', cannot test for instantiation from blank.'
-            );
-
-            return;
-        }
 
         $obj = new $className($args);
 
