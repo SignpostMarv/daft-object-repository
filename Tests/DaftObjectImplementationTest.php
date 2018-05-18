@@ -1232,21 +1232,21 @@ class DaftObjectImplementationTest extends TestCase
         array $getters,
         array $setters
     ) : void {
-            $this->expectException(DaftObject\DaftObjectNotDaftJsonBadMethodCallException::class);
-            $this->expectExceptionMessage(
-                sprintf(
-                    '%s does not implement %s',
-                    $className,
-                    DaftObject\DaftJson::class
-                )
-            );
+        $this->expectException(DaftObject\DaftObjectNotDaftJsonBadMethodCallException::class);
+        $this->expectExceptionMessage(
+            sprintf(
+                '%s does not implement %s',
+                $className,
+                DaftObject\DaftJson::class
+            )
+        );
 
-            /**
-            * @var DaftObject\DaftJson $className
-            */
-            $className = $className;
+        /**
+        * @var DaftObject\DaftJson $className
+        */
+        $className = $className;
 
-            $className::DaftObjectFromJsonString('{}');
+        $className::DaftObjectFromJsonString('{}');
     }
 
     /**
