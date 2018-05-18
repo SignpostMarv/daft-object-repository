@@ -888,17 +888,17 @@ class DaftObjectImplementationTest extends TestCase
             )
         );
 
-            $this->assertTrue(
-                $defined,
-                (
-                    $reflector->getDeclaringClass()->getName() .
-                    '::' .
-                    $reflector->getName() .
-                    '() was not defined in ' .
-                    $className .
-                    '::DaftObjectProperties()'
-                )
-            );
+        $this->assertTrue(
+            $defined,
+            (
+                $reflector->getDeclaringClass()->getName() .
+                '::' .
+                $reflector->getName() .
+                '() was not defined in ' .
+                $className .
+                '::DaftObjectProperties()'
+            )
+        );
     }
 
     /**
