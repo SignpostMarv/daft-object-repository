@@ -275,7 +275,6 @@ abstract class AbstractDaftObject implements DaftObject
     */
     protected function DoGetSet(string $property, bool $setter, $v = null)
     {
-        $expectedMethod = static::DaftObjectMethodNameFromProperty($property, $setter);
         $props = $setter ? static::DaftObjectPublicSetters() : static::DaftObjectPublicGetters();
 
         if (false === in_array($property, $props, true)) {
@@ -288,6 +287,6 @@ abstract class AbstractDaftObject implements DaftObject
             throw new NotPublicGetterPropertyException(static::class, $property);
         }
 
-        return $this->$expectedMethod($v);
+        return $this->{static::DaftObjectMethodNameFromProperty($property, $setter)}($v);
     }
 }
