@@ -1219,7 +1219,7 @@ class DaftObjectImplementationTest extends TestCase
     }
 
     /**
-    * @dataProvider dataProviderNonAbstractGoodFuzzingHasSetters
+    * @dataProvider dataProviderNonAbstractJsonArrayBackedGoodFuzzingHasSetters
     *
     * @depends testHasDefinedImplementationCorrectly
     *
@@ -1232,14 +1232,6 @@ class DaftObjectImplementationTest extends TestCase
         array $getters,
         array $setters
     ) : void {
-        if (
-            false === is_a($className, DaftObject\DaftJson::class, true) &&
-            is_a(
-                $className,
-                DaftObject\AbstractArrayBackedDaftObject::class,
-                true
-            )
-        ) {
             $this->expectException(DaftObject\DaftObjectNotDaftJsonBadMethodCallException::class);
             $this->expectExceptionMessage(
                 sprintf(
@@ -1255,16 +1247,6 @@ class DaftObjectImplementationTest extends TestCase
             $className = $className;
 
             $className::DaftObjectFromJsonString('{}');
-        } else {
-            $this->markTestSkipped(
-                sprintf(
-                    '%s is not an implementation of %s or %s',
-                    $className,
-                    DaftObject\DaftJson::class,
-                    DaftObject\AbstractArrayBackedDaftObject::class
-                )
-            );
-        }
     }
 
     /**
