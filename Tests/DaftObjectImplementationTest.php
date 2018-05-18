@@ -1732,6 +1732,12 @@ class DaftObjectImplementationTest extends TestCase
                     ],
                 ],
             ],
+            [
+                DaftObject\IntegerIdBasedDaftObject::class,
+                [
+                    'Foo' => 1,
+                ],
+            ],
         ];
     }
 
