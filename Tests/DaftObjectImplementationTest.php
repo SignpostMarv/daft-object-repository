@@ -197,6 +197,36 @@ class DaftObjectImplementationTest extends TestCase
         }
     }
 
+    final public function dataProviderGoodNonAbstractGetterSettersNotId() : Generator
+    {
+        foreach ($this->dataProviderGoodNonAbstractGetterSetters() as $args) {
+            list($className, $reflector) = $args;
+
+            $property = mb_substr($reflector->getName(), 3);
+
+            $properties = $className::DaftObjectProperties();
+
+            $defined = (
+                in_array($property, $properties, true) ||
+                in_array(
+                    lcfirst($property),
+                    $properties,
+                    true
+                )
+            );
+
+            $definesOwnId = is_a(
+                $className,
+                DaftObject\DefinesOwnIdPropertiesInterface::class,
+                true
+            );
+
+            if ( ! (false === $defined && $definesOwnId)) {
+                yield $args;
+            }
+        }
+    }
+
     final public function dataProviderFuzzingImplementations() : Generator
     {
         foreach ($this->FuzzingImplementationsViaGenerator() as $args) {
@@ -837,7 +867,7 @@ class DaftObjectImplementationTest extends TestCase
     }
 
     /**
-    * @dataProvider dataProviderGoodNonAbstractGetterSetters
+    * @dataProvider dataProviderGoodNonAbstractGetterSettersNotId
     *
     * @depends testHasDefinedImplementationCorrectly
     */
@@ -858,24 +888,6 @@ class DaftObjectImplementationTest extends TestCase
             )
         );
 
-        $definesOwnId = is_a(
-            $className,
-            DaftObject\DefinesOwnIdPropertiesInterface::class,
-            true
-        );
-
-        if (
-            false === $defined &&
-            $definesOwnId
-        ) {
-            $this->markTestSkipped(
-                $reflector->getDeclaringClass()->getName() .
-                '::' .
-                $reflector->getName() .
-                '() is facilitated by ' .
-                DaftObject\DefinesOwnIdPropertiesInterface::class
-            );
-        } else {
             $this->assertTrue(
                 $defined,
                 (
@@ -887,7 +899,6 @@ class DaftObjectImplementationTest extends TestCase
                     '::DaftObjectProperties()'
                 )
             );
-        }
     }
 
     /**
