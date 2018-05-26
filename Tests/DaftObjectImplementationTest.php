@@ -685,9 +685,6 @@ class DaftObjectImplementationTest extends TestCase
 
     /**
     * @dataProvider dataProviderNonAbstractGoodPropertiesImplementations
-    *
-    * @depends testHasDefinedAllNullablesCorrectly
-    * @depends testHasDefinedAllExportablesCorrectly
     */
     final public function testHasDefinedImplementationCorrectly(
         string $className,
