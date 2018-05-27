@@ -24,37 +24,37 @@ class PropertyReflectionExtension implements PropertyReflection
     /**
     * @var Type
     */
-    private $type;
+    protected $type;
 
     /**
     * @var Broker
     */
-    private $broker;
+    protected $broker;
 
     /**
     * @var bool
     */
-    private $readable = false;
+    protected $readable = false;
 
     /**
     * @var bool
     */
-    private $writeable = false;
+    protected $writeable = false;
 
     /**
     * @var bool
     */
-    private $public;
+    protected $public;
 
     /**
     * @var ClassReflection
     */
-    private $readableDeclaringClass;
+    protected $readableDeclaringClass;
 
     /**
     * @var ClassReflection
     */
-    private $writeableDeclaringClass;
+    protected $writeableDeclaringClass;
 
     public function __construct(ClassReflection $classReflection, Broker $broker, string $property)
     {
@@ -132,7 +132,7 @@ class PropertyReflectionExtension implements PropertyReflection
         return $this->writeableDeclaringClass;
     }
 
-    private function SetGetterProps(ReflectionMethod $refMethod) : ClassReflection
+    protected function SetGetterProps(ReflectionMethod $refMethod) : ClassReflection
     {
         $this->readable = true;
 
@@ -151,7 +151,7 @@ class PropertyReflectionExtension implements PropertyReflection
         return static::DetermineDeclaringClass($this->broker, $refMethod);
     }
 
-    private function SetSetterProps(string $class, ReflectionMethod $refMethod) : ClassReflection
+    protected function SetSetterProps(string $class, ReflectionMethod $refMethod) : ClassReflection
     {
         $this->writeable = true;
 
@@ -169,7 +169,7 @@ class PropertyReflectionExtension implements PropertyReflection
         return static::DetermineDeclaringClass($this->broker, $refMethod);
     }
 
-    private static function DetermineDeclaringClass(
+    protected static function DetermineDeclaringClass(
         Broker $broker,
         ReflectionMethod $refMethod
     ) : ClassReflection {
@@ -180,7 +180,7 @@ class PropertyReflectionExtension implements PropertyReflection
         );
     }
 
-    private static function PropertyIsPublic(string $className, string $property) : bool
+    protected static function PropertyIsPublic(string $className, string $property) : bool
     {
         return
             (is_a($className, DefinesOwnUntypedIdInterface::class, true) && 'id' === $property) ||
