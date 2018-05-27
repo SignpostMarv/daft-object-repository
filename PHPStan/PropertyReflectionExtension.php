@@ -17,6 +17,7 @@ use PHPStan\Type\Type;
 use PHPStan\Type\TypehintHelper;
 use ReflectionMethod;
 use SignpostMarv\DaftObject\DaftObject;
+use SignpostMarv\DaftObject\DefinesOwnUntypedIdInterface;
 
 class PropertyReflectionExtension implements PropertyReflection
 {
@@ -70,6 +71,7 @@ class PropertyReflectionExtension implements PropertyReflection
         $className = $classReflection->getName();
 
         $this->public =
+            (is_a($className, DefinesOwnUntypedIdInterface::class, true) && 'id' === $property) ||
             in_array($property, $className::DaftObjectPublicGetters(), true) ||
             in_array($property, $className::DaftObjectPublicSetters(), true);
 
