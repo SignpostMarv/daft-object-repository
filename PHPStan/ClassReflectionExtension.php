@@ -37,6 +37,7 @@ class ClassReflectionExtension implements
 
         return
             is_a($className, DaftObject::class, true) &&
+            ! $classReflection->isAbstract() &&
             (
                 $classReflection->getNativeReflection()->hasMethod('Get' . $property) ||
                 $classReflection->getNativeReflection()->hasMethod('Set' . $property)
