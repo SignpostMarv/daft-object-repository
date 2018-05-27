@@ -175,6 +175,7 @@ class DaftObjectRepositoryTest extends TestCase
 
             foreach ($objImplementation::DaftObjectProperties() as $prop) {
                 if (
+                    $writeable &&
                     false === in_array($prop, $idProps, true) &&
                     true === method_exists($obj, 'Set' . ucfirst($prop)) &&
                     true === method_exists(
@@ -206,6 +207,7 @@ class DaftObjectRepositoryTest extends TestCase
 
             foreach ($objImplementation::DaftObjectProperties() as $prop) {
                 if (
+                    $writeable &&
                     false === in_array($prop, $idProps, true) &&
                     true === method_exists($obj, 'Set' . ucfirst($prop)) &&
                     true === method_exists(
