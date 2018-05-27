@@ -70,10 +70,7 @@ class PropertyReflectionExtension implements PropertyReflection
 
         $className = $classReflection->getName();
 
-        $this->public =
-            (is_a($className, DefinesOwnUntypedIdInterface::class, true) && 'id' === $property) ||
-            in_array($property, $className::DaftObjectPublicGetters(), true) ||
-            in_array($property, $className::DaftObjectPublicSetters(), true);
+        $this->public = static::PropertyIsPublic($className, $property);
 
         $this->type = new MixedType();
 
@@ -181,5 +178,13 @@ class PropertyReflectionExtension implements PropertyReflection
             $refMethod->getDeclaringClass()->getName(),
             $refMethod->getDeclaringClass()->isAnonymous()
         );
+    }
+
+    private static function PropertyIsPublic(string $className, string $property) : bool
+    {
+        return
+            (is_a($className, DefinesOwnUntypedIdInterface::class, true) && 'id' === $property) ||
+            in_array($property, $className::DaftObjectPublicGetters(), true) ||
+            in_array($property, $className::DaftObjectPublicSetters(), true);
     }
 }
