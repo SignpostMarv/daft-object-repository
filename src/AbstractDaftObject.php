@@ -193,25 +193,24 @@ abstract class AbstractDaftObject implements DaftObject
                 self::$publicGetters[static::class][] = 'id';
             }
 
-            $classReflection = new ReflectionClass(static::class);
-            self::CachePublicGettersAndSettersProperties($classReflection);
+            self::CachePublicGettersAndSettersProperties(new ReflectionClass(static::class));
         }
     }
 
     final protected static function CachePublicGettersAndSettersProperties(
         ReflectionClass $classReflection
     ) : void {
-            foreach (static::DaftObjectProperties() as $property) {
-                $getter = static::DaftObjectMethodNameFromProperty($property);
-                $setter = static::DaftObjectMethodNameFromProperty($property, true);
-                if (static::HasPublicMethod($classReflection, $getter)) {
-                    self::$publicGetters[static::class][] = $property;
-                }
-
-                if (static::HasPublicMethod($classReflection, $setter)) {
-                    self::$publicSetters[static::class][] = $property;
-                }
+        foreach (static::DaftObjectProperties() as $property) {
+            $getter = static::DaftObjectMethodNameFromProperty($property);
+            $setter = static::DaftObjectMethodNameFromProperty($property, true);
+            if (static::HasPublicMethod($classReflection, $getter)) {
+                self::$publicGetters[static::class][] = $property;
             }
+
+            if (static::HasPublicMethod($classReflection, $setter)) {
+                self::$publicSetters[static::class][] = $property;
+            }
+        }
     }
 
     /**
