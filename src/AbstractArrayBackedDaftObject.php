@@ -281,6 +281,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
                 } elseif (false === is_null($propVal)) {
                     return true;
                 }
+
                 return false;
             },
             ARRAY_FILTER_USE_KEY
