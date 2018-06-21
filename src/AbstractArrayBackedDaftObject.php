@@ -230,7 +230,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     protected function NudgePropertyValue(string $property, $value) : void
     {
         $this->MaybeThrowForPropertyOnNudge($property);
-        $this->MaybeThrowOnNudge($property, $value);
+        $this->MaybeThrowOnNudge($property, $value, static::NULLABLE_PROPERTIES);
 
         $isChanged = (
             false === array_key_exists($property, $this->data) ||
@@ -262,11 +262,11 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     *
     * @see AbstractArrayBackedDaftObject::NudgePropertyValue()
     */
-    private function MaybeThrowOnNudge(string $property, $value) : void
+    private function MaybeThrowOnNudge(string $property, $value, array $properties) : void
     {
         if (
             true === is_null($value) &&
-            true !== in_array($property, static::NULLABLE_PROPERTIES, true)
+            true !== in_array($property, $properties, true)
         ) {
             throw new PropertyNotNullableException(static::class, $property);
         }
