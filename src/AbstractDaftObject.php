@@ -204,15 +204,15 @@ abstract class AbstractDaftObject implements DaftObject
 
     final protected static function CachePublicGettersAndSettersProperties() : void
     {
-        foreach (static::DaftObjectProperties() as $property) {
-            $getter = static::DaftObjectMethodNameFromProperty($property);
-            $setter = static::DaftObjectMethodNameFromProperty($property, true);
+        foreach (static::DaftObjectProperties() as $prop) {
+            $getter = static::DaftObjectMethodNameFromProperty($prop);
+            $setter = static::DaftObjectMethodNameFromProperty($prop, true);
             if (static::HasPublicMethod($getter)) {
-                self::$publicGetters[static::class][] = $property;
+                self::$publicGetters[static::class][] = $prop;
             }
 
             if (static::HasPublicMethod($setter)) {
-                self::$publicSetters[static::class][] = $property;
+                self::$publicSetters[static::class][] = $prop;
             }
         }
     }
