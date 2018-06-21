@@ -59,11 +59,10 @@ class PropertyReflectionExtension implements PropertyReflection
     public function __construct(ClassReflection $classReflection, Broker $broker, string $property)
     {
         if (false === is_a($classReflection->getName(), DaftObject::class, true)) {
-            throw new InvalidArgumentException(
-                $classReflection->getName() .
-                ' is not an implementation of ' .
+            throw new InvalidArgumentException(sprintf('%s is not an implementation of %s',
+                $classReflection->getName(),
                 DaftObject::class
-            );
+            ));
         }
 
         $this->broker = $broker;
