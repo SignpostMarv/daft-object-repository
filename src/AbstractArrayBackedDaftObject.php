@@ -253,13 +253,13 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     {
         if (true !== in_array($property, static::PROPERTIES, true)) {
             throw new UndefinedPropertyException(static::class, $property);
+        } elseif ($this->DaftObjectWormPropertyWritten($property)) {
+            throw new PropertyNotRewriteableException(static::class, $property);
         } elseif (
             true === is_null($value) &&
             true !== in_array($property, static::NULLABLE_PROPERTIES, true)
         ) {
             throw new PropertyNotNullableException(static::class, $property);
-        } elseif ($this->DaftObjectWormPropertyWritten($property)) {
-            throw new PropertyNotRewriteableException(static::class, $property);
         }
     }
 
