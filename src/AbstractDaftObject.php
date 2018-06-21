@@ -91,16 +91,25 @@ abstract class AbstractDaftObject implements DaftObject
     */
     public function __debugInfo() : array
     {
-        $out = [];
-        $publicGetters = static::DaftObjectPublicGetters();
-        foreach (static::DaftObjectExportableProperties() as $prop) {
-            $expectedMethod = 'Get' . ucfirst($prop);
-            if ($this->__isset($prop) && in_array($prop, $publicGetters, true)) {
-                $out[(string) $prop] = $this->$expectedMethod();
-            }
-        }
+        $getters = static::DaftObjectPublicGetters();
+        $exportables = static::DaftObjectExportableProperties();
+        /**
+        * @var array<int, string> $properties
+        */
+        $properties = array_filter($exportables, function (string $prop) use ($getters) : bool {
+            return ($this->__isset($prop) && in_array($prop, $getters, true));
+        });
 
-        return $out;
+        return array_combine($properties, array_map(
+            /**
+            * @return mixed
+            */
+            function (string $prop) {
+            $expectedMethod = 'Get' . ucfirst($prop);
+                return $this->$expectedMethod();
+            },
+            $properties
+        ));
     }
 
     /**
