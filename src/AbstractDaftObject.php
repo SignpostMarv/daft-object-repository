@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace SignpostMarv\DaftObject;
 
 use ReflectionClass;
+use ReflectionException;
 use ReflectionMethod;
 
 /**
@@ -177,18 +178,15 @@ abstract class AbstractDaftObject implements DaftObject
     }
 
     final protected static function HasPublicMethod(
-        ReflectionClass $cRef,
         string $method
     ) : bool {
-        if (
-            $cRef->hasMethod($method)
-        ) {
+        try {
             $mRef = new ReflectionMethod(static::class, $method);
 
             return $mRef->isPublic() && false === $mRef->isStatic();
-        }
-
+        } catch (ReflectionException $e) {
         return false;
+        }
     }
 
     final protected static function CachePublicGettersAndSetters() : void
@@ -211,11 +209,11 @@ abstract class AbstractDaftObject implements DaftObject
         foreach (static::DaftObjectProperties() as $property) {
             $getter = static::DaftObjectMethodNameFromProperty($property);
             $setter = static::DaftObjectMethodNameFromProperty($property, true);
-            if (static::HasPublicMethod($classReflection, $getter)) {
+            if (static::HasPublicMethod($getter)) {
                 self::$publicGetters[static::class][] = $property;
             }
 
-            if (static::HasPublicMethod($classReflection, $setter)) {
+            if (static::HasPublicMethod($setter)) {
                 self::$publicSetters[static::class][] = $property;
             }
         }
