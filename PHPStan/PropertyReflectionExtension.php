@@ -74,23 +74,6 @@ class PropertyReflectionExtension implements PropertyReflection
         $this->SetupReflections($classReflection, $property);
     }
 
-    protected function SetupReflections(ClassReflection $classReflection, string $property) : void
-    {
-        $class = $classReflection->getName();
-        $get = 'Get' . ucfirst($property);
-        $set = 'Set' . ucfirst($property);
-
-        $this->writeableReflection = $this->readableReflection = $classReflection;
-
-        if ($classReflection->getNativeReflection()->hasMethod($get)) {
-            $this->readableReflection = $this->SetGetterProps(new ReflectionMethod($class, $get));
-        }
-
-        if ($classReflection->getNativeReflection()->hasMethod($set)) {
-            $this->writeableReflection = $this->SetSetterProps($class, $set);
-        }
-    }
-
     public function getType() : Type
     {
         return $this->type;
@@ -129,6 +112,23 @@ class PropertyReflectionExtension implements PropertyReflection
         $reflection = $this->readable ? $this->readableReflection : $this->writeableReflection;
 
         return $reflection;
+    }
+
+    protected function SetupReflections(ClassReflection $classReflection, string $property) : void
+    {
+        $class = $classReflection->getName();
+        $get = 'Get' . ucfirst($property);
+        $set = 'Set' . ucfirst($property);
+
+        $this->writeableReflection = $this->readableReflection = $classReflection;
+
+        if ($classReflection->getNativeReflection()->hasMethod($get)) {
+            $this->readableReflection = $this->SetGetterProps(new ReflectionMethod($class, $get));
+        }
+
+        if ($classReflection->getNativeReflection()->hasMethod($set)) {
+            $this->writeableReflection = $this->SetSetterProps($class, $set);
+        }
     }
 
     protected function SetGetterProps(ReflectionMethod $refMethod) : ClassReflection
