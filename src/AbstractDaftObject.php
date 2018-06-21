@@ -238,9 +238,7 @@ abstract class AbstractDaftObject implements DaftObject
         bool $throwIfNotImplementation = false
     ) : void {
         if (is_a($class, DefinesOwnIdPropertiesInterface::class, true)) {
-            $properties = $class::DaftObjectIdProperties();
-
-            self::CheckTypeDefinesOwnIdPropertiesIsImplementation($class, $properties);
+            self::CheckTypeDefinesOwnIdPropertiesIsImplementation($class);
         } elseif ($throwIfNotImplementation) {
             throw new ClassDoesNotImplementClassException(
                 $class,
@@ -250,9 +248,10 @@ abstract class AbstractDaftObject implements DaftObject
     }
 
     final protected static function CheckTypeDefinesOwnIdPropertiesIsImplementation(
-        string $class,
-        array $properties
+        string $class
     ) : void {
+        $properties = $class::DaftObjectIdProperties();
+
         if (count($properties) < 1) {
             throw new ClassMethodReturnHasZeroArrayCountException(
                 $class,
