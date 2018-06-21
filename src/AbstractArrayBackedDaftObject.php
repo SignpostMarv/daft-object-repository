@@ -269,9 +269,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
 
         $jsonDef = static::DaftObjectJsonProperties();
 
-        $array = array_filter(
-            $array,
-            function (string $prop) use ($jsonProps, $array) : bool {
+        $filter = function (string $prop) use ($jsonProps, $array) : bool {
                 /**
                 * @var mixed $propVal
                 */
@@ -283,7 +281,11 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
                 }
 
                 return false;
-            },
+        };
+
+        $array = array_filter(
+            $array,
+            $filter,
             ARRAY_FILTER_USE_KEY
         );
 
@@ -292,7 +294,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         */
         $keys = array_keys($array);
 
-        return array_combine($keys, array_map(
+        $mapper =
             /**
             * @return mixed
             */
@@ -311,7 +313,10 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
                 }
 
                 return $propVal;
-            },
+            };
+
+        return array_combine($keys, array_map(
+            $mapper,
             $keys
         ));
     }
