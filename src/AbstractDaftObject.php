@@ -177,15 +177,14 @@ abstract class AbstractDaftObject implements DaftObject
         }
     }
 
-    final protected static function HasPublicMethod(
-        string $method
-    ) : bool {
+    final protected static function HasPublicMethod(string $method) : bool
+    {
         try {
             $mRef = new ReflectionMethod(static::class, $method);
 
             return $mRef->isPublic() && false === $mRef->isStatic();
         } catch (ReflectionException $e) {
-        return false;
+            return false;
         }
     }
 
