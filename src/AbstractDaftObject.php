@@ -97,7 +97,7 @@ abstract class AbstractDaftObject implements DaftObject
         * @var array<int, string> $properties
         */
         $properties = array_filter($exportables, function (string $prop) use ($getters) : bool {
-            return ($this->__isset($prop) && in_array($prop, $getters, true));
+            return $this->__isset($prop) && in_array($prop, $getters, true);
         });
 
         return array_combine($properties, array_map(
@@ -105,7 +105,8 @@ abstract class AbstractDaftObject implements DaftObject
             * @return mixed
             */
             function (string $prop) {
-            $expectedMethod = 'Get' . ucfirst($prop);
+                $expectedMethod = 'Get' . ucfirst($prop);
+
                 return $this->$expectedMethod();
             },
             $properties
