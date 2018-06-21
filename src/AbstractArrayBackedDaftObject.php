@@ -294,12 +294,8 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
                 */
                 $propVal = $array[$prop];
 
-                if (isset($jsonDef[$prop])) {
-                    $jsonType = $jsonDef[$prop];
-
-                    if (false === is_array($propVal)) {
-                        static::ThrowBecauseArrayJsonTypeNotValid($jsonType, $prop);
-                    }
+                if (isset($jsonDef[$prop]) && false === is_array($propVal)) {
+                    static::ThrowBecauseArrayJsonTypeNotValid($jsonDef[$prop], $prop);
                 }
 
                 return $propVal;
