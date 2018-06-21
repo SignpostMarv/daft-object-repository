@@ -945,9 +945,9 @@ class DaftObjectImplementationTest extends TestCase
 
         $obj = new $className($args);
 
-        $this->assertSame(
+        $this->assertCount(
             0,
-            count($obj->ChangedProperties()),
+            $obj->ChangedProperties(),
             (
                 $className .
                 '::ChangedProperties() must be empty after instantiation'
@@ -956,9 +956,9 @@ class DaftObjectImplementationTest extends TestCase
 
         $obj = new $className([]);
 
-        $this->assertSame(
+        $this->assertCount(
             0,
-            count($obj->ChangedProperties()),
+            $obj->ChangedProperties(),
             (
                 $className .
                 '::ChangedProperties() must be empty after instantiation'
