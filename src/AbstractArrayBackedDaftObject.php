@@ -270,17 +270,11 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         $jsonDef = static::DaftObjectJsonProperties();
 
         $filter = function (string $prop) use ($jsonProps, $array) : bool {
-            /**
-            * @var mixed $propVal
-            */
-            $propVal = $array[$prop];
             if (false === in_array($prop, $jsonProps, true)) {
                 throw new PropertyNotJsonDecodableException(static::class, $prop);
-            } elseif (false === is_null($propVal)) {
-                return true;
             }
 
-            return false;
+            return false === is_null($array[$prop]);
         };
 
         $array = array_filter($array, $filter, ARRAY_FILTER_USE_KEY);
