@@ -253,17 +253,17 @@ abstract class AbstractDaftObject implements DaftObject
         string $class,
         array $properties
     ) : void {
-            if (count($properties) < 1) {
-                throw new ClassMethodReturnHasZeroArrayCountException(
-                    $class,
-                    'DaftObjectIdProperties'
-                );
-            } elseif (count($properties) !== count(array_filter($properties, 'is_string'))) {
-                throw new ClassMethodReturnIsNotArrayOfStringsException(
-                    $class,
-                    'DaftObjectIdProperties'
-                );
-            }
+        if (count($properties) < 1) {
+            throw new ClassMethodReturnHasZeroArrayCountException(
+                $class,
+                'DaftObjectIdProperties'
+            );
+        } elseif (count($properties) !== count(array_filter($properties, 'is_string'))) {
+            throw new ClassMethodReturnIsNotArrayOfStringsException(
+                $class,
+                'DaftObjectIdProperties'
+            );
+        }
     }
 
     protected static function DaftObjectMethodNameFromProperty(
