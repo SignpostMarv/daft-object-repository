@@ -47,12 +47,12 @@ class PropertyReflectionExtension implements PropertyReflection
     protected $public;
 
     /**
-    * @var ClassReflection
+    * @var ClassReflection|null
     */
     protected $readableReflection;
 
     /**
-    * @var ClassReflection
+    * @var ClassReflection|null
     */
     protected $writeableReflection;
 
@@ -67,12 +67,16 @@ class PropertyReflectionExtension implements PropertyReflection
 
         $this->broker = $broker;
 
-        $class = $classReflection->getName();
-
-        $this->public = static::PropertyIsPublic($class, $property);
+        $this->public = static::PropertyIsPublic($classReflection->getName(), $property);
 
         $this->type = new MixedType();
 
+        $this->SetupReflections($classReflection, $property);
+    }
+
+    protected function SetupReflections(ClassReflection $classReflection, string $property) : void
+    {
+        $class = $classReflection->getName();
         $get = 'Get' . ucfirst($property);
         $set = 'Set' . ucfirst($property);
 
@@ -119,11 +123,12 @@ class PropertyReflectionExtension implements PropertyReflection
 
     public function getDeclaringClass() : ClassReflection
     {
-        if ($this->readable) {
-            return $this->readableReflection;
-        }
+        /**
+        * @var ClassReflection $reflection
+        */
+        $reflection = $this->readable ? $this->readableReflection : $this->writeableReflection;
 
-        return $this->writeableReflection;
+        return $reflection;
     }
 
     protected function SetGetterProps(ReflectionMethod $refMethod) : ClassReflection
