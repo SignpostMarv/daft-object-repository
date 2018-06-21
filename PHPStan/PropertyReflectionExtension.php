@@ -76,8 +76,7 @@ class PropertyReflectionExtension implements PropertyReflection
         $get = 'Get' . ucfirst($property);
         $set = 'Set' . ucfirst($property);
 
-        $this->readableReflection = $classReflection;
-        $this->writeableReflection = $classReflection;
+        $this->writeableReflection = $this->readableReflection = $classReflection;
 
         if ($classReflection->getNativeReflection()->hasMethod($get)) {
             $this->readableReflection = $this->SetGetterProps(new ReflectionMethod($class, $get));
