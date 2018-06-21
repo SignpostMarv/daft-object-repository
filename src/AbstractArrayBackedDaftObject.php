@@ -276,11 +276,11 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
                 * @var mixed $propVal
                 */
                 $propVal = $array[$prop];
-            if (false === in_array($prop, $jsonProps, true)) {
-                throw new PropertyNotJsonDecodableException(static::class, $prop);
-            } elseif (false === is_null($propVal)) {
-                return true;
-            }
+                if (false === in_array($prop, $jsonProps, true)) {
+                    throw new PropertyNotJsonDecodableException(static::class, $prop);
+                } elseif (false === is_null($propVal)) {
+                    return true;
+                }
                 return false;
             },
             ARRAY_FILTER_USE_KEY
