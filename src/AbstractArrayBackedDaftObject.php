@@ -270,24 +270,20 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         $jsonDef = static::DaftObjectJsonProperties();
 
         $filter = function (string $prop) use ($jsonProps, $array) : bool {
-                /**
-                * @var mixed $propVal
-                */
-                $propVal = $array[$prop];
-                if (false === in_array($prop, $jsonProps, true)) {
-                    throw new PropertyNotJsonDecodableException(static::class, $prop);
-                } elseif (false === is_null($propVal)) {
-                    return true;
-                }
+            /**
+            * @var mixed $propVal
+            */
+            $propVal = $array[$prop];
+            if (false === in_array($prop, $jsonProps, true)) {
+                throw new PropertyNotJsonDecodableException(static::class, $prop);
+            } elseif (false === is_null($propVal)) {
+                return true;
+            }
 
-                return false;
+            return false;
         };
 
-        $array = array_filter(
-            $array,
-            $filter,
-            ARRAY_FILTER_USE_KEY
-        );
+        $array = array_filter($array, $filter, ARRAY_FILTER_USE_KEY);
 
         /**
         * @var array<int, string> $keys
@@ -315,10 +311,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
                 return $propVal;
             };
 
-        return array_combine($keys, array_map(
-            $mapper,
-            $keys
-        ));
+        return array_combine($keys, array_map($mapper, $keys));
     }
 
     private static function ThrowBecauseArrayJsonTypeNotValid(string $type, string $prop) : void
