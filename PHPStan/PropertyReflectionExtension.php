@@ -80,15 +80,11 @@ class PropertyReflectionExtension implements PropertyReflection
         $this->writeableReflection = $classReflection;
 
         if ($classReflection->getNativeReflection()->hasMethod($get)) {
-            $refMethod = new ReflectionMethod($class, $get);
-
-            $this->readableReflection = $this->SetGetterProps($refMethod);
+            $this->readableReflection = $this->SetGetterProps(new ReflectionMethod($class, $get));
         }
 
         if ($classReflection->getNativeReflection()->hasMethod($set)) {
-            $refMethod = new ReflectionMethod($class, $set);
-
-            $this->writeableReflection = $this->SetSetterProps($class, $refMethod);
+            $this->writeableReflection = $this->SetSetterProps($class, $set);
         }
     }
 
@@ -150,8 +146,9 @@ class PropertyReflectionExtension implements PropertyReflection
         return static::DetermineDeclaringClass($this->broker, $refMethod);
     }
 
-    protected function SetSetterProps(string $class, ReflectionMethod $refMethod) : ClassReflection
+    protected function SetSetterProps(string $class, string $set) : ClassReflection
     {
+        $refMethod = new ReflectionMethod($class, $set);
         $this->writeable = true;
 
         $refParam = $refMethod->getParameters()[0];
