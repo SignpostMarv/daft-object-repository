@@ -185,9 +185,7 @@ abstract class AbstractDaftObject implements DaftObject
         ) {
             $mRef = new ReflectionMethod(static::class, $method);
 
-            return
-                $mRef->isPublic() &&
-                false === $mRef->isStatic();
+            return $mRef->isPublic() && false === $mRef->isStatic();
         }
 
         return false;
