@@ -277,14 +277,12 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
 
         $array = array_filter($array, $filter, ARRAY_FILTER_USE_KEY);
 
-        /**
-        * @var array<int, string> $keys
-        */
         $keys = array_keys($array);
 
-        $mapper = static::MakeMapperThrowIfJsonDefNotValid($array);
-
-        return array_combine($keys, array_map($mapper, $keys));
+        return array_combine(
+            $keys,
+            array_map(static::MakeMapperThrowIfJsonDefNotValid($array), $keys)
+        );
     }
 
     private static function MakeMapperThrowIfJsonDefNotValid(array $array) : Closure
