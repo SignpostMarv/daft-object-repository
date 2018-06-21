@@ -289,16 +289,11 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
             * @return mixed
             */
             function (string $prop) use ($jsonDef, $array) {
-                /**
-                * @var mixed $propVal
-                */
-                $propVal = $array[$prop];
-
-                if (isset($jsonDef[$prop]) && false === is_array($propVal)) {
+                if (isset($jsonDef[$prop]) && false === is_array($array[$prop])) {
                     static::ThrowBecauseArrayJsonTypeNotValid($jsonDef[$prop], $prop);
                 }
 
-                return $propVal;
+                return $array[$prop];
             };
 
         return array_combine($keys, array_map($mapper, $keys));
