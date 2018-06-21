@@ -49,12 +49,12 @@ class PropertyReflectionExtension implements PropertyReflection
     /**
     * @var ClassReflection
     */
-    protected $readableDeclaringClass;
+    protected $readableReflection;
 
     /**
     * @var ClassReflection
     */
-    protected $writeableDeclaringClass;
+    protected $writeableReflection;
 
     public function __construct(ClassReflection $classReflection, Broker $broker, string $property)
     {
@@ -67,28 +67,28 @@ class PropertyReflectionExtension implements PropertyReflection
 
         $this->broker = $broker;
 
-        $className = $classReflection->getName();
+        $class = $classReflection->getName();
 
-        $this->public = static::PropertyIsPublic($className, $property);
+        $this->public = static::PropertyIsPublic($class, $property);
 
         $this->type = new MixedType();
 
-        $getter = 'Get' . ucfirst($property);
-        $setter = 'Set' . ucfirst($property);
+        $get = 'Get' . ucfirst($property);
+        $set = 'Set' . ucfirst($property);
 
-        $this->readableDeclaringClass = $classReflection;
-        $this->writeableDeclaringClass = $classReflection;
+        $this->readableReflection = $classReflection;
+        $this->writeableReflection = $classReflection;
 
-        if ($classReflection->getNativeReflection()->hasMethod($getter)) {
-            $refMethod = new ReflectionMethod($className, $getter);
+        if ($classReflection->getNativeReflection()->hasMethod($get)) {
+            $refMethod = new ReflectionMethod($class, $get);
 
-            $this->readableDeclaringClass = $this->SetGetterProps($refMethod);
+            $this->readableReflection = $this->SetGetterProps($refMethod);
         }
 
-        if ($classReflection->getNativeReflection()->hasMethod($setter)) {
-            $refMethod = new ReflectionMethod($className, $setter);
+        if ($classReflection->getNativeReflection()->hasMethod($set)) {
+            $refMethod = new ReflectionMethod($class, $set);
 
-            $this->writeableDeclaringClass = $this->SetSetterProps($className, $refMethod);
+            $this->writeableReflection = $this->SetSetterProps($class, $refMethod);
         }
     }
 
@@ -125,10 +125,10 @@ class PropertyReflectionExtension implements PropertyReflection
     public function getDeclaringClass() : ClassReflection
     {
         if ($this->readable) {
-            return $this->readableDeclaringClass;
+            return $this->readableReflection;
         }
 
-        return $this->writeableDeclaringClass;
+        return $this->writeableReflection;
     }
 
     protected function SetGetterProps(ReflectionMethod $refMethod) : ClassReflection
