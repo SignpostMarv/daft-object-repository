@@ -264,15 +264,8 @@ abstract class AbstractDaftObject implements DaftObject
         return ($SetNotGet ? 'Set' : 'Get') . ucfirst($property);
     }
 
-    /**
-    * @param mixed $v
-    *
-    * @return mixed
-    */
-    protected function DoGetSet(string $property, bool $setter, $v = null)
+    protected function MaybeThrowOnDoGetSet(string $property, bool $setter, array $props) : void
     {
-        $props = $setter ? static::DaftObjectPublicSetters() : static::DaftObjectPublicGetters();
-
         if (false === in_array($property, $props, true)) {
             if (false === in_array($property, static::DaftObjectProperties(), true)) {
                 throw new UndefinedPropertyException(static::class, $property);
@@ -282,6 +275,18 @@ abstract class AbstractDaftObject implements DaftObject
 
             throw new NotPublicGetterPropertyException(static::class, $property);
         }
+    }
+
+    /**
+    * @param mixed $v
+    *
+    * @return mixed
+    */
+    protected function DoGetSet(string $property, bool $setter, $v = null)
+    {
+        $props = $setter ? static::DaftObjectPublicSetters() : static::DaftObjectPublicGetters();
+
+        $this->MaybeThrowOnDoGetSet($property, $setter, $props);
 
         return $this->{static::DaftObjectMethodNameFromProperty($property, $setter)}($v);
     }
