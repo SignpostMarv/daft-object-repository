@@ -237,9 +237,7 @@ abstract class AbstractDaftObject implements DaftObject
         string $class,
         bool $throwIfNotImplementation = false
     ) : void {
-        $interfaceCheck = $class;
-
-        if (is_a($interfaceCheck, DefinesOwnIdPropertiesInterface::class, true)) {
+        if (is_a($class, DefinesOwnIdPropertiesInterface::class, true)) {
             $properties = $class::DaftObjectIdProperties();
 
             if (count($properties) < 1) {
