@@ -229,6 +229,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
 
     protected function NudgePropertyValue(string $property, $value) : void
     {
+        $this->MaybeThrowForPropertyOnNudge($property);
         $this->MaybeThrowOnNudge($property, $value);
 
         $isChanged = (
@@ -245,17 +246,25 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     }
 
     /**
+    * @see AbstractArrayBackedDaftObject::NudgePropertyValue()
+    */
+    private function MaybeThrowForPropertyOnNudge(string $property) : void
+    {
+        if (true !== in_array($property, static::PROPERTIES, true)) {
+            throw new UndefinedPropertyException(static::class, $property);
+        } elseif ($this->DaftObjectWormPropertyWritten($property)) {
+            throw new PropertyNotRewriteableException(static::class, $property);
+        }
+    }
+
+    /**
     * @param mixed $value
     *
     * @see AbstractArrayBackedDaftObject::NudgePropertyValue()
     */
     private function MaybeThrowOnNudge(string $property, $value) : void
     {
-        if (true !== in_array($property, static::PROPERTIES, true)) {
-            throw new UndefinedPropertyException(static::class, $property);
-        } elseif ($this->DaftObjectWormPropertyWritten($property)) {
-            throw new PropertyNotRewriteableException(static::class, $property);
-        } elseif (
+        if (
             true === is_null($value) &&
             true !== in_array($property, static::NULLABLE_PROPERTIES, true)
         ) {
