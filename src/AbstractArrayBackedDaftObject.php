@@ -264,10 +264,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     */
     private function MaybeThrowOnNudge(string $property, $value, array $properties) : void
     {
-        if (
-            true === is_null($value) &&
-            true !== in_array($property, $properties, true)
-        ) {
+        if (true === is_null($value) && true !== in_array($property, $properties, true)) {
             throw new PropertyNotNullableException(static::class, $property);
         }
     }
