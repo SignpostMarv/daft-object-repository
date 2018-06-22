@@ -110,6 +110,22 @@ class TypeUtilities
         return $mapper;
     }
 
+    public static function FilterThrowIfJsonDefNotValid(
+        string $class,
+        array $jsonProps,
+        array $array
+    ) : array {
+        $filter = function (string $prop) use ($jsonProps, $array, $class) : bool {
+            if (false === in_array($prop, $jsonProps, true)) {
+                throw new PropertyNotJsonDecodableException($class, $prop);
+            }
+
+            return false === is_null($array[$prop]);
+        };
+
+        return array_filter($array, $filter, ARRAY_FILTER_USE_KEY);
+    }
+
     final protected static function CachePublicGettersAndSetters(string $class) : void
     {
         if (false === isset(self::$publicGetters[$class])) {

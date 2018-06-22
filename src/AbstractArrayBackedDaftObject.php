@@ -269,24 +269,10 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         }
     }
 
-    private static function FilterThrowIfJsonDefNotValid(array $array) : array
-    {
-        $jsonProps = static::DaftObjectJsonPropertyNames();
-
-        $filter = function (string $prop) use ($jsonProps, $array) : bool {
-            if (false === in_array($prop, $jsonProps, true)) {
-                throw new PropertyNotJsonDecodableException(static::class, $prop);
-            }
-
-            return false === is_null($array[$prop]);
-        };
-
-        return array_filter($array, $filter, ARRAY_FILTER_USE_KEY);
-    }
-
     private static function ThrowIfJsonDefNotValid(array $array) : array
     {
-        $array = static::FilterThrowIfJsonDefNotValid($array);
+        $jsonProps = static::DaftObjectJsonPropertyNames();
+        $array = TypeUtilities::FilterThrowIfJsonDefNotValid(static::class, $jsonProps, $array);
         $jsonDef = static::DaftObjectJsonProperties();
 
         $keys = array_keys($array);
