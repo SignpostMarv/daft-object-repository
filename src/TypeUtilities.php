@@ -82,6 +82,13 @@ class TypeUtilities
         }
     }
 
+    public static function ThrowIfNotJsonType(string $jsonType) : void
+    {
+        if (false === is_a($jsonType, DaftJson::class, true)) {
+            throw new ClassDoesNotImplementClassException($jsonType, DaftJson::class);
+        }
+    }
+
     final protected static function CachePublicGettersAndSetters(string $class) : void
     {
         if (false === isset(self::$publicGetters[$class])) {
