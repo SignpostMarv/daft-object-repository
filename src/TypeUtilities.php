@@ -6,6 +6,7 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject;
 
+use Closure;
 use ReflectionException;
 use ReflectionMethod;
 
@@ -89,6 +90,26 @@ class TypeUtilities
         }
     }
 
+    public static function MakeMapperThrowIfJsonDefNotValid(
+        string $class,
+        array $jsonDef,
+        array $array
+    ) : Closure {
+        $mapper =
+            /**
+            * @return mixed
+            */
+            function (string $prop) use ($jsonDef, $array, $class) {
+                if (isset($jsonDef[$prop]) && false === is_array($array[$prop])) {
+                    static::ThrowBecauseArrayJsonTypeNotValid($class, $jsonDef[$prop], $prop);
+                }
+
+                return $array[$prop];
+            };
+
+        return $mapper;
+    }
+
     final protected static function CachePublicGettersAndSetters(string $class) : void
     {
         if (false === isset(self::$publicGetters[$class])) {
@@ -132,5 +153,16 @@ class TypeUtilities
                 'DaftObjectIdProperties'
             );
         }
+    }
+
+    private static function ThrowBecauseArrayJsonTypeNotValid(
+        string $class,
+        string $type,
+        string $prop
+    ) : void {
+        if ('[]' === mb_substr($type, -2)) {
+            throw new PropertyNotJsonDecodableShouldBeArrayException($class, $prop);
+        }
+        throw new PropertyNotJsonDecodableShouldBeArrayException($type, $prop);
     }
 }

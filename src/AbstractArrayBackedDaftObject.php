@@ -287,40 +287,14 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     private static function ThrowIfJsonDefNotValid(array $array) : array
     {
         $array = static::FilterThrowIfJsonDefNotValid($array);
+        $jsonDef = static::DaftObjectJsonProperties();
 
         $keys = array_keys($array);
 
-        return array_combine(
-            $keys,
-            array_map(static::MakeMapperThrowIfJsonDefNotValid($array), $keys)
-        );
-    }
-
-    private static function MakeMapperThrowIfJsonDefNotValid(array $array) : Closure
-    {
-        $jsonDef = static::DaftObjectJsonProperties();
-
-        $mapper =
-            /**
-            * @return mixed
-            */
-            function (string $prop) use ($jsonDef, $array) {
-                if (isset($jsonDef[$prop]) && false === is_array($array[$prop])) {
-                    static::ThrowBecauseArrayJsonTypeNotValid($jsonDef[$prop], $prop);
-                }
-
-                return $array[$prop];
-            };
-
-        return $mapper;
-    }
-
-    private static function ThrowBecauseArrayJsonTypeNotValid(string $type, string $prop) : void
-    {
-        if ('[]' === mb_substr($type, -2)) {
-            throw new PropertyNotJsonDecodableShouldBeArrayException(static::class, $prop);
-        }
-        throw new PropertyNotJsonDecodableShouldBeArrayException($type, $prop);
+        return array_combine($keys, array_map(
+            TypeUtilities::MakeMapperThrowIfJsonDefNotValid(static::class, $jsonDef, $array),
+            $keys
+        ));
     }
 
     private static function ArrayToJsonType(string $type, array $value, bool $writeAll) : DaftJson
