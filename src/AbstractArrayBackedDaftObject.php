@@ -79,7 +79,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
 
     public function jsonSerialize() : array
     {
-        static::ThrowIfNotDaftJson();
+        TypeUtilities::ThrowIfNotDaftJson(static::class);
 
         $out = [];
 
@@ -98,7 +98,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         array $array,
         bool $writeAll = false
     ) : DaftJson {
-        static::ThrowIfNotDaftJson();
+        TypeUtilities::ThrowIfNotDaftJson(static::class);
         $array = static::ThrowIfJsonDefNotValid($array);
         $props = array_keys($array);
         $mapper = static::DaftJsonClosure($array, $writeAll);
@@ -113,7 +113,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
 
     public static function DaftObjectFromJsonString(string $string) : DaftJson
     {
-        static::ThrowIfNotDaftJson();
+        TypeUtilities::ThrowIfNotDaftJson(static::class);
 
         return static::DaftObjectFromJsonArray(json_decode($string, true));
     }

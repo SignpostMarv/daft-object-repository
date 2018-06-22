@@ -14,6 +14,6 @@ class ReadOnlyBadDefinesOwnId extends AbstractTestObject
     public function __construct(array $data = [], bool $writeAll = false)
     {
         parent::__construct($data, $writeAll);
-        self::CheckTypeDefinesOwnIdProperties(static::class, true);
+        TypeUtilities::CheckTypeDefinesOwnIdProperties(static::class, true);
     }
 }

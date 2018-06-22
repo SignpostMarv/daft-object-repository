@@ -46,24 +46,14 @@ abstract class AbstractDaftObject implements DaftObject
     const JSON_PROPERTIES = [];
 
     /**
-    * @var array<string, array<int, string>>
-    */
-    private static $publicGetters = [];
-
-    /**
-    * @var array<string, array<int, string>>
-    */
-    private static $publicSetters = [];
-
-    /**
     * Does some sanity checking.
     *
     * @see DefinesOwnIdPropertiesInterface
-    * @see self::CheckTypeDefinesOwnIdProperties()
+    * @see TypeUtilities::CheckTypeDefinesOwnIdProperties()
     */
     public function __construct()
     {
-        self::CheckTypeDefinesOwnIdProperties(
+        TypeUtilities::CheckTypeDefinesOwnIdProperties(
             static::class,
             ($this instanceof DefinesOwnIdPropertiesInterface)
         );
@@ -136,21 +126,17 @@ abstract class AbstractDaftObject implements DaftObject
 
     final public static function DaftObjectPublicGetters() : array
     {
-        static::CachePublicGettersAndSetters();
-
-        return self::$publicGetters[static::class];
+        return TypeUtilities::DaftObjectPublicGetters(static::class);
     }
 
     final public static function DaftObjectPublicSetters() : array
     {
-        static::CachePublicGettersAndSetters();
-
-        return self::$publicSetters[static::class];
+        return TypeUtilities::DaftObjectPublicSetters(static::class);
     }
 
     final public static function DaftObjectJsonProperties() : array
     {
-        static::ThrowIfNotDaftJson();
+        TypeUtilities::ThrowIfNotDaftJson(static::class);
 
         return static::JSON_PROPERTIES;
     }
@@ -170,51 +156,6 @@ abstract class AbstractDaftObject implements DaftObject
         return $out;
     }
 
-    protected static function ThrowIfNotDaftJson() : void
-    {
-        if (false === is_a(static::class, DaftJson::class, true)) {
-            throw new DaftObjectNotDaftJsonBadMethodCallException(static::class);
-        }
-    }
-
-    final protected static function HasPublicMethod(string $method) : bool
-    {
-        try {
-            $mRef = new ReflectionMethod(static::class, $method);
-
-            return $mRef->isPublic() && false === $mRef->isStatic();
-        } catch (ReflectionException $e) {
-            return false;
-        }
-    }
-
-    final protected static function CachePublicGettersAndSetters() : void
-    {
-        if (false === isset(self::$publicGetters[static::class])) {
-            self::$publicGetters[static::class] = [];
-            self::$publicSetters[static::class] = [];
-
-            if (is_a(static::class, DefinesOwnIdPropertiesInterface::class, true)) {
-                self::$publicGetters[static::class][] = 'id';
-            }
-
-            self::CachePublicGettersAndSettersProperties(new ReflectionClass(static::class));
-        }
-    }
-
-    final protected static function CachePublicGettersAndSettersProperties() : void
-    {
-        foreach (static::DaftObjectProperties() as $prop) {
-            if (static::HasPublicMethod(static::DaftObjectMethodNameFromProperty($prop))) {
-                self::$publicGetters[static::class][] = $prop;
-            }
-
-            if (static::HasPublicMethod(static::DaftObjectMethodNameFromProperty($prop, true))) {
-                self::$publicSetters[static::class][] = $prop;
-            }
-        }
-    }
-
     /**
     * Nudge the state of a given property, marking it as dirty.
     *
@@ -226,53 +167,6 @@ abstract class AbstractDaftObject implements DaftObject
     * @throws PropertyNotRewriteableException if class is write-once read-many and $property was already changed
     */
     abstract protected function NudgePropertyValue(string $property, $value) : void;
-
-    /**
-    * Checks if a type correctly defines it's own id.
-    *
-    * @throws ClassDoesNotImplementClassException if $class is not an implementation of DefinesOwnIdPropertiesInterface
-    * @throws ClassMethodReturnHasZeroArrayCountException if $class::DaftObjectIdProperties() does not contain at least one property
-    * @throws ClassMethodReturnIsNotArrayOfStringsException if $class::DaftObjectIdProperties() is not string[]
-    * @throws UndefinedPropertyException if an id property is not in $class::DaftObjectIdProperties()
-    */
-    final protected static function CheckTypeDefinesOwnIdProperties(
-        string $class,
-        bool $throwIfNotImplementation = false
-    ) : void {
-        if (is_a($class, DefinesOwnIdPropertiesInterface::class, true)) {
-            self::CheckTypeDefinesOwnIdPropertiesIsImplementation($class);
-        } elseif ($throwIfNotImplementation) {
-            throw new ClassDoesNotImplementClassException(
-                $class,
-                DefinesOwnIdPropertiesInterface::class
-            );
-        }
-    }
-
-    final protected static function CheckTypeDefinesOwnIdPropertiesIsImplementation(
-        string $class
-    ) : void {
-        $properties = $class::DaftObjectIdProperties();
-
-        if (count($properties) < 1) {
-            throw new ClassMethodReturnHasZeroArrayCountException(
-                $class,
-                'DaftObjectIdProperties'
-            );
-        } elseif (count($properties) !== count(array_filter($properties, 'is_string'))) {
-            throw new ClassMethodReturnIsNotArrayOfStringsException(
-                $class,
-                'DaftObjectIdProperties'
-            );
-        }
-    }
-
-    protected static function DaftObjectMethodNameFromProperty(
-        string $property,
-        bool $SetNotGet = false
-    ) : string {
-        return ($SetNotGet ? 'Set' : 'Get') . ucfirst($property);
-    }
 
     protected function MaybeThrowOnDoGetSet(string $property, bool $setter, array $props) : void
     {
@@ -298,6 +192,6 @@ abstract class AbstractDaftObject implements DaftObject
 
         $this->MaybeThrowOnDoGetSet($property, $setter, $props);
 
-        return $this->{static::DaftObjectMethodNameFromProperty($property, $setter)}($v);
+        return $this->{TypeUtilities::MethodNameFromProperty($property, $setter)}($v);
     }
 }
