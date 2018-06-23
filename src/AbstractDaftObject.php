@@ -132,7 +132,7 @@ abstract class AbstractDaftObject implements DaftObject
 
     final public static function DaftObjectJsonProperties() : array
     {
-        TypeUtilities::ThrowIfNotDaftJson(static::class);
+        JsonTypeUtilities::ThrowIfNotDaftJson(static::class);
 
         return static::JSON_PROPERTIES;
     }

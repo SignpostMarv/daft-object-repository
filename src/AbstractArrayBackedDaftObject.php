@@ -79,7 +79,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
 
     public function jsonSerialize() : array
     {
-        TypeUtilities::ThrowIfNotDaftJson(static::class);
+        JsonTypeUtilities::ThrowIfNotDaftJson(static::class);
 
         $out = [];
 
@@ -98,7 +98,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         array $array,
         bool $writeAll = false
     ) : DaftJson {
-        TypeUtilities::ThrowIfNotDaftJson(static::class);
+        JsonTypeUtilities::ThrowIfNotDaftJson(static::class);
         $array = static::ThrowIfJsonDefNotValid($array);
         $props = array_keys($array);
         $mapper = static::DaftJsonClosure($array, $writeAll);
@@ -113,7 +113,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
 
     public static function DaftObjectFromJsonString(string $string) : DaftJson
     {
-        TypeUtilities::ThrowIfNotDaftJson(static::class);
+        JsonTypeUtilities::ThrowIfNotDaftJson(static::class);
 
         return static::DaftObjectFromJsonArray(json_decode($string, true));
     }
@@ -174,7 +174,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     */
     protected static function DaftObjectFromJsonType(string $type, array $propVal, bool $writeAll)
     {
-        TypeUtilities::ThrowIfNotJsonType($type);
+        JsonTypeUtilities::ThrowIfNotJsonType($type);
 
         return static::ArrayToJsonType($type, $propVal, $writeAll);
     }
@@ -188,7 +188,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         array $propVal,
         bool $writeAll
     ) : array {
-        TypeUtilities::ThrowIfNotJsonType($jsonType);
+        JsonTypeUtilities::ThrowIfNotJsonType($jsonType);
 
         $out = [];
 
@@ -272,13 +272,13 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     private static function ThrowIfJsonDefNotValid(array $array) : array
     {
         $jsonProps = static::DaftObjectJsonPropertyNames();
-        $array = TypeUtilities::FilterThrowIfJsonDefNotValid(static::class, $jsonProps, $array);
+        $array = JsonTypeUtilities::FilterThrowIfJsonDefNotValid(static::class, $jsonProps, $array);
         $jsonDef = static::DaftObjectJsonProperties();
 
         $keys = array_keys($array);
 
         return array_combine($keys, array_map(
-            TypeUtilities::MakeMapperThrowIfJsonDefNotValid(static::class, $jsonDef, $array),
+            JsonTypeUtilities::MakeMapperThrowIfJsonDefNotValid(static::class, $jsonDef, $array),
             $keys
         ));
     }

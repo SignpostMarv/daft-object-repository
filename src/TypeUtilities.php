@@ -36,13 +36,6 @@ class TypeUtilities
         return self::$publicSetters[$class];
     }
 
-    public static function ThrowIfNotDaftJson(string $class) : void
-    {
-        if (false === is_a($class, DaftJson::class, true)) {
-            throw new DaftObjectNotDaftJsonBadMethodCallException($class);
-        }
-    }
-
     public static function HasPublicMethod(string $class, string $property, bool $SetNotGet) : bool
     {
         $method = TypeUtilities::MethodNameFromProperty($property, $SetNotGet);
@@ -81,49 +74,6 @@ class TypeUtilities
                 DefinesOwnIdPropertiesInterface::class
             );
         }
-    }
-
-    public static function ThrowIfNotJsonType(string $jsonType) : void
-    {
-        if (false === is_a($jsonType, DaftJson::class, true)) {
-            throw new ClassDoesNotImplementClassException($jsonType, DaftJson::class);
-        }
-    }
-
-    public static function MakeMapperThrowIfJsonDefNotValid(
-        string $class,
-        array $jsonDef,
-        array $array
-    ) : Closure {
-        $mapper =
-            /**
-            * @return mixed
-            */
-            function (string $prop) use ($jsonDef, $array, $class) {
-                if (isset($jsonDef[$prop]) && false === is_array($array[$prop])) {
-                    static::ThrowBecauseArrayJsonTypeNotValid($class, $jsonDef[$prop], $prop);
-                }
-
-                return $array[$prop];
-            };
-
-        return $mapper;
-    }
-
-    public static function FilterThrowIfJsonDefNotValid(
-        string $class,
-        array $jsonProps,
-        array $array
-    ) : array {
-        $filter = function (string $prop) use ($jsonProps, $array, $class) : bool {
-            if (false === in_array($prop, $jsonProps, true)) {
-                throw new PropertyNotJsonDecodableException($class, $prop);
-            }
-
-            return false === is_null($array[$prop]);
-        };
-
-        return array_filter($array, $filter, ARRAY_FILTER_USE_KEY);
     }
 
     final protected static function CachePublicGettersAndSetters(string $class) : void
@@ -169,16 +119,5 @@ class TypeUtilities
                 'DaftObjectIdProperties'
             );
         }
-    }
-
-    private static function ThrowBecauseArrayJsonTypeNotValid(
-        string $class,
-        string $type,
-        string $prop
-    ) : void {
-        if ('[]' === mb_substr($type, -2)) {
-            throw new PropertyNotJsonDecodableShouldBeArrayException($class, $prop);
-        }
-        throw new PropertyNotJsonDecodableShouldBeArrayException($type, $prop);
     }
 }
