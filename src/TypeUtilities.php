@@ -6,7 +6,6 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject;
 
-use Closure;
 use ReflectionException;
 use ReflectionMethod;
 
