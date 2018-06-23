@@ -60,6 +60,18 @@ class JsonTypeUtilities
         return array_filter($array, $filter, ARRAY_FILTER_USE_KEY);
     }
 
+    public static function ArrayToJsonType(string $type, array $value, bool $writeAll) : DaftJson
+    {
+        self::ThrowIfNotJsonType($type);
+
+        /**
+        * @var DaftJson $type
+        */
+        $type = $type;
+
+        return $type::DaftObjectFromJsonArray($value, $writeAll);
+    }
+
     private static function ThrowBecauseArrayJsonTypeNotValid(
         string $class,
         string $type,
