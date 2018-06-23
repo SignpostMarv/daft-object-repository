@@ -150,29 +150,6 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     }
 
     /**
-    * @return array<int, DaftJson>
-    */
-    protected static function DaftObjectFromJsonTypeArray(
-        string $jsonType,
-        string $prop,
-        array $propVal,
-        bool $writeAll
-    ) : array {
-        JsonTypeUtilities::ThrowIfNotJsonType($jsonType);
-
-        $out = [];
-
-        foreach ($propVal as $val) {
-            if (false === is_array($val)) {
-                throw new PropertyNotJsonDecodableShouldBeArrayException($jsonType, $prop);
-            }
-            $out[] = JsonTypeUtilities::ArrayToJsonType($jsonType, $val, $writeAll);
-        }
-
-        return $out;
-    }
-
-    /**
     * Retrieve a property from data.
     *
     * @param string $property the property being retrieved
