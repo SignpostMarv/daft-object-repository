@@ -24,4 +24,6 @@ class TestCase extends Base
     * @var bool
     */
     protected $runTestInSeparateProcess = false;
+
+    const MIN_EXPECTED_ARRAY_COUNT = 2;
 }

@@ -232,7 +232,7 @@ class DaftObjectImplementationTest extends TestCase
         foreach ($this->FuzzingImplementationsViaGenerator() as $args) {
             if (
                 is_array($args) &&
-                2 === count($args) &&
+                self::MIN_EXPECTED_ARRAY_COUNT === count($args) &&
                 isset($args[0], $args[1]) &&
                 is_string($args[0]) &&
                 is_array($args[1]) &&

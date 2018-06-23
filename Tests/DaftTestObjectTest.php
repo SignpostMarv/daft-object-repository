@@ -532,7 +532,7 @@ class DaftTestObjectTest extends TestCase
 
         $keys = $implementation::DaftObjectIdProperties();
 
-        if (count($keys) < 2) {
+        if (count($keys) < self::MIN_EXPECTED_ARRAY_COUNT) {
             $key = $keys[0];
             $this->assertSame($val, $obj->$key);
         } else {
