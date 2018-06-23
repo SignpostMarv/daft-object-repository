@@ -81,7 +81,6 @@ class JsonTypeUtilities
         array $propVal,
         bool $writeAll
     ) {
-
         if ('[]' === mb_substr($jsonType, -2)) {
             $jsonType = mb_substr($jsonType, 0, -2);
 
