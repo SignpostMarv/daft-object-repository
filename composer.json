@@ -42,7 +42,9 @@
         ]
     },
     "require": {
-        "php": "^7.1"
+        "php": "^7.1",
+        "ext-json": "^1.5",
+        "ext-mbstring": "^7.1"
     },
     "require-dev": {
         "maglnet/composer-require-checker": "^0.2.1",
