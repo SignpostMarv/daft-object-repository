@@ -92,6 +92,21 @@ class JsonTypeUtilities
         return JsonTypeUtilities::ArrayToJsonType($jsonType, $propVal, $writeAll);
     }
 
+    public static function ThrowIfJsonDefNotValid(string $type, array $array) : array
+    {
+        self::ThrowIfNotDaftJson($type);
+        $jsonProps = $type::DaftObjectJsonPropertyNames();
+        $array = JsonTypeUtilities::FilterThrowIfJsonDefNotValid($type, $jsonProps, $array);
+        $jsonDef = $type::DaftObjectJsonProperties();
+
+        $keys = array_keys($array);
+
+        return array_combine($keys, array_map(
+            JsonTypeUtilities::MakeMapperThrowIfJsonDefNotValid($type, $jsonDef, $array),
+            $keys
+        ));
+    }
+
     /**
     * @return array<int, DaftJson>
     */

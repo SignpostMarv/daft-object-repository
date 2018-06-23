@@ -98,8 +98,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         array $array,
         bool $writeAll = false
     ) : DaftJson {
-        JsonTypeUtilities::ThrowIfNotDaftJson(static::class);
-        $array = static::ThrowIfJsonDefNotValid($array);
+        $array = JsonTypeUtilities::ThrowIfJsonDefNotValid(static::class, $array);
         $props = array_keys($array);
         $mapper = static::DaftJsonClosure($array, $writeAll);
 
@@ -214,19 +213,5 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         if (true === is_null($value) && true !== in_array($property, $properties, true)) {
             throw new PropertyNotNullableException(static::class, $property);
         }
-    }
-
-    private static function ThrowIfJsonDefNotValid(array $array) : array
-    {
-        $jsonProps = static::DaftObjectJsonPropertyNames();
-        $array = JsonTypeUtilities::FilterThrowIfJsonDefNotValid(static::class, $jsonProps, $array);
-        $jsonDef = static::DaftObjectJsonProperties();
-
-        $keys = array_keys($array);
-
-        return array_combine($keys, array_map(
-            JsonTypeUtilities::MakeMapperThrowIfJsonDefNotValid(static::class, $jsonDef, $array),
-            $keys
-        ));
     }
 }
