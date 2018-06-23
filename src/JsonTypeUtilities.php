@@ -72,6 +72,50 @@ class JsonTypeUtilities
         return $type::DaftObjectFromJsonArray($value, $writeAll);
     }
 
+    /**
+    * @return array<int, DaftJson>|DaftJson
+    */
+    final public static function DaftJsonFromJsonType(
+        string $jsonType,
+        string $prop,
+        array $propVal,
+        bool $writeAll
+    ) {
+
+        if ('[]' === mb_substr($jsonType, -2)) {
+            $jsonType = mb_substr($jsonType, 0, -2);
+
+            self::ThrowIfNotJsonType($jsonType);
+
+            return self::DaftObjectFromJsonTypeArray($jsonType, $prop, $propVal, $writeAll);
+        }
+
+        return JsonTypeUtilities::ArrayToJsonType($jsonType, $propVal, $writeAll);
+    }
+
+    /**
+    * @return array<int, DaftJson>
+    */
+    protected static function DaftObjectFromJsonTypeArray(
+        string $jsonType,
+        string $prop,
+        array $propVal,
+        bool $writeAll
+    ) : array {
+        JsonTypeUtilities::ThrowIfNotJsonType($jsonType);
+
+        $out = [];
+
+        foreach ($propVal as $val) {
+            if (false === is_array($val)) {
+                throw new PropertyNotJsonDecodableShouldBeArrayException($jsonType, $prop);
+            }
+            $out[] = JsonTypeUtilities::ArrayToJsonType($jsonType, $val, $writeAll);
+        }
+
+        return $out;
+    }
+
     private static function ThrowBecauseArrayJsonTypeNotValid(
         string $class,
         string $type,
