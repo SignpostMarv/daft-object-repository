@@ -782,31 +782,31 @@ class DaftObjectImplementationTest extends TestCase
                 $returnType = $reflectorGetter->getReturnType();
 
                 static::assertTrue(
+                    (
+                        'void' !== $returnType->__toString()
+                    ),
+                    (
+                        $reflectorGetter->getNumberOfParameters() .
+                        $reflectorGetter->getDeclaringClass()->getName() .
+                        '::' .
+                        $reflectorGetter->getName() .
+                        '() must have a non-void return type.'
+                    )
+                );
+
+                if ($isNullable) {
+                    static::assertTrue(
                         (
-                            'void' !== $returnType->__toString()
+                            $returnType->allowsNull()
                         ),
                         (
                             $reflectorGetter->getNumberOfParameters() .
                             $reflectorGetter->getDeclaringClass()->getName() .
                             '::' .
                             $reflectorGetter->getName() .
-                            '() must have a non-void return type.'
+                            '() must have a nullable return type.'
                         )
                     );
-
-                if ($isNullable) {
-                    static::assertTrue(
-                            (
-                                $returnType->allowsNull()
-                            ),
-                            (
-                                $reflectorGetter->getNumberOfParameters() .
-                                $reflectorGetter->getDeclaringClass()->getName() .
-                                '::' .
-                                $reflectorGetter->getName() .
-                                '() must have a nullable return type.'
-                            )
-                        );
                 }
             }
 
@@ -844,17 +844,17 @@ class DaftObjectImplementationTest extends TestCase
                 $returnType = $reflectorSetter->getReturnType();
 
                 static::assertSame(
-                        'void',
-                        $returnType->__toString(),
-                        (
-                            $reflectorSetter->getDeclaringClass()->getName() .
-                            '::' .
-                            $reflectorSetter->getName() .
-                            '() must specify a void return type, "' .
-                            $returnType->__toString() .
-                            '" found.'
-                        )
-                    );
+                    'void',
+                    $returnType->__toString(),
+                    (
+                        $reflectorSetter->getDeclaringClass()->getName() .
+                        '::' .
+                        $reflectorSetter->getName() .
+                        '() must specify a void return type, "' .
+                        $returnType->__toString() .
+                        '" found.'
+                    )
+                );
 
                 if (
                     $reflectorSetter->getParameters()[0]->hasType()
@@ -1585,28 +1585,27 @@ class DaftObjectImplementationTest extends TestCase
                             ) .
                         ')'
                     )
-                :
-            preg_quote(
-                (
-                    '(' .
-                    (
-                        is_string($val)
-                            ? mb_strlen($val, '8bit')
-                            : (
-                                is_numeric($val)
-                                    ? (string) $val
-                                    : var_export($val, true)
+                    : preg_quote(
+                        (
+                            '(' .
+                            (
+                                is_string($val)
+                                    ? mb_strlen($val, '8bit')
+                                    : (
+                                        is_numeric($val)
+                                            ? (string) $val
+                                            : var_export($val, true)
+                                    )
+                            ) .
+                            ')' .
+                            (
+                                is_string($val)
+                                    ? (' "' . $val . '"')
+                                    : ''
                             )
-                    ) .
-                    ')' .
-                    (
-                        is_string($val)
-                            ? (' "' . $val . '"')
-                            : ''
+                        ),
+                        '/'
                     )
-                ),
-                '/'
-            )
         );
     }
 
