@@ -28,7 +28,7 @@
     "scripts": {
         "tests": [
             "phpunit -vvvv --coverage-clover=phpunit.clover",
-            "phpstan analyse -c ./phpstan.neon -- .php_cs.dist src PHPStan Tests",
+            "phpstan analyse -c ./phpstan.neon .php_cs.dist src PHPStan Tests",
             "psalm",
             "phpcpd ./src/ ./Tests/ ./tests-src/",
             "phpmnd ./src/",
