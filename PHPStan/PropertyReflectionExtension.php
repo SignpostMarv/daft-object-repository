@@ -173,10 +173,17 @@ class PropertyReflectionExtension implements PropertyReflection
         Broker $broker,
         ReflectionMethod $refMethod
     ) : ClassReflection {
+        $reflectionClass = $refMethod->getDeclaringClass();
+
+        $filename = null;
+        if ($reflectionClass->getFileName() !== false) {
+            $filename = $reflectionClass->getFileName();
+        }
+
         return $broker->getClassFromReflection(
-            $refMethod->getDeclaringClass(),
-            $refMethod->getDeclaringClass()->getName(),
-            $refMethod->getDeclaringClass()->isAnonymous()
+            $reflectionClass,
+            $reflectionClass->getName(),
+            $reflectionClass->isAnonymous() ? $filename : null
         );
     }
 
