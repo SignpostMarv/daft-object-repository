@@ -16,7 +16,7 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     protected $memory = [];
 
     /**
-    * mixed[][].
+    * @var mixed[][]
     */
     protected $data = [];
 

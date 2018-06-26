@@ -565,11 +565,10 @@ class DaftTestObjectTest extends TestCase
     public function testRetrievePropertyValueFromDataNotNullableException(
         string $implementation
     ) : void {
+        $this->assertTrue(is_a($implementation, DaftObject::class, true));
+
         $obj = new $implementation();
 
-        /**
-        * @var DaftObject $implementation
-        */
         $implementation = $implementation;
 
         $props = $implementation::DaftObjectProperties();

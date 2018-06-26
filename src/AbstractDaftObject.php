@@ -55,14 +55,20 @@ abstract class AbstractDaftObject implements DaftObject
         );
     }
 
+    /**
+    * @return mixed
+    */
     public function __get(string $property)
     {
         return $this->DoGetSet($property, false);
     }
 
-    public function __set(string $property, $v)
+    /**
+    * @param mixed $v
+    */
+    public function __set(string $property, $v) : void
     {
-        return $this->DoGetSet($property, true, $v);
+        $this->DoGetSet($property, true, $v);
     }
 
     /**

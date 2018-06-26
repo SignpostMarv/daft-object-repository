@@ -34,6 +34,75 @@ class DaftObjectGetterSetterTest extends TestCase
         ];
     }
 
+    public function dataProviderGetterSetterGoodGetterOnly() : Generator
+    {
+        foreach ($this->dataProviderGetterSetterGood() as $args) {
+            list(
+                $implementation,
+                $property,
+                $value,
+                $publicGetter,
+                $publicSetter,
+                $changedProperty
+            ) = $args;
+
+            if ($publicGetter && ! $publicSetter) {
+                yield [
+                    $implementation,
+                    $property,
+                    $value,
+                    $changedProperty
+                ];
+            }
+        }
+    }
+
+    public function dataProviderGetterSetterGoodSetterOnly() : Generator
+    {
+        foreach ($this->dataProviderGetterSetterGood() as $args) {
+            list(
+                $implementation,
+                $property,
+                $value,
+                $publicGetter,
+                $publicSetter,
+                $changedProperty
+            ) = $args;
+
+            if ( ! $publicGetter && $publicSetter) {
+                yield [
+                    $implementation,
+                    $property,
+                    $value,
+                    $changedProperty
+                ];
+            }
+        }
+    }
+
+    public function dataProviderGetterSetterGoodGetterSetter() : Generator
+    {
+        foreach ($this->dataProviderGetterSetterGood() as $args) {
+            list(
+                $implementation,
+                $property,
+                $value,
+                $publicGetter,
+                $publicSetter,
+                $changedProperty
+            ) = $args;
+
+            if ($publicGetter && $publicSetter) {
+                yield [
+                    $implementation,
+                    $property,
+                    $value,
+                    $changedProperty
+                ];
+            }
+        }
+    }
+
     public function dataProviderGetterBad() : iterable
     {
         $sources = $this->dataProviderGetterSetterGood();
@@ -73,7 +142,43 @@ class DaftObjectGetterSetterTest extends TestCase
     }
 
     /**
-    * @dataProvider dataProviderGetterSetterGood
+    * @dataProvider dataProviderGetterSetterGoodGetterOnly
+    */
+    public function testGetterOnly(
+        string $implementation,
+        string $property,
+        string $value,
+        string $changedProperty = null
+    ) : void {
+            $arr = [];
+
+                $arr[$property] = $value;
+
+            $obj = new $implementation($arr);
+
+                $this->assertSame($value, $obj->$property);
+    }
+
+    /**
+    * @dataProvider dataProviderGetterSetterGoodSetterOnly
+    */
+    public function testSetterOnly(
+        string $implementation,
+        string $property,
+        string $value,
+        string $changedProperty = null
+    ) : void {
+            $arr = [];
+
+            $obj = new $implementation($arr);
+
+                $obj->$property = $value;
+
+                $this->assertTrue($obj->HasPropertyChanged($changedProperty));
+    }
+
+    /**
+    * @dataProvider dataProviderGetterSetterGoodGetterSetter
     */
     public function testGetterSetterGood(
         string $implementation,
@@ -83,29 +188,16 @@ class DaftObjectGetterSetterTest extends TestCase
         bool $publicSetter,
         string $changedProperty = null
     ) : void {
-        if (false === $publicGetter && false === $publicSetter) {
-            $this->markTestSkipped(
-                'Cannot run a test if property is neither a getter or setter'
-            );
-        } else {
             $arr = [];
 
-            if ($publicGetter) {
                 $arr[$property] = $value;
-            }
 
             $obj = new $implementation($arr);
 
-            if ($publicSetter) {
                 $obj->$property = $value;
-            }
 
-            if ($publicGetter) {
                 $this->assertSame($value, $obj->$property);
-            } elseif ($publicSetter) {
                 $this->assertTrue($obj->HasPropertyChanged($changedProperty));
-            }
-        }
     }
 
     /**

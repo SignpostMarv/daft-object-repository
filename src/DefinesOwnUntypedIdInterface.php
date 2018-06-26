@@ -15,6 +15,8 @@ interface DefinesOwnUntypedIdInterface extends DefinesOwnIdPropertiesInterface
 {
     /**
     * Get the value of the Id.
+    *
+    * @return mixed
     */
     public function GetId();
 }

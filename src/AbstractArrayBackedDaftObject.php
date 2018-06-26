@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace SignpostMarv\DaftObject;
 
 use Closure;
+use InvalidArgumentException;
 
 /**
 * Array-backed daft objects.
@@ -46,6 +47,9 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
             }
         } else {
             foreach ($data as $k => $v) {
+                if ( ! is_string($k)) {
+                    throw new InvalidArgumentException('Properties must be strings!');
+                }
                 $this->data[$k] = $v;
             }
         }
@@ -125,7 +129,17 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
             ($this instanceof DaftObjectWorm) &&
             (
                 $this->HasPropertyChanged($property) ||
-                false === empty($wormProperties[$property])
+                (
+                    isset($wormProperties[$property]) &&
+                    (
+                        ! is_null($wormProperties[$property]) ||
+                        '' !== $wormProperties[$property] ||
+                        [] !== $wormProperties[$property] ||
+                        0 !== $wormProperties[$property] ||
+                        0.0 !== $wormProperties[$property] ||
+                        false !== $wormProperties[$property]
+                    )
+                )
             );
     }
 
@@ -173,6 +187,9 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         return $this->data[$property];
     }
 
+    /**
+    * @param mixed $value
+    */
     protected function NudgePropertyValue(string $property, $value) : void
     {
         $this->MaybeThrowForPropertyOnNudge($property);
