@@ -52,7 +52,7 @@ class DaftObjectGetterSetterTest extends TestCase
                     $implementation,
                     $property,
                     $value,
-                    $changedProperty
+                    $changedProperty,
                 ];
             }
         }
@@ -76,7 +76,7 @@ class DaftObjectGetterSetterTest extends TestCase
                     $implementation,
                     $property,
                     $value,
-                    $changedProperty
+                    $changedProperty,
                 ];
             }
         }
@@ -100,7 +100,7 @@ class DaftObjectGetterSetterTest extends TestCase
                     $implementation,
                     $property,
                     $value,
-                    $changedProperty
+                    $changedProperty,
                 ];
             }
         }

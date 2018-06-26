@@ -776,12 +776,12 @@ class DaftObjectImplementationTest extends TestCase
 
                 $returnType = null;
 
-                    /**
-                    * @var \ReflectionType $returnType
-                    */
-                    $returnType = $reflectorGetter->getReturnType();
+                /**
+                * @var \ReflectionType $returnType
+                */
+                $returnType = $reflectorGetter->getReturnType();
 
-                    static::assertTrue(
+                static::assertTrue(
                         (
                             'void' !== $returnType->__toString()
                         ),
@@ -794,8 +794,8 @@ class DaftObjectImplementationTest extends TestCase
                         )
                     );
 
-                    if ($isNullable) {
-                        static::assertTrue(
+                if ($isNullable) {
+                    static::assertTrue(
                             (
                                 $returnType->allowsNull()
                             ),
@@ -807,7 +807,7 @@ class DaftObjectImplementationTest extends TestCase
                                 '() must have a nullable return type.'
                             )
                         );
-                    }
+                }
             }
 
             if ($setterPublic) {
@@ -838,12 +838,12 @@ class DaftObjectImplementationTest extends TestCase
                     )
                 );
 
-                    /**
-                    * @var \ReflectionType $returnType
-                    */
-                    $returnType = $reflectorSetter->getReturnType();
+                /**
+                * @var \ReflectionType $returnType
+                */
+                $returnType = $reflectorSetter->getReturnType();
 
-                    static::assertSame(
+                static::assertSame(
                         'void',
                         $returnType->__toString(),
                         (
