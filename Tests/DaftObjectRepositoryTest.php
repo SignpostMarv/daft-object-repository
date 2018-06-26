@@ -118,7 +118,7 @@ class DaftObjectRepositoryTest extends TestCase
                 $obj
             );
 
-            $this->assertSame(get_class($repo), get_class($repoByObject));
+            static::assertSame(get_class($repo), get_class($repoByObject));
 
             $ids = [];
 
@@ -131,10 +131,10 @@ class DaftObjectRepositoryTest extends TestCase
             }
 
             if (1 === count($ids)) {
-                $this->assertSame($obj, $repo->RecallDaftObject($ids[0]));
+                static::assertSame($obj, $repo->RecallDaftObject($ids[0]));
             }
 
-            $this->assertSame($obj, $repo->RecallDaftObject($ids));
+            static::assertSame($obj, $repo->RecallDaftObject($ids));
 
             if (count($ids) < 1) {
                 throw new RuntimeException(
@@ -146,32 +146,25 @@ class DaftObjectRepositoryTest extends TestCase
 
             $retrieved = $repo->RecallDaftObject($ids);
 
-            $this->assertNotNull($retrieved);
-
-            /**
-            * @var DefinesOwnIdPropertiesInterface $retrieved
-            */
-            $retrieved = $retrieved;
-
-            $this->assertSame(
+            static::assertSame(
                 $objImplementation::DaftObjectIdHash($obj),
                 $objImplementation::DaftObjectIdHash($retrieved)
             );
-            $this->assertSame(get_class($obj), get_class($retrieved));
-            $this->assertNotSame($obj, $retrieved);
+            static::assertSame(get_class($obj), get_class($retrieved));
+            static::assertNotSame($obj, $retrieved);
 
             foreach ($objImplementation::DaftObjectProperties() as $prop) {
                 if (
                     true === method_exists($obj, 'Get' . ucfirst($prop)) &&
                     true === method_exists($retrieved, 'Get' . ucfirst($prop))
                 ) {
-                    $this->assertSame($obj->$prop, $retrieved->$prop);
+                    static::assertSame($obj->$prop, $retrieved->$prop);
                 }
             }
 
             $repo->RemoveDaftObject($obj);
 
-            $this->assertNull($repo->RecallDaftObject($ids));
+            static::assertNull($repo->RecallDaftObject($ids));
 
             foreach ($objImplementation::DaftObjectProperties() as $prop) {
                 if (
@@ -196,7 +189,7 @@ class DaftObjectRepositoryTest extends TestCase
             */
             $retrieved = $repo->RecallDaftObject($ids);
 
-            $this->assertTrue(
+            static::assertTrue(
                 is_a($retrieved, $objImplementation, true),
                 (
                     get_class($repo) .
@@ -215,7 +208,11 @@ class DaftObjectRepositoryTest extends TestCase
                     ) &&
                     true === is_numeric($obj->$prop)
                 ) {
-                    $this->assertSame($obj->$prop * 2, $retrieved->$prop);
+                    /**
+                    * @var int|float $propVal
+                    */
+                    $propVal = $obj->$prop;
+                    static::assertSame($propVal * 2, $retrieved->$prop);
                     $retrieved->$prop /= 2;
                 }
             }
@@ -224,7 +221,7 @@ class DaftObjectRepositoryTest extends TestCase
 
             $repo->RemoveDaftObject($retrieved);
 
-            $this->assertNull($repo->RecallDaftObject($ids));
+            static::assertNull($repo->RecallDaftObject($ids));
         }
     }
 

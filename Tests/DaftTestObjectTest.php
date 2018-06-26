@@ -317,15 +317,15 @@ class DaftTestObjectTest extends TestCase
         $obj = new $implementation($params, $writeable);
 
         if (true === $readable) {
-            $this->assertSame(
+            static::assertCount(
                 ($writeable ? count($params) : 0),
-                count($obj->ChangedProperties())
+                $obj->ChangedProperties()
             );
 
             foreach ($params as $k => $v) {
                 $getterMethod = 'Get' . ucfirst($k);
 
-                $this->assertSame(
+                static::assertSame(
                     $params[$k],
                     $obj->$getterMethod(),
                     (
@@ -335,7 +335,7 @@ class DaftTestObjectTest extends TestCase
                         '() does not match supplied $params'
                     )
                 );
-                $this->assertSame(
+                static::assertSame(
                     $params[$k],
                     $obj->$k,
                     (
@@ -346,7 +346,7 @@ class DaftTestObjectTest extends TestCase
                     )
                 );
 
-                $this->assertSame(
+                static::assertSame(
                     (is_null($params[$k]) ? false : true),
                     isset($obj->$k),
                     (
@@ -361,7 +361,7 @@ class DaftTestObjectTest extends TestCase
         }
 
         foreach (array_keys($params) as $property) {
-            $this->assertSame(
+            static::assertSame(
                 $writeable,
                 $obj->HasPropertyChanged($property),
                 (
@@ -378,7 +378,7 @@ class DaftTestObjectTest extends TestCase
 
             if ($writeable) {
                 $obj->MakePropertiesUnchanged($property);
-                $this->assertFalse($obj->HasPropertyChanged($property));
+                static::assertFalse($obj->HasPropertyChanged($property));
 
                 if (
                     in_array(
@@ -483,7 +483,7 @@ class DaftTestObjectTest extends TestCase
 
         $regex .= '\}.+$/s';
 
-        $this->assertRegExp(
+        static::assertRegExp(
             $regex,
             str_replace("\n", ' ', (string) $debugInfo)
         );
@@ -534,19 +534,19 @@ class DaftTestObjectTest extends TestCase
 
         if (count($keys) < self::MIN_EXPECTED_ARRAY_COUNT) {
             $key = $keys[0];
-            $this->assertSame($val, $obj->$key);
+            static::assertSame($val, $obj->$key);
         } else {
-            $this->assertInternalType('array', $val);
+            static::assertInternalType('array', $val);
             $keyVals = [];
             foreach ($keys as $i => $key) {
-                $this->assertSame($val[$i], $obj->$key);
+                static::assertSame($val[$i], $obj->$key);
             }
         }
 
         if ($obj instanceof DefinesOwnStringIdInterface) {
-            $this->assertInternalType('string', $val);
+            static::assertInternalType('string', $val);
         } elseif ($obj instanceof DefinesOwnIntegerIdInterface) {
-            $this->assertInternalType('int', $val);
+            static::assertInternalType('int', $val);
         }
     }
 
@@ -565,7 +565,7 @@ class DaftTestObjectTest extends TestCase
     public function testRetrievePropertyValueFromDataNotNullableException(
         string $implementation
     ) : void {
-        $this->assertTrue(is_a($implementation, DaftObject::class, true));
+        static::assertTrue(is_a($implementation, DaftObject::class, true));
 
         $obj = new $implementation();
 
@@ -584,7 +584,7 @@ class DaftTestObjectTest extends TestCase
         }
 
         if ($allNullable) {
-            $this->markTestSkipped(
+            static::markTestSkipped(
                 'Cannot test for not nullable exception if all properties are nullable'
             );
         }

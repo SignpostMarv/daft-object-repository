@@ -42,9 +42,10 @@ class DaftObjectGetterSetterTest extends TestCase
                 $property,
                 $value,
                 $publicGetter,
-                $publicSetter,
-                $changedProperty
+                $publicSetter
             ) = $args;
+
+            $changedProperty = $args[5] ?? null;
 
             if ($publicGetter && ! $publicSetter) {
                 yield [
@@ -65,9 +66,10 @@ class DaftObjectGetterSetterTest extends TestCase
                 $property,
                 $value,
                 $publicGetter,
-                $publicSetter,
-                $changedProperty
+                $publicSetter
             ) = $args;
+
+            $changedProperty = $args[5] ?? null;
 
             if ( ! $publicGetter && $publicSetter) {
                 yield [
@@ -88,9 +90,10 @@ class DaftObjectGetterSetterTest extends TestCase
                 $property,
                 $value,
                 $publicGetter,
-                $publicSetter,
-                $changedProperty
+                $publicSetter
             ) = $args;
+
+            $changedProperty = $args[5] ?? null;
 
             if ($publicGetter && $publicSetter) {
                 yield [
@@ -156,7 +159,7 @@ class DaftObjectGetterSetterTest extends TestCase
 
         $obj = new $implementation($arr);
 
-        $this->assertSame($value, $obj->$property);
+        static::assertSame($value, $obj->$property);
     }
 
     /**
@@ -174,7 +177,7 @@ class DaftObjectGetterSetterTest extends TestCase
 
         $obj->$property = $value;
 
-        $this->assertTrue($obj->HasPropertyChanged($changedProperty));
+        static::assertTrue($obj->HasPropertyChanged($changedProperty));
     }
 
     /**
@@ -196,8 +199,8 @@ class DaftObjectGetterSetterTest extends TestCase
 
         $obj->$property = $value;
 
-        $this->assertSame($value, $obj->$property);
-        $this->assertTrue($obj->HasPropertyChanged($changedProperty));
+        static::assertSame($value, $obj->$property);
+        static::assertTrue($obj->HasPropertyChanged($changedProperty));
     }
 
     /**
