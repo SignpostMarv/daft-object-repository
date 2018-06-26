@@ -150,13 +150,13 @@ class DaftObjectGetterSetterTest extends TestCase
         string $value,
         string $changedProperty = null
     ) : void {
-            $arr = [];
+        $arr = [];
 
-                $arr[$property] = $value;
+        $arr[$property] = $value;
 
-            $obj = new $implementation($arr);
+        $obj = new $implementation($arr);
 
-                $this->assertSame($value, $obj->$property);
+        $this->assertSame($value, $obj->$property);
     }
 
     /**
@@ -168,13 +168,13 @@ class DaftObjectGetterSetterTest extends TestCase
         string $value,
         string $changedProperty = null
     ) : void {
-            $arr = [];
+        $arr = [];
 
-            $obj = new $implementation($arr);
+        $obj = new $implementation($arr);
 
-                $obj->$property = $value;
+        $obj->$property = $value;
 
-                $this->assertTrue($obj->HasPropertyChanged($changedProperty));
+        $this->assertTrue($obj->HasPropertyChanged($changedProperty));
     }
 
     /**
@@ -188,16 +188,16 @@ class DaftObjectGetterSetterTest extends TestCase
         bool $publicSetter,
         string $changedProperty = null
     ) : void {
-            $arr = [];
+        $arr = [];
 
-                $arr[$property] = $value;
+        $arr[$property] = $value;
 
-            $obj = new $implementation($arr);
+        $obj = new $implementation($arr);
 
-                $obj->$property = $value;
+        $obj->$property = $value;
 
-                $this->assertSame($value, $obj->$property);
-                $this->assertTrue($obj->HasPropertyChanged($changedProperty));
+        $this->assertSame($value, $obj->$property);
+        $this->assertTrue($obj->HasPropertyChanged($changedProperty));
     }
 
     /**
