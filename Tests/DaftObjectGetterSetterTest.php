@@ -10,6 +10,7 @@ use Generator;
 use SignpostMarv\DaftObject\NotPublicGetterPropertyException;
 use SignpostMarv\DaftObject\NotPublicSetterPropertyException;
 use SignpostMarv\DaftObject\PasswordHashTestObject;
+use SignpostMarv\DaftObject\ReadWrite;
 
 class DaftObjectGetterSetterTest extends TestCase
 {
@@ -30,6 +31,14 @@ class DaftObjectGetterSetterTest extends TestCase
                 password_hash('asdf', PASSWORD_DEFAULT),
                 true,
                 false,
+            ],
+            [
+                ReadWrite::class,
+                'Foo',
+                'bar',
+                true,
+                true,
+                'Foo',
             ],
         ];
     }
@@ -187,15 +196,9 @@ class DaftObjectGetterSetterTest extends TestCase
         string $implementation,
         string $property,
         string $value,
-        bool $publicGetter,
-        bool $publicSetter,
         string $changedProperty = null
     ) : void {
-        $arr = [];
-
-        $arr[$property] = $value;
-
-        $obj = new $implementation($arr);
+        $obj = new $implementation([]);
 
         $obj->$property = $value;
 
