@@ -129,17 +129,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
             ($this instanceof DaftObjectWorm) &&
             (
                 $this->HasPropertyChanged($property) ||
-                (
-                    isset($wormProperties[$property]) &&
-                    (
-                        ! is_null($wormProperties[$property]) ||
-                        '' !== $wormProperties[$property] ||
-                        [] !== $wormProperties[$property] ||
-                        0 !== $wormProperties[$property] ||
-                        0.0 !== $wormProperties[$property] ||
-                        false !== $wormProperties[$property]
-                    )
-                )
+                isset($wormProperties[$property])
             );
     }
 

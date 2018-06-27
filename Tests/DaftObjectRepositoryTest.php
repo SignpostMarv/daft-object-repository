@@ -144,14 +144,41 @@ class DaftObjectRepositoryTest extends TestCase
 
             $repo->ForgetDaftObject($obj);
 
+            /**
+            * @var DefinesOwnIdPropertiesInterface|null $retrieved
+            */
             $retrieved = $repo->RecallDaftObject($ids);
+
+            if ( ! is_null($retrieved)) {
+                $this->repositoryForImplementaionTestRetrievedInLoopOne(
+                    $retrieved,
+                    $obj,
+                    $repo,
+                    $objImplementation,
+                    $ids,
+                    $idProps,
+                    $writeable
+                );
+            }
+        }
+    }
+
+    protected function repositoryForImplementaionTestRetrievedInLoopOne(
+        DefinesOwnIdPropertiesInterface $retrieved,
+        DefinesOwnIdPropertiesInterface $obj,
+        DaftObjectRepository $repo,
+        string $objImplementation,
+        array $ids,
+        array $idProps,
+        bool $writeable
+    ) : void {
+            static::assertSame(get_class($obj), get_class($retrieved));
+            static::assertNotSame($obj, $retrieved);
 
             static::assertSame(
                 $objImplementation::DaftObjectIdHash($obj),
                 $objImplementation::DaftObjectIdHash($retrieved)
             );
-            static::assertSame(get_class($obj), get_class($retrieved));
-            static::assertNotSame($obj, $retrieved);
 
             foreach ($objImplementation::DaftObjectProperties() as $prop) {
                 if (
@@ -176,7 +203,16 @@ class DaftObjectRepositoryTest extends TestCase
                     ) &&
                     true === is_numeric($obj->$prop)
                 ) {
-                    $retrieved->$prop *= 2;
+                    $propVal = $retrieved->$prop;
+
+                    if (! is_null($propVal) && is_numeric($propVal)) {
+                        /**
+                        * @var int|float $propVal
+                        */
+                        $propVal = $propVal;
+
+                        $retrieved->$prop = $propVal * 2;
+                    }
                 }
             }
 
@@ -185,10 +221,32 @@ class DaftObjectRepositoryTest extends TestCase
             $repo->ForgetDaftObject($retrieved);
 
             /**
-            * @var DefinesOwnIdPropertiesInterface $retrieved
+            * @var DefinesOwnIdPropertiesInterface|null $retrieved
             */
             $retrieved = $repo->RecallDaftObject($ids);
 
+        if ( ! is_null($retrieved)) {
+            $this->repositoryForImplementaionTestRetrievedInLoopTwo(
+                $retrieved,
+                $obj,
+                $repo,
+                $objImplementation,
+                $ids,
+                $idProps,
+                $writeable
+            );
+        }
+    }
+
+    protected function repositoryForImplementaionTestRetrievedInLoopTwo(
+        DefinesOwnIdPropertiesInterface $retrieved,
+        DefinesOwnIdPropertiesInterface $obj,
+        DaftObjectRepository $repo,
+        string $objImplementation,
+        array $ids,
+        array $idProps,
+        bool $writeable
+    ) : void {
             static::assertTrue(
                 is_a($retrieved, $objImplementation, true),
                 (
@@ -222,7 +280,6 @@ class DaftObjectRepositoryTest extends TestCase
             $repo->RemoveDaftObject($retrieved);
 
             static::assertNull($repo->RecallDaftObject($ids));
-        }
     }
 
     /**
