@@ -1324,7 +1324,8 @@ class DaftObjectImplementationTest extends TestCase
                 is_string($args[0]) &&
                 is_a($args[0], DaftObject\DaftObjectCreatedByArray::class, true)
             ) {
-                yield $args;
+                yield [$args[0], true];
+                yield [$args[0], false];
             }
         }
     }
@@ -1332,12 +1333,12 @@ class DaftObjectImplementationTest extends TestCase
     /**
     * @dataProvider dataProviderDaftObjectCreatedByArray
     */
-    final public function testConstructorArrayKeys(string $className) : void
+    final public function testConstructorArrayKeys(string $className, bool $writeAll) : void
     {
         static::expectException(InvalidArgumentException::class);
         static::expectExceptionMessage('Properties must be strings!');
 
-        $object = new $className([1]);
+        $object = new $className([1], $writeAll);
     }
 
     protected static function RegexForObject(DaftObject\DaftObject $obj) : string
