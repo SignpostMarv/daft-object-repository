@@ -176,7 +176,7 @@ class PropertyReflectionExtension implements PropertyReflection
         $reflectionClass = $refMethod->getDeclaringClass();
 
         $filename = null;
-        if ($reflectionClass->getFileName() !== false) {
+        if (false !== $reflectionClass->getFileName()) {
             $filename = $reflectionClass->getFileName();
         }
 
