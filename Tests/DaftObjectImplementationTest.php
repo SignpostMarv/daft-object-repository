@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace SignpostMarv\DaftObject\Tests;
 
 use Generator;
+use InvalidArgumentException;
 use ReflectionClass;
 use ReflectionMethod;
 use SignpostMarv\DaftObject;
@@ -1312,6 +1313,31 @@ class DaftObjectImplementationTest extends TestCase
 
             $method->invoke(new $className(), $property, null);
         }
+    }
+
+    final public function dataProviderDaftObjectCreatedByArray() : Generator
+    {
+        foreach ($this->dataProviderNonAbstractGoodImplementations() as $args) {
+            if (
+                is_array($args) &&
+                count($args) >= 1 &&
+                is_string($args[0]) &&
+                is_a($args[0], DaftObject\DaftObjectCreatedByArray::class, true)
+            ) {
+                yield $args;
+            }
+        }
+    }
+
+    /**
+    * @dataProvider dataProviderDaftObjectCreatedByArray
+    */
+    final public function testConstructorArrayKeys(string $className) : void
+    {
+        static::expectException(InvalidArgumentException::class);
+        static::expectExceptionMessage('Properties must be strings!');
+
+        $object = new $className([1]);
     }
 
     protected static function RegexForObject(DaftObject\DaftObject $obj) : string

@@ -13,6 +13,8 @@ namespace SignpostMarv\DaftObject;
 */
 interface DaftObjectCreatedByArray extends DaftObject
 {
+    const ERR_KEY_NOT_STRING = 'Properties must be strings!';
+
     /**
     * Create an array-backed daft object.
     *

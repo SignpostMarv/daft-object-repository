@@ -43,12 +43,15 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
 
         if (true === $writeAll) {
             foreach ($data as $k => $v) {
+                if ( ! is_string($k)) {
+                    throw new InvalidArgumentException(DaftObjectCreatedByArray::ERR_KEY_NOT_STRING);
+                }
                 $this->__set($k, $v);
             }
         } else {
             foreach ($data as $k => $v) {
                 if ( ! is_string($k)) {
-                    throw new InvalidArgumentException('Properties must be strings!');
+                    throw new InvalidArgumentException(DaftObjectCreatedByArray::ERR_KEY_NOT_STRING);
                 }
                 $this->data[$k] = $v;
             }
