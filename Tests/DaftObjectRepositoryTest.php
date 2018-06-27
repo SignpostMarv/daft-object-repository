@@ -172,58 +172,58 @@ class DaftObjectRepositoryTest extends TestCase
         array $idProps,
         bool $writeable
     ) : void {
-            static::assertSame(get_class($obj), get_class($retrieved));
-            static::assertNotSame($obj, $retrieved);
+        static::assertSame(get_class($obj), get_class($retrieved));
+        static::assertNotSame($obj, $retrieved);
 
-            static::assertSame(
-                $objImplementation::DaftObjectIdHash($obj),
-                $objImplementation::DaftObjectIdHash($retrieved)
-            );
+        static::assertSame(
+            $objImplementation::DaftObjectIdHash($obj),
+            $objImplementation::DaftObjectIdHash($retrieved)
+        );
 
-            foreach ($objImplementation::DaftObjectProperties() as $prop) {
-                if (
-                    true === method_exists($obj, 'Get' . ucfirst($prop)) &&
-                    true === method_exists($retrieved, 'Get' . ucfirst($prop))
-                ) {
-                    static::assertSame($obj->$prop, $retrieved->$prop);
+        foreach ($objImplementation::DaftObjectProperties() as $prop) {
+            if (
+                true === method_exists($obj, 'Get' . ucfirst($prop)) &&
+                true === method_exists($retrieved, 'Get' . ucfirst($prop))
+            ) {
+                static::assertSame($obj->$prop, $retrieved->$prop);
+            }
+        }
+
+        $repo->RemoveDaftObject($obj);
+
+        static::assertNull($repo->RecallDaftObject($ids));
+
+        foreach ($objImplementation::DaftObjectProperties() as $prop) {
+            if (
+                $writeable &&
+                false === in_array($prop, $idProps, true) &&
+                true === method_exists($obj, 'Set' . ucfirst($prop)) &&
+                true === method_exists(
+                    $retrieved, 'Get' . ucfirst($prop)
+                ) &&
+                true === is_numeric($obj->$prop)
+            ) {
+                $propVal = $retrieved->$prop;
+
+                if (! is_null($propVal) && is_numeric($propVal)) {
+                    /**
+                    * @var int|float $propVal
+                    */
+                    $propVal = $propVal;
+
+                    $retrieved->$prop = $propVal * 2;
                 }
             }
+        }
 
-            $repo->RemoveDaftObject($obj);
+        $repo->RememberDaftObject($retrieved);
+        $repo->ForgetDaftObject($obj);
+        $repo->ForgetDaftObject($retrieved);
 
-            static::assertNull($repo->RecallDaftObject($ids));
-
-            foreach ($objImplementation::DaftObjectProperties() as $prop) {
-                if (
-                    $writeable &&
-                    false === in_array($prop, $idProps, true) &&
-                    true === method_exists($obj, 'Set' . ucfirst($prop)) &&
-                    true === method_exists(
-                        $retrieved, 'Get' . ucfirst($prop)
-                    ) &&
-                    true === is_numeric($obj->$prop)
-                ) {
-                    $propVal = $retrieved->$prop;
-
-                    if (! is_null($propVal) && is_numeric($propVal)) {
-                        /**
-                        * @var int|float $propVal
-                        */
-                        $propVal = $propVal;
-
-                        $retrieved->$prop = $propVal * 2;
-                    }
-                }
-            }
-
-            $repo->RememberDaftObject($retrieved);
-            $repo->ForgetDaftObject($obj);
-            $repo->ForgetDaftObject($retrieved);
-
-            /**
-            * @var DefinesOwnIdPropertiesInterface|null $retrieved
-            */
-            $retrieved = $repo->RecallDaftObject($ids);
+        /**
+        * @var DefinesOwnIdPropertiesInterface|null $retrieved
+        */
+        $retrieved = $repo->RecallDaftObject($ids);
 
         if ( ! is_null($retrieved)) {
             $this->repositoryForImplementaionTestRetrievedInLoopTwo(
@@ -247,39 +247,39 @@ class DaftObjectRepositoryTest extends TestCase
         array $idProps,
         bool $writeable
     ) : void {
-            static::assertTrue(
-                is_a($retrieved, $objImplementation, true),
-                (
-                    get_class($repo) .
-                    '::RecallDaftObject() must return an implementation of ' .
-                    $objImplementation
-                )
-            );
+        static::assertTrue(
+            is_a($retrieved, $objImplementation, true),
+            (
+                get_class($repo) .
+                '::RecallDaftObject() must return an implementation of ' .
+                $objImplementation
+            )
+        );
 
-            foreach ($objImplementation::DaftObjectProperties() as $prop) {
-                if (
-                    $writeable &&
-                    false === in_array($prop, $idProps, true) &&
-                    true === method_exists($obj, 'Set' . ucfirst($prop)) &&
-                    true === method_exists(
-                        $retrieved, 'Get' . ucfirst($prop)
-                    ) &&
-                    true === is_numeric($obj->$prop)
-                ) {
-                    /**
-                    * @var int|float $propVal
-                    */
-                    $propVal = $obj->$prop;
-                    static::assertSame($propVal * 2, $retrieved->$prop);
-                    $retrieved->$prop /= 2;
-                }
+        foreach ($objImplementation::DaftObjectProperties() as $prop) {
+            if (
+                $writeable &&
+                false === in_array($prop, $idProps, true) &&
+                true === method_exists($obj, 'Set' . ucfirst($prop)) &&
+                true === method_exists(
+                    $retrieved, 'Get' . ucfirst($prop)
+                ) &&
+                true === is_numeric($obj->$prop)
+            ) {
+                /**
+                * @var int|float $propVal
+                */
+                $propVal = $obj->$prop;
+                static::assertSame($propVal * 2, $retrieved->$prop);
+                $retrieved->$prop /= 2;
             }
+        }
 
-            $repo->RememberDaftObject($retrieved);
+        $repo->RememberDaftObject($retrieved);
 
-            $repo->RemoveDaftObject($retrieved);
+        $repo->RemoveDaftObject($retrieved);
 
-            static::assertNull($repo->RecallDaftObject($ids));
+        static::assertNull($repo->RecallDaftObject($ids));
     }
 
     /**
