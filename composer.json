@@ -34,7 +34,7 @@
             "phpmnd ./src/",
             "phpmnd ./Tests/",
             "phpmnd ./tests-src/",
-            "nice -n 19 ./composer-require-checker.sh",
+            "composer-require-checker check ./composer.json",
             "php-cs-fixer fix --verbose --allow-risky=yes --dry-run"
         ],
         "check-coverage-on-tests": [
@@ -47,6 +47,7 @@
         "ext-mbstring": "^7.1"
     },
     "require-dev": {
+        "maglnet/composer-require-checker": "dev-master",
         "phpstan/phpstan": "^0.10.0",
         "phpstan/phpstan-phpunit": "^0.10.0",
         "phpstan/phpstan-strict-rules": "^0.10.0",
