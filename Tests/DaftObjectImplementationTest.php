@@ -1153,17 +1153,6 @@ class DaftObjectImplementationTest extends TestCase
     }
 
     /**
-    * @psalm-suppress ForbiddenCode
-    */
-    final protected function VarDumpDaftObject(DaftObject\DaftObject $obj) : string
-    {
-        ob_start();
-        var_dump($obj);
-
-        return (string) ob_get_clean();
-    }
-
-    /**
     * @dataProvider dataProviderNonAbstractGoodFuzzingHasSetters
     *
     * @depends testHasDefinedImplementationCorrectly
@@ -1603,6 +1592,17 @@ class DaftObjectImplementationTest extends TestCase
         static::expectExceptionMessage('Properties must be strings!');
 
         $object = new $className([1], $writeAll);
+    }
+
+    /**
+    * @psalm-suppress ForbiddenCode
+    */
+    final protected function VarDumpDaftObject(DaftObject\DaftObject $obj) : string
+    {
+        ob_start();
+        var_dump($obj);
+
+        return (string) ob_get_clean();
     }
 
     protected static function RegexForObject(DaftObject\DaftObject $obj) : string

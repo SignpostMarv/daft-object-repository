@@ -127,7 +127,7 @@ class JsonTypeUtilities
             /**
             * @param mixed $val
             */
-            function ($val) use($jsonType, $writeAll, $prop) : DaftJson {
+            function ($val) use ($jsonType, $writeAll, $prop) : DaftJson {
                 if (false === is_array($val)) {
                     throw new PropertyNotJsonDecodableShouldBeArrayException($jsonType, $prop);
                 }

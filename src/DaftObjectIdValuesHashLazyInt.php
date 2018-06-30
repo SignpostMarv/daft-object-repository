@@ -11,6 +11,11 @@ namespace SignpostMarv\DaftObject;
 trait DaftObjectIdValuesHashLazyInt
 {
     /**
+    * @var array<string, array<string, string>>
+    */
+    private static $ids = [];
+
+    /**
     * @see DefinesOwnIdPropertiesInterface::DaftObjectIdHash()
     */
     public static function DaftObjectIdHash(DefinesOwnIdPropertiesInterface $object) : string
@@ -33,11 +38,6 @@ trait DaftObjectIdValuesHashLazyInt
 
         return static::DaftObjectIdValuesHash($id);
     }
-
-    /**
-    * @var array<string, array<string, string>>
-    */
-    private static $ids = [];
 
     /**
     * @see DefinesOwnIdPropertiesInterface::DaftObjectIdValuesHash()

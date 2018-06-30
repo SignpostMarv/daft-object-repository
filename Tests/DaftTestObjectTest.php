@@ -495,17 +495,6 @@ class DaftTestObjectTest extends TestCase
     }
 
     /**
-    * @psalm-suppress ForbiddenCode
-    */
-    final protected function VarDumpDaftObject(DaftObject $obj) : string
-    {
-        ob_start();
-        var_dump($obj);
-
-        return (string) ob_get_clean();
-    }
-
-    /**
     * @dataProvider ThrowsExceptionProvider
     */
     public function testThrowsException(
@@ -649,5 +638,16 @@ class DaftTestObjectTest extends TestCase
         ));
 
         $obj->$prop;
+    }
+
+    /**
+    * @psalm-suppress ForbiddenCode
+    */
+    final protected function VarDumpDaftObject(DaftObject $obj) : string
+    {
+        ob_start();
+        var_dump($obj);
+
+        return (string) ob_get_clean();
     }
 }
