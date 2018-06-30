@@ -20,11 +20,7 @@ trait ReadTrait
         */
         $out = $this->RetrievePropertyValueFromData('Bar');
 
-        if (is_string($out)) {
-            return (float) $out;
-        }
-
-        return $out;
+        return is_string($out) ? ((float) $out) : $out;
     }
 
     public function GetBaz() : int
@@ -34,11 +30,7 @@ trait ReadTrait
         */
         $out = $this->RetrievePropertyValueFromData('Baz');
 
-        if (is_string($out)) {
-            return (int) $out;
-        }
-
-        return $out;
+        return is_string($out) ? ((int) $out) : $out;
     }
 
     public function GetBat() : ? bool
@@ -48,10 +40,6 @@ trait ReadTrait
         */
         $out = $this->RetrievePropertyValueFromData('Bat');
 
-        if (is_string($out)) {
-            return (bool) ((int) $out);
-        }
-
-        return $out;
+        return is_string($out) ? ((bool) ((int) $out)) : $out;
     }
 }

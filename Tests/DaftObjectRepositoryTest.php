@@ -19,9 +19,8 @@ use SignpostMarv\DaftObject\ReadWriteTwoColumnPrimaryKey;
 
 class DaftObjectRepositoryTest extends TestCase
 {
-    public static function DaftObjectRepositoryByType(
-        string $type
-    ) : DaftObjectRepository {
+    public static function DaftObjectRepositoryByType(string $type) : DaftObjectRepository
+    {
         return DaftObjectMemoryRepository::DaftObjectRepositoryByType(
             $type
         );
@@ -55,8 +54,8 @@ class DaftObjectRepositoryTest extends TestCase
         }
     }
 
-    public function DaftObjectRepositoryTypeExceptionForgetRemoveDataProvider(
-    ) : array {
+    public function DaftObjectRepositoryTypeExceptionForgetRemoveDataProvider() : array
+    {
         return [
             [
                 ReadWrite::class,
@@ -82,25 +81,15 @@ class DaftObjectRepositoryTest extends TestCase
     ) : void {
         $interfaceCheck = $objImplementation;
 
-        if (
-            false === is_a(
-                $interfaceCheck,
-                DefinesOwnIdPropertiesInterface::class,
-                true
-            )
-        ) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    'Argument 1 passed to %s must be an implementation of %s',
-                    __METHOD__,
-                    DefinesOwnIdPropertiesInterface::class
-                )
-            );
+        if (false === is_a($interfaceCheck, DefinesOwnIdPropertiesInterface::class, true)) {
+            throw new InvalidArgumentException(sprintf(
+                'Argument 1 passed to %s must be an implementation of %s',
+                __METHOD__,
+                DefinesOwnIdPropertiesInterface::class
+            ));
         }
 
-        $repo = static::DaftObjectRepositoryByType(
-            $objImplementation
-        );
+        $repo = static::DaftObjectRepositoryByType($objImplementation);
 
         $idProps = [];
 
@@ -119,9 +108,7 @@ class DaftObjectRepositoryTest extends TestCase
             */
             $obj = new $objImplementation($params, $writeable);
 
-            $repoByObject = static::DaftObjectRepositoryByDaftObject(
-                $obj
-            );
+            $repoByObject = static::DaftObjectRepositoryByDaftObject($obj);
 
             static::assertSame(get_class($repo), get_class($repoByObject));
 
@@ -147,9 +134,7 @@ class DaftObjectRepositoryTest extends TestCase
             static::assertSame($obj, $repo->RecallDaftObject($ids));
 
             if (count($ids) < 1) {
-                throw new RuntimeException(
-                    'Insufficient Id properties found!'
-                );
+                throw new RuntimeException('Insufficient Id properties found!');
             }
 
             $repo->ForgetDaftObject($obj);

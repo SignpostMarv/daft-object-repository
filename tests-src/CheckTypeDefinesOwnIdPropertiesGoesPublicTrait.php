@@ -10,9 +10,8 @@ use SignpostMarv\DaftObject\TypeUtilities;
 
 trait CheckTypeDefinesOwnIdPropertiesGoesPublic
 {
-    public static function CheckTypeDefinesOwnIdPropertiesGoesPublic(
-        DaftObject $object
-    ) : bool {
+    public static function CheckTypeDefinesOwnIdPropertiesGoesPublic(DaftObject $object) : bool
+    {
         return TypeUtilities::CheckTypeDefinesOwnIdProperties($object::class);
     }
 }

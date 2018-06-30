@@ -61,8 +61,6 @@ class DaftObjectRepositoryByTypeTest extends TestCase
         */
         $repoImplementation = $repoImplementation;
 
-        $repoImplementation::DaftObjectRepositoryByType(
-            $typeImplementation
-        );
+        $repoImplementation::DaftObjectRepositoryByType($typeImplementation);
     }
 }

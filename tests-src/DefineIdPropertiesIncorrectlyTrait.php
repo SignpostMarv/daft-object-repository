@@ -10,8 +10,6 @@ trait DefineIdPropertiesIncorrectlyTrait
 {
     public static function DaftObjectIdProperties() : array
     {
-        return [
-            1,
-        ];
+        return [1];
     }
 }

@@ -19,7 +19,7 @@ class DaftObjectNullStubCreatedByArray extends DaftObjectNullStub implements Daf
         $notString = array_filter($keys, 'is_string');
 
         if (count($keys) !== count($notString)) {
-                throw new InvalidArgumentException(DaftObjectCreatedByArray::ERR_KEY_NOT_STRING);
+            throw new InvalidArgumentException(DaftObjectCreatedByArray::ERR_KEY_NOT_STRING);
         }
     }
 }

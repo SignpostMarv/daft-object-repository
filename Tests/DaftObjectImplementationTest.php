@@ -42,10 +42,7 @@ class DaftObjectImplementationTest extends TestCase
         $implementations = array_filter($this->InvalidImplementations(), 'is_string');
 
         foreach ($implementations as $arg) {
-            if (
-                class_exists($arg) &&
-                is_a($arg, DaftObject\DaftObject::class, true)
-            ) {
+            if (class_exists($arg) && is_a($arg, DaftObject\DaftObject::class, true)) {
                 $out[] = $arg;
             }
         }
@@ -388,16 +385,14 @@ class DaftObjectImplementationTest extends TestCase
         }
     }
 
-    final public function dataProviderNonAbstractGoodFuzzingHasSetters(
-    ) : Generator {
+    final public function dataProviderNonAbstractGoodFuzzingHasSetters() : Generator
+    {
         /**
         * @var \Traversable<array<int, string|ReflectionClass|array>> $implementations
         */
         $implementations = $this->dataProviderNonAbstractGoodFuzzing();
 
-        foreach (
-            $implementations as $args
-        ) {
+        foreach ($implementations as $args) {
             if (count($args) < 5) {
                 continue;
             }
@@ -449,8 +444,8 @@ class DaftObjectImplementationTest extends TestCase
         }
     }
 
-    final public function dataProviderNonAbstractGoodFuzzingHasSettersPerProperty(
-    ) : Generator {
+    final public function dataProviderNonAbstractGoodFuzzingHasSettersPerProperty() : Generator
+    {
         /**
         * @var \Traversable<array<int, mixed>> $implementations
         */
@@ -474,15 +469,14 @@ class DaftObjectImplementationTest extends TestCase
         }
     }
 
-    final public function dataProviderNonAbstractGoodFuzzingHasSettersPerPropertyWorm(
-    ) : Generator {
+    final public function dataProviderNonAbstractGoodFuzzingHasSettersPerPropertyWorm() : Generator
+    {
         /**
         * @var \Traversable<array<int, mixed>> $implementations
         */
         $implementations = $this->dataProviderNonAbstractGoodFuzzingHasSettersPerProperty();
-        foreach (
-            $implementations as $args
-        ) {
+
+        foreach ($implementations as $args) {
             /**
             * @var string $className
             */
@@ -500,9 +494,8 @@ class DaftObjectImplementationTest extends TestCase
         * @var \Traversable<array<int, mixed>> $implementations
         */
         $implementations = $this->dataProviderNonAbstractGoodFuzzingHasSettersPerProperty();
-        foreach (
-            $implementations as $args
-        ) {
+
+        foreach ($implementations as $args) {
             if (count($args) < 6) {
                 continue;
             }
@@ -517,7 +510,13 @@ class DaftObjectImplementationTest extends TestCase
             */
             $property = $args[5];
 
-            if (false === in_array($property, (array) $className::DaftObjectNullableProperties(), true)) {
+            if (
+                false === in_array(
+                    $property,
+                    (array) $className::DaftObjectNullableProperties(),
+                    true
+                )
+            ) {
                 yield $args;
             }
         }
@@ -1176,9 +1175,7 @@ class DaftObjectImplementationTest extends TestCase
     ) : void {
         $obj = new $className($args);
 
-        if (
-            ($obj instanceof DaftObject\DaftJson)
-        ) {
+        if ($obj instanceof DaftObject\DaftJson) {
             $obj->jsonSerialize();
 
             $json = json_encode($obj);
@@ -1700,11 +1697,7 @@ class DaftObjectImplementationTest extends TestCase
                             : (
                                 is_float($val)
                                     ? '(?:float|double)'
-                                    : (
-                                        is_object($val)
-                                            ? ''
-                                            : preg_quote(gettype($val), '/')
-                                    )
+                                    : (is_object($val) ? '' : preg_quote(gettype($val), '/'))
                             )
                     )
             ) .

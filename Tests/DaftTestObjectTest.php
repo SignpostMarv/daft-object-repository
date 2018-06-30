@@ -395,16 +395,12 @@ class DaftTestObjectTest extends TestCase
                     )
                 ) {
                     if ($obj instanceof DaftObjectWorm) {
-                        $this->expectException(
-                            PropertyNotRewriteableException::class
-                        );
-                        $this->expectExceptionMessage(
-                            sprintf(
-                                'Property not rewriteable: %s::$%s',
-                                $implementation,
-                                $property
-                            )
-                        );
+                        $this->expectException(PropertyNotRewriteableException::class);
+                        $this->expectExceptionMessage(sprintf(
+                            'Property not rewriteable: %s::$%s',
+                            $implementation,
+                            $property
+                        ));
                     }
                     unset($obj->$property);
                     $obj->$property = null;
@@ -495,10 +491,7 @@ class DaftTestObjectTest extends TestCase
 
         $regex .= '\}.+$/s';
 
-        static::assertRegExp(
-            $regex,
-            str_replace("\n", ' ', $debugInfo)
-        );
+        static::assertRegExp($regex, str_replace("\n", ' ', $debugInfo));
     }
 
     /**
@@ -549,10 +542,8 @@ class DaftTestObjectTest extends TestCase
     /**
     * @dataProvider DefinesOwnUntypedIdInterfaceProvider
     */
-    public function testDefinesOwnUntypedIdInterface(
-        string $implementation,
-        array $params
-    ) : void {
+    public function testDefinesOwnUntypedIdInterface(string $implementation, array $params) : void
+    {
         $obj = new $implementation($params, false);
 
         /**
@@ -651,13 +642,11 @@ class DaftTestObjectTest extends TestCase
         $prop = $props[0];
 
         $this->expectException(PropertyNotNullableException::class);
-        $this->expectExceptionMessage(
-            sprintf(
-                'Property not nullable: %s::$%s',
-                $implementation,
-                $prop
-            )
-        );
+        $this->expectExceptionMessage(sprintf(
+            'Property not nullable: %s::$%s',
+            $implementation,
+            $prop
+        ));
 
         $obj->$prop;
     }

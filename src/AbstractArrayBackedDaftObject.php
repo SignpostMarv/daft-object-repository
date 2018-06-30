@@ -87,9 +87,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
 
     public function HasPropertyChanged(string $property) : bool
     {
-        return
-            isset($this->changedProperties[$property]) &&
-            true === $this->changedProperties[$property];
+        return $this->changedProperties[$property] ?? false;
     }
 
     public function jsonSerialize() : array

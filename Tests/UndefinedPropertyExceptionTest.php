@@ -57,13 +57,11 @@ class UndefinedPropertyExceptionTest extends TestCase
         string $property
     ) : void {
         $this->expectException(UndefinedPropertyException::class);
-        $this->expectExceptionMessage(
-            sprintf(
-                'Property not defined: %s::$%s',
-                $implementation,
-                $property
-            )
-        );
+        $this->expectExceptionMessage(sprintf(
+            'Property not defined: %s::$%s',
+            $implementation,
+            $property
+        ));
 
         $obj = new $implementation($args, $writeAll);
 

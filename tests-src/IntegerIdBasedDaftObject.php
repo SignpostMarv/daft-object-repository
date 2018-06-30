@@ -8,7 +8,11 @@ namespace SignpostMarv\DaftObject;
 
 use InvalidArgumentException;
 
-class IntegerIdBasedDaftObject extends AbstractArrayBackedDaftObject implements DefinesOwnUntypedIdInterface
+class IntegerIdBasedDaftObject
+    extends
+        AbstractArrayBackedDaftObject
+    implements
+        DefinesOwnUntypedIdInterface
 {
     use DaftObjectIdValuesHashLazyInt;
 

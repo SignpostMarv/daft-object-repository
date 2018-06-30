@@ -50,13 +50,7 @@ class DaftObjectGetterSetterTest extends TestCase
     public function dataProviderGetterSetterGoodGetterOnly() : Generator
     {
         foreach ($this->dataProviderGetterSetterGood() as $args) {
-            list(
-                $implementation,
-                $property,
-                $value,
-                $publicGetter,
-                $publicSetter
-            ) = $args;
+            list($implementation, $property, $value, $publicGetter, $publicSetter) = $args;
 
             /**
             * @var string|null $changedProperty
@@ -64,12 +58,7 @@ class DaftObjectGetterSetterTest extends TestCase
             $changedProperty = $args[5] ?? null;
 
             if ($publicGetter && ! $publicSetter) {
-                yield [
-                    $implementation,
-                    $property,
-                    $value,
-                    $changedProperty,
-                ];
+                yield [$implementation, $property, $value, $changedProperty];
             }
         }
     }
@@ -77,13 +66,7 @@ class DaftObjectGetterSetterTest extends TestCase
     public function dataProviderGetterSetterGoodSetterOnly() : Generator
     {
         foreach ($this->dataProviderGetterSetterGood() as $args) {
-            list(
-                $implementation,
-                $property,
-                $value,
-                $publicGetter,
-                $publicSetter
-            ) = $args;
+            list($implementation, $property, $value, $publicGetter, $publicSetter) = $args;
 
             /**
             * @var string|null $changedProperty
@@ -91,12 +74,7 @@ class DaftObjectGetterSetterTest extends TestCase
             $changedProperty = $args[5] ?? null;
 
             if ( ! $publicGetter && $publicSetter && is_string($changedProperty)) {
-                yield [
-                    $implementation,
-                    $property,
-                    $value,
-                    $changedProperty,
-                ];
+                yield [$implementation, $property, $value, $changedProperty];
             }
         }
     }
@@ -104,13 +82,7 @@ class DaftObjectGetterSetterTest extends TestCase
     public function dataProviderGetterSetterGoodGetterSetter() : Generator
     {
         foreach ($this->dataProviderGetterSetterGood() as $args) {
-            list(
-                $implementation,
-                $property,
-                $value,
-                $publicGetter,
-                $publicSetter
-            ) = $args;
+            list($implementation, $property, $value, $publicGetter, $publicSetter) = $args;
 
             /**
             * @var string|null $changedProperty
@@ -118,12 +90,7 @@ class DaftObjectGetterSetterTest extends TestCase
             $changedProperty = $args[5] ?? null;
 
             if ($publicGetter && $publicSetter && is_string($changedProperty)) {
-                yield [
-                    $implementation,
-                    $property,
-                    $value,
-                    $changedProperty,
-                ];
+                yield [$implementation, $property, $value, $changedProperty];
             }
         }
     }
@@ -135,11 +102,7 @@ class DaftObjectGetterSetterTest extends TestCase
         $generator = function () use ($sources) : Generator {
             foreach ($sources as $source) {
                 if (false === $source[3]) {
-                    yield [
-                        $source[0],
-                        $source[1],
-                        $source[2],
-                    ];
+                    yield [$source[0], $source[1], $source[2]];
                 }
             }
         };
@@ -154,11 +117,7 @@ class DaftObjectGetterSetterTest extends TestCase
         $generator = function () use ($sources) : Generator {
             foreach ($sources as $source) {
                 if (false === $source[4]) {
-                    yield [
-                        $source[0],
-                        $source[1],
-                        $source[2],
-                    ];
+                    yield [$source[0], $source[1], $source[2]];
                 }
             }
         };
@@ -230,23 +189,18 @@ class DaftObjectGetterSetterTest extends TestCase
     *
     * @depends testGetterSetterGood
     */
-    public function testGetterBad(
-        string $implementation,
-        string $property,
-        string $value
-    ) : void {
+    public function testGetterBad(string $implementation, string $property, string $value) : void
+    {
         $obj = new $implementation([
             $property => $value,
         ]);
 
         $this->expectException(NotPublicGetterPropertyException::class);
-        $this->expectExceptionMessage(
-            sprintf(
-                'Property not a public getter: %s::$%s',
-                $implementation,
-                $property
-            )
-        );
+        $this->expectExceptionMessage(sprintf(
+            'Property not a public getter: %s::$%s',
+            $implementation,
+            $property
+        ));
 
         /**
         * @var scalar|null|array|DaftObject $foo
@@ -259,21 +213,16 @@ class DaftObjectGetterSetterTest extends TestCase
     *
     * @depends testGetterSetterGood
     */
-    public function testSetterBad(
-        string $implementation,
-        string $property,
-        string $value
-    ) : void {
+    public function testSetterBad(string $implementation, string $property, string $value) : void
+    {
         $obj = new $implementation();
 
         $this->expectException(NotPublicSetterPropertyException::class);
-        $this->expectExceptionMessage(
-            sprintf(
-                'Property not a public setter: %s::$%s',
-                $implementation,
-                $property
-            )
-        );
+        $this->expectExceptionMessage(sprintf(
+            'Property not a public setter: %s::$%s',
+            $implementation,
+            $property
+        ));
 
         $obj->$property = $value;
     }

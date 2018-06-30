@@ -113,13 +113,11 @@ class DaftJsonExceptionTest extends TestCase
         bool $writeAll
     ) : void {
         $this->expectException(ClassDoesNotImplementClassException::class);
-        $this->expectExceptionMessage(
-            sprintf(
-                '%s does not implement %s',
-                $expectingFailureWith,
-                DaftJson::class
-            )
-        );
+        $this->expectExceptionMessage(sprintf(
+            '%s does not implement %s',
+            $expectingFailureWith,
+            DaftJson::class
+        ));
 
         $implementation::DaftObjectFromJsonArray($args, $writeAll);
     }
@@ -137,14 +135,12 @@ class DaftJsonExceptionTest extends TestCase
         bool $writeAll
     ) : void {
         $this->expectException($expectingException);
-        $this->expectExceptionMessage(
-            sprintf(
-                'Property not %s: %s::$%s',
-                $expectingThing,
-                $expectingFailureWithClass,
-                $expectingFailureWithProperty
-            )
-        );
+        $this->expectExceptionMessage(sprintf(
+            'Property not %s: %s::$%s',
+            $expectingThing,
+            $expectingFailureWithClass,
+            $expectingFailureWithProperty
+        ));
 
         /**
         * @var DaftJson $obj
