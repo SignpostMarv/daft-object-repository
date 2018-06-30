@@ -191,7 +191,7 @@ class PropertyReflectionExtension implements PropertyReflection
     {
         return
             (is_a($className, DefinesOwnUntypedIdInterface::class, true) && 'id' === $property) ||
-            in_array($property, $className::DaftObjectPublicGetters(), true) ||
-            in_array($property, $className::DaftObjectPublicSetters(), true);
+            in_array($property, (array) $className::DaftObjectPublicGetters(), true) ||
+            in_array($property, (array) $className::DaftObjectPublicSetters(), true);
     }
 }

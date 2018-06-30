@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace SignpostMarv\DaftObject\Tests;
 
 use Generator;
+use SignpostMarv\DaftObject\DaftObject;
 use SignpostMarv\DaftObject\NotPublicGetterPropertyException;
 use SignpostMarv\DaftObject\NotPublicSetterPropertyException;
 use SignpostMarv\DaftObject\PasswordHashTestObject;
@@ -14,6 +15,9 @@ use SignpostMarv\DaftObject\ReadWrite;
 
 class DaftObjectGetterSetterTest extends TestCase
 {
+    /**
+    * @return array<int, array<int, mixed>>
+    */
     public function dataProviderGetterSetterGood() : array
     {
         return [
@@ -54,6 +58,9 @@ class DaftObjectGetterSetterTest extends TestCase
                 $publicSetter
             ) = $args;
 
+            /**
+            * @var string|null $changedProperty
+            */
             $changedProperty = $args[5] ?? null;
 
             if ($publicGetter && ! $publicSetter) {
@@ -78,9 +85,12 @@ class DaftObjectGetterSetterTest extends TestCase
                 $publicSetter
             ) = $args;
 
+            /**
+            * @var string|null $changedProperty
+            */
             $changedProperty = $args[5] ?? null;
 
-            if ( ! $publicGetter && $publicSetter) {
+            if ( ! $publicGetter && $publicSetter && is_string($changedProperty)) {
                 yield [
                     $implementation,
                     $property,
@@ -102,9 +112,12 @@ class DaftObjectGetterSetterTest extends TestCase
                 $publicSetter
             ) = $args;
 
+            /**
+            * @var string|null $changedProperty
+            */
             $changedProperty = $args[5] ?? null;
 
-            if ($publicGetter && $publicSetter) {
+            if ($publicGetter && $publicSetter && is_string($changedProperty)) {
                 yield [
                     $implementation,
                     $property,
@@ -178,10 +191,13 @@ class DaftObjectGetterSetterTest extends TestCase
         string $implementation,
         string $property,
         string $value,
-        string $changedProperty = null
+        string $changedProperty
     ) : void {
         $arr = [];
 
+        /**
+        * @var DaftObject $obj
+        */
         $obj = new $implementation($arr);
 
         $obj->$property = $value;
@@ -196,8 +212,11 @@ class DaftObjectGetterSetterTest extends TestCase
         string $implementation,
         string $property,
         string $value,
-        string $changedProperty = null
+        string $changedProperty
     ) : void {
+        /**
+        * @var DaftObject
+        */
         $obj = new $implementation([]);
 
         $obj->$property = $value;
@@ -229,6 +248,9 @@ class DaftObjectGetterSetterTest extends TestCase
             )
         );
 
+        /**
+        * @var scalar|null|array|DaftObject $foo
+        */
         $foo = $obj->$property;
     }
 

@@ -10,14 +10,17 @@ trait ReadTrait
 {
     public function GetFoo() : string
     {
-        return $this->RetrievePropertyValueFromData('Foo');
+        return (string) $this->RetrievePropertyValueFromData('Foo');
     }
 
     public function GetBar() : float
     {
+        /**
+        * @var float|string $out
+        */
         $out = $this->RetrievePropertyValueFromData('Bar');
 
-        if (is_string($out) === true && is_numeric($out)) {
+        if (is_string($out)) {
             return (float) $out;
         }
 
@@ -26,9 +29,12 @@ trait ReadTrait
 
     public function GetBaz() : int
     {
+        /**
+        * @var int|string $out
+        */
         $out = $this->RetrievePropertyValueFromData('Baz');
 
-        if (is_string($out) === true && is_numeric($out)) {
+        if (is_string($out)) {
             return (int) $out;
         }
 
@@ -37,9 +43,12 @@ trait ReadTrait
 
     public function GetBat() : ? bool
     {
+        /**
+        * @var bool|null|string $out
+        */
         $out = $this->RetrievePropertyValueFromData('Bat');
 
-        if (is_string($out) === true && is_numeric($out)) {
+        if (is_string($out)) {
             return (bool) ((int) $out);
         }
 

@@ -15,10 +15,11 @@ class DaftObjectNullStubCreatedByArray extends DaftObjectNullStub implements Daf
     */
     final public function __construct(array $data = [], bool $writeAll = false)
     {
-        foreach ($data as $k => $v) {
-            if ( ! is_string($k)) {
+        $keys = array_keys($data);
+        $notString = array_filter($keys, 'is_string');
+
+        if (count($keys) !== count($notString)) {
                 throw new InvalidArgumentException(DaftObjectCreatedByArray::ERR_KEY_NOT_STRING);
-            }
         }
     }
 }

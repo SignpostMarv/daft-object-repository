@@ -36,8 +36,18 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
 
         $id = [];
 
-        foreach ($object::DaftObjectIdProperties() as $prop) {
-            $id[] = $object->$prop;
+        /**
+        * @var array<int, string> $properties
+        */
+        $properties = $object::DaftObjectIdProperties();
+
+        foreach ($properties as $prop) {
+            /**
+            * @var scalar|null|array|object $val
+            */
+            $val = $object->$prop;
+
+            $id[] = $val;
         }
 
         $this->ForgetDaftObjectById($id);
@@ -49,8 +59,18 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
 
         $id = [];
 
-        foreach ($object::DaftObjectIdProperties() as $prop) {
-            $id[] = $object->$prop;
+        /**
+        * @var array<int, string> $properties
+        */
+        $properties = $object::DaftObjectIdProperties();
+
+        foreach ($properties as $prop) {
+            /**
+            * @var scalar|null|array|object $val
+            */
+            $val = $object->$prop;
+
+            $id[] = $val;
         }
 
         $this->RemoveDaftObjectById($id);

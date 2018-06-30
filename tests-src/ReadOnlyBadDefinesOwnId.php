@@ -11,6 +11,9 @@ class ReadOnlyBadDefinesOwnId extends AbstractTestObject
     use DefineIdPropertiesIncorrectlyTrait;
     use ReadTrait;
 
+    /**
+    * @param array<int|string, scalar|null|array|object> $data
+    */
     public function __construct(array $data = [], bool $writeAll = false)
     {
         parent::__construct($data, $writeAll);

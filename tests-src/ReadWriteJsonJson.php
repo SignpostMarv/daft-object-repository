@@ -22,7 +22,12 @@ class ReadWriteJsonJson extends AbstractArrayBackedDaftObject implements DaftJso
 
     public function GetJson() : ReadWriteJson
     {
-        return $this->RetrievePropertyValueFromData('json');
+        /**
+        * @var ReadWriteJson
+        */
+        $out = $this->RetrievePropertyValueFromData('json');
+
+        return $out;
     }
 
     public function SetJson(ReadWriteJson $json) : void

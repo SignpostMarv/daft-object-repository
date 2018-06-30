@@ -35,7 +35,7 @@ class JsonTypeUtilities
             */
             function (string $prop) use ($jsonDef, $array, $class) {
                 if (isset($jsonDef[$prop]) && false === is_array($array[$prop])) {
-                    static::ThrowBecauseArrayJsonTypeNotValid($class, $jsonDef[$prop], $prop);
+                    static::ThrowBecauseArrayJsonTypeNotValid($class, (string) $jsonDef[$prop], $prop);
                 }
 
                 return $array[$prop];
@@ -92,12 +92,15 @@ class JsonTypeUtilities
         return JsonTypeUtilities::ArrayToJsonType($jsonType, $propVal, $writeAll);
     }
 
+    /**
+    * @param array<int|string, mixed> $array
+    */
     public static function ThrowIfJsonDefNotValid(string $type, array $array) : array
     {
         self::ThrowIfNotDaftJson($type);
-        $jsonProps = $type::DaftObjectJsonPropertyNames();
+        $jsonProps = (array) $type::DaftObjectJsonPropertyNames();
         $array = JsonTypeUtilities::FilterThrowIfJsonDefNotValid($type, $jsonProps, $array);
-        $jsonDef = $type::DaftObjectJsonProperties();
+        $jsonDef = (array) $type::DaftObjectJsonProperties();
 
         $keys = array_keys($array);
 
@@ -108,6 +111,8 @@ class JsonTypeUtilities
     }
 
     /**
+    * @param mixed[] $propVal
+    *
     * @return array<int, DaftJson>
     */
     protected static function DaftObjectFromJsonTypeArray(
@@ -118,16 +123,18 @@ class JsonTypeUtilities
     ) : array {
         JsonTypeUtilities::ThrowIfNotJsonType($jsonType);
 
-        $out = [];
-
-        foreach ($propVal as $val) {
+        return array_map(
+            /**
+            * @param mixed $val
+            */
+            function ($val) use($jsonType, $writeAll, $prop) : DaftJson {
             if (false === is_array($val)) {
                 throw new PropertyNotJsonDecodableShouldBeArrayException($jsonType, $prop);
             }
-            $out[] = JsonTypeUtilities::ArrayToJsonType($jsonType, $val, $writeAll);
-        }
-
-        return $out;
+                return JsonTypeUtilities::ArrayToJsonType($jsonType, $val, $writeAll);
+            },
+            array_values($propVal)
+        );
     }
 
     private static function ThrowBecauseArrayJsonTypeNotValid(

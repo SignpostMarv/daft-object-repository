@@ -39,9 +39,10 @@ class DaftObjectImplementationTest extends TestCase
     {
         $out = [];
 
-        foreach ($this->InvalidImplementations() as $arg) {
+        $implementations = array_filter($this->InvalidImplementations(), 'is_string');
+
+        foreach ($implementations as $arg) {
             if (
-                is_string($arg) &&
                 class_exists($arg) &&
                 is_a($arg, DaftObject\DaftObject::class, true)
             ) {
@@ -54,7 +55,11 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractImplementations() : Generator
     {
-        foreach ($this->dataProviderImplementations() as [$className]) {
+        /**
+        * @var array<int, mixed> $args
+        */
+        foreach ($this->dataProviderImplementations() as $args) {
+            list($className) = $args;
             if (
                 is_string($className) &&
                 is_a($className, DaftObject\DaftObject::class, true) &&
@@ -69,19 +74,32 @@ class DaftObjectImplementationTest extends TestCase
     {
         $invalid = $this->dataProviderInvalidImplementations();
 
-        foreach ($this->dataProviderNonAbstractImplementations() as [$className, $reflector]) {
-            if (false === in_array($className, $invalid, true)) {
-                yield [$className, $reflector];
+        /**
+        * @var \Traversable<string|ReflectionClass> $implementations
+        */
+        $implementations = $this->dataProviderNonAbstractImplementations();
+
+        foreach ($implementations as $args) {
+            if (false === in_array($args[0] ?? null, $invalid, true)) {
+                yield $args;
             }
         }
     }
 
     final public function dataProviderNonAbstractGoodImplementationsWithProperties() : Generator
     {
-        foreach ($this->dataProviderNonAbstractGoodImplementations() as $args) {
+        /**
+        * @var \Traversable<array<int, string|ReflectionClass>> $implementations
+        */
+        $implementations = $this->dataProviderNonAbstractGoodImplementations();
+
+        foreach ($implementations as $args) {
+            /**
+            * @var string $className
+            */
             $className = $args[0];
 
-            if (count($className::DaftObjectProperties()) > 0) {
+            if (count((array) $className::DaftObjectProperties()) > 0) {
                 yield $args;
             }
         }
@@ -89,7 +107,15 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractDefinesOwnIdGoodImplementations() : Generator
     {
-        foreach ($this->dataProviderNonAbstractGoodImplementationsWithProperties() as $args) {
+        /**
+        * @var \Traversable<array<int, string|ReflectionClass>> $implementations
+        */
+        $implementations = $this->dataProviderNonAbstractGoodImplementationsWithProperties();
+
+        foreach ($implementations as $args) {
+            /**
+            * @var string $className
+            */
             $className = $args[0];
 
             if (is_a($className, DaftObject\DefinesOwnIdPropertiesInterface::class, true)) {
@@ -100,10 +126,18 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractGoodNullableImplementations() : Generator
     {
-        foreach ($this->dataProviderNonAbstractGoodImplementationsWithProperties() as $args) {
-            list($className) = $args;
+        /**
+        * @var \Traversable<array<int, string|ReflectionClass>> $implementations
+        */
+        $implementations = $this->dataProviderNonAbstractGoodImplementationsWithProperties();
 
-            if (count($className::DaftObjectNullableProperties()) > 0) {
+        foreach ($implementations as $args) {
+            /**
+            * @var string $className
+            */
+            $className = $args[0];
+
+            if (count((array) $className::DaftObjectNullableProperties()) > 0) {
                 yield $args;
             }
         }
@@ -111,12 +145,20 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractGoodExportableImplementations() : Generator
     {
-        foreach ($this->dataProviderNonAbstractGoodImplementations() as $args) {
-            list($className) = $args;
+        /**
+        * @var \Traversable<array<int, string|ReflectionClass>> $implementations
+        */
+        $implementations = $this->dataProviderNonAbstractGoodImplementations();
+
+        foreach ($implementations as $args) {
+            /**
+            * @var string $className
+            */
+            $className = $args[0];
 
             if (
-                count($className::DaftObjectExportableProperties()) > 0 &&
-                count($className::DaftObjectProperties()) > 0
+                count((array) $className::DaftObjectExportableProperties()) > 0 &&
+                count((array) $className::DaftObjectProperties()) > 0
             ) {
                 yield $args;
             }
@@ -125,10 +167,18 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractGoodPropertiesImplementations() : Generator
     {
-        foreach ($this->dataProviderNonAbstractGoodImplementations() as $args) {
-            list($className) = $args;
+        /**
+        * @var \Traversable<array<int, string|ReflectionClass>> $implementations
+        */
+        $implementations = $this->dataProviderNonAbstractGoodImplementations();
 
-            if (count($className::DaftObjectProperties()) > 0) {
+        foreach ($implementations as $args) {
+            /**
+            * @var string $className
+            */
+            $className = $args[0];
+
+            if (count((array) $className::DaftObjectProperties()) > 0) {
                 yield $args;
             }
         }
@@ -136,7 +186,22 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractGetterSetters() : Generator
     {
-        foreach ($this->dataProviderNonAbstractImplementations() as [$className, $reflector]) {
+        /**
+        * @var \Traversable<array<int, string|ReflectionClass>> $implementations
+        */
+        $implementations = $this->dataProviderNonAbstractImplementations();
+
+        foreach ($implementations as $args) {
+            /**
+            * @var string $className
+            */
+            $className = $args[0];
+
+            /**
+            * @var ReflectionClass $reflector
+            */
+            $reflector = $args[1];
+
             foreach ($reflector->getMethods() as $method) {
                 if (preg_match('/^[GS]et[A-Z]/', $method->getName()) > 0) {
                     yield [$className, $method];
@@ -149,7 +214,22 @@ class DaftObjectImplementationTest extends TestCase
     {
         $invalid = $this->dataProviderInvalidImplementations();
 
-        foreach ($this->dataProviderNonAbstractGetterSetters() as [$className, $method]) {
+        /**
+        * @var \Traversable<array<int, string|ReflectionMethod>> $implementations
+        */
+        $implementations = $this->dataProviderNonAbstractGetterSetters();
+
+        foreach ($implementations as $args) {
+            /**
+            * @var string $className
+            */
+            $className = $args[0];
+
+            /**
+            * @var ReflectionMethod $method
+            */
+            $method = $args[1];
+
             if (false === in_array($className, $invalid, true)) {
                 yield [$className, $method];
             }
@@ -158,12 +238,25 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderGoodNonAbstractGetterSettersNotId() : Generator
     {
-        foreach ($this->dataProviderGoodNonAbstractGetterSetters() as $args) {
-            list($className, $reflector) = $args;
+        /**
+        * @var \Traversable<array<int, string|ReflectionClass>> $implementations
+        */
+        $implementations = $this->dataProviderGoodNonAbstractGetterSetters();
+
+        foreach ($implementations as $args) {
+            /**
+            * @var string $className
+            */
+            $className = $args[0];
+
+            /**
+            * @var ReflectionClass $reflector
+            */
+            $reflector = $args[1];
 
             $property = mb_substr($reflector->getName(), 3);
 
-            $properties = $className::DaftObjectProperties();
+            $properties = (array) $className::DaftObjectProperties();
 
             $defined = (
                 in_array($property, $properties, true) ||
@@ -184,7 +277,12 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderFuzzingImplementations() : Generator
     {
-        foreach ($this->FuzzingImplementationsViaGenerator() as $args) {
+        /**
+        * @var \Traversable<array|null> $implementations
+        */
+        $implementations = $this->FuzzingImplementationsViaGenerator();
+
+        foreach ($implementations as $args) {
             if (
                 is_array($args) &&
                 self::MIN_EXPECTED_ARRAY_COUNT === count($args) &&
@@ -194,7 +292,13 @@ class DaftObjectImplementationTest extends TestCase
                 is_a($args[0], DaftObject\DaftObject::class, true)
             ) {
                 $validKeys = true;
-                foreach (array_keys($args[1]) as $shouldBeProperty) {
+
+                /**
+                * @var array<int, string|int> $args1keys
+                */
+                $args1keys = array_keys($args[1]);
+
+                foreach ($args1keys as $shouldBeProperty) {
                     if (false === is_string($shouldBeProperty)) {
                         $validKeys = false;
                         break;
@@ -209,8 +313,38 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractGoodFuzzing() : Generator
     {
-        foreach ($this->dataProviderNonAbstractGoodImplementations() as [$className, $reflector]) {
-            foreach ($this->dataProviderFuzzingImplementations() as [$implementation, $args]) {
+        /**
+        * @var \Traversable<array<int, string|ReflectionClass>> $implementations
+        */
+        $implementations = $this->dataProviderNonAbstractGoodImplementations();
+
+        foreach ($implementations as $args) {
+            /**
+            * @var string $className
+            */
+            $className = $args[0];
+
+            /**
+            * @var ReflectionClass $reflector
+            */
+            $reflector = $args[1];
+
+            /**
+            * @var \Traversable<array<int, string|array>> $fuzzingImplementations
+            */
+            $fuzzingImplementations = $this->dataProviderFuzzingImplementations();
+
+            foreach ($fuzzingImplementations as $fuzzingImplementationArgs) {
+                /**
+                * @var string $implementation
+                */
+                $implementation = $fuzzingImplementationArgs[0];
+
+                /**
+                * @var array $args
+                */
+                $args = $fuzzingImplementationArgs[1];
+
                 if (is_a($className, $implementation, true)) {
                     /**
                     * @var DaftObject\DaftObject $className
@@ -256,25 +390,36 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractGoodFuzzingHasSetters(
     ) : Generator {
+        /**
+        * @var \Traversable<array<int, string|ReflectionClass|array>> $implementations
+        */
+        $implementations = $this->dataProviderNonAbstractGoodFuzzing();
+
         foreach (
-            $this->dataProviderNonAbstractGoodFuzzing() as [
-                $className,
-                $reflector,
-                $args,
-                $getters,
-                $setters,
-            ]
+            $implementations as $args
         ) {
-            if (count($setters) > 0) {
-                yield [$className, $reflector, $args, $getters, $setters];
+            if (count($args) < 5) {
+                continue;
+            }
+
+            if (count((array) $args[4]) > 0) {
+                yield $args;
             }
         }
     }
 
     final public function dataProviderNonAbstractNonWormGoodFuzzingHasSetters() : Generator
     {
-        foreach ($this->dataProviderNonAbstractGoodFuzzingHasSetters() as $args) {
-            list($interfaceCheck) = $args;
+        /**
+        * @var \Traversable<array<int, string>> $implementations
+        */
+        $implementations = $this->dataProviderNonAbstractGoodFuzzingHasSetters();
+
+        foreach ($implementations as $args) {
+            /**
+            * @var string $interfaceCheck
+            */
+            $interfaceCheck = $args[0];
 
             if ( ! is_a($interfaceCheck, DaftObject\DaftObjectWorm::class, true)) {
                 yield $args;
@@ -284,8 +429,16 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractJsonArrayBackedGoodFuzzingHasSetters() : Generator
     {
-        foreach ($this->dataProviderNonAbstractGoodFuzzingHasSetters() as $args) {
-            list($className) = $args;
+        /**
+        * @var \Traversable<array<int, string>> $implementations
+        */
+        $implementations = $this->dataProviderNonAbstractGoodFuzzingHasSetters();
+
+        foreach ($implementations as $args) {
+            /**
+            * @var string $className
+            */
+            $className = $args[0];
 
             if (
                 false === is_a($className, DaftObject\DaftJson::class, true) &&
@@ -298,18 +451,24 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractGoodFuzzingHasSettersPerProperty(
     ) : Generator {
-        foreach (
-            $this->dataProviderNonAbstractGoodFuzzingHasSetters() as [
-                $className,
-                $reflector,
-                $args,
-                $getters,
-                $setters,
-            ]
-        ) {
+        /**
+        * @var \Traversable<array<int, mixed>> $implementations
+        */
+        $implementations = $this->dataProviderNonAbstractGoodFuzzingHasSetters();
+
+        foreach ($implementations as $args) {
+            if (count($args) < 5) {
+                continue;
+            }
+
+            /**
+            * @var array<int, string> $setters
+            */
+            $setters = $args[4];
+
             foreach ($setters as $property) {
-                if (in_array($property, array_keys($args), true)) {
-                    yield [$className, $reflector, $args, $getters, $setters, $property];
+                if (in_array($property, array_keys((array) $args[2]), true)) {
+                    yield [$args[0], $args[1], $args[2], $args[3], $args[4], $property];
                 }
             }
         }
@@ -317,43 +476,49 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractGoodFuzzingHasSettersPerPropertyWorm(
     ) : Generator {
+        /**
+        * @var \Traversable<array<int, mixed>> $implementations
+        */
+        $implementations = $this->dataProviderNonAbstractGoodFuzzingHasSettersPerProperty();
         foreach (
-            $this->dataProviderNonAbstractGoodFuzzingHasSettersPerProperty() as [
-                $className,
-                $reflector,
-                $args,
-                $getters,
-                $setters,
-                $property,
-            ]
+            $implementations as $args
         ) {
+            /**
+            * @var string $className
+            */
+            $className = $args[0];
+
             if (is_a($className, DaftObject\DaftObjectWorm::class, true)) {
-                yield [$className, $reflector, $args, $getters, $setters, $property];
+                yield $args;
             }
         }
     }
 
     final public function dataProviderNonAbstractGoodFuzzingHasSettersPerPropertyNotNullable(
     ) : Generator {
+        /**
+        * @var \Traversable<array<int, mixed>> $implementations
+        */
+        $implementations = $this->dataProviderNonAbstractGoodFuzzingHasSettersPerProperty();
         foreach (
-            $this->dataProviderNonAbstractGoodFuzzingHasSettersPerProperty() as [
-                $className,
-                $reflector,
-                $args,
-                $getters,
-                $setters,
-                $property,
-            ]
+            $implementations as $args
         ) {
-            if (false === in_array($property, $className::DaftObjectNullableProperties(), true)) {
-                yield [
-                    $className,
-                    $reflector,
-                    $args,
-                    $getters,
-                    $setters,
-                    $property,
-                ];
+            if (count($args) < 6) {
+                continue;
+            }
+
+            /**
+            * @var string $className
+            */
+            $className = $args[0];
+
+            /**
+            * @var string $property
+            */
+            $property = $args[5];
+
+            if (false === in_array($property, (array) $className::DaftObjectNullableProperties(), true)) {
+                yield $args;
             }
         }
     }
@@ -365,7 +530,10 @@ class DaftObjectImplementationTest extends TestCase
         string $className,
         ReflectionClass $reflector
     ) : void {
-        $properties = $className::DaftObjectProperties();
+        /**
+        * @var array<int, string|null> $properties
+        */
+        $properties = (array) $className::DaftObjectProperties();
 
         static::assertGreaterThan(0, count($properties));
 
@@ -393,16 +561,32 @@ class DaftObjectImplementationTest extends TestCase
             true
         ));
 
-        $properties = $className::DaftObjectProperties();
+        /**
+        * @var array<int, string> $properties
+        */
+        $properties = (array) $className::DaftObjectProperties();
 
         static::assertGreaterThan(0, count($properties));
 
-        foreach ($className::DaftObjectIdProperties() as $property) {
+        /**
+        * @var array<int, string|null> $idProperties
+        */
+        $idProperties = (array) $className::DaftObjectIdProperties();
+
+        foreach ($idProperties as $property) {
             static::assertInternalType(
                 'string',
                 $property,
                 ($className . '::DaftObjectIdProperties()' . ' must return an array of strings')
             );
+        }
+
+        /**
+        * @var array<int, string> $idProperties
+        */
+        $idProperties = $idProperties;
+
+        foreach ($idProperties as $property) {
             static::assertTrue(
                 in_array($property, $properties, true),
                 (
@@ -426,7 +610,10 @@ class DaftObjectImplementationTest extends TestCase
         string $className,
         ReflectionClass $reflector
     ) : void {
-        $nullables = $className::DaftObjectNullableProperties();
+        /**
+        * @var array<int, string|null> $nullables
+        */
+        $nullables = (array) $className::DaftObjectNullableProperties();
 
         foreach ($nullables as $nullable) {
             static::assertInternalType(
@@ -440,7 +627,15 @@ class DaftObjectImplementationTest extends TestCase
             );
         }
 
-        $properties = $className::DaftObjectProperties();
+        /**
+        * @var array<int, string> $nullables
+        */
+        $nullables = $nullables;
+
+        /**
+        * @var array<int, string> $properties
+        */
+        $properties = (array) $className::DaftObjectProperties();
 
         foreach ($nullables as $nullable) {
             static::assertTrue(
@@ -534,7 +729,10 @@ class DaftObjectImplementationTest extends TestCase
         string $className,
         ReflectionClass $reflector
     ) : void {
-        $exportables = $className::DaftObjectExportableProperties();
+        /**
+        * @var array<int, string|null> $exportables
+        */
+        $exportables = (array) $className::DaftObjectExportableProperties();
 
         foreach ($exportables as $exportable) {
             static::assertInternalType(
@@ -548,7 +746,15 @@ class DaftObjectImplementationTest extends TestCase
             );
         }
 
-        $properties = $className::DaftObjectProperties();
+        /**
+        * @var array<int, string> $exportables
+        */
+        $exportables = $exportables;
+
+        /**
+        * @var array<int, string> $properties
+        */
+        $properties = (array) $className::DaftObjectProperties();
 
         foreach ($exportables as $exportable) {
             static::assertTrue(
@@ -584,15 +790,20 @@ class DaftObjectImplementationTest extends TestCase
         string $className,
         ReflectionClass $reflector
     ) : void {
-        $properties = $className::DaftObjectProperties();
-
-        $nullables = $className::DaftObjectNullableProperties();
-
-        $exportables = $className::DaftObjectExportableProperties();
-
-        /*
-        * @var ReflectionClass $reflector
+        /**
+        * @var array<int, string> $properties
         */
+        $properties = (array) $className::DaftObjectProperties();
+
+        /**
+        * @var array<int, string> $nullables
+        */
+        $nullables = (array) $className::DaftObjectNullableProperties();
+
+        /**
+        * @var array<int, string> $exportables
+        */
+        $exportables = (array) $className::DaftObjectExportableProperties();
 
         foreach ($properties as $property) {
             $getter = 'Get' . ucfirst($property);
@@ -772,7 +983,10 @@ class DaftObjectImplementationTest extends TestCase
     ) : void {
         $property = mb_substr($reflector->getName(), 3);
 
-        $properties = $className::DaftObjectProperties();
+        /**
+        * @var array<int, string> $properties
+        */
+        $properties = (array) $className::DaftObjectProperties();
 
         $defined = (
             in_array($property, $properties, true) ||
@@ -793,11 +1007,13 @@ class DaftObjectImplementationTest extends TestCase
     }
 
     /**
+    * @param array<string, mixed> $args
+    * @param array<int, string> $getters
+    * @param array<int, string> $setters
+    *
     * @dataProvider dataProviderNonAbstractNonWormGoodFuzzingHasSetters
     *
     * @depends testHasDefinedImplementationCorrectly
-    *
-    * @psalm-suppress ForbiddenCode
     */
     final public function testProviderNonAbstractGoodFuzzingSetFromBlank(
         string $className,
@@ -808,6 +1024,9 @@ class DaftObjectImplementationTest extends TestCase
     ) : void {
         $interfaceCheck = $className;
 
+        /**
+        * @var DaftObject\DaftObject $obj
+        */
         $obj = new $className($args);
 
         static::assertCount(
@@ -816,6 +1035,9 @@ class DaftObjectImplementationTest extends TestCase
             ($className . '::ChangedProperties() must be empty after instantiation')
         );
 
+        /**
+        * @var DaftObject\DaftObject $obj
+        */
         $obj = new $className([]);
 
         static::assertCount(
@@ -875,14 +1097,11 @@ class DaftObjectImplementationTest extends TestCase
             }
         }
 
-        ob_start();
-        var_dump($obj);
-
-        $debugInfo = ob_get_clean();
+        $debugInfo = $this->VarDumpDaftObject($obj);
 
         $regex = '/' . static::RegexForObject($obj) . '$/s';
 
-        static::assertRegExp($regex, str_replace(["\n"], ' ', (string) $debugInfo));
+        static::assertRegExp($regex, str_replace(["\n"], ' ', $debugInfo));
 
         foreach ($setters as $property) {
             static::assertTrue(
@@ -891,7 +1110,12 @@ class DaftObjectImplementationTest extends TestCase
             );
         }
 
-        foreach ($className::DaftObjectNullableProperties() as $property) {
+        /**
+        * @var array<int, string> $properties
+        */
+        $properties = $className::DaftObjectNullableProperties();
+
+        foreach ($properties as $property) {
             $checkGetterIsNull = (
                 in_array($property, $getters, true) &&
                 isset($args[$property]) &&
@@ -928,6 +1152,17 @@ class DaftObjectImplementationTest extends TestCase
     }
 
     /**
+    * @psalm-suppress ForbiddenCode
+    */
+    final protected function VarDumpDaftObject(DaftObject\DaftObject $obj) : string
+    {
+        ob_start();
+        var_dump($obj);
+
+        return (string) ob_get_clean();
+    }
+
+    /**
     * @dataProvider dataProviderNonAbstractGoodFuzzingHasSetters
     *
     * @depends testHasDefinedImplementationCorrectly
@@ -958,6 +1193,9 @@ class DaftObjectImplementationTest extends TestCase
                 )
             );
 
+            /**
+            * @var array|bool
+            */
             $decoded = json_decode($json, true);
 
             static::assertInternalType(
@@ -973,6 +1211,9 @@ class DaftObjectImplementationTest extends TestCase
                 )
             );
 
+            /**
+            * @var DaftObject\DaftJson $objFromJson
+            */
             $objFromJson = $className::DaftObjectFromJsonArray($decoded);
 
             static::assertSame(
@@ -985,6 +1226,9 @@ class DaftObjectImplementationTest extends TestCase
                 )
             );
 
+            /**
+            * @var DaftObject\DaftJson
+            */
             $objFromJson = $className::DaftObjectFromJsonString($json);
 
             static::assertSame(
@@ -1092,13 +1336,24 @@ class DaftObjectImplementationTest extends TestCase
         array $setters
     ) : void {
         if (is_a($className, DaftObject\DaftJson::class, true)) {
-            $exportables = $className::DaftObjectExportableProperties();
+            /**
+            * @var array<int, string> $exportables
+            */
+            $exportables = (array) $className::DaftObjectExportableProperties();
 
-            $propertyNames = $className::DaftObjectJsonPropertyNames();
+            /**
+            * @var array<int, string> $propertyNames
+            */
+            $propertyNames = (array) $className::DaftObjectJsonPropertyNames();
 
             $jsonProps = [];
 
-            foreach ($className::DaftObjectJsonProperties() as $k => $v) {
+            /**
+            * @var array<int|string, string|null> $properties
+            */
+            $properties = $className::DaftObjectJsonProperties();
+
+            foreach ($properties as $k => $v) {
                 $prop = $v;
 
                 if (is_string($k)) {
@@ -1118,6 +1373,11 @@ class DaftObjectImplementationTest extends TestCase
                             $className
                         )
                     );
+
+                    /**
+                    * @var string $v
+                    */
+                    $v = $v;
 
                     if ('[]' === mb_substr($v, -2)) {
                         $v = mb_substr($v, 0, -2);
@@ -1317,7 +1577,12 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderDaftObjectCreatedByArray() : Generator
     {
-        foreach ($this->dataProviderNonAbstractGoodImplementations() as $args) {
+        /**
+        * @var \Traversable<array|null> $implementations
+        */
+        $implementations = $this->dataProviderNonAbstractGoodImplementations();
+
+        foreach ($implementations as $args) {
             if (
                 is_array($args) &&
                 count($args) >= 1 &&
@@ -1343,22 +1608,38 @@ class DaftObjectImplementationTest extends TestCase
 
     protected static function RegexForObject(DaftObject\DaftObject $obj) : string
     {
+        /**
+        * @var array<string, scalar|null|array|DaftObject\DaftObject> $props
+        */
         $props = [];
 
-        foreach ($obj::DaftObjectExportableProperties() as $prop) {
+        /**
+        * @var array<int, string> $exportables
+        */
+        $exportables = $obj::DaftObjectExportableProperties();
+
+        foreach ($exportables as $prop) {
             $expectedMethod = 'Get' . ucfirst($prop);
             if (
                 $obj->__isset($prop) &&
                 method_exists($obj, $expectedMethod) &&
                 (new ReflectionMethod($obj, $expectedMethod))->isPublic()
             ) {
-                $props[$prop] = $obj->$expectedMethod();
+                /**
+                * @var scalar|null|array|DaftObject\DaftObject $res
+                */
+                $res = $obj->$expectedMethod();
+
+                $props[$prop] = $res;
             }
         }
 
         return static::RegexForArray(get_class($obj), $props);
     }
 
+    /**
+    * @param array<string, scalar|object|array|null> $props
+    */
     protected static function RegexForArray(string $className, array $props) : string
     {
         $regex =
@@ -1394,6 +1675,11 @@ class DaftObjectImplementationTest extends TestCase
     {
         if (is_array($val)) {
             $out = '(?:';
+
+            /**
+            * @var (scalar|object|array|null)[] $val
+            */
+            $val = $val;
 
             foreach ($val as $v) {
                 $out .= static::RegexForVal($v);
@@ -1441,6 +1727,9 @@ class DaftObjectImplementationTest extends TestCase
         );
     }
 
+    /**
+    * @return array<int, string>
+    */
     protected function InvalidImplementations() : array
     {
         return [
@@ -1551,8 +1840,6 @@ class DaftObjectImplementationTest extends TestCase
 
     protected function FuzzingImplementationsViaGenerator() : Generator
     {
-        foreach ($this->FuzzingImplementationsViaArray() as $args) {
-            yield $args;
-        }
+        yield from $this->FuzzingImplementationsViaArray();
     }
 }

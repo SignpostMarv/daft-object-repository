@@ -37,6 +37,9 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     */
     private $wormProperties = [];
 
+    /**
+    * @param array<int|string, scalar|null|array|object> $data
+    */
     public function __construct(array $data = [], bool $writeAll = false)
     {
         parent::__construct();
@@ -60,8 +63,13 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
 
     public function __isset(string $property) : bool
     {
+        /**
+        * @var array<int, string>|string $properties
+        */
+        $properties = static::PROPERTIES;
+
         return
-            in_array($property, static::PROPERTIES, true) &&
+            in_array($property, (array) $properties, true) &&
             isset($this->data, $this->data[$property]);
     }
 
@@ -90,7 +98,15 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
 
         $out = [];
 
-        foreach (static::DaftObjectJsonPropertyNames() as $property) {
+        /**
+        * @var array<int, string> $properties
+        */
+        $properties = static::DaftObjectJsonPropertyNames();
+
+        foreach ($properties as $property) {
+            /**
+            * @var scalar|null|array|object $val
+            */
             $val = $this->DoGetSet($property, false);
 
             if (false === is_null($val)) {
@@ -106,13 +122,22 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         bool $writeAll = false
     ) : DaftJson {
         $array = JsonTypeUtilities::ThrowIfJsonDefNotValid(static::class, $array);
+
+        /**
+        * @var array<int, string> $props
+        */
         $props = array_keys($array);
         $mapper = static::DaftJsonClosure($array, $writeAll);
 
         /**
+        * @var array<int, scalar|null|object|array> $vals
+        */
+        $vals = array_map($mapper, $props);
+
+        /**
         * @var DaftJson $out
         */
-        $out = new static(array_combine($props, array_map($mapper, $props)), $writeAll);
+        $out = new static(array_combine($props, $vals), $writeAll);
 
         return $out;
     }
@@ -121,7 +146,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     {
         JsonTypeUtilities::ThrowIfNotDaftJson(static::class);
 
-        return static::DaftObjectFromJsonArray(json_decode($string, true));
+        return static::DaftObjectFromJsonArray((array) json_decode($string, true));
     }
 
     public function DaftObjectWormPropertyWritten(string $property) : bool
@@ -145,13 +170,16 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
             * @return mixed
             */
             function (string $prop) use ($array, $jsonDef, $writeAll) {
+                /**
+                * @var string|null $jsonType
+                */
                 $jsonType = $jsonDef[$prop] ?? null;
 
                 if ( ! is_string($jsonType)) {
                     return $array[$prop];
                 }
 
-                return JsonTypeUtilities::DaftJsonFromJsonType($jsonType, $prop, $array[$prop], $writeAll);
+                return JsonTypeUtilities::DaftJsonFromJsonType($jsonType, $prop, (array) $array[$prop], $writeAll);
             };
     }
 
@@ -166,13 +194,18 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     */
     protected function RetrievePropertyValueFromData(string $property)
     {
+        /**
+        * @var array<int, string> $properties
+        */
+        $properties = static::NULLABLE_PROPERTIES;
+
         if (
             false === array_key_exists($property, $this->data) &&
-            false === in_array($property, static::NULLABLE_PROPERTIES, true)
+            false === in_array($property, $properties, true)
         ) {
             throw new PropertyNotNullableException(static::class, $property);
         } elseif (
-            in_array($property, static::NULLABLE_PROPERTIES, true)
+            in_array($property, $properties, true)
         ) {
             return $this->data[$property] ?? null;
         }
@@ -181,12 +214,17 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     }
 
     /**
-    * @param mixed $value
+    * @param scalar|null|array|object $value
     */
     protected function NudgePropertyValue(string $property, $value) : void
     {
+        /**
+        * @var array<int, string> $nullables
+        */
+        $nullables = static::NULLABLE_PROPERTIES;
+
         $this->MaybeThrowForPropertyOnNudge($property);
-        $this->MaybeThrowOnNudge($property, $value, static::NULLABLE_PROPERTIES);
+        $this->MaybeThrowOnNudge($property, $value, $nullables);
 
         $isChanged = (
             false === array_key_exists($property, $this->data) ||
@@ -206,7 +244,12 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     */
     private function MaybeThrowForPropertyOnNudge(string $property) : void
     {
-        if (true !== in_array($property, static::PROPERTIES, true)) {
+        /**
+        * @var array<int, string> $properties
+        */
+        $properties = static::PROPERTIES;
+
+        if (true !== in_array($property, $properties, true)) {
             throw new UndefinedPropertyException(static::class, $property);
         } elseif ($this->DaftObjectWormPropertyWritten($property)) {
             throw new PropertyNotRewriteableException(static::class, $property);

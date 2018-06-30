@@ -91,7 +91,12 @@ class TypeUtilities
 
     final protected static function CachePublicGettersAndSettersProperties(string $class) : void
     {
-        foreach ($class::DaftObjectProperties() as $prop) {
+        /**
+        * @var string[] $props
+        */
+        $props = $class::DaftObjectProperties();
+
+        foreach ($props as $prop) {
             if (TypeUtilities::HasPublicMethod($class, $prop, false)) {
                 self::$publicGetters[$class][] = $prop;
             }
@@ -105,7 +110,7 @@ class TypeUtilities
     final protected static function CheckTypeDefinesOwnIdPropertiesIsImplementation(
         string $class
     ) : void {
-        $properties = $class::DaftObjectIdProperties();
+        $properties = (array) $class::DaftObjectIdProperties();
 
         if (count($properties) < 1) {
             throw new ClassMethodReturnHasZeroArrayCountException(

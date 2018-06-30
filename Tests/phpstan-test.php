@@ -12,4 +12,9 @@ $foo = new ReadWrite(['Foo' => 'bar']);
 
 $foo->Foo = 'baz';
 
-$foo->Foo = strrev($foo->Foo);
+/**
+* @var string $fooVal
+*/
+$fooVal = $foo->Foo;
+
+$foo->Foo = strrev($fooVal);

@@ -22,6 +22,9 @@ class IntegerIdBasedDaftObject extends AbstractArrayBackedDaftObject implements 
 
     const JSON_PROPERTIES = self::EXPORTABLE_PROPERTIES;
 
+    /**
+    * @param array<int|string, scalar|null|array|object> $data
+    */
     public function __construct(array $data = [], bool $writeAll = false)
     {
         if (isset($data['Foo']) && ! is_integer($data['Foo'])) {
@@ -40,7 +43,7 @@ class IntegerIdBasedDaftObject extends AbstractArrayBackedDaftObject implements 
 
     public function GetFoo() : int
     {
-        return $this->RetrievePropertyValueFromData('Foo');
+        return (int) $this->RetrievePropertyValueFromData('Foo');
     }
 
     public function GetId() : int

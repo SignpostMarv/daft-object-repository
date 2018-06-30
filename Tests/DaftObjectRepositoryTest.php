@@ -104,7 +104,12 @@ class DaftObjectRepositoryTest extends TestCase
 
         $idProps = [];
 
-        foreach ($objImplementation::DaftObjectIdProperties() as $idProp) {
+        /**
+        * @var array<int, string> $idProperties
+        */
+        $idProperties = $objImplementation::DaftObjectIdProperties();
+
+        foreach ($idProperties as $idProp) {
             $idProps[] = $idProp;
         }
 
@@ -127,7 +132,12 @@ class DaftObjectRepositoryTest extends TestCase
             $props = array_values($idProps);
 
             foreach ($props as $prop) {
-                $ids[] = $obj->$prop;
+                /**
+                * @var scalar|array|null|\SignpostMarv\DaftObject\DaftObject
+                */
+                $val = $obj->$prop;
+
+                $ids[] = $val;
             }
 
             if (1 === count($ids)) {
@@ -285,7 +295,12 @@ class DaftObjectRepositoryTest extends TestCase
             $objImplementation::DaftObjectIdHash($retrieved)
         );
 
-        foreach ($objImplementation::DaftObjectProperties() as $prop) {
+        /**
+        * @var array<int, string> $properties
+        */
+        $properties = $objImplementation::DaftObjectProperties();
+
+        foreach ($properties as $prop) {
             if (
                 true === method_exists($obj, 'Get' . ucfirst($prop)) &&
                 true === method_exists($retrieved, 'Get' . ucfirst($prop))
@@ -298,7 +313,7 @@ class DaftObjectRepositoryTest extends TestCase
 
         static::assertNull($repo->RecallDaftObject($ids));
 
-        foreach ($objImplementation::DaftObjectProperties() as $prop) {
+        foreach ($properties as $prop) {
             if (
                 $writeable &&
                 false === in_array($prop, $idProps, true) &&
@@ -308,6 +323,9 @@ class DaftObjectRepositoryTest extends TestCase
                 ) &&
                 true === is_numeric($obj->$prop)
             ) {
+                /**
+                * @var int|float|string|scalar|array|null|DaftObject\DaftObject $propVal
+                */
                 $propVal = $retrieved->$prop;
 
                 if ( ! is_null($propVal) && is_numeric($propVal)) {
@@ -361,7 +379,12 @@ class DaftObjectRepositoryTest extends TestCase
             )
         );
 
-        foreach ($objImplementation::DaftObjectProperties() as $prop) {
+        /**
+        * @var array<int, string> $properties
+        */
+        $properties = $objImplementation::DaftObjectProperties();
+
+        foreach ($properties as $prop) {
             if (
                 $writeable &&
                 false === in_array($prop, $idProps, true) &&

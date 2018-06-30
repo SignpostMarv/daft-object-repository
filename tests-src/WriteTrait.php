@@ -27,4 +27,16 @@ trait WriteTrait
     {
         $this->NudgePropertyValue('Bat', $value);
     }
+
+    /**
+    * Nudge the state of a given property, marking it as dirty.
+    *
+    * @param string $property property being nudged
+    * @param scalar|null|array|object $value value to nudge property with
+    *
+    * @throws UndefinedPropertyException if $property is not in static::DaftObjectProperties()
+    * @throws PropertyNotNullableException if $property is not in static::DaftObjectNullableProperties()
+    * @throws PropertyNotRewriteableException if class is write-once read-many and $property was already changed
+    */
+    abstract protected function NudgePropertyValue(string $property, $value) : void;
 }

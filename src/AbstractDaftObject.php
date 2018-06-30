@@ -113,17 +113,32 @@ abstract class AbstractDaftObject implements DaftObject
     */
     final public static function DaftObjectProperties() : array
     {
-        return static::PROPERTIES;
+        /**
+        * @var array<int, string> $out
+        */
+        $out = static::PROPERTIES;
+
+        return $out;
     }
 
     final public static function DaftObjectNullableProperties() : array
     {
-        return static::NULLABLE_PROPERTIES;
+        /**
+        * @var array<int, string> $out
+        */
+        $out = static::NULLABLE_PROPERTIES;
+
+        return $out;
     }
 
     final public static function DaftObjectExportableProperties() : array
     {
-        return static::EXPORTABLE_PROPERTIES;
+        /**
+        * @var array<int, string> $out
+        */
+        $out = static::EXPORTABLE_PROPERTIES;
+
+        return $out;
     }
 
     final public static function DaftObjectPublicGetters() : array
@@ -140,14 +155,24 @@ abstract class AbstractDaftObject implements DaftObject
     {
         JsonTypeUtilities::ThrowIfNotDaftJson(static::class);
 
-        return static::JSON_PROPERTIES;
+        /**
+        * @var array<int|string, string> $out
+        */
+        $out = static::JSON_PROPERTIES;
+
+        return $out;
     }
 
     final public static function DaftObjectJsonPropertyNames() : array
     {
         $out = [];
 
-        foreach (static::DaftObjectJsonProperties() as $k => $prop) {
+        /**
+        * @var array<int|string, string> $jsonProperties
+        */
+        $jsonProperties = static::DaftObjectJsonProperties();
+
+        foreach ($jsonProperties as $k => $prop) {
             if (is_string($k)) {
                 $prop = $k;
             }
@@ -162,7 +187,7 @@ abstract class AbstractDaftObject implements DaftObject
     * Nudge the state of a given property, marking it as dirty.
     *
     * @param string $property property being nudged
-    * @param mixed $value value to nudge property with
+    * @param scalar|null|array|object $value value to nudge property with
     *
     * @throws UndefinedPropertyException if $property is not in static::DaftObjectProperties()
     * @throws PropertyNotNullableException if $property is not in static::DaftObjectNullableProperties()

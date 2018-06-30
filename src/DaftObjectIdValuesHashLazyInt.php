@@ -17,35 +17,57 @@ trait DaftObjectIdValuesHashLazyInt
     {
         $id = [];
 
-        foreach ($object::DaftObjectIdProperties() as $prop) {
-            $id[] = $object->$prop;
+        /**
+        * @var array<int, string> $properties
+        */
+        $properties = $object::DaftObjectIdProperties();
+
+        foreach ($properties as $prop) {
+            /**
+            * @var scalar|null|array|object $val
+            */
+            $val = $object->$prop;
+
+            $id[] = $val;
         }
 
         return static::DaftObjectIdValuesHash($id);
     }
 
     /**
+    * @var array<string, array<string, string>>
+    */
+    private static $ids = [];
+
+    /**
     * @see DefinesOwnIdPropertiesInterface::DaftObjectIdValuesHash()
     */
     public static function DaftObjectIdValuesHash(array $id) : string
     {
-        static $ids = [];
-
         $className = static::class;
 
         $objectIds = '';
-        foreach (array_values($id) as $i => $idVal) {
+
+        /**
+        * @var array<int, string> $id
+        */
+        $id = array_values($id);
+
+        foreach ($id as $i => $idVal) {
             if ($i >= 1) {
                 $objectIds .= '::';
             }
             $objectIds .= (string) $idVal;
         }
 
-        if (false === isset($ids[$className], $ids[$className][$objectIds])) {
-            $ids[$className] = $ids[$className] ?? [];
-            $ids[$className][$objectIds] = (string) count($ids[$className]);
+        if ( ! isset(self::$ids[$className])) {
+            self::$ids[$className] = [];
         }
 
-        return $ids[$className][$objectIds];
+        if ( ! isset(self::$ids[$className][$objectIds])) {
+            self::$ids[$className][$objectIds] = (string) count(self::$ids[$className]);
+        }
+
+        return (string) self::$ids[$className][$objectIds];
     }
 }
