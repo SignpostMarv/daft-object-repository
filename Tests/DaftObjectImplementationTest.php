@@ -14,6 +14,8 @@ use SignpostMarv\DaftObject;
 
 class DaftObjectImplementationTest extends TestCase
 {
+    const NUM_EXPECTED_ARGS_FOR_IMPLEMENTATION = 5;
+
     public function dataProviderImplementations() : Generator
     {
         foreach (
@@ -393,7 +395,7 @@ class DaftObjectImplementationTest extends TestCase
         $implementations = $this->dataProviderNonAbstractGoodFuzzing();
 
         foreach ($implementations as $args) {
-            if (count($args) < 5) {
+            if (count($args) < self::NUM_EXPECTED_ARGS_FOR_IMPLEMENTATION) {
                 continue;
             }
 
@@ -452,7 +454,7 @@ class DaftObjectImplementationTest extends TestCase
         $implementations = $this->dataProviderNonAbstractGoodFuzzingHasSetters();
 
         foreach ($implementations as $args) {
-            if (count($args) < 5) {
+            if (count($args) < self::NUM_EXPECTED_ARGS_FOR_IMPLEMENTATION) {
                 continue;
             }
 
@@ -496,7 +498,7 @@ class DaftObjectImplementationTest extends TestCase
         $implementations = $this->dataProviderNonAbstractGoodFuzzingHasSettersPerProperty();
 
         foreach ($implementations as $args) {
-            if (count($args) < 6) {
+            if (count($args) <= self::NUM_EXPECTED_ARGS_FOR_IMPLEMENTATION) {
                 continue;
             }
 
