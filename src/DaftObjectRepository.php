@@ -12,6 +12,14 @@ interface DaftObjectRepository
 {
     public function RememberDaftObject(DefinesOwnIdPropertiesInterface $object) : void;
 
+    /**
+    * Allow data to be persisted without assuming the object exists, i.e. if it has no id yet.
+    */
+    public function RememberDaftObjectData(
+        DefinesOwnIdPropertiesInterface $object,
+        bool $assumeDoesNotExist = false
+    ) : void;
+
     public function ForgetDaftObject(DefinesOwnIdPropertiesInterface $object) : void;
 
     /**

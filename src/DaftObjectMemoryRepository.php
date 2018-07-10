@@ -61,8 +61,10 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
         return $this->memory[$hashId];
     }
 
-    protected function RememberDaftObjectData(DefinesOwnIdPropertiesInterface $object) : void
-    {
+    public function RememberDaftObjectData(
+        DefinesOwnIdPropertiesInterface $object,
+        bool $assumeDoesNotExist = false
+    ) : void {
         $hashId = $object::DaftObjectIdHash($object);
 
         $this->data[$hashId] = [];
