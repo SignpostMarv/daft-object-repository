@@ -240,7 +240,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     /**
     * @see AbstractArrayBackedDaftObject::NudgePropertyValue()
     */
-    private function MaybeThrowForPropertyOnNudge(string $property) : void
+    protected function MaybeThrowForPropertyOnNudge(string $property) : void
     {
         /**
         * @var array<int, string> $properties
@@ -259,7 +259,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     *
     * @see AbstractArrayBackedDaftObject::NudgePropertyValue()
     */
-    private function MaybeThrowOnNudge(string $property, $value, array $properties) : void
+    protected function MaybeThrowOnNudge(string $property, $value, array $properties) : void
     {
         if (true === is_null($value) && true !== in_array($property, $properties, true)) {
             throw new PropertyNotNullableException(static::class, $property);

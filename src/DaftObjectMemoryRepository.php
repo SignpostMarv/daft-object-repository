@@ -108,7 +108,7 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     *
     * @param mixed $id
     */
-    private function ObjectHashId($id) : string
+    protected function ObjectHashId($id) : string
     {
         $id = is_array($id) ? $id : [$id];
 
@@ -120,14 +120,14 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
         return $type::DaftObjectIdValuesHash($id);
     }
 
-    private function ForgetDaftObjectByHashId(string $hashId) : void
+    protected function ForgetDaftObjectByHashId(string $hashId) : void
     {
         if (true === isset($this->memory[$hashId])) {
             unset($this->memory[$hashId]);
         }
     }
 
-    private function RemoveDaftObjectByHashId(string $hashId) : void
+    protected function RemoveDaftObjectByHashId(string $hashId) : void
     {
         $this->ForgetDaftObjectByHashId($hashId);
 
