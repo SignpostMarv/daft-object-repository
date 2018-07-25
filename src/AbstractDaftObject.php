@@ -122,6 +122,9 @@ abstract class AbstractDaftObject implements DaftObject
             );
         }
 
+        /**
+        * @var string $property
+        */
         foreach (static::DaftSortableObjectProperties() as $property) {
             $method = 'Get' . $property;
             $sort = $this->$method() <=> $otherObject->$method();
