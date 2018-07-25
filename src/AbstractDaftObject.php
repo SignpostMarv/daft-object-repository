@@ -42,7 +42,7 @@ abstract class AbstractDaftObject implements DaftObject
     const JSON_PROPERTIES = [];
 
     /**
-    * List of sortable properties for DaftSortableObject
+    * List of sortable properties for DaftSortableObject.
     *
     * @var array<int, string>
     */
