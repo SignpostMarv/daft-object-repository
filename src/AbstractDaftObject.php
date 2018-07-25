@@ -42,6 +42,13 @@ abstract class AbstractDaftObject implements DaftObject
     const JSON_PROPERTIES = [];
 
     /**
+    * List of sortable properties for DaftSortableObject
+    *
+    * @var array<int, string>
+    */
+    const SORTABLE_PROPERTIES = [];
+
+    /**
     * Does some sanity checking.
     *
     * @see DefinesOwnIdPropertiesInterface
@@ -106,6 +113,27 @@ abstract class AbstractDaftObject implements DaftObject
         ));
     }
 
+    public function CompareToDaftSortableObject(DaftSortableObject $otherObject) : int
+    {
+        if ( ! is_a(static::class, DaftSortableObject::class, true)) {
+            throw new ClassDoesNotImplementClassException(
+                static::class,
+                DaftSortableObject::class
+            );
+        }
+
+        foreach (static::DaftSortableObjectProperties() as $property) {
+            $method = 'Get' . $property;
+            $sort = $this->$method() <=> $otherObject->$method();
+
+            if (0 !== $sort) {
+                return $sort;
+            }
+        }
+
+        return 0;
+    }
+
     /**
     * List of properties that can be defined on an implementation.
     *
@@ -146,6 +174,11 @@ abstract class AbstractDaftObject implements DaftObject
         return TypeUtilities::DaftObjectPublicGetters(static::class);
     }
 
+    final public static function DaftObjectPublicOrProtectedGetters() : array
+    {
+        return TypeUtilities::DaftObjectPublicOrProtectedGetters(static::class);
+    }
+
     final public static function DaftObjectPublicSetters() : array
     {
         return TypeUtilities::DaftObjectPublicSetters(static::class);
@@ -179,6 +212,23 @@ abstract class AbstractDaftObject implements DaftObject
 
             $out[] = $prop;
         }
+
+        return $out;
+    }
+
+    public static function DaftSortableObjectProperties() : array
+    {
+        if ( ! is_a(static::class, DaftSortableObject::class, true)) {
+            throw new ClassDoesNotImplementClassException(
+                static::class,
+                DaftSortableObject::class
+            );
+        }
+
+        /**
+        * @var array<int, string> $out
+        */
+        $out = static::SORTABLE_PROPERTIES;
 
         return $out;
     }

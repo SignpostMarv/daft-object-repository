@@ -12,9 +12,9 @@ use ReflectionMethod;
 class TypeUtilities
 {
     /**
-    * @var array<string, array<int, string>>
+    * @var array<string, array<string, bool>>
     */
-    private static $publicGetters = [];
+    private static $Getters = [];
 
     /**
     * @var array<string, array<int, string>>
@@ -25,7 +25,14 @@ class TypeUtilities
     {
         static::CachePublicGettersAndSetters($class);
 
-        return self::$publicGetters[$class];
+        return array_keys(array_filter(self::$Getters[$class]));
+    }
+
+    public static function DaftObjectPublicOrProtectedGetters(string $class) : array
+    {
+        static::CachePublicGettersAndSetters($class);
+
+        return array_keys(self::$Getters);
     }
 
     public static function DaftObjectPublicSetters(string $class) : array
@@ -35,14 +42,14 @@ class TypeUtilities
         return self::$publicSetters[$class];
     }
 
-    public static function HasPublicMethod(string $class, string $property, bool $SetNotGet) : bool
+    public static function HasMethod(string $class, string $property, bool $SetNotGet, bool $public = true) : bool
     {
         $method = TypeUtilities::MethodNameFromProperty($property, $SetNotGet);
 
         try {
             $mRef = new ReflectionMethod($class, $method);
 
-            return $mRef->isPublic() && false === $mRef->isStatic();
+            return ($public ? $mRef->isPublic() : $mRef->isProtected()) && false === $mRef->isStatic();
         } catch (ReflectionException $e) {
             return false;
         }
@@ -77,12 +84,12 @@ class TypeUtilities
 
     final protected static function CachePublicGettersAndSetters(string $class) : void
     {
-        if (false === isset(self::$publicGetters[$class])) {
-            self::$publicGetters[$class] = [];
+        if (false === isset(self::$Getters[$class])) {
+            self::$Getters[$class] = [];
             self::$publicSetters[$class] = [];
 
             if (is_a($class, DefinesOwnIdPropertiesInterface::class, true)) {
-                self::$publicGetters[$class][] = 'id';
+                self::$Getters[$class]['id'] = true;
             }
 
             self::CachePublicGettersAndSettersProperties($class);
@@ -97,11 +104,13 @@ class TypeUtilities
         $props = $class::DaftObjectProperties();
 
         foreach ($props as $prop) {
-            if (TypeUtilities::HasPublicMethod($class, $prop, false)) {
-                self::$publicGetters[$class][] = $prop;
+            if (TypeUtilities::HasMethod($class, $prop, false)) {
+                self::$Getters[$class][$prop] = true;
+            } elseif (TypeUtilities::HasMethod($class, $prop, false, false)) {
+                self::$Getters[$class][$prop] = false;
             }
 
-            if (TypeUtilities::HasPublicMethod($class, $prop, true)) {
+            if (TypeUtilities::HasMethod($class, $prop, true)) {
                 self::$publicSetters[$class][] = $prop;
             }
         }
