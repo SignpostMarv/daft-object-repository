@@ -1594,6 +1594,27 @@ class DaftObjectImplementationTest extends TestCase
         $object = new $className([1], $writeAll);
     }
 
+    final public function testSortableObject() : void
+    {
+        $a = new DaftObject\SortableReadWrite([
+            'Foo' => 'a',
+            'Bar' => 1.0,
+            'Baz' => 1,
+            'Bat' => false,
+        ]);
+        $b = new DaftObject\SortableReadWrite([
+            'Foo' => 'b',
+            'Bar' => 2.0,
+            'Baz' => 2,
+            'Bat' => true,
+        ]);
+
+        static::assertSame(0, $a->CompareToDaftSortableObject($a));
+        static::assertSame(0, $b->CompareToDaftSortableObject($b));
+        static::assertSame(-1, $a->CompareToDaftSortableObject($b));
+        static::assertSame(1, $b->CompareToDaftSortableObject($a));
+    }
+
     /**
     * @psalm-suppress ForbiddenCode
     */
@@ -1836,5 +1857,23 @@ class DaftObjectImplementationTest extends TestCase
     protected function FuzzingImplementationsViaGenerator() : Generator
     {
         yield from $this->FuzzingImplementationsViaArray();
+    }
+
+    protected function SortableFuzzingImplementationsViaGenerator() : Generator
+    {
+        /**
+        * @var \Traversable<array<int, string|ReflectionClass|array>> $implementations
+        */
+        $implementations = $this->dataProviderNonAbstractGoodFuzzing();
+
+        foreach ($implementations as $args) {
+            if (
+                is_array($args) &&
+                is_string($args[0]) &&
+                is_a($args[0], DaftObject\DaftSortableObject::class)
+            ) {
+                yield $args;
+            }
+        }
     }
 }
