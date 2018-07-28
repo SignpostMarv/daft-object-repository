@@ -10,6 +10,7 @@ use Generator;
 use InvalidArgumentException;
 use ReflectionClass;
 use ReflectionMethod;
+use ReflectionType;
 use SignpostMarv\DaftObject;
 
 class DaftObjectImplementationTest extends TestCase
@@ -691,7 +692,7 @@ class DaftObjectImplementationTest extends TestCase
                     );
 
                     /**
-                    * @var \ReflectionType $returnType
+                    * @var ReflectionType $returnType
                     */
                     $returnType = $method->getReturnType();
 
@@ -898,7 +899,7 @@ class DaftObjectImplementationTest extends TestCase
                 $returnType = null;
 
                 /**
-                * @var \ReflectionType $returnType
+                * @var ReflectionType $returnType
                 */
                 $returnType = $reflectorGetter->getReturnType();
 
@@ -956,7 +957,7 @@ class DaftObjectImplementationTest extends TestCase
                 );
 
                 /**
-                * @var \ReflectionType $returnType
+                * @var ReflectionType $returnType
                 */
                 $returnType = $reflectorSetter->getReturnType();
 
@@ -973,9 +974,14 @@ class DaftObjectImplementationTest extends TestCase
                     )
                 );
 
-                if ($reflectorSetter->getParameters()[0]->hasType()) {
+                /**
+                * @var ReflectionType|null $type
+                */
+                $type = ($reflectorSetter->getParameters()[0])->getType();
+
+                if ($type instanceof ReflectionType) {
                     static::assertSame(
-                        ($reflectorSetter->getParameters()[0])->getType()->allowsNull(),
+                        $type->allowsNull(),
                         $isNullable,
                         (
                             $reflectorSetter->getDeclaringClass()->getName() .
