@@ -293,6 +293,25 @@ class DaftObjectImplementationTest extends TestCase
         }
     }
 
+    final public function dataProviderNonAbstractGoodNonSortableImplementations() : Generator
+    {
+        /**
+        * @var \Traversable<array<int, string|ReflectionClass>> $implementations
+        */
+        $implementations = $this->dataProviderNonAbstractGoodImplementations();
+
+        foreach ($implementations as $args) {
+            if (
+                isset($args[0]) &&
+                is_string($args[0]) &&
+                is_a($args[0], DaftObject\AbstractDaftObject::class, true) &&
+                ! is_a($args[0], DaftObject\DaftSortableObject::class, true)
+            ) {
+                yield $args;
+            }
+        }
+    }
+
     final public function dataProviderFuzzingImplementations() : Generator
     {
         /**
@@ -1654,6 +1673,24 @@ class DaftObjectImplementationTest extends TestCase
             static::assertTrue(in_array($v, $publicOrProtected, true));
             static::assertTrue(method_exists($className, 'Get' . $v));
         }
+    }
+
+    /**
+    * @dataProvider dataProviderNonAbstractGoodNonSortableImplementations
+    */
+    public function testNotSortableImplementation(string $className) : void
+    {
+        static::assertTrue(is_a($className, DaftObject\AbstractDaftObject::class, true));
+        static::assertFalse(is_a($className, DaftObject\DaftSortableObject::class, true));
+
+        static::expectException(DaftObject\ClassDoesNotImplementClassException::class);
+        static::expectExceptionMessage(sprintf(
+            '%s does not implement %s',
+            $className,
+            DaftObject\DaftSortableObject::class
+        ));
+
+        $className::DaftSortableObjectProperties();
     }
 
     public function testSortableObject() : void
