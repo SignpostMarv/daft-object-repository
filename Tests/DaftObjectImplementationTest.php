@@ -1594,7 +1594,7 @@ class DaftObjectImplementationTest extends TestCase
         $object = new $className([1], $writeAll);
     }
 
-    final public function testSortableObject() : void
+    public function testSortableObject() : void
     {
         $a = new DaftObject\SortableReadWrite([
             'Foo' => 'a',
@@ -1613,6 +1613,31 @@ class DaftObjectImplementationTest extends TestCase
         static::assertSame(0, $b->CompareToDaftSortableObject($b));
         static::assertSame(-1, $a->CompareToDaftSortableObject($b));
         static::assertSame(1, $b->CompareToDaftSortableObject($a));
+    }
+
+    public function testNotSortableObject() : void
+    {
+        $a = new DaftObject\ReadWrite([
+            'Foo' => 'a',
+            'Bar' => 1.0,
+            'Baz' => 1,
+            'Bat' => false,
+        ]);
+        $b = new DaftObject\SortableReadWrite([
+            'Foo' => 'b',
+            'Bar' => 2.0,
+            'Baz' => 2,
+            'Bat' => true,
+        ]);
+
+        static::expectException(DaftObject\ClassDoesNotImplementClassException::class);
+        static::expectExceptionMessage(sprintf(
+            '%s does not implement %s',
+            DaftObject\ReadWrite::class,
+            DaftObject\DaftSortableObject::class
+        ));
+
+        $a->CompareToDaftSortableObject($b);
     }
 
     /**
