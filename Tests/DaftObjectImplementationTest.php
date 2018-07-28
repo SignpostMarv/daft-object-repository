@@ -274,6 +274,24 @@ class DaftObjectImplementationTest extends TestCase
         }
     }
 
+    final public function dataProviderNonAbstractGoodSortableImplementations() : Generator
+    {
+        /**
+        * @var \Traversable<array<int, string|ReflectionClass>> $implementations
+        */
+        $implementations = $this->dataProviderNonAbstractGoodImplementations();
+
+        foreach ($implementations as $args) {
+            if (
+                isset($args[0]) &&
+                is_string($args[0]) &&
+                is_a($args[0], DaftObject\DaftSortableObject::class, true)
+            ) {
+                yield $args;
+            }
+        }
+    }
+
     final public function dataProviderFuzzingImplementations() : Generator
     {
         /**
@@ -1592,6 +1610,45 @@ class DaftObjectImplementationTest extends TestCase
         static::expectExceptionMessage('Properties must be strings!');
 
         $object = new $className([1], $writeAll);
+    }
+
+    /**
+    * @dataProvider dataProviderNonAbstractGoodSortableImplementations
+    */
+    public function testSortableImplementation(string $className) : void
+    {
+        static::assertTrue(is_a($className, DaftObject\DaftSortableObject::class, true));
+
+        /**
+        * @var scalar|array|null|object|resource $publicOrProtected
+        */
+        $publicOrProtected = $className::DaftObjectPublicOrProtectedGetters();
+
+        static::assertInternalType('array', $publicOrProtected);
+
+        /**
+        * @var array $publicOrProtected
+        */
+        $publicOrProtected = $publicOrProtected;
+
+        /**
+        * @var scalar $v
+        */
+        foreach ($publicOrProtected as $k => $v) {
+            static::assertInternalType('integer', $k);
+            static::assertInternalType('string', $v);
+        }
+
+        /**
+        * @var scalar $v
+        */
+        foreach ($className::DaftSortableObjectProperties() as $k => $v)
+        {
+            static::assertInternalType('integer', $k);
+            static::assertInternalType('string', $v);
+            static::assertTrue(in_array($v, $publicOrProtected, true));
+            static::assertTrue(method_exists($className, 'Get' . $v));
+        }
     }
 
     public function testSortableObject() : void

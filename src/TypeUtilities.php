@@ -32,7 +32,7 @@ class TypeUtilities
     {
         static::CachePublicGettersAndSetters($class);
 
-        return array_keys(self::$Getters);
+        return array_keys(self::$Getters[$class]);
     }
 
     public static function DaftObjectPublicSetters(string $class) : array
