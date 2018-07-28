@@ -1642,8 +1642,7 @@ class DaftObjectImplementationTest extends TestCase
         /**
         * @var scalar $v
         */
-        foreach ($className::DaftSortableObjectProperties() as $k => $v)
-        {
+        foreach ($className::DaftSortableObjectProperties() as $k => $v) {
             static::assertInternalType('integer', $k);
             static::assertInternalType('string', $v);
             static::assertTrue(in_array($v, $publicOrProtected, true));
