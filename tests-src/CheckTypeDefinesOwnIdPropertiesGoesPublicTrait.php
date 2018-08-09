@@ -12,6 +12,6 @@ trait CheckTypeDefinesOwnIdPropertiesGoesPublic
 {
     public static function CheckTypeDefinesOwnIdPropertiesGoesPublic(DaftObject $object) : bool
     {
-        return TypeUtilities::CheckTypeDefinesOwnIdProperties($object::class);
+        return TypeUtilities::CheckTypeDefinesOwnIdProperties(get_class($object));
     }
 }
