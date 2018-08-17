@@ -59,11 +59,6 @@ class DaftObjectRepositoryByTypeTest extends TestCase
             ' given.'
         );
 
-        /**
-        * @var DaftObjectRepository $repoImplementation
-        */
-        $repoImplementation = $repoImplementation;
-
         array_unshift($additionalArgs, $typeImplementation);
 
         /**
