@@ -10,7 +10,6 @@ use SignpostMarv\DaftObject\DaftObjectCreatedByArray;
 use SignpostMarv\DaftObject\DaftObjectMemoryRepository;
 use SignpostMarv\DaftObject\DaftObjectNullStub;
 use SignpostMarv\DaftObject\DaftObjectNullStubCreatedByArray;
-use SignpostMarv\DaftObject\DaftObjectRepository;
 use SignpostMarv\DaftObject\DaftObjectRepositoryTypeException;
 use SignpostMarv\DaftObject\DefinesOwnIdPropertiesInterface;
 
