@@ -38,12 +38,15 @@ class DaftObjectRepositoryByTypeTest extends TestCase
     }
 
     /**
+    * @param mixed ...$additionalArgs
+    *
     * @dataProvider RepositoryTypeDataProvider
     */
     public function testForCreatedByArray(
         string $repoImplementation,
         string $typeImplementation,
-        string $typeExpected
+        string $typeExpected,
+        ...$additionalArgs
     ) : void {
         $this->expectException(DaftObjectRepositoryTypeException::class);
         $this->expectExceptionMessage(
@@ -61,6 +64,13 @@ class DaftObjectRepositoryByTypeTest extends TestCase
         */
         $repoImplementation = $repoImplementation;
 
-        $repoImplementation::DaftObjectRepositoryByType($typeImplementation);
+        array_unshift($additionalArgs, $typeImplementation);
+
+        /**
+        * @var array{0:string} $additionalArgs
+        */
+        $additionalArgs = $additionalArgs;
+
+        $repoImplementation::DaftObjectRepositoryByType(...$additionalArgs);
     }
 }
