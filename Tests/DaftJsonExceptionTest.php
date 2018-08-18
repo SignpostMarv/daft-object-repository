@@ -141,6 +141,7 @@ class DaftJsonExceptionTest extends TestCase
             $expectingFailureWithClass,
             $expectingFailureWithProperty
         ));
+        static::assertTrue(is_a($implementation, DaftJson::class, true));
 
         /**
         * @var DaftJson $obj

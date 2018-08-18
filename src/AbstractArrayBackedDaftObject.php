@@ -177,7 +177,12 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
                     return $array[$prop];
                 }
 
-                return JsonTypeUtilities::DaftJsonFromJsonType($jsonType, $prop, (array) $array[$prop], $writeAll);
+                return JsonTypeUtilities::DaftJsonFromJsonType(
+                    $jsonType,
+                    $prop,
+                    (array) $array[$prop],
+                    $writeAll
+                );
             };
     }
 
@@ -198,13 +203,11 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         $properties = static::NULLABLE_PROPERTIES;
 
         if (
-            false === array_key_exists($property, $this->data) &&
-            false === in_array($property, $properties, true)
+            ! array_key_exists($property, $this->data) &&
+            ! in_array($property, $properties, true)
         ) {
             throw new PropertyNotNullableException(static::class, $property);
-        } elseif (
-            in_array($property, $properties, true)
-        ) {
+        } elseif (in_array($property, $properties, true)) {
             return $this->data[$property] ?? null;
         }
 
@@ -225,15 +228,14 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         $this->MaybeThrowOnNudge($property, $value, $nullables);
 
         $isChanged = (
-            false === array_key_exists($property, $this->data) ||
+            ! array_key_exists($property, $this->data) ||
             $this->data[$property] !== $value
         );
 
         $this->data[$property] = $value;
 
         if ($isChanged && true !== isset($this->changedProperties[$property])) {
-            $this->changedProperties[$property] = true;
-            $this->wormProperties[$property] = true;
+            $this->changedProperties[$property] = $this->wormProperties[$property] = true;
         }
     }
 

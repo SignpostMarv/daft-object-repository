@@ -324,10 +324,7 @@ class DaftTestObjectTest extends TestCase
         $obj = new $implementation($params, $writeable);
 
         if (true === $readable) {
-            static::assertCount(
-                ($writeable ? count($params) : 0),
-                $obj->ChangedProperties()
-            );
+            static::assertCount(($writeable ? count($params) : 0), $obj->ChangedProperties());
 
             foreach ($params as $k => $v) {
                 $getterMethod = 'Get' . ucfirst($k);

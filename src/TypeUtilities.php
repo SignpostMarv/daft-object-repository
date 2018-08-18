@@ -42,14 +42,18 @@ class TypeUtilities
         return self::$publicSetters[$class];
     }
 
-    public static function HasMethod(string $class, string $property, bool $SetNotGet, bool $public = true) : bool
-    {
+    public static function HasMethod(
+        string $class,
+        string $property,
+        bool $SetNotGet,
+        bool $pub = true
+    ) : bool {
         $method = TypeUtilities::MethodNameFromProperty($property, $SetNotGet);
 
         try {
-            $mRef = new ReflectionMethod($class, $method);
+            $ref = new ReflectionMethod($class, $method);
 
-            return ($public ? $mRef->isPublic() : $mRef->isProtected()) && false === $mRef->isStatic();
+            return ($pub ? $ref->isPublic() : $ref->isProtected()) && false === $ref->isStatic();
         } catch (ReflectionException $e) {
             return false;
         }

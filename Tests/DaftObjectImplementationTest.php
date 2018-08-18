@@ -1345,11 +1345,6 @@ class DaftObjectImplementationTest extends TestCase
             DaftObject\DaftJson::class
         ));
 
-        /**
-        * @var DaftObject\DaftJson $className
-        */
-        $className = $className;
-
         $className::DaftObjectFromJsonString('{}');
     }
 

@@ -21,17 +21,13 @@ class DaftObjectRepositoryTest extends TestCase
 {
     public static function DaftObjectRepositoryByType(string $type) : DaftObjectRepository
     {
-        return DaftObjectMemoryRepository::DaftObjectRepositoryByType(
-            $type
-        );
+        return DaftObjectMemoryRepository::DaftObjectRepositoryByType($type);
     }
 
     public static function DaftObjectRepositoryByDaftObject(
         DefinesOwnIdPropertiesInterface $object
     ) : DaftObjectRepository {
-        return DaftObjectMemoryRepository::DaftObjectRepositoryByDaftObject(
-            $object
-        );
+        return DaftObjectMemoryRepository::DaftObjectRepositoryByDaftObject($object);
     }
 
     public function RepositoryDataProvider() : Generator
@@ -215,7 +211,7 @@ class DaftObjectRepositoryTest extends TestCase
         $repo = static::DaftObjectRepositoryByDaftObject($A);
 
         $this->expectException(DaftObjectRepositoryTypeException::class);
-        $this->expectExceptionMessage(
+        $this->expectExceptionMessage(sprintf(
             'Argument 1 passed to ' .
             get_class($repo) .
             '::RemoveDaftObject() must be an implementation of ' .
@@ -223,7 +219,7 @@ class DaftObjectRepositoryTest extends TestCase
             ', ' .
             $objectTypeB .
             ' given.'
-        );
+        ));
 
         $repo->RemoveDaftObject($B);
     }

@@ -35,7 +35,12 @@ class JsonTypeUtilities
             */
             function (string $prop) use ($jsonDef, $array, $class) {
                 if (isset($jsonDef[$prop]) && false === is_array($array[$prop])) {
-                    static::ThrowBecauseArrayJsonTypeNotValid($class, (string) $jsonDef[$prop], $prop);
+                    static::ThrowBecauseArrayJsonTypeNotValid(
+                        $class,
+                        (string)
+                        $jsonDef[$prop],
+                        $prop
+                    );
                 }
 
                 return $array[$prop];
