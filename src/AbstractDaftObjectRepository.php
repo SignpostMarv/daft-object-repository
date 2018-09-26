@@ -26,17 +26,12 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
     protected $type;
 
     /**
-    * @var mixed[]
-    */
-    protected $args;
-
-    /**
     * @param mixed ...$args
     */
     protected function __construct(string $type, ...$args)
     {
         $this->type = $type;
-        $this->args = $args;
+        $args = [];
     }
 
     public function ForgetDaftObject(DefinesOwnIdPropertiesInterface $object) : void
