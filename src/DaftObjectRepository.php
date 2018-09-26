@@ -40,14 +40,19 @@ interface DaftObjectRepository
     public function RecallDaftObject($id) : ? DaftObject;
 
     /**
+    * @param mixed ...$args
+    *
     * @return static
     */
-    public static function DaftObjectRepositoryByType(string $type) : self;
+    public static function DaftObjectRepositoryByType(string $type, ...$args) : self;
 
     /**
+    * @param mixed ...$args
+    *
     * @return static
     */
     public static function DaftObjectRepositoryByDaftObject(
-        DefinesOwnIdPropertiesInterface $object
+        DefinesOwnIdPropertiesInterface $object,
+        ...$args
     ) : self;
 }

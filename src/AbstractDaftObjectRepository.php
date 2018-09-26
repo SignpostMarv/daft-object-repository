@@ -76,8 +76,13 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
         $this->RemoveDaftObjectById($id);
     }
 
-    public static function DaftObjectRepositoryByType(string $type) : DaftObjectRepository
-    {
+    /**
+    * {@inheritdoc}
+    */
+    public static function DaftObjectRepositoryByType(
+        string $type,
+        ...$args
+    ) : DaftObjectRepository {
         foreach (
             [
                 DaftObjectCreatedByArray::class,
@@ -90,10 +95,14 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
         return new static($type);
     }
 
+    /**
+    * {@inheritdoc}
+    */
     public static function DaftObjectRepositoryByDaftObject(
-        DefinesOwnIdPropertiesInterface $object
+        DefinesOwnIdPropertiesInterface $object,
+        ...$args
     ) : DaftObjectRepository {
-        return static::DaftObjectRepositoryByType(get_class($object));
+        return static::DaftObjectRepositoryByType(get_class($object), ...$args);
     }
 
     /**
