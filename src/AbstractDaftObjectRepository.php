@@ -25,9 +25,18 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
     */
     protected $type;
 
-    protected function __construct(string $type)
+    /**
+    * @var mixed[]
+    */
+    protected $args;
+
+    /**
+    * @param mixed ...$args
+    */
+    protected function __construct(string $type, ...$args)
     {
         $this->type = $type;
+        $this->args = $args;
     }
 
     public function ForgetDaftObject(DefinesOwnIdPropertiesInterface $object) : void
@@ -92,7 +101,7 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
             static::ThrowIfNotType($type, $checkFor, 1, __FUNCTION__);
         }
 
-        return new static($type);
+        return new static($type, ...$args);
     }
 
     /**
