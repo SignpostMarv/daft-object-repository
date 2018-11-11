@@ -48,7 +48,7 @@ class TypeUtilities
         bool $SetNotGet,
         bool $pub = true
     ) : bool {
-        $method = TypeUtilities::MethodNameFromProperty($property, $SetNotGet);
+        $method = static::MethodNameFromProperty($property, $SetNotGet);
 
         try {
             $ref = new ReflectionMethod($class, $method);
@@ -108,13 +108,13 @@ class TypeUtilities
         $props = $class::DaftObjectProperties();
 
         foreach ($props as $prop) {
-            if (TypeUtilities::HasMethod($class, $prop, false)) {
+            if (static::HasMethod($class, $prop, false)) {
                 self::$Getters[$class][$prop] = true;
-            } elseif (TypeUtilities::HasMethod($class, $prop, false, false)) {
+            } elseif (static::HasMethod($class, $prop, false, false)) {
                 self::$Getters[$class][$prop] = false;
             }
 
-            if (TypeUtilities::HasMethod($class, $prop, true)) {
+            if (static::HasMethod($class, $prop, true)) {
                 self::$publicSetters[$class][] = $prop;
             }
         }
