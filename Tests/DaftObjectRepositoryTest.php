@@ -282,9 +282,14 @@ class DaftObjectRepositoryTest extends TestCase
         $properties = $objImplementation::DaftObjectProperties();
 
         foreach ($properties as $prop) {
+            /**
+            * @var string $expectedMethod
+            */
+            $expectedMethod = static::MethodNameFromProperty($prop);
+
             if (
-                true === method_exists($obj, 'Get' . ucfirst($prop)) &&
-                true === method_exists($retrieved, 'Get' . ucfirst($prop))
+                true === method_exists($obj, $expectedMethod) &&
+                true === method_exists($retrieved, $expectedMethod)
             ) {
                 static::assertSame($obj->$prop, $retrieved->$prop);
             }
@@ -295,12 +300,15 @@ class DaftObjectRepositoryTest extends TestCase
         static::assertNull($repo->RecallDaftObject($ids));
 
         foreach ($properties as $prop) {
+            $setter = static::MethodNameFromProperty($prop, true);
+            $getter = static::MethodNameFromProperty($prop);
+
             if (
                 $writeable &&
                 false === in_array($prop, $idProps, true) &&
-                true === method_exists($obj, 'Set' . ucfirst($prop)) &&
+                true === method_exists($obj, $setter) &&
                 true === method_exists(
-                    $retrieved, 'Get' . ucfirst($prop)
+                    $retrieved, $getter
                 ) &&
                 true === is_numeric($obj->$prop)
             ) {
@@ -366,12 +374,15 @@ class DaftObjectRepositoryTest extends TestCase
         $properties = $objImplementation::DaftObjectProperties();
 
         foreach ($properties as $prop) {
+            $setter = static::MethodNameFromProperty($prop, true);
+            $getter = static::MethodNameFromProperty($prop);
+
             if (
                 $writeable &&
                 false === in_array($prop, $idProps, true) &&
-                true === method_exists($obj, 'Set' . ucfirst($prop)) &&
+                true === method_exists($obj, $setter) &&
                 true === method_exists(
-                    $retrieved, 'Get' . ucfirst($prop)
+                    $retrieved, $getter
                 ) &&
                 true === is_numeric($obj->$prop)
             ) {

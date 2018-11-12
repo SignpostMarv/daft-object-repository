@@ -327,7 +327,7 @@ class DaftTestObjectTest extends TestCase
             static::assertCount(($writeable ? count($params) : 0), $obj->ChangedProperties());
 
             foreach ($params as $k => $v) {
-                $getterMethod = 'Get' . ucfirst($k);
+                $getterMethod = static::MethodNameFromProperty($k);
 
                 static::assertSame(
                     $params[$k],
@@ -415,7 +415,7 @@ class DaftTestObjectTest extends TestCase
         $props = [];
 
         foreach ($obj::DaftObjectExportableProperties() as $prop) {
-            $expectedMethod = 'Get' . ucfirst($prop);
+            $expectedMethod = static::MethodNameFromProperty($prop);
             if (
                 $obj->__isset($prop) &&
                 method_exists($obj, $expectedMethod) &&

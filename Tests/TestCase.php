@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace SignpostMarv\DaftObject\Tests;
 
 use PHPUnit\Framework\TestCase as Base;
+use SignpostMarv\DaftObject\TypeUtilities;
 
 class TestCase extends Base
 {
@@ -25,4 +26,9 @@ class TestCase extends Base
     * @var bool
     */
     protected $runTestInSeparateProcess = false;
+
+    public static function MethodNameFromProperty(string $prop, bool $SetNotGet = false) : string
+    {
+        return TypeUtilities::MethodNameFromProperty($prop, $SetNotGet);
+    }
 }

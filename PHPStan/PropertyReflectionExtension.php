@@ -18,6 +18,7 @@ use PHPStan\Type\TypehintHelper;
 use ReflectionMethod;
 use SignpostMarv\DaftObject\DaftObject;
 use SignpostMarv\DaftObject\DefinesOwnUntypedIdInterface;
+use SignpostMarv\DaftObject\TypeUtilities;
 
 class PropertyReflectionExtension implements PropertyReflection
 {
@@ -117,8 +118,8 @@ class PropertyReflectionExtension implements PropertyReflection
     protected function SetupReflections(ClassReflection $classReflection, string $property) : void
     {
         $class = $classReflection->getName();
-        $get = 'Get' . ucfirst($property);
-        $set = 'Set' . ucfirst($property);
+        $get = static::MethodNameFromProperty($property);
+        $set = static::MethodNameFromProperty($property, true);
 
         $this->writeableReflection = $this->readableReflection = $classReflection;
 
@@ -167,6 +168,13 @@ class PropertyReflectionExtension implements PropertyReflection
         }
 
         return static::DetermineDeclaringClass($this->broker, $refMethod);
+    }
+
+    protected static function MethodNameFromProperty(
+        string $prop,
+        bool $SetNotGet = false
+    ) : string {
+        return TypeUtilities::MethodNameFromProperty($prop, $SetNotGet);
     }
 
     protected static function DetermineDeclaringClass(

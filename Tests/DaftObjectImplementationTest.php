@@ -393,8 +393,8 @@ class DaftObjectImplementationTest extends TestCase
 
                     foreach ($className::DaftObjectProperties() as $property) {
                         $propertyForMethod = ucfirst($property);
-                        $getter = 'Get' . $propertyForMethod;
-                        $setter = 'Set' . $propertyForMethod;
+                        $getter = static::MethodNameFromProperty($propertyForMethod);
+                        $setter = static::MethodNameFromProperty($propertyForMethod, true);
 
                         if ($reflector->hasMethod($getter)) {
                             /**
@@ -694,8 +694,8 @@ class DaftObjectImplementationTest extends TestCase
 
         if (count($properties) > 0 && 0 === count($nullables)) {
             foreach ($properties as $property) {
-                $getter = 'Get' . $property;
-                $setter = 'Set' . $property;
+                $getter = static::MethodNameFromProperty($property);
+                $setter = static::MethodNameFromProperty($property, true);
 
                 if ($reflector->hasMethod($getter)) {
                     $method = $reflector->getMethod($getter);
@@ -845,8 +845,8 @@ class DaftObjectImplementationTest extends TestCase
         $exportables = (array) $className::DaftObjectExportableProperties();
 
         foreach ($properties as $property) {
-            $getter = 'Get' . ucfirst($property);
-            $setter = 'Set' . ucfirst($property);
+            $getter = static::MethodNameFromProperty($property);
+            $setter = static::MethodNameFromProperty($property, true);
 
             $hasAny = $reflector->hasMethod($getter) || $reflector->hasMethod($setter);
 
@@ -1663,10 +1663,15 @@ class DaftObjectImplementationTest extends TestCase
         * @var scalar $v
         */
         foreach ($className::DaftSortableObjectProperties() as $k => $v) {
+            /**
+            * @var string $expectedMethod
+            */
+            $expectedMethod = static::MethodNameFromProperty((string) $v);
+
             static::assertInternalType('integer', $k);
             static::assertInternalType('string', $v);
             static::assertTrue(in_array($v, $publicOrProtected, true));
-            static::assertTrue(method_exists($className, 'Get' . $v));
+            static::assertTrue(method_exists($className, $expectedMethod));
         }
     }
 
@@ -1758,7 +1763,7 @@ class DaftObjectImplementationTest extends TestCase
         $exportables = $obj::DaftObjectExportableProperties();
 
         foreach ($exportables as $prop) {
-            $expectedMethod = 'Get' . ucfirst($prop);
+            $expectedMethod = static::MethodNameFromProperty($prop);
             if (
                 $obj->__isset($prop) &&
                 method_exists($obj, $expectedMethod) &&
