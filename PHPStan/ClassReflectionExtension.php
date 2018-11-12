@@ -16,9 +16,7 @@ use PHPStan\Reflection\PropertyReflection;
 use SignpostMarv\DaftObject\DaftObject;
 use SignpostMarv\DaftObject\TypeUtilities;
 
-class ClassReflectionExtension implements
-    BrokerAwareExtension,
-    PropertiesClassReflectionExtension
+class ClassReflectionExtension implements BrokerAwareExtension, PropertiesClassReflectionExtension
 {
     /**
     * @var Broker|null

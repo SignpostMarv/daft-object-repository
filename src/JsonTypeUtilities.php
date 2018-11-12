@@ -37,8 +37,7 @@ class JsonTypeUtilities
                 if (isset($jsonDef[$prop]) && false === is_array($array[$prop])) {
                     static::ThrowBecauseArrayJsonTypeNotValid(
                         $class,
-                        (string)
-                        $jsonDef[$prop],
+                        (string) $jsonDef[$prop],
                         $prop
                     );
                 }

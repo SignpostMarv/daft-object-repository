@@ -307,9 +307,7 @@ class DaftObjectRepositoryTest extends TestCase
                 $writeable &&
                 false === in_array($prop, $idProps, true) &&
                 true === method_exists($obj, $setter) &&
-                true === method_exists(
-                    $retrieved, $getter
-                ) &&
+                true === method_exists($retrieved, $getter) &&
                 true === is_numeric($obj->$prop)
             ) {
                 /**
@@ -381,9 +379,7 @@ class DaftObjectRepositoryTest extends TestCase
                 $writeable &&
                 false === in_array($prop, $idProps, true) &&
                 true === method_exists($obj, $setter) &&
-                true === method_exists(
-                    $retrieved, $getter
-                ) &&
+                true === method_exists($retrieved, $getter) &&
                 true === is_numeric($obj->$prop)
             ) {
                 /**
