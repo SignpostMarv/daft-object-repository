@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace SignpostMarv\DaftObject\Tests;
 
 use Generator;
+use RuntimeException;
 use SignpostMarv\DaftObject\DaftObject;
 use SignpostMarv\DaftObject\NotPublicGetterPropertyException;
 use SignpostMarv\DaftObject\NotPublicSetterPropertyException;
@@ -52,6 +53,10 @@ class DaftObjectGetterSetterTest extends TestCase
         foreach ($this->dataProviderGetterSetterGood() as $args) {
             list($implementation, $property, $value, $publicGetter, $publicSetter) = $args;
 
+            if ( ! is_bool($publicGetter) || ! is_bool($publicSetter)) {
+                throw new RuntimeException('Getter & Setter flags must be boolean!');
+            }
+
             /**
             * @var string|null $changedProperty
             */
@@ -68,6 +73,10 @@ class DaftObjectGetterSetterTest extends TestCase
         foreach ($this->dataProviderGetterSetterGood() as $args) {
             list($implementation, $property, $value, $publicGetter, $publicSetter) = $args;
 
+            if ( ! is_bool($publicGetter) || ! is_bool($publicSetter)) {
+                throw new RuntimeException('Getter & Setter flags must be boolean!');
+            }
+
             /**
             * @var string|null $changedProperty
             */
@@ -83,6 +92,10 @@ class DaftObjectGetterSetterTest extends TestCase
     {
         foreach ($this->dataProviderGetterSetterGood() as $args) {
             list($implementation, $property, $value, $publicGetter, $publicSetter) = $args;
+
+            if ( ! is_bool($publicGetter) || ! is_bool($publicSetter)) {
+                throw new RuntimeException('Getter & Setter flags must be boolean!');
+            }
 
             /**
             * @var string|null $changedProperty

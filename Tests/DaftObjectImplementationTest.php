@@ -1992,7 +1992,6 @@ class DaftObjectImplementationTest extends TestCase
 
         foreach ($implementations as $args) {
             if (
-                is_array($args) &&
                 is_string($args[0]) &&
                 is_a($args[0], DaftObject\DaftSortableObject::class)
             ) {
