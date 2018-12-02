@@ -67,7 +67,7 @@ class UndefinedPropertyExceptionTest extends TestCase
 
         if ($getNotSet) {
             /**
-            * @var array|scalar|null|object $foo
+            * @var array|scalar|null|object
             */
             $foo = $obj->$property;
         } else {

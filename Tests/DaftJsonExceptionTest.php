@@ -144,12 +144,12 @@ class DaftJsonExceptionTest extends TestCase
         static::assertTrue(is_a($implementation, DaftJson::class, true));
 
         /**
-        * @var DaftJson $obj
+        * @var DaftJson
         */
         $obj = $implementation::DaftObjectFromJsonArray($args, $writeAll);
 
         /**
-        * @var array<int, string> $args
+        * @var array<int, string>
         */
         $args = $implementation::DaftObjectPublicGetters();
 

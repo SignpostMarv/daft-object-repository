@@ -61,7 +61,7 @@ class DaftObjectRepositoryByTypeTest extends TestCase
         array_unshift($additionalArgs, $typeImplementation);
 
         /**
-        * @var array{0:string} $additionalArgs
+        * @var array{0:string}
         */
         $additionalArgs = $additionalArgs;
 

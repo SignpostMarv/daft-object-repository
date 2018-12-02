@@ -69,7 +69,7 @@ class JsonTypeUtilities
         self::ThrowIfNotJsonType($type);
 
         /**
-        * @var DaftJson $type
+        * @var DaftJson
         */
         $type = $type;
 

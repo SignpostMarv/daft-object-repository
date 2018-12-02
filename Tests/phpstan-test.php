@@ -13,7 +13,7 @@ $foo = new ReadWrite(['Foo' => 'bar']);
 $foo->Foo = 'baz';
 
 /**
-* @var string $fooVal
+* @var string
 */
 $fooVal = $foo->Foo;
 

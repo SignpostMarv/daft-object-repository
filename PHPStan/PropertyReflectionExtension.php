@@ -108,7 +108,7 @@ class PropertyReflectionExtension implements PropertyReflection
     public function getDeclaringClass() : ClassReflection
     {
         /**
-        * @var ClassReflection $reflection
+        * @var ClassReflection
         */
         $reflection = $this->readable ? $this->readableReflection : $this->writeableReflection;
 

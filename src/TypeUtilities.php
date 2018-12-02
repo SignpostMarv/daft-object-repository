@@ -103,7 +103,7 @@ class TypeUtilities
     final protected static function CachePublicGettersAndSettersProperties(string $class) : void
     {
         /**
-        * @var string[] $props
+        * @var string[]
         */
         $props = $class::DaftObjectProperties();
 

@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace SignpostMarv\CS;
 
-return ConfigUsedWithPhpstanWithoutNullableReturn::createWithPaths(
+return ConfigUsedWithoutNullableReturn::createWithPaths(
     __FILE__,
     (__DIR__ . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR),
     (__DIR__ . DIRECTORY_SEPARATOR . 'PHPStan' . DIRECTORY_SEPARATOR),

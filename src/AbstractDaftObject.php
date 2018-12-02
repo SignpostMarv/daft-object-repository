@@ -94,7 +94,7 @@ abstract class AbstractDaftObject implements DaftObject
         $getters = static::DaftObjectPublicGetters();
         $exportables = static::DaftObjectExportableProperties();
         /**
-        * @var array<int, string> $properties
+        * @var array<int, string>
         */
         $properties = array_filter($exportables, function (string $prop) use ($getters) : bool {
             return $this->__isset($prop) && in_array($prop, $getters, true);
@@ -128,7 +128,7 @@ abstract class AbstractDaftObject implements DaftObject
         }
 
         /**
-        * @var string $property
+        * @var string
         */
         foreach (static::DaftSortableObjectProperties() as $property) {
             $method = 'Get' . $property;
@@ -150,7 +150,7 @@ abstract class AbstractDaftObject implements DaftObject
     final public static function DaftObjectProperties() : array
     {
         /**
-        * @var array<int, string> $out
+        * @var array<int, string>
         */
         $out = static::PROPERTIES;
 
@@ -160,7 +160,7 @@ abstract class AbstractDaftObject implements DaftObject
     final public static function DaftObjectNullableProperties() : array
     {
         /**
-        * @var array<int, string> $out
+        * @var array<int, string>
         */
         $out = static::NULLABLE_PROPERTIES;
 
@@ -170,7 +170,7 @@ abstract class AbstractDaftObject implements DaftObject
     final public static function DaftObjectExportableProperties() : array
     {
         /**
-        * @var array<int, string> $out
+        * @var array<int, string>
         */
         $out = static::EXPORTABLE_PROPERTIES;
 
@@ -197,7 +197,7 @@ abstract class AbstractDaftObject implements DaftObject
         JsonTypeUtilities::ThrowIfNotDaftJson(static::class);
 
         /**
-        * @var array<int|string, string> $out
+        * @var array<int|string, string>
         */
         $out = static::JSON_PROPERTIES;
 
@@ -209,7 +209,7 @@ abstract class AbstractDaftObject implements DaftObject
         $out = [];
 
         /**
-        * @var array<int|string, string> $jsonProperties
+        * @var array<int|string, string>
         */
         $jsonProperties = static::DaftObjectJsonProperties();
 
@@ -234,7 +234,7 @@ abstract class AbstractDaftObject implements DaftObject
         }
 
         /**
-        * @var array<int, string> $out
+        * @var array<int, string>
         */
         $out = static::SORTABLE_PROPERTIES;
 

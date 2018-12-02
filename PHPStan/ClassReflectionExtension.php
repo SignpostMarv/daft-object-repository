@@ -47,7 +47,7 @@ class ClassReflectionExtension implements BrokerAwareExtension, PropertiesClassR
     public function getProperty(ClassReflection $ref, string $propertyName) : PropertyReflection
     {
         /**
-        * @var Broker $broker
+        * @var Broker
         */
         $broker = $this->broker;
 

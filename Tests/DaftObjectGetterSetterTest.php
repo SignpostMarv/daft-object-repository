@@ -58,7 +58,7 @@ class DaftObjectGetterSetterTest extends TestCase
             }
 
             /**
-            * @var string|null $changedProperty
+            * @var string|null
             */
             $changedProperty = $args[5] ?? null;
 
@@ -78,7 +78,7 @@ class DaftObjectGetterSetterTest extends TestCase
             }
 
             /**
-            * @var string|null $changedProperty
+            * @var string|null
             */
             $changedProperty = $args[5] ?? null;
 
@@ -98,7 +98,7 @@ class DaftObjectGetterSetterTest extends TestCase
             }
 
             /**
-            * @var string|null $changedProperty
+            * @var string|null
             */
             $changedProperty = $args[5] ?? null;
 
@@ -168,7 +168,7 @@ class DaftObjectGetterSetterTest extends TestCase
         $arr = [];
 
         /**
-        * @var DaftObject $obj
+        * @var DaftObject
         */
         $obj = new $implementation($arr);
 
@@ -216,7 +216,7 @@ class DaftObjectGetterSetterTest extends TestCase
         ));
 
         /**
-        * @var scalar|null|array|DaftObject $foo
+        * @var scalar|null|array|DaftObject
         */
         $foo = $obj->$property;
     }

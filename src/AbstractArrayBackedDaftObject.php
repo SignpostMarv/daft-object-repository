@@ -64,7 +64,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     public function __isset(string $property) : bool
     {
         /**
-        * @var array<int, string>|string $properties
+        * @var array<int, string>|string
         */
         $properties = static::PROPERTIES;
 
@@ -97,13 +97,13 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         $out = [];
 
         /**
-        * @var array<int, string> $properties
+        * @var array<int, string>
         */
         $properties = static::DaftObjectJsonPropertyNames();
 
         foreach ($properties as $property) {
             /**
-            * @var scalar|null|array|object $val
+            * @var scalar|null|array|object
             */
             $val = $this->DoGetSet($property, false);
 
@@ -122,18 +122,18 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         $array = JsonTypeUtilities::ThrowIfJsonDefNotValid(static::class, $array);
 
         /**
-        * @var array<int, string> $props
+        * @var array<int, string>
         */
         $props = array_keys($array);
         $mapper = static::DaftJsonClosure($array, $writeAll);
 
         /**
-        * @var array<int, scalar|null|object|array> $vals
+        * @var array<int, scalar|null|object|array>
         */
         $vals = array_map($mapper, $props);
 
         /**
-        * @var DaftJson $out
+        * @var DaftJson
         */
         $out = new static(array_combine($props, $vals), $writeAll);
 
@@ -169,7 +169,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
             */
             function (string $prop) use ($array, $jsonDef, $writeAll) {
                 /**
-                * @var string|null $jsonType
+                * @var string|null
                 */
                 $jsonType = $jsonDef[$prop] ?? null;
 
@@ -198,7 +198,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     protected function RetrievePropertyValueFromData(string $property)
     {
         /**
-        * @var array<int, string> $properties
+        * @var array<int, string>
         */
         $properties = static::NULLABLE_PROPERTIES;
 
@@ -220,7 +220,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     protected function NudgePropertyValue(string $property, $value) : void
     {
         /**
-        * @var array<int, string> $nullables
+        * @var array<int, string>
         */
         $nullables = static::NULLABLE_PROPERTIES;
 
@@ -245,7 +245,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     protected function MaybeThrowForPropertyOnNudge(string $property) : void
     {
         /**
-        * @var array<int, string> $properties
+        * @var array<int, string>
         */
         $properties = static::PROPERTIES;
 

@@ -290,7 +290,7 @@ class DaftTestObjectTest extends TestCase
         $out = [];
 
         /**
-        * @var \Traversable<array<int, string|bool|array<string, scalar>>> $implementations
+        * @var \Traversable<array<int, string|bool|array<string, scalar>>>
         */
         $implementations = $this->GoodDataProvider();
 
@@ -319,7 +319,7 @@ class DaftTestObjectTest extends TestCase
         bool $writeable = false
     ) : void {
         /**
-        * @var DaftObject $obj
+        * @var DaftObject
         */
         $obj = new $implementation($params, $writeable);
 
@@ -410,7 +410,7 @@ class DaftTestObjectTest extends TestCase
         $debugInfo = $this->VarDumpDaftObject($obj);
 
         /**
-        * @var array<string, scalar|null|array|object|bool|float> $props
+        * @var array<string, scalar|null|array|object|bool|float>
         */
         $props = [];
 
@@ -424,7 +424,7 @@ class DaftTestObjectTest extends TestCase
                 )->isPublic()
             ) {
                 /**
-                * @var scalar|null|array|object $propVal
+                * @var scalar|null|array|object
                 */
                 $propVal = $obj->$expectedMethod();
 
@@ -508,13 +508,13 @@ class DaftTestObjectTest extends TestCase
             $obj = new $implementation($params, $writeable);
 
             /**
-            * @var array<int, int|string> $paramKeys
+            * @var array<int, int|string>
             */
             $paramKeys = array_keys($params);
 
             foreach ($paramKeys as $property) {
                 /**
-                * @var scalar|null|array|object $var
+                * @var scalar|null|array|object
                 */
                 $var = $obj->$property;
             }
@@ -533,17 +533,17 @@ class DaftTestObjectTest extends TestCase
         $obj = new $implementation($params, false);
 
         /**
-        * @var array<int, scalar|null|array|object>|null $val
+        * @var array<int, scalar|null|array|object>|null
         */
         $val = $obj->id;
 
         /**
-        * @var DefinesOwnIdPropertiesInterface $implementation
+        * @var DefinesOwnIdPropertiesInterface
         */
         $implementation = $implementation;
 
         /**
-        * @var array<int, string> $keys
+        * @var array<int, string>
         */
         $keys = $implementation::DaftObjectIdProperties();
 
@@ -554,7 +554,7 @@ class DaftTestObjectTest extends TestCase
             static::assertInternalType('array', $val);
 
             /**
-            * @var array<int, scalar|null|array|object> $val
+            * @var array<int, scalar|null|array|object>
             */
             $val = $val;
 
@@ -566,14 +566,14 @@ class DaftTestObjectTest extends TestCase
 
         if ($obj instanceof DefinesOwnStringIdInterface) {
             /**
-            * @var scalar|null $val
+            * @var scalar|null
             */
             $val = $val;
 
             static::assertInternalType('string', $val);
         } elseif ($obj instanceof DefinesOwnIntegerIdInterface) {
             /**
-            * @var scalar|null $val
+            * @var scalar|null
             */
             $val = $val;
 
@@ -601,12 +601,12 @@ class DaftTestObjectTest extends TestCase
         $obj = new $implementation();
 
         /**
-        * @var array<int, string> $props
+        * @var array<int, string>
         */
         $props = (array) $implementation::DaftObjectProperties();
 
         /**
-        * @var array<int, string> $nullables
+        * @var array<int, string>
         */
         $nullables = (array) $implementation::DaftObjectNullableProperties();
 

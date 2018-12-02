@@ -73,7 +73,7 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
             $getter = 'Get' . ucfirst($property);
 
             /**
-            * @var scalar|null|array|object $val
+            * @var scalar|null|array|object
             */
             $val = $object->$getter();
 
@@ -94,7 +94,7 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
             $type = $this->type;
 
             /**
-            * @var DaftObject $out
+            * @var DaftObject
             */
             $out = new $type($this->data[$hashId]);
 

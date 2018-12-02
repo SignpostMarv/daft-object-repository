@@ -90,7 +90,7 @@ class DaftObjectRepositoryTest extends TestCase
         $idProps = [];
 
         /**
-        * @var array<int, string> $idProperties
+        * @var array<int, string>
         */
         $idProperties = $objImplementation::DaftObjectIdProperties();
 
@@ -100,7 +100,7 @@ class DaftObjectRepositoryTest extends TestCase
 
         foreach ($paramsArray as $params) {
             /**
-            * @var DefinesOwnIdPropertiesInterface $obj
+            * @var DefinesOwnIdPropertiesInterface
             */
             $obj = new $objImplementation($params, $writeable);
 
@@ -136,7 +136,7 @@ class DaftObjectRepositoryTest extends TestCase
             $repo->ForgetDaftObject($obj);
 
             /**
-            * @var DefinesOwnIdPropertiesInterface|null $retrieved
+            * @var DefinesOwnIdPropertiesInterface|null
             */
             $retrieved = $repo->RecallDaftObject($ids);
 
@@ -164,12 +164,12 @@ class DaftObjectRepositoryTest extends TestCase
         array $dataTypeB
     ) : void {
         /**
-        * @var DefinesOwnIdPropertiesInterface $A
+        * @var DefinesOwnIdPropertiesInterface
         */
         $A = new $objectTypeA($dataTypeA);
 
         /**
-        * @var DefinesOwnIdPropertiesInterface $B
+        * @var DefinesOwnIdPropertiesInterface
         */
         $B = new $objectTypeB($dataTypeB);
 
@@ -199,12 +199,12 @@ class DaftObjectRepositoryTest extends TestCase
         array $dataTypeB
     ) : void {
         /**
-        * @var DefinesOwnIdPropertiesInterface $A
+        * @var DefinesOwnIdPropertiesInterface
         */
         $A = new $objectTypeA($dataTypeA);
 
         /**
-        * @var DefinesOwnIdPropertiesInterface $B
+        * @var DefinesOwnIdPropertiesInterface
         */
         $B = new $objectTypeB($dataTypeB);
 
@@ -234,12 +234,12 @@ class DaftObjectRepositoryTest extends TestCase
         array $dataTypeB
     ) : void {
         /**
-        * @var DefinesOwnIdPropertiesInterface $A
+        * @var DefinesOwnIdPropertiesInterface
         */
         $A = new $objectTypeA($dataTypeA);
 
         /**
-        * @var DefinesOwnIdPropertiesInterface $B
+        * @var DefinesOwnIdPropertiesInterface
         */
         $B = new $objectTypeB($dataTypeB);
 
@@ -277,13 +277,13 @@ class DaftObjectRepositoryTest extends TestCase
         );
 
         /**
-        * @var array<int, string> $properties
+        * @var array<int, string>
         */
         $properties = $objImplementation::DaftObjectProperties();
 
         foreach ($properties as $prop) {
             /**
-            * @var string $expectedMethod
+            * @var string
             */
             $expectedMethod = static::MethodNameFromProperty($prop);
 
@@ -311,13 +311,13 @@ class DaftObjectRepositoryTest extends TestCase
                 true === is_numeric($obj->$prop)
             ) {
                 /**
-                * @var int|float|string|scalar|array|null|DaftObject\DaftObject $propVal
+                * @var int|float|string|scalar|array|null|DaftObject\DaftObject
                 */
                 $propVal = $retrieved->$prop;
 
                 if ( ! is_null($propVal) && is_numeric($propVal)) {
                     /**
-                    * @var int|float $propVal
+                    * @var int|float
                     */
                     $propVal = $propVal;
 
@@ -331,7 +331,7 @@ class DaftObjectRepositoryTest extends TestCase
         $repo->ForgetDaftObject($retrieved);
 
         /**
-        * @var DefinesOwnIdPropertiesInterface|null $retrieved
+        * @var DefinesOwnIdPropertiesInterface|null
         */
         $retrieved = $repo->RecallDaftObject($ids);
 
@@ -367,7 +367,7 @@ class DaftObjectRepositoryTest extends TestCase
         );
 
         /**
-        * @var array<int, string> $properties
+        * @var array<int, string>
         */
         $properties = $objImplementation::DaftObjectProperties();
 
@@ -383,7 +383,7 @@ class DaftObjectRepositoryTest extends TestCase
                 true === is_numeric($obj->$prop)
             ) {
                 /**
-                * @var int|float $propVal
+                * @var int|float
                 */
                 $propVal = $obj->$prop;
                 static::assertSame($propVal * 2, $retrieved->$prop);

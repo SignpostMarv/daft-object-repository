@@ -47,13 +47,13 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
         $id = [];
 
         /**
-        * @var array<int, string> $properties
+        * @var array<int, string>
         */
         $properties = $object::DaftObjectIdProperties();
 
         foreach ($properties as $prop) {
             /**
-            * @var scalar|null|array|object $val
+            * @var scalar|null|array|object
             */
             $val = $object->$prop;
 
@@ -70,13 +70,13 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
         $id = [];
 
         /**
-        * @var array<int, string> $properties
+        * @var array<int, string>
         */
         $properties = $object::DaftObjectIdProperties();
 
         foreach ($properties as $prop) {
             /**
-            * @var scalar|null|array|object $val
+            * @var scalar|null|array|object
             */
             $val = $object->$prop;
 

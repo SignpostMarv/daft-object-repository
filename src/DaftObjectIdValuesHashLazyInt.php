@@ -23,13 +23,13 @@ trait DaftObjectIdValuesHashLazyInt
         $id = [];
 
         /**
-        * @var array<int, string> $properties
+        * @var array<int, string>
         */
         $properties = $object::DaftObjectIdProperties();
 
         foreach ($properties as $prop) {
             /**
-            * @var scalar|null|array|object|resource $val
+            * @var scalar|null|array|object|resource
             */
             $val = $object->$prop;
 
@@ -49,7 +49,7 @@ trait DaftObjectIdValuesHashLazyInt
         $objectIds = '';
 
         /**
-        * @var array<int, string> $id
+        * @var array<int, string>
         */
         $id = array_values($id);
 
