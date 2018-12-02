@@ -11,6 +11,10 @@ use ReflectionMethod;
 
 class TypeUtilities
 {
+    const SUPPORTED_INVALID_LEADING_CHARACTERS = [
+        '@',
+    ];
+
     /**
     * @var array<string, array<string, bool>>
     */
@@ -61,6 +65,10 @@ class TypeUtilities
 
     public static function MethodNameFromProperty(string $prop, bool $SetNotGet = false) : string
     {
+        if (in_array(mb_substr($prop, 0, 1), self::SUPPORTED_INVALID_LEADING_CHARACTERS, true)) {
+            return ($SetNotGet ? 'Alter' : 'Obtain') . ucfirst(mb_substr($prop, 1));
+        }
+
         return ($SetNotGet ? 'Set' : 'Get') . ucfirst($prop);
     }
 

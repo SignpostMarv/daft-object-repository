@@ -23,6 +23,7 @@ class DaftObjectImplementationTest extends TestCase
             [
                 '/src/*.php' => 'SignpostMarv\\DaftObject\\',
                 '/tests-src/*.php' => 'SignpostMarv\\DaftObject\\',
+                '/tests-src/LinkedData/*.php' => 'SignpostMarv\\DaftObject\\LinkedData\\',
             ] as $glob => $ns
         ) {
             $files = glob(dirname(__DIR__) . $glob);
@@ -854,10 +855,19 @@ class DaftObjectImplementationTest extends TestCase
                 $hasAny,
                 (
                     $className .
-                    ' must implement at least a getter or setter for ' .
+                    ' must implement at least a getter `' .
                     $className .
-                    '::$' .
-                    $property
+                    '::' .
+                    $getter .
+                    '()` or setter `' .
+                    $className .
+                    '::' .
+                    $setter .
+                    '()` for ' .
+                    $property .
+                    ' on ' .
+                    $className .
+                    '.'
                 )
             );
 
