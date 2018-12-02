@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject\PHPStan;
 
+use BadMethodCallException;
 use InvalidArgumentException;
 use PHPStan\Broker\Broker;
 use PHPStan\Reflection\ClassReflection;
@@ -107,10 +108,16 @@ class PropertyReflectionExtension implements PropertyReflection
 
     public function getDeclaringClass() : ClassReflection
     {
-        /**
-        * @var ClassReflection
-        */
         $reflection = $this->readable ? $this->readableReflection : $this->writeableReflection;
+
+        if ( ! ($reflection instanceof ClassReflection)) {
+            throw new BadMethodCallException(
+                static::class .
+                '::SetupReflections() was not called before ' .
+                __METHOD__ .
+                ' was called!'
+            );
+        }
 
         return $reflection;
     }
