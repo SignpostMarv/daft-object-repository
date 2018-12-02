@@ -108,7 +108,7 @@ abstract class AbstractDaftObject implements DaftObject
             * @return mixed
             */
             function (string $prop) {
-                $expectedMethod = 'Get' . ucfirst($prop);
+                $expectedMethod = TypeUtilities::MethodNameFromProperty($prop);
 
                 return $this->$expectedMethod();
             },
@@ -131,7 +131,7 @@ abstract class AbstractDaftObject implements DaftObject
         * @var string
         */
         foreach (static::DaftSortableObjectProperties() as $property) {
-            $method = 'Get' . $property;
+            $method = TypeUtilities::MethodNameFromProperty($property);
             $sort = $this->$method() <=> $otherObject->$method();
 
             if (0 !== $sort) {
