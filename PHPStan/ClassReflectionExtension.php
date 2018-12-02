@@ -13,6 +13,7 @@ use PHPStan\Reflection\BrokerAwareExtension;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\PropertiesClassReflectionExtension;
 use PHPStan\Reflection\PropertyReflection;
+use BadMethodCallException;
 use SignpostMarv\DaftObject\DaftObject;
 use SignpostMarv\DaftObject\TypeUtilities;
 
@@ -46,12 +47,14 @@ class ClassReflectionExtension implements BrokerAwareExtension, PropertiesClassR
 
     public function getProperty(ClassReflection $ref, string $propertyName) : PropertyReflection
     {
-        /**
-        * @var Broker
-        */
-        $broker = $this->broker;
+        if ( ! ($this->broker instanceof Broker)) {
+            throw new BadMethodCallException(
+                'Broker expected to be specified when calling ' .
+                __METHOD__
+            );
+        }
 
-        return new PropertyReflectionExtension($ref, $broker, $propertyName);
+        return new PropertyReflectionExtension($ref, $this->broker, $propertyName);
     }
 
     protected static function MethodNameFromProperty(
