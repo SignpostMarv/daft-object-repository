@@ -1328,6 +1328,33 @@ class DaftObjectImplementationTest extends TestCase
     * @dataProvider dataProviderNonAbstractJsonArrayBackedGoodFuzzingHasSetters
     *
     * @depends testHasDefinedImplementationCorrectly
+    */
+    final public function testProviderNonAbstractGoodFuzzingDaftObjectIsNotDaftJson(
+        string $className,
+        ReflectionClass $reflector,
+        array $args,
+        array $getters,
+        array $setters
+    ) : void {
+        /**
+        * @var DaftObject\DaftObject
+        */
+        $obj = new $className($args);
+
+        static::expectException(DaftObject\ClassDoesNotImplementClassException::class);
+        static::expectExceptionMessage(sprintf(
+            '%s does not implement %s',
+            $className,
+            DaftObject\DaftJson::class
+        ));
+
+        DaftObject\JsonTypeUtilities::ThrowIfDaftObjectObjectNotDaftJson($obj);
+    }
+
+    /**
+    * @dataProvider dataProviderNonAbstractJsonArrayBackedGoodFuzzingHasSetters
+    *
+    * @depends testHasDefinedImplementationCorrectly
     *
     * @psalm-suppress TypeDoesNotContainType
     */
