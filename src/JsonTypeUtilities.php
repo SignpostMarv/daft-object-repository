@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace SignpostMarv\DaftObject;
 
 use Closure;
+use InvalidArgumentException;
 
 class JsonTypeUtilities
 {
@@ -117,6 +118,23 @@ class JsonTypeUtilities
         ));
 
         return $out;
+    }
+
+    public static function ThrowIfDaftObjectObjectNotDaftJson(DaftObject $object) : DaftJson
+    {
+        if ( ! ($object instanceof DaftJson)) {
+            throw new InvalidArgumentException(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an instance of ' .
+                DaftJson::class .
+                ', ' .
+                get_class($object) .
+                ' given.'
+            );
+        }
+
+        return $object;
     }
 
     /**
