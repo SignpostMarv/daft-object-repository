@@ -108,10 +108,15 @@ class JsonTypeUtilities
 
         $keys = array_keys($array);
 
-        return array_combine($keys, array_map(
+        /**
+        * @var array<int|string, mixed>
+        */
+        $out = array_combine($keys, array_map(
             JsonTypeUtilities::MakeMapperThrowIfJsonDefNotValid($type, $jsonDef, $array),
             $keys
         ));
+
+        return $out;
     }
 
     /**

@@ -100,7 +100,10 @@ abstract class AbstractDaftObject implements DaftObject
             return $this->__isset($prop) && in_array($prop, $getters, true);
         });
 
-        return array_combine($properties, array_map(
+        /**
+        * @var array<string, mixed>
+        */
+        $out = array_combine($properties, array_map(
             /**
             * @return mixed
             */
@@ -111,6 +114,8 @@ abstract class AbstractDaftObject implements DaftObject
             },
             $properties
         ));
+
+        return $out;
     }
 
     public function CompareToDaftSortableObject(DaftSortableObject $otherObject) : int
