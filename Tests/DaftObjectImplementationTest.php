@@ -1865,10 +1865,10 @@ class DaftObjectImplementationTest extends TestCase
                 '(?:class |object){0,1}' .
                 '\({0,1}' .
                 preg_quote(DateTimeImmutable::class, '/') .
-                '(?:\:\:__set_state\(array\(|\)#\d+ \(\d+\) \{)' .
-                '\s+(?:\["|\')date(?:"\]|\')\s*=>\s+(?:\'[^\']+\',|string\(\d+\) \"[^"]+\")' .
-                '\s+(?:\["|\')timezone_type(?:"\]|\')\s*=>\s+(?:int\(){0,1}\d+(?:\)){0,1},{0,1}' .
-                '\s+(?:\["|\')timezone(?:"\]|\')\s*=>\s+(?:\'[^\']+\',|string\(\d+\) \"[^"]+\")' .
+                '(?:\:\:__set_state\(array\(|\)?#\d+ \(\d+\) \{)' .
+                '\s+(?:\["|\'|public \$)date(?:"\]|\'){0,1}\s*=>\s+(?:\'[^\']+\',|string\(\d+\) \"[^"]+\")' .
+                '\s+(?:\["|\'|public \$)timezone_type(?:"\]|\'){0,1}\s*=>\s+(?:int\(){0,1}\d+(?:\)){0,1},{0,1}' .
+                '\s+(?:\["|\'|public \$)timezone(?:"\]|\'){0,1}\s*=>\s+(?:\'[^\']+\',|string\(\d+\) \"[^"]+\")' .
                 '\s*(?:\)\)|\})';
         }
 
