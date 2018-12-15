@@ -6,6 +6,7 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject\Tests;
 
+use DateTimeImmutable;
 use Generator;
 use InvalidArgumentException;
 use ReflectionClass;
@@ -1859,6 +1860,16 @@ class DaftObjectImplementationTest extends TestCase
             $out .= ')';
 
             return $out;
+        } elseif ($val instanceof DateTimeImmutable) {
+            return
+                '(?:class |object){0,1}' .
+                '\({0,1}' .
+                preg_quote(DateTimeImmutable::class, '/') .
+                '(?:\:\:__set_state\(array\(|\)#\d+ \(\d+\) \{)' .
+                '\s+(?:\["|\')date(?:"\]|\')\s*=>\s+(?:\'[^\']+\',|string\(\d+\) \"[^"]+\")' .
+                '\s+(?:\["|\')timezone_type(?:"\]|\')\s*=>\s+(?:int\(){0,1}\d+(?:\)){0,1},{0,1}' .
+                '\s+(?:\["|\')timezone(?:"\]|\')\s*=>\s+(?:\'[^\']+\',|string\(\d+\) \"[^"]+\")' .
+                '\s*(?:\)\)|\})';
         }
 
         return
@@ -2000,6 +2011,18 @@ class DaftObjectImplementationTest extends TestCase
                 DaftObject\IntegerIdBasedDaftObject::class,
                 [
                     'Foo' => 1,
+                ],
+            ],
+            [
+                DaftObject\DateTimeImmutableTestObject::class,
+                [
+                    'datetime' => new DateTimeImmutable(),
+                ],
+            ],
+            [
+                DaftObject\DateTimeImmutableTestObject::class,
+                [
+                    'datetime' => new DateTimeImmutable('1970-01-01 00:00:00+0100'),
                 ],
             ],
         ];
