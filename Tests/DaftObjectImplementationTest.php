@@ -82,7 +82,61 @@ class DaftObjectImplementationTest extends TestCase
 
         foreach ($implementations as $args) {
             if (false === in_array($args[0] ?? null, $invalid, true)) {
+                list($implementation) = $args;
+
+                /**
+                * @var array
+                */
+                $properties = $implementation::DaftObjectProperties();
+
+                $initialCount = count($properties);
+
+                if (
+                    $initialCount !== count(
+                        array_unique(array_map('mb_strtolower', $properties), SORT_REGULAR)
+                    )
+                ) {
+                    continue;
+                }
+
                 yield $args;
+            }
+        }
+    }
+
+    final public function dataProviderNonAbstractGoodImplementationsWithMixedCaseProperties() : Generator
+    {
+        $invalid = $this->dataProviderInvalidImplementations();
+
+        /**
+        * @var array<int, array<int, string|ReflectionClass>>
+        */
+        $implementations = $this->dataProviderNonAbstractImplementations();
+
+        foreach ($implementations as $args) {
+            if (false === in_array($args[0] ?? null, $invalid, true)) {
+                list($implementation) = $args;
+
+                if (is_a($implementation, DaftObject\DaftObject::class, true)) {
+                    /**
+                    * @var array
+                    */
+                    $properties = $implementation::DaftObjectProperties();
+
+                    $initialCount = count($properties);
+
+                    if (
+                        $initialCount === count(
+                            array_unique(array_map('mb_strtolower', $properties), SORT_REGULAR)
+                        )
+                    ) {
+                        $args[] = false;
+                    } else {
+                        $args[] = true;
+                    }
+
+                    yield $args;
+                }
             }
         }
     }
@@ -392,7 +446,19 @@ class DaftObjectImplementationTest extends TestCase
                     $getters = [];
                     $setters = [];
 
-                    foreach ($className::DaftObjectProperties() as $property) {
+                    $properties = $className::DaftObjectProperties();
+
+                    $initialCount = count($properties);
+
+                    if (
+                        $initialCount !== count(
+                            array_unique(array_map('mb_strtolower', $properties), SORT_REGULAR)
+                        )
+                    ) {
+                        continue;
+                    }
+
+                    foreach ($properties as $property) {
                         $propertyForMethod = ucfirst($property);
                         $getter = static::MethodNameFromProperty($propertyForMethod);
                         $setter = static::MethodNameFromProperty($propertyForMethod, true);
@@ -587,6 +653,31 @@ class DaftObjectImplementationTest extends TestCase
     }
 
     /**
+    * @dataProvider dataProviderNonAbstractGoodImplementationsWithMixedCaseProperties
+    *
+    * @depends testHasDefinedAllPropertiesCorrectly
+    */
+    final public function testHasDefinedAllPropertiesCorrectlyExceptMixedCase(
+        string $className,
+        ReflectionClass $reflector,
+        bool $hasMixedCase
+    ) : void {
+        /**
+        * @var array<int, string>
+        */
+        $properties = (array) $className::DaftObjectProperties();
+
+        $initialCount = count($properties);
+        $postCount = count(array_unique(array_map('mb_strtolower', $properties), SORT_REGULAR));
+
+        if ($hasMixedCase) {
+            static::assertLessThan($initialCount, $postCount);
+        } else {
+            static::assertSame($initialCount, $postCount);
+        }
+    }
+
+    /**
     * @dataProvider dataProviderNonAbstractDefinesOwnIdGoodImplementations
     */
     final public function testHasDefinedAllIdPropertiesCorrectly(
@@ -639,6 +730,26 @@ class DaftObjectImplementationTest extends TestCase
                 )
             );
         }
+
+        $initialCount = count($properties);
+
+        static::assertCount(
+            $initialCount,
+            array_unique(
+                array_map('mb_strtolower', $properties),
+                SORT_REGULAR
+            )
+        );
+
+        $initialCount = count($idProperties);
+
+        static::assertCount(
+            $initialCount,
+            array_unique(
+                array_map('mb_strtolower', $idProperties),
+                SORT_REGULAR
+            )
+        );
     }
 
     /**
@@ -758,6 +869,16 @@ class DaftObjectImplementationTest extends TestCase
                 }
             }
         }
+
+        $initialCount = count($nullables);
+
+        static::assertCount(
+            $initialCount,
+            array_unique(
+                array_map('mb_strtolower', $nullables),
+                SORT_REGULAR
+            )
+        );
     }
 
     /**
@@ -821,6 +942,16 @@ class DaftObjectImplementationTest extends TestCase
                 )
             );
         }
+
+        $initialCount = count($exportables);
+
+        static::assertCount(
+            $initialCount,
+            array_unique(
+                array_map('mb_strtolower', $exportables),
+                SORT_REGULAR
+            )
+        );
     }
 
     /**
@@ -1523,6 +1654,16 @@ class DaftObjectImplementationTest extends TestCase
                     )
                 );
             }
+
+            $initialCount = count($propertyNames);
+
+            static::assertCount(
+                $initialCount,
+                array_unique(
+                    array_map('mb_strtolower', $propertyNames),
+                    SORT_REGULAR
+                )
+            );
         } elseif (is_a($className, DaftObject\AbstractArrayBackedDaftObject::class, true)) {
             $this->expectException(DaftObject\DaftObjectNotDaftJsonBadMethodCallException::class);
             $this->expectExceptionMessage(sprintf(
