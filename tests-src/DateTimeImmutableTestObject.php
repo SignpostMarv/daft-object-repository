@@ -10,6 +10,8 @@ use DateTimeImmutable;
 
 class DateTimeImmutableTestObject extends AbstractArrayBackedDaftObject
 {
+    const STR_FORMAT_TEST = 'Y-m-d\TH:i:s.uP';
+
     const PROPERTIES = [
         'datetime',
     ];
@@ -23,9 +25,16 @@ class DateTimeImmutableTestObject extends AbstractArrayBackedDaftObject
         /**
         * @var DateTimeImmutable|string
         */
-        $out = $this->RetrievePropertyValueFromData('datetime');
+        $in = $this->RetrievePropertyValueFromData('datetime');
 
-        return ($out instanceof DateTimeImmutable) ? $out : new DateTimeImmutable($out);
+        if ($in instanceof DateTimeImmutable) {
+            return (new DateTimeImmutable())->createFromFormat(
+                self::STR_FORMAT_TEST,
+                $in->format(self::STR_FORMAT_TEST)
+            );
+        }
+
+        return new DateTimeImmutable($in);
     }
 
     public function SetDatetime(DateTimeImmutable $value) : void

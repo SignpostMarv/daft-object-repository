@@ -1269,7 +1269,27 @@ class DaftObjectImplementationTest extends TestCase
             $obj->$property = $args[$property];
 
             if (in_array($property, $getters, true)) {
-                static::assertSame($args[$property], $obj->$property);
+                /**
+                * @var scalar|array|object|null
+                */
+                $expecting = $args[$property];
+
+                /**
+                * @var scalar|array|object|null
+                */
+                $compareTo = $obj->$property;
+
+                if (
+                    ($expecting !== $compareTo) &&
+                    ($expecting instanceof DateTimeImmutable) &&
+                    ($compareTo instanceof DateTimeImmutable) &&
+                    get_class($expecting) === get_class($compareTo)
+                ) {
+                    $expecting = $expecting->format('cu');
+                    $compareTo = $compareTo->format('cu');
+                }
+
+                static::assertSame($expecting, $compareTo);
             }
         }
 
@@ -2157,13 +2177,19 @@ class DaftObjectImplementationTest extends TestCase
             [
                 DaftObject\DateTimeImmutableTestObject::class,
                 [
-                    'datetime' => new DateTimeImmutable(),
+                    'datetime' => new DateTimeImmutable(date(
+                        DaftObject\DateTimeImmutableTestObject::STR_FORMAT_TEST,
+                        0
+                    )),
                 ],
             ],
             [
                 DaftObject\DateTimeImmutableTestObject::class,
                 [
-                    'datetime' => new DateTimeImmutable('1970-01-01 00:00:00+0100'),
+                    'datetime' => new DateTimeImmutable(date(
+                        DaftObject\DateTimeImmutableTestObject::STR_FORMAT_TEST,
+                        1
+                    )),
                 ],
             ],
         ];
