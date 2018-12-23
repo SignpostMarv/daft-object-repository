@@ -1416,10 +1416,10 @@ class DaftObjectImplementationTest extends TestCase
             }
 
             foreach ($propertiesExpectedToBeChanged as $property) {
-            static::assertTrue(
-                in_array($property, $obj->ChangedProperties(), true),
-                ($className . '::ChangedProperties() must contain changed properties')
-            );
+                static::assertTrue(
+                    in_array($property, $obj->ChangedProperties(), true),
+                    ($className . '::ChangedProperties() must contain changed properties')
+                );
             }
         }
 
