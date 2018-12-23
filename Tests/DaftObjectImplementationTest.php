@@ -1292,16 +1292,16 @@ class DaftObjectImplementationTest extends TestCase
                     $propertiesExpectedNotToBeChanged
                 ) as $property
             ) {
-            static::assertFalse(
-                $obj->HasPropertyChanged($property),
-                (
-                    $className .
-                    '::$' .
-                    $property .
-                    ' should not be marked as changed' .
-                    ' when instantiating from blank.'
-                )
-            );
+                static::assertFalse(
+                    $obj->HasPropertyChanged($property),
+                    (
+                        $className .
+                        '::$' .
+                        $property .
+                        ' should not be marked as changed' .
+                        ' when instantiating from blank.'
+                    )
+                );
             }
 
             if (isset($args[$setterProperty])) {
@@ -1309,11 +1309,12 @@ class DaftObjectImplementationTest extends TestCase
                 $obj->$setterProperty = $args[$setterProperty];
 
                 foreach ($propertiesExpectedToBeChanged as $property) {
-                static::assertTrue(
-                    $obj->HasPropertyChanged($property),
-                    ($className . '::$' . $property . ' should be marked as changed.')
-                );
+                    static::assertTrue(
+                        $obj->HasPropertyChanged($property),
+                        ($className . '::$' . $property . ' should be marked as changed.')
+                    );
                 }
+
                 foreach ($propertiesExpectedNotToBeChanged as $property) {
                     static::assertFalse(
                         $obj->HasPropertyChanged($property),
@@ -1323,24 +1324,23 @@ class DaftObjectImplementationTest extends TestCase
 
                 $obj->MakePropertiesUnchanged($setterProperty);
 
-
                 foreach (
                     array_merge(
                         $propertiesExpectedToBeChanged,
                         $propertiesExpectedNotToBeChanged
                     ) as $property
                 ) {
-                static::assertFalse(
-                    $obj->HasPropertyChanged($property),
-                    (
-                        $className .
-                        '::$' .
-                        $property .
-                        ' should be marked as unchanged after calling ' .
-                        $className .
-                        '::MakePropertiesUnchanged()'
-                    )
-                );
+                    static::assertFalse(
+                        $obj->HasPropertyChanged($property),
+                        (
+                            $className .
+                            '::$' .
+                            $property .
+                            ' should be marked as unchanged after calling ' .
+                            $className .
+                            '::MakePropertiesUnchanged()'
+                        )
+                    );
                 }
             }
         }
