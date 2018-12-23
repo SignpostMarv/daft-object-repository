@@ -1146,6 +1146,52 @@ class DaftObjectImplementationTest extends TestCase
                 }
             }
         }
+
+        $propertiesChangeProperties = $className::DaftObjectPropertiesChangeOtherProperties();
+
+        static::assertIsArray($propertiesChangeProperties);
+
+        $propertiesChangePropertiesCount = count($propertiesChangeProperties);
+
+        $propertiesChangeProperties = array_filter(
+            array_filter(
+                array_filter($propertiesChangeProperties, 'is_string', ARRAY_FILTER_USE_KEY),
+                'is_array'
+            ),
+            function (string $maybe) use ($properties) : bool {
+                return in_array($maybe, $properties, true);
+            }
+        );
+
+        static::assertCount($propertiesChangePropertiesCount, $propertiesChangeProperties);
+
+        $propertiesChangePropertiesCount = count($propertiesChangeProperties, COUNT_RECURSIVE);
+
+        $propertiesChangeProperties = array_map(
+            function (array $in) use ($properties) : array {
+                return array_values(array_unique(array_filter(
+                    array_filter(
+                        array_filter(
+                            $in,
+                            'is_string'
+                        ),
+                        'is_int',
+                        ARRAY_FILTER_USE_KEY
+                    ),
+                    function (string $property) use ($properties) : bool {
+                        return in_array($property, $properties, true);
+                    }
+                )));
+            },
+            $propertiesChangeProperties
+        );
+
+        static::assertTrue(
+            $propertiesChangePropertiesCount === count(
+                $propertiesChangeProperties,
+                COUNT_RECURSIVE
+            )
+        );
     }
 
     /**
@@ -1224,7 +1270,28 @@ class DaftObjectImplementationTest extends TestCase
 
         $settersNotNull = [];
 
-        foreach ($setters as $property) {
+        $otherProperties = $className::DaftObjectPropertiesChangeOtherProperties();
+
+        foreach ($setters as $setterProperty) {
+            $propertiesExpectedToBeChanged = [
+                $setterProperty,
+            ];
+            $propertiesExpectedNotToBeChanged = [];
+
+            if (isset($otherProperties[$setterProperty])) {
+                $propertiesExpectedToBeChanged = $otherProperties[$setterProperty];
+
+                if ( ! in_array($setterProperty, $propertiesExpectedToBeChanged, true)) {
+                    $propertiesExpectedNotToBeChanged[] = $setterProperty;
+                }
+            }
+
+            foreach (
+                array_merge(
+                    $propertiesExpectedToBeChanged,
+                    $propertiesExpectedNotToBeChanged
+                ) as $property
+            ) {
             static::assertFalse(
                 $obj->HasPropertyChanged($property),
                 (
@@ -1235,17 +1302,34 @@ class DaftObjectImplementationTest extends TestCase
                     ' when instantiating from blank.'
                 )
             );
+            }
 
-            if (isset($args[$property])) {
-                $obj->$property = $args[$property];
+            if (isset($args[$setterProperty])) {
 
+                $obj->$setterProperty = $args[$setterProperty];
+
+                foreach ($propertiesExpectedToBeChanged as $property) {
                 static::assertTrue(
                     $obj->HasPropertyChanged($property),
                     ($className . '::$' . $property . ' should be marked as changed.')
                 );
+                }
+                foreach ($propertiesExpectedNotToBeChanged as $property) {
+                    static::assertFalse(
+                        $obj->HasPropertyChanged($property),
+                        ($className . '::$' . $property . ' should not be marked as changed.')
+                    );
+                }
 
-                $obj->MakePropertiesUnchanged($property);
+                $obj->MakePropertiesUnchanged($setterProperty);
 
+
+                foreach (
+                    array_merge(
+                        $propertiesExpectedToBeChanged,
+                        $propertiesExpectedNotToBeChanged
+                    ) as $property
+                ) {
                 static::assertFalse(
                     $obj->HasPropertyChanged($property),
                     (
@@ -1257,6 +1341,7 @@ class DaftObjectImplementationTest extends TestCase
                         '::MakePropertiesUnchanged()'
                     )
                 );
+                }
             }
         }
 
