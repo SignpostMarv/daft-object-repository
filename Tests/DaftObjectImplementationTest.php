@@ -644,8 +644,7 @@ class DaftObjectImplementationTest extends TestCase
         static::assertGreaterThan(0, count($properties));
 
         foreach ($properties as $property) {
-            static::assertInternalType(
-                'string',
+            static::assertIsString(
                 $property,
                 ($className . '::DaftObjectProperties()' . ' must return an array of strings')
             );
@@ -705,8 +704,7 @@ class DaftObjectImplementationTest extends TestCase
         $idProperties = (array) $className::DaftObjectIdProperties();
 
         foreach ($idProperties as $property) {
-            static::assertInternalType(
-                'string',
+            static::assertIsString(
                 $property,
                 ($className . '::DaftObjectIdProperties()' . ' must return an array of strings')
             );
@@ -767,8 +765,7 @@ class DaftObjectImplementationTest extends TestCase
         $nullables = (array) $className::DaftObjectNullableProperties();
 
         foreach ($nullables as $nullable) {
-            static::assertInternalType(
-                'string',
+            static::assertIsString(
                 $nullable,
                 (
                     $className .
@@ -896,8 +893,7 @@ class DaftObjectImplementationTest extends TestCase
         $exportables = (array) $className::DaftObjectExportableProperties();
 
         foreach ($exportables as $exportable) {
-            static::assertInternalType(
-                'string',
+            static::assertIsString(
                 $exportable,
                 (
                     $className .
@@ -1147,9 +1143,14 @@ class DaftObjectImplementationTest extends TestCase
             }
         }
 
+        /**
+        * @var scalar|array|object|null
+        */
         $propertiesChangeProperties = $className::DaftObjectPropertiesChangeOtherProperties();
 
         static::assertIsArray($propertiesChangeProperties);
+
+        $propertiesChangeProperties = (array) $propertiesChangeProperties;
 
         $propertiesChangePropertiesCount = count($propertiesChangeProperties);
 
@@ -1270,15 +1271,36 @@ class DaftObjectImplementationTest extends TestCase
 
         $settersNotNull = [];
 
+        /**
+        * @var array<string, array<int, string>>
+        */
         $otherProperties = $className::DaftObjectPropertiesChangeOtherProperties();
 
         foreach ($setters as $setterProperty) {
+            /**
+            * @var array<int, string>
+            */
             $propertiesExpectedToBeChanged = [
                 $setterProperty,
             ];
+
+            /**
+            * @var array<int, string>
+            */
             $propertiesExpectedNotToBeChanged = [];
 
+            /**
+            * @var array<int, string>
+            */
+            $checkingProperties = array_merge(
+                $propertiesExpectedToBeChanged,
+                $propertiesExpectedNotToBeChanged
+            );
+
             if (isset($otherProperties[$setterProperty])) {
+                /**
+                * @var array<int, string>
+                */
                 $propertiesExpectedToBeChanged = $otherProperties[$setterProperty];
 
                 if ( ! in_array($setterProperty, $propertiesExpectedToBeChanged, true)) {
@@ -1287,10 +1309,7 @@ class DaftObjectImplementationTest extends TestCase
             }
 
             foreach (
-                array_merge(
-                    $propertiesExpectedToBeChanged,
-                    $propertiesExpectedNotToBeChanged
-                ) as $property
+                $checkingProperties as $property
             ) {
                 static::assertFalse(
                     $obj->HasPropertyChanged($property),
@@ -1325,10 +1344,7 @@ class DaftObjectImplementationTest extends TestCase
                 $obj->MakePropertiesUnchanged($setterProperty);
 
                 foreach (
-                    array_merge(
-                        $propertiesExpectedToBeChanged,
-                        $propertiesExpectedNotToBeChanged
-                    ) as $property
+                    $checkingProperties as $property
                 ) {
                     static::assertFalse(
                         $obj->HasPropertyChanged($property),
@@ -1451,8 +1467,7 @@ class DaftObjectImplementationTest extends TestCase
 
             $json = json_encode($obj);
 
-            static::assertInternalType(
-                'string',
+            static::assertIsString(
                 $json,
                 (
                     'Instances of ' .
@@ -1464,10 +1479,9 @@ class DaftObjectImplementationTest extends TestCase
             /**
             * @var array|bool
             */
-            $decoded = json_decode($json, true);
+            $decoded = json_decode((string) $json, true);
 
-            static::assertInternalType(
-                'array',
+            static::assertIsArray(
                 $decoded,
                 (
                     'JSON-encoded implementations of ' .
@@ -1647,8 +1661,7 @@ class DaftObjectImplementationTest extends TestCase
                 $prop = $v;
 
                 if (is_string($k)) {
-                    static::assertInternalType(
-                        'string',
+                    static::assertIsString(
                         $v,
                         sprintf(
                             (
@@ -1918,7 +1931,7 @@ class DaftObjectImplementationTest extends TestCase
         */
         $publicOrProtected = $className::DaftObjectPublicOrProtectedGetters();
 
-        static::assertInternalType('array', $publicOrProtected);
+        static::assertIsArray($publicOrProtected);
 
         /**
         * @var array
@@ -1929,8 +1942,8 @@ class DaftObjectImplementationTest extends TestCase
         * @var scalar
         */
         foreach ($publicOrProtected as $k => $v) {
-            static::assertInternalType('integer', $k);
-            static::assertInternalType('string', $v);
+            static::assertIsInt($k);
+            static::assertIsString($v);
         }
 
         /**
@@ -1942,8 +1955,8 @@ class DaftObjectImplementationTest extends TestCase
             */
             $expectedMethod = static::MethodNameFromProperty((string) $v);
 
-            static::assertInternalType('integer', $k);
-            static::assertInternalType('string', $v);
+            static::assertIsInt($k);
+            static::assertIsString($v);
             static::assertTrue(in_array($v, $publicOrProtected, true));
             static::assertTrue(method_exists($className, $expectedMethod));
         }
