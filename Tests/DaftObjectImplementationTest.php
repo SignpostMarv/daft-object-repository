@@ -1324,7 +1324,6 @@ class DaftObjectImplementationTest extends TestCase
             }
 
             if (isset($args[$setterProperty])) {
-
                 $obj->$setterProperty = $args[$setterProperty];
 
                 foreach ($propertiesExpectedToBeChanged as $property) {
