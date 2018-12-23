@@ -1161,7 +1161,8 @@ class DaftObjectImplementationTest extends TestCase
             ),
             function (string $maybe) use ($properties) : bool {
                 return in_array($maybe, $properties, true);
-            }
+            },
+            ARRAY_FILTER_USE_KEY
         );
 
         static::assertCount($propertiesChangePropertiesCount, $propertiesChangeProperties);
@@ -1399,11 +1400,27 @@ class DaftObjectImplementationTest extends TestCase
 
         static::assertRegExp($regex, str_replace(["\n"], ' ', $debugInfo));
 
-        foreach ($setters as $property) {
+        foreach ($setters as $setterProperty) {
+            /**
+            * @var array<int, string>
+            */
+            $propertiesExpectedToBeChanged = [
+                $setterProperty,
+            ];
+
+            if (isset($otherProperties[$setterProperty])) {
+                /**
+                * @var array<int, string>
+                */
+                $propertiesExpectedToBeChanged = $otherProperties[$setterProperty];
+            }
+
+            foreach ($propertiesExpectedToBeChanged as $property) {
             static::assertTrue(
                 in_array($property, $obj->ChangedProperties(), true),
                 ($className . '::ChangedProperties() must contain changed properties')
             );
+            }
         }
 
         /**

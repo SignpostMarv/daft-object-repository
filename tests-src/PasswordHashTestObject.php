@@ -13,6 +13,12 @@ final class PasswordHashTestObject extends AbstractArrayBackedDaftObject
         'passwordHash',
     ];
 
+    const CHANGE_OTHER_PROPERTIES = [
+        'password' => [
+            'passwordHash',
+        ],
+    ];
+
     protected function GetPassword() : void
     {
     }
@@ -20,7 +26,6 @@ final class PasswordHashTestObject extends AbstractArrayBackedDaftObject
     protected function SetPasswordHash(string $hash) : void
     {
         $this->NudgePropertyValue('passwordHash', $hash);
-        $this->NudgePropertyValue('password', '');
     }
 
     public function SetPassword(string $password) : void
