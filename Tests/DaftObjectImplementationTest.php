@@ -6,6 +6,7 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject\Tests;
 
+use DateTimeImmutable;
 use Generator;
 use InvalidArgumentException;
 use ReflectionClass;
@@ -82,7 +83,61 @@ class DaftObjectImplementationTest extends TestCase
 
         foreach ($implementations as $args) {
             if (false === in_array($args[0] ?? null, $invalid, true)) {
+                list($implementation) = $args;
+
+                /**
+                * @var array
+                */
+                $properties = $implementation::DaftObjectProperties();
+
+                $initialCount = count($properties);
+
+                if (
+                    $initialCount !== count(
+                        array_unique(array_map('mb_strtolower', $properties), SORT_REGULAR)
+                    )
+                ) {
+                    continue;
+                }
+
                 yield $args;
+            }
+        }
+    }
+
+    final public function dataProviderNonAbstractGoodImplementationsWithMixedCaseProperties() : Generator
+    {
+        $invalid = $this->dataProviderInvalidImplementations();
+
+        /**
+        * @var array<int, array<int, string|ReflectionClass>>
+        */
+        $implementations = $this->dataProviderNonAbstractImplementations();
+
+        foreach ($implementations as $args) {
+            if (false === in_array($args[0] ?? null, $invalid, true)) {
+                list($implementation) = $args;
+
+                if (is_a($implementation, DaftObject\DaftObject::class, true)) {
+                    /**
+                    * @var array
+                    */
+                    $properties = $implementation::DaftObjectProperties();
+
+                    $initialCount = count($properties);
+
+                    if (
+                        $initialCount === count(
+                            array_unique(array_map('mb_strtolower', $properties), SORT_REGULAR)
+                        )
+                    ) {
+                        $args[] = false;
+                    } else {
+                        $args[] = true;
+                    }
+
+                    yield $args;
+                }
             }
         }
     }
@@ -392,7 +447,19 @@ class DaftObjectImplementationTest extends TestCase
                     $getters = [];
                     $setters = [];
 
-                    foreach ($className::DaftObjectProperties() as $property) {
+                    $properties = $className::DaftObjectProperties();
+
+                    $initialCount = count($properties);
+
+                    if (
+                        $initialCount !== count(
+                            array_unique(array_map('mb_strtolower', $properties), SORT_REGULAR)
+                        )
+                    ) {
+                        continue;
+                    }
+
+                    foreach ($properties as $property) {
                         $propertyForMethod = ucfirst($property);
                         $getter = static::MethodNameFromProperty($propertyForMethod);
                         $setter = static::MethodNameFromProperty($propertyForMethod, true);
@@ -578,11 +645,35 @@ class DaftObjectImplementationTest extends TestCase
         static::assertGreaterThan(0, count($properties));
 
         foreach ($properties as $property) {
-            static::assertInternalType(
-                'string',
+            static::assertIsString(
                 $property,
                 ($className . '::DaftObjectProperties()' . ' must return an array of strings')
             );
+        }
+    }
+
+    /**
+    * @dataProvider dataProviderNonAbstractGoodImplementationsWithMixedCaseProperties
+    *
+    * @depends testHasDefinedAllPropertiesCorrectly
+    */
+    final public function testHasDefinedAllPropertiesCorrectlyExceptMixedCase(
+        string $className,
+        ReflectionClass $reflector,
+        bool $hasMixedCase
+    ) : void {
+        /**
+        * @var array<int, string>
+        */
+        $properties = (array) $className::DaftObjectProperties();
+
+        $initialCount = count($properties);
+        $postCount = count(array_unique(array_map('mb_strtolower', $properties), SORT_REGULAR));
+
+        if ($hasMixedCase) {
+            static::assertLessThan($initialCount, $postCount);
+        } else {
+            static::assertSame($initialCount, $postCount);
         }
     }
 
@@ -614,8 +705,7 @@ class DaftObjectImplementationTest extends TestCase
         $idProperties = (array) $className::DaftObjectIdProperties();
 
         foreach ($idProperties as $property) {
-            static::assertInternalType(
-                'string',
+            static::assertIsString(
                 $property,
                 ($className . '::DaftObjectIdProperties()' . ' must return an array of strings')
             );
@@ -639,6 +729,26 @@ class DaftObjectImplementationTest extends TestCase
                 )
             );
         }
+
+        $initialCount = count($properties);
+
+        static::assertCount(
+            $initialCount,
+            array_unique(
+                array_map('mb_strtolower', $properties),
+                SORT_REGULAR
+            )
+        );
+
+        $initialCount = count($idProperties);
+
+        static::assertCount(
+            $initialCount,
+            array_unique(
+                array_map('mb_strtolower', $idProperties),
+                SORT_REGULAR
+            )
+        );
     }
 
     /**
@@ -656,8 +766,7 @@ class DaftObjectImplementationTest extends TestCase
         $nullables = (array) $className::DaftObjectNullableProperties();
 
         foreach ($nullables as $nullable) {
-            static::assertInternalType(
-                'string',
+            static::assertIsString(
                 $nullable,
                 (
                     $className .
@@ -758,6 +867,16 @@ class DaftObjectImplementationTest extends TestCase
                 }
             }
         }
+
+        $initialCount = count($nullables);
+
+        static::assertCount(
+            $initialCount,
+            array_unique(
+                array_map('mb_strtolower', $nullables),
+                SORT_REGULAR
+            )
+        );
     }
 
     /**
@@ -775,8 +894,7 @@ class DaftObjectImplementationTest extends TestCase
         $exportables = (array) $className::DaftObjectExportableProperties();
 
         foreach ($exportables as $exportable) {
-            static::assertInternalType(
-                'string',
+            static::assertIsString(
                 $exportable,
                 (
                     $className .
@@ -821,6 +939,16 @@ class DaftObjectImplementationTest extends TestCase
                 )
             );
         }
+
+        $initialCount = count($exportables);
+
+        static::assertCount(
+            $initialCount,
+            array_unique(
+                array_map('mb_strtolower', $exportables),
+                SORT_REGULAR
+            )
+        );
     }
 
     /**
@@ -1024,6 +1152,58 @@ class DaftObjectImplementationTest extends TestCase
                 }
             }
         }
+
+        /**
+        * @var scalar|array|object|null
+        */
+        $propertiesChangeProperties = $className::DaftObjectPropertiesChangeOtherProperties();
+
+        static::assertIsArray($propertiesChangeProperties);
+
+        $propertiesChangeProperties = (array) $propertiesChangeProperties;
+
+        $propertiesChangePropertiesCount = count($propertiesChangeProperties);
+
+        $propertiesChangeProperties = array_filter(
+            array_filter(
+                array_filter($propertiesChangeProperties, 'is_string', ARRAY_FILTER_USE_KEY),
+                'is_array'
+            ),
+            function (string $maybe) use ($properties) : bool {
+                return in_array($maybe, $properties, true);
+            },
+            ARRAY_FILTER_USE_KEY
+        );
+
+        static::assertCount($propertiesChangePropertiesCount, $propertiesChangeProperties);
+
+        $propertiesChangePropertiesCount = count($propertiesChangeProperties, COUNT_RECURSIVE);
+
+        $propertiesChangeProperties = array_map(
+            function (array $in) use ($properties) : array {
+                return array_values(array_unique(array_filter(
+                    array_filter(
+                        array_filter(
+                            $in,
+                            'is_string'
+                        ),
+                        'is_int',
+                        ARRAY_FILTER_USE_KEY
+                    ),
+                    function (string $property) use ($properties) : bool {
+                        return in_array($property, $properties, true);
+                    }
+                )));
+            },
+            $propertiesChangeProperties
+        );
+
+        static::assertTrue(
+            $propertiesChangePropertiesCount === count(
+                $propertiesChangeProperties,
+                COUNT_RECURSIVE
+            )
+        );
     }
 
     /**
@@ -1102,39 +1282,92 @@ class DaftObjectImplementationTest extends TestCase
 
         $settersNotNull = [];
 
-        foreach ($setters as $property) {
-            static::assertFalse(
-                $obj->HasPropertyChanged($property),
-                (
-                    $className .
-                    '::$' .
-                    $property .
-                    ' should not be marked as changed' .
-                    ' when instantiating from blank.'
-                )
+        /**
+        * @var array<string, array<int, string>>
+        */
+        $otherProperties = $className::DaftObjectPropertiesChangeOtherProperties();
+
+        foreach ($setters as $setterProperty) {
+            /**
+            * @var array<int, string>
+            */
+            $propertiesExpectedToBeChanged = [
+                $setterProperty,
+            ];
+
+            /**
+            * @var array<int, string>
+            */
+            $propertiesExpectedNotToBeChanged = [];
+
+            /**
+            * @var array<int, string>
+            */
+            $checkingProperties = array_merge(
+                $propertiesExpectedToBeChanged,
+                $propertiesExpectedNotToBeChanged
             );
 
-            if (isset($args[$property])) {
-                $obj->$property = $args[$property];
+            if (isset($otherProperties[$setterProperty])) {
+                /**
+                * @var array<int, string>
+                */
+                $propertiesExpectedToBeChanged = $otherProperties[$setterProperty];
 
-                static::assertTrue(
-                    $obj->HasPropertyChanged($property),
-                    ($className . '::$' . $property . ' should be marked as changed.')
-                );
+                if ( ! in_array($setterProperty, $propertiesExpectedToBeChanged, true)) {
+                    $propertiesExpectedNotToBeChanged[] = $setterProperty;
+                }
+            }
 
-                $obj->MakePropertiesUnchanged($property);
-
+            foreach (
+                $checkingProperties as $property
+            ) {
                 static::assertFalse(
                     $obj->HasPropertyChanged($property),
                     (
                         $className .
                         '::$' .
                         $property .
-                        ' should be marked as unchanged after calling ' .
-                        $className .
-                        '::MakePropertiesUnchanged()'
+                        ' should not be marked as changed' .
+                        ' when instantiating from blank.'
                     )
                 );
+            }
+
+            if (isset($args[$setterProperty])) {
+                $obj->$setterProperty = $args[$setterProperty];
+
+                foreach ($propertiesExpectedToBeChanged as $property) {
+                    static::assertTrue(
+                        $obj->HasPropertyChanged($property),
+                        ($className . '::$' . $property . ' should be marked as changed.')
+                    );
+                }
+
+                foreach ($propertiesExpectedNotToBeChanged as $property) {
+                    static::assertFalse(
+                        $obj->HasPropertyChanged($property),
+                        ($className . '::$' . $property . ' should not be marked as changed.')
+                    );
+                }
+
+                $obj->MakePropertiesUnchanged($setterProperty);
+
+                foreach (
+                    $checkingProperties as $property
+                ) {
+                    static::assertFalse(
+                        $obj->HasPropertyChanged($property),
+                        (
+                            $className .
+                            '::$' .
+                            $property .
+                            ' should be marked as unchanged after calling ' .
+                            $className .
+                            '::MakePropertiesUnchanged()'
+                        )
+                    );
+                }
             }
         }
 
@@ -1147,7 +1380,27 @@ class DaftObjectImplementationTest extends TestCase
             $obj->$property = $args[$property];
 
             if (in_array($property, $getters, true)) {
-                static::assertSame($args[$property], $obj->$property);
+                /**
+                * @var scalar|array|object|null
+                */
+                $expecting = $args[$property];
+
+                /**
+                * @var scalar|array|object|null
+                */
+                $compareTo = $obj->$property;
+
+                if (
+                    ($expecting !== $compareTo) &&
+                    ($expecting instanceof DateTimeImmutable) &&
+                    ($compareTo instanceof DateTimeImmutable) &&
+                    get_class($expecting) === get_class($compareTo)
+                ) {
+                    $expecting = $expecting->format('cu');
+                    $compareTo = $compareTo->format('cu');
+                }
+
+                static::assertSame($expecting, $compareTo);
             }
         }
 
@@ -1157,11 +1410,27 @@ class DaftObjectImplementationTest extends TestCase
 
         static::assertRegExp($regex, str_replace(["\n"], ' ', $debugInfo));
 
-        foreach ($setters as $property) {
-            static::assertTrue(
-                in_array($property, $obj->ChangedProperties(), true),
-                ($className . '::ChangedProperties() must contain changed properties')
-            );
+        foreach ($setters as $setterProperty) {
+            /**
+            * @var array<int, string>
+            */
+            $propertiesExpectedToBeChanged = [
+                $setterProperty,
+            ];
+
+            if (isset($otherProperties[$setterProperty])) {
+                /**
+                * @var array<int, string>
+                */
+                $propertiesExpectedToBeChanged = $otherProperties[$setterProperty];
+            }
+
+            foreach ($propertiesExpectedToBeChanged as $property) {
+                static::assertTrue(
+                    in_array($property, $obj->ChangedProperties(), true),
+                    ($className . '::ChangedProperties() must contain changed properties')
+                );
+            }
         }
 
         /**
@@ -1224,8 +1493,7 @@ class DaftObjectImplementationTest extends TestCase
 
             $json = json_encode($obj);
 
-            static::assertInternalType(
-                'string',
+            static::assertIsString(
                 $json,
                 (
                     'Instances of ' .
@@ -1237,10 +1505,9 @@ class DaftObjectImplementationTest extends TestCase
             /**
             * @var array|bool
             */
-            $decoded = json_decode($json, true);
+            $decoded = json_decode((string) $json, true);
 
-            static::assertInternalType(
-                'array',
+            static::assertIsArray(
                 $decoded,
                 (
                     'JSON-encoded implementations of ' .
@@ -1420,8 +1687,7 @@ class DaftObjectImplementationTest extends TestCase
                 $prop = $v;
 
                 if (is_string($k)) {
-                    static::assertInternalType(
-                        'string',
+                    static::assertIsString(
                         $v,
                         sprintf(
                             (
@@ -1532,6 +1798,16 @@ class DaftObjectImplementationTest extends TestCase
                     )
                 );
             }
+
+            $initialCount = count($propertyNames);
+
+            static::assertCount(
+                $initialCount,
+                array_unique(
+                    array_map('mb_strtolower', $propertyNames),
+                    SORT_REGULAR
+                )
+            );
         } elseif (is_a($className, DaftObject\AbstractArrayBackedDaftObject::class, true)) {
             $this->expectException(DaftObject\DaftObjectNotDaftJsonBadMethodCallException::class);
             $this->expectExceptionMessage(sprintf(
@@ -1681,7 +1957,7 @@ class DaftObjectImplementationTest extends TestCase
         */
         $publicOrProtected = $className::DaftObjectPublicOrProtectedGetters();
 
-        static::assertInternalType('array', $publicOrProtected);
+        static::assertIsArray($publicOrProtected);
 
         /**
         * @var array
@@ -1692,8 +1968,8 @@ class DaftObjectImplementationTest extends TestCase
         * @var scalar
         */
         foreach ($publicOrProtected as $k => $v) {
-            static::assertInternalType('integer', $k);
-            static::assertInternalType('string', $v);
+            static::assertIsInt($k);
+            static::assertIsString($v);
         }
 
         /**
@@ -1705,8 +1981,8 @@ class DaftObjectImplementationTest extends TestCase
             */
             $expectedMethod = static::MethodNameFromProperty((string) $v);
 
-            static::assertInternalType('integer', $k);
-            static::assertInternalType('string', $v);
+            static::assertIsInt($k);
+            static::assertIsString($v);
             static::assertTrue(in_array($v, $publicOrProtected, true));
             static::assertTrue(method_exists($className, $expectedMethod));
         }
@@ -1869,6 +2145,16 @@ class DaftObjectImplementationTest extends TestCase
             $out .= ')';
 
             return $out;
+        } elseif ($val instanceof DateTimeImmutable) {
+            return
+                '(?:class |object){0,1}' .
+                '\({0,1}' .
+                preg_quote(DateTimeImmutable::class, '/') .
+                '(?:\:\:__set_state\(array\(|\)?#\d+ \(\d+\) \{)' .
+                '\s+(?:\["|\'|public \$)date(?:"\]|\'){0,1}\s*=>\s+(?:\'[^\']+\',|string\(\d+\) \"[^"]+\")' .
+                '\s+(?:\["|\'|public \$)timezone_type(?:"\]|\'){0,1}\s*=>\s+(?:int\(){0,1}\d+(?:\)){0,1},{0,1}' .
+                '\s+(?:\["|\'|public \$)timezone(?:"\]|\'){0,1}\s*=>\s+(?:\'[^\']+\',|string\(\d+\) \"[^"]+\")' .
+                '\s*(?:\)\)|\})';
         }
 
         return
@@ -2010,6 +2296,24 @@ class DaftObjectImplementationTest extends TestCase
                 DaftObject\IntegerIdBasedDaftObject::class,
                 [
                     'Foo' => 1,
+                ],
+            ],
+            [
+                DaftObject\DateTimeImmutableTestObject::class,
+                [
+                    'datetime' => new DateTimeImmutable(date(
+                        DaftObject\DateTimeImmutableTestObject::STR_FORMAT_TEST,
+                        0
+                    )),
+                ],
+            ],
+            [
+                DaftObject\DateTimeImmutableTestObject::class,
+                [
+                    'datetime' => new DateTimeImmutable(date(
+                        DaftObject\DateTimeImmutableTestObject::STR_FORMAT_TEST,
+                        1
+                    )),
                 ],
             ],
         ];

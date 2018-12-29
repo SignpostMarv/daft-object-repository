@@ -551,7 +551,7 @@ class DaftTestObjectTest extends TestCase
             $key = $keys[0];
             static::assertSame($val, $obj->$key);
         } else {
-            static::assertInternalType('array', $val);
+            static::assertIsArray($val);
 
             /**
             * @var array<int, scalar|null|array|object>
@@ -570,14 +570,14 @@ class DaftTestObjectTest extends TestCase
             */
             $val = $val;
 
-            static::assertInternalType('string', $val);
+            static::assertIsString($val);
         } elseif ($obj instanceof DefinesOwnIntegerIdInterface) {
             /**
             * @var scalar|null
             */
             $val = $val;
 
-            static::assertInternalType('int', $val);
+            static::assertIsInt($val);
         }
     }
 

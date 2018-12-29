@@ -117,4 +117,9 @@ interface DaftObject
     * List of public setter properties.
     */
     public static function DaftObjectPublicSetters() : array;
+
+    /**
+    * @return array<string, array<int, string>>
+    */
+    public static function DaftObjectPropertiesChangeOtherProperties() : array;
 }

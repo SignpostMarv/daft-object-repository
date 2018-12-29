@@ -49,6 +49,11 @@ abstract class AbstractDaftObject implements DaftObject
     const SORTABLE_PROPERTIES = [];
 
     /**
+    * @var array<string, array<int, string>>
+    */
+    const CHANGE_OTHER_PROPERTIES = [];
+
+    /**
     * Does some sanity checking.
     *
     * @see DefinesOwnIdPropertiesInterface
@@ -108,7 +113,7 @@ abstract class AbstractDaftObject implements DaftObject
             * @return mixed
             */
             function (string $prop) {
-                $expectedMethod = 'Get' . ucfirst($prop);
+                $expectedMethod = TypeUtilities::MethodNameFromProperty($prop);
 
                 return $this->$expectedMethod();
             },
@@ -131,7 +136,7 @@ abstract class AbstractDaftObject implements DaftObject
         * @var string
         */
         foreach (static::DaftSortableObjectProperties() as $property) {
-            $method = 'Get' . $property;
+            $method = TypeUtilities::MethodNameFromProperty($property);
             $sort = $this->$method() <=> $otherObject->$method();
 
             if (0 !== $sort) {
@@ -237,6 +242,19 @@ abstract class AbstractDaftObject implements DaftObject
         * @var array<int, string>
         */
         $out = static::SORTABLE_PROPERTIES;
+
+        return $out;
+    }
+
+    /**
+    * @return array<string, array<int, string>>
+    */
+    public static function DaftObjectPropertiesChangeOtherProperties() : array
+    {
+        /**
+        * @var array<string, array<int, string>>
+        */
+        $out = static::CHANGE_OTHER_PROPERTIES;
 
         return $out;
     }
