@@ -12,7 +12,7 @@ class IntegerIdBasedDaftObject
     extends
         AbstractArrayBackedDaftObject
     implements
-        DefinesOwnUntypedIdInterface
+        DefinesOwnIdPropertiesInterface
 {
     use DaftObjectIdValuesHashLazyInt;
 

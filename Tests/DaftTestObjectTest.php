@@ -12,10 +12,10 @@ use SignpostMarv\DaftObject\ClassMethodReturnHasZeroArrayCountException;
 use SignpostMarv\DaftObject\ClassMethodReturnIsNotArrayOfStringsException;
 use SignpostMarv\DaftObject\DaftObject;
 use SignpostMarv\DaftObject\DaftObjectWorm;
+use SignpostMarv\DaftObject\DefinesOwnArrayIdInterface;
 use SignpostMarv\DaftObject\DefinesOwnIdPropertiesInterface;
 use SignpostMarv\DaftObject\DefinesOwnIntegerIdInterface;
 use SignpostMarv\DaftObject\DefinesOwnStringIdInterface;
-use SignpostMarv\DaftObject\DefinesOwnUntypedIdInterface;
 use SignpostMarv\DaftObject\PropertyNotNullableException;
 use SignpostMarv\DaftObject\PropertyNotRewriteableException;
 use SignpostMarv\DaftObject\ReadOnly;
@@ -297,7 +297,9 @@ class DaftTestObjectTest extends TestCase
         foreach ($implementations as $args) {
             if (
                 is_string($args[0]) &&
-                is_a($args[0], DefinesOwnUntypedIdInterface::class, true) &&
+                ! is_a($args[0], DefinesOwnArrayIdInterface::class, true) &&
+                ! is_a($args[0], DefinesOwnStringIdInterface::class, true) &&
+                ! is_a($args[0], DefinesOwnIntegerIdInterface::class, true) &&
                 true === $args[2]
             ) {
                 $out[] = [$args[0], $args[1]];

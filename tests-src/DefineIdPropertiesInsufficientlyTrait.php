@@ -8,6 +8,14 @@ namespace SignpostMarv\DaftObject;
 
 trait DefineIdPropertiesInsufficientlyTrait
 {
+    /**
+    * @return null
+    */
+    public function GetId()
+    {
+        return null;
+    }
+
     public static function DaftObjectIdProperties() : array
     {
         return [];

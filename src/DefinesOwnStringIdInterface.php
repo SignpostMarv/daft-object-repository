@@ -11,7 +11,7 @@ namespace SignpostMarv\DaftObject;
 /**
 * Interface for allowing daft object implementations to define their own ids.
 */
-interface DefinesOwnStringIdInterface extends DefinesOwnUntypedIdInterface
+interface DefinesOwnStringIdInterface extends DefinesOwnIdPropertiesInterface
 {
     /**
     * Get the integer value of the Id.

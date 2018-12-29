@@ -18,7 +18,7 @@ use PHPStan\Type\Type;
 use PHPStan\Type\TypehintHelper;
 use ReflectionMethod;
 use SignpostMarv\DaftObject\DaftObject;
-use SignpostMarv\DaftObject\DefinesOwnUntypedIdInterface;
+use SignpostMarv\DaftObject\DefinesOwnIdPropertiesInterface;
 use SignpostMarv\DaftObject\TypeUtilities;
 
 class PropertyReflectionExtension implements PropertyReflection
@@ -205,7 +205,7 @@ class PropertyReflectionExtension implements PropertyReflection
     protected static function PropertyIsPublic(string $className, string $property) : bool
     {
         return
-            (is_a($className, DefinesOwnUntypedIdInterface::class, true) && 'id' === $property) ||
+            (is_a($className, DefinesOwnIdPropertiesInterface::class, true) && 'id' === $property) ||
             in_array($property, (array) $className::DaftObjectPublicGetters(), true) ||
             in_array($property, (array) $className::DaftObjectPublicSetters(), true);
     }
