@@ -57,9 +57,6 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractImplementations() : Generator
     {
-        /**
-        * @var array<int, mixed>
-        */
         foreach ($this->dataProviderImplementations() as $args) {
             list($className) = $args;
             if (
@@ -2141,17 +2138,11 @@ class DaftObjectImplementationTest extends TestCase
         */
         $publicOrProtected = $publicOrProtected;
 
-        /**
-        * @var scalar
-        */
         foreach ($publicOrProtected as $k => $v) {
             static::assertIsInt($k);
             static::assertIsString($v);
         }
 
-        /**
-        * @var scalar
-        */
         foreach ($className::DaftSortableObjectProperties() as $k => $v) {
             /**
             * @var string
