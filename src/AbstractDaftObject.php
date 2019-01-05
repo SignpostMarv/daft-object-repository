@@ -231,6 +231,9 @@ abstract class AbstractDaftObject implements DaftObject
         return $out;
     }
 
+    /**
+    * @return array<int, string>
+    */
     public static function DaftSortableObjectProperties() : array
     {
         if ( ! is_a(static::class, DaftSortableObject::class, true)) {

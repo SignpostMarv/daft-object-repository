@@ -13,6 +13,7 @@ use ReflectionClass;
 use ReflectionMethod;
 use ReflectionType;
 use SignpostMarv\DaftObject;
+use SignpostMarv\DaftObject\TypeUtilities;
 
 class DaftObjectImplementationTest extends TestCase
 {
@@ -57,7 +58,12 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractImplementations() : Generator
     {
-        foreach ($this->dataProviderImplementations() as $args) {
+        /**
+        * @var iterable<array>
+        */
+        $sources = $this->dataProviderImplementations();
+
+        foreach ($sources as $args) {
             list($className) = $args;
             if (
                 is_string($className) &&
@@ -570,8 +576,8 @@ class DaftObjectImplementationTest extends TestCase
 
                     foreach ($properties as $property) {
                         $propertyForMethod = ucfirst($property);
-                        $getter = static::MethodNameFromProperty($propertyForMethod);
-                        $setter = static::MethodNameFromProperty($propertyForMethod, true);
+                        $getter = TypeUtilities::MethodNameFromProperty($propertyForMethod, false);
+                        $setter = TypeUtilities::MethodNameFromProperty($propertyForMethod, true);
 
                         if ($reflector->hasMethod($getter)) {
                             /**
@@ -938,8 +944,8 @@ class DaftObjectImplementationTest extends TestCase
 
         if (count($properties) > 0 && 0 === count($nullables)) {
             foreach ($properties as $property) {
-                $getter = static::MethodNameFromProperty($property);
-                $setter = static::MethodNameFromProperty($property, true);
+                $getter = TypeUtilities::MethodNameFromProperty($property, false);
+                $setter = TypeUtilities::MethodNameFromProperty($property, true);
 
                 if ($reflector->hasMethod($getter)) {
                     $method = $reflector->getMethod($getter);
@@ -1116,8 +1122,8 @@ class DaftObjectImplementationTest extends TestCase
         $exportables = $className::DaftObjectExportableProperties();
 
         foreach ($properties as $property) {
-            $getter = static::MethodNameFromProperty($property);
-            $setter = static::MethodNameFromProperty($property, true);
+            $getter = TypeUtilities::MethodNameFromProperty($property, false);
+            $setter = TypeUtilities::MethodNameFromProperty($property, true);
 
             $hasAny = $reflector->hasMethod($getter) || $reflector->hasMethod($setter);
 
@@ -2134,7 +2140,7 @@ class DaftObjectImplementationTest extends TestCase
         static::assertIsArray($publicOrProtected);
 
         /**
-        * @var array
+        * @var array<int|string, scalar|array|object|null>
         */
         $publicOrProtected = $publicOrProtected;
 
@@ -2143,14 +2149,25 @@ class DaftObjectImplementationTest extends TestCase
             static::assertIsString($v);
         }
 
-        foreach ($className::DaftSortableObjectProperties() as $k => $v) {
+        /**
+        * @var array<int|string, scalar|array|object|null>
+        */
+        $properties = $className::DaftSortableObjectProperties();
+
+        foreach ($properties as $k => $v) {
+            static::assertIsInt($k);
+            static::assertIsString($v);
+
             /**
             * @var string
             */
-            $expectedMethod = static::MethodNameFromProperty((string) $v);
+            $v = $v;
 
-            static::assertIsInt($k);
-            static::assertIsString($v);
+            /**
+            * @var string
+            */
+            $expectedMethod = TypeUtilities::MethodNameFromProperty($v, false);
+
             static::assertTrue(in_array($v, $publicOrProtected, true));
             static::assertTrue(method_exists($className, $expectedMethod));
         }
@@ -2250,7 +2267,7 @@ class DaftObjectImplementationTest extends TestCase
         $exportables = $obj::DaftObjectExportableProperties();
 
         foreach ($exportables as $prop) {
-            $expectedMethod = static::MethodNameFromProperty($prop);
+            $expectedMethod = TypeUtilities::MethodNameFromProperty($prop, false);
             if (
                 $obj->__isset($prop) &&
                 method_exists($obj, $expectedMethod) &&
