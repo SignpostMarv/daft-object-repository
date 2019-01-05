@@ -48,7 +48,7 @@ class MultiTypedArrayPropertyImplementationTest extends TestCase
                 (
                     'Argument 3 passed to ' .
                     DaftObject\TypeUtilities::class .
-                    '::MaybeThrowIfValueDoesNotMatchMultiTypedArrayValueArray' .
+                    '::MaybeThrowIfValueArrayDoesNotMatchTypes' .
                     ' contained values that did not match the provided types!'
                 ),
             ],

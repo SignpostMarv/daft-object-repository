@@ -148,16 +148,14 @@ class TypeUtilities
     }
 
     /**
+    * @param array<int, mixed> $value
+    *
     * @return array<int, mixed> filtered $value
     */
-    protected static function MaybeThrowIfValueDoesNotMatchMultiTypedArrayValueArray(
-        bool $autoTrimStrings,
-        bool $throwIfNotUnique,
+    protected static function MaybeThrowIfValueArrayDoesNotMatchTypes(
         array $value,
         string ...$types
     ) : array {
-        $value = static::MaybeThrowIfNotArrayIntKeys($value);
-
         $initialCount = count($value);
 
         $value = array_filter(
@@ -187,6 +185,21 @@ class TypeUtilities
                 ' contained values that did not match the provided types!'
             );
         }
+
+        return $value;
+    }
+
+    /**
+    * @return array<int, mixed> filtered $value
+    */
+    protected static function MaybeThrowIfValueDoesNotMatchMultiTypedArrayValueArray(
+        bool $autoTrimStrings,
+        bool $throwIfNotUnique,
+        array $value,
+        string ...$types
+    ) : array {
+        $value = static::MaybeThrowIfNotArrayIntKeys($value);
+        $value = static::MaybeThrowIfValueArrayDoesNotMatchTypes($value, ...$types);
 
         $initialCount = count($value);
 
