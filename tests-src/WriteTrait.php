@@ -38,5 +38,10 @@ trait WriteTrait
     * @throws PropertyNotNullableException if $property is not in static::DaftObjectNullableProperties()
     * @throws PropertyNotRewriteableException if class is write-once read-many and $property was already changed
     */
-    abstract protected function NudgePropertyValue(string $property, $value) : void;
+    abstract protected function NudgePropertyValue(
+        string $property,
+        $value,
+        bool $autoTrimStrings = false,
+        bool $throwIfNotUnique = false
+    ) : void;
 }

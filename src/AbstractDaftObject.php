@@ -54,6 +54,11 @@ abstract class AbstractDaftObject implements DaftObject
     const CHANGE_OTHER_PROPERTIES = [];
 
     /**
+    * @var array<string, array<int, string>>
+    */
+    const PROPERTIES_WITH_MULTI_TYPED_ARRAYS = [];
+
+    /**
     * Does some sanity checking.
     *
     * @see DefinesOwnIdPropertiesInterface
@@ -255,6 +260,32 @@ abstract class AbstractDaftObject implements DaftObject
         * @var array<string, array<int, string>>
         */
         $out = static::CHANGE_OTHER_PROPERTIES;
+
+        return $out;
+    }
+
+    /**
+    * @return array<string, array<int, string>>
+    */
+    public static function DaftObjectPropertiesWithMultiTypedArraysOfUniqueValues() : array
+    {
+        if (
+            ! is_a(
+                static::class,
+                DaftObjectHasPropertiesWithMultiTypedArraysOfUniqueValues::class,
+                true
+            )
+        ) {
+            throw new ClassDoesNotImplementClassException(
+                static::class,
+                DaftObjectHasPropertiesWithMultiTypedArraysOfUniqueValues::class
+            );
+        }
+
+        /**
+        * @var array<string, array<int, string>>
+        */
+        $out = static::PROPERTIES_WITH_MULTI_TYPED_ARRAYS;
 
         return $out;
     }

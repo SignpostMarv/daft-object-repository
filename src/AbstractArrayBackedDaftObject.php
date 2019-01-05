@@ -214,8 +214,12 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     /**
     * @param scalar|null|array|object $value
     */
-    protected function NudgePropertyValue(string $property, $value) : void
-    {
+    protected function NudgePropertyValue(
+        string $property,
+        $value,
+        bool $autoTrimStrings = false,
+        bool $throwIfNotUnique = false
+    ) : void {
         /**
         * @var array<int, string>
         */
@@ -223,6 +227,37 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
 
         $this->MaybeThrowForPropertyOnNudge($property);
         $this->MaybeThrowOnNudge($property, $value, $nullables);
+
+        /**
+        * @var array<int, string>|null
+        */
+        $spec = null;
+
+        if (
+            is_a(
+                static::class,
+                DaftObjectHasPropertiesWithMultiTypedArraysOfUniqueValues::class,
+                true
+            )
+        ) {
+            $spec = (
+                static::DaftObjectPropertiesWithMultiTypedArraysOfUniqueValues()[$property] ?? null
+            );
+        }
+
+        if (is_array($spec)) {
+            $value = $this->MaybeThrowIfValueDoesNotMatchMultiTypedArray(
+                $property,
+                $autoTrimStrings,
+                $throwIfNotUnique,
+                $value,
+                ...$spec
+            );
+        }
+
+        if (is_string($value) && $autoTrimStrings) {
+            $value = trim($value);
+        }
 
         $isChanged = (
             ! array_key_exists($property, $this->data) ||
@@ -263,5 +298,97 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         if (true === is_null($value) && true !== in_array($property, $properties, true)) {
             throw new PropertyNotNullableException(static::class, $property);
         }
+    }
+
+    /**
+    * @param mixed $value
+    *
+    * @return array<int, mixed> filtered $value
+    */
+    protected function MaybeThrowIfValueDoesNotMatchMultiTypedArray(
+        string $prop,
+        bool $autoTrimStrings,
+        bool $throwIfNotUnique,
+        $value,
+        string ...$types
+    ) : array {
+        if ( ! is_array($value)) {
+            throw new InvalidArgumentException(
+                'Argument 4 passed to ' .
+                __METHOD__ .
+                ' must be an array, ' .
+                (is_object($value) ? get_class($value) : gettype($value)) .
+                ' given!'
+            );
+        }
+
+        $initialCount = count($value);
+        $value = array_filter($value, 'is_int', ARRAY_FILTER_USE_KEY);
+
+        if (count($value) !== $initialCount) {
+            throw new InvalidArgumentException(
+                'Argument 4 passed to ' .
+                __METHOD__ .
+                ' must be array<int, mixed>'
+            );
+        }
+
+        $initialCount = count($value);
+
+        $value = array_filter(
+            $value,
+            /**
+            * @param mixed $maybe
+            */
+            function ($maybe) use ($types) : bool {
+                if (is_object($maybe)) {
+                    foreach ($types as $maybeType) {
+                        if (is_a($maybe, $maybeType)) {
+                            return true;
+                        }
+                    }
+
+                    return false;
+                }
+
+                return in_array(gettype($maybe), $types, true);
+            }
+        );
+
+        if (count($value) !== $initialCount) {
+            throw new InvalidArgumentException(
+                'Argument 4 passed to ' .
+                __METHOD__ .
+                ' contained values that did not match the provided types!'
+            );
+        }
+
+        $initialCount = count($value);
+
+        if (in_array('string', $types, true) && $autoTrimStrings && $initialCount > 0) {
+            $value = array_map(
+                /**
+                * @param mixed $maybe
+                *
+                * @return mixed
+                */
+                function ($maybe) {
+                    return is_string($maybe) ? trim($maybe) : $maybe;
+                },
+                $value
+            );
+        }
+
+        $value = array_unique($value, SORT_REGULAR);
+
+        if ($throwIfNotUnique && count($value) !== $initialCount) {
+            throw new InvalidArgumentException(
+                'Argument 3 passed to ' .
+                __METHOD__ .
+                ' contained non-unique values!'
+            );
+        }
+
+        return array_values($value);
     }
 }
