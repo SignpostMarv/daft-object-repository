@@ -2109,6 +2109,27 @@ class DaftObjectImplementationTest extends TestCase
         }
     }
 
+    final public function DataProviderNotDaftObjectHasPropertiesWithMultiTypedArraysOfUniqueValues(
+    ) : Generator {
+        /**
+        * @var iterable<array<int, string>>
+        */
+        $sources = $this->dataProviderImplementations();
+
+        foreach ($sources as $args) {
+            if (
+                is_a($args[0], DaftObject\AbstractDaftObject::class, true) &&
+                ! is_a(
+                    $args[0],
+                    DaftObject\DaftObjectHasPropertiesWithMultiTypedArraysOfUniqueValues::class,
+                    true
+                )
+            ) {
+                yield [$args[0]];
+            }
+        }
+    }
+
     /**
     * @dataProvider dataProviderDaftObjectCreatedByArray
     *
@@ -2241,6 +2262,25 @@ class DaftObjectImplementationTest extends TestCase
         ));
 
         $a->CompareToDaftSortableObject($b);
+    }
+
+    /**
+    * @dataProvider DataProviderNotDaftObjectHasPropertiesWithMultiTypedArraysOfUniqueValues
+    *
+    * @psalm-suppress InvalidStringClass
+    */
+    public function testNotDaftObjectHasPropertiesWithMultiTypedArraysOfUniqueValues(
+        string $implementation
+    ) : void {
+        static::assertTrue(is_a($implementation, DaftObject\AbstractDaftObject::class, true));
+        static::expectException(DaftObject\ClassDoesNotImplementClassException::class);
+        static::expectExceptionMessage(
+            $implementation .
+            ' does not implement ' .
+            DaftObject\DaftObjectHasPropertiesWithMultiTypedArraysOfUniqueValues::class
+        );
+
+        $implementation::DaftObjectPropertiesWithMultiTypedArraysOfUniqueValues();
     }
 
     /**
