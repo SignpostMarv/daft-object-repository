@@ -127,13 +127,13 @@ class TypeUtilities
     /**
     * @return array<int, mixed> filtered $value
     */
-    protected static function MaybeThrowIfValueDoesNotMatchMultiTypedArrayValueArray(
-        bool $autoTrimStrings,
-        bool $throwIfNotUnique,
-        array $value,
-        string ...$types
-    ) : array {
+    protected static function MaybeThrowIfNotArrayIntKeys(array $value) : array
+    {
         $initialCount = count($value);
+
+        /**
+        * @var array<int, mixed>
+        */
         $value = array_filter($value, 'is_int', ARRAY_FILTER_USE_KEY);
 
         if (count($value) !== $initialCount) {
@@ -143,6 +143,20 @@ class TypeUtilities
                 ' must be array<int, mixed>'
             );
         }
+
+        return $value;
+    }
+
+    /**
+    * @return array<int, mixed> filtered $value
+    */
+    protected static function MaybeThrowIfValueDoesNotMatchMultiTypedArrayValueArray(
+        bool $autoTrimStrings,
+        bool $throwIfNotUnique,
+        array $value,
+        string ...$types
+    ) : array {
+        $value = static::MaybeThrowIfNotArrayIntKeys($value);
 
         $initialCount = count($value);
 
