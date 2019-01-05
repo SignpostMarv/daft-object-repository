@@ -116,6 +116,23 @@ class TypeUtilities
             );
         }
 
+        return static::MaybeThrowIfValueDoesNotMatchMultiTypedArrayValueArray(
+            $autoTrimStrings,
+            $throwIfNotUnique,
+            $value,
+            ...$types
+        );
+    }
+
+    /**
+    * @return array<int, mixed> filtered $value
+    */
+    protected static function MaybeThrowIfValueDoesNotMatchMultiTypedArrayValueArray(
+        bool $autoTrimStrings,
+        bool $throwIfNotUnique,
+        array $value,
+        string ...$types
+    ) : array {
         $initialCount = count($value);
         $value = array_filter($value, 'is_int', ARRAY_FILTER_USE_KEY);
 

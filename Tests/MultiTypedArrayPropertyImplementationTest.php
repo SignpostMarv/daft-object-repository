@@ -37,7 +37,7 @@ class MultiTypedArrayPropertyImplementationTest extends TestCase
                 (
                     'Argument 3 passed to ' .
                     DaftObject\TypeUtilities::class .
-                    '::MaybeThrowIfValueDoesNotMatchMultiTypedArray must be array<int, mixed>'
+                    '::MaybeThrowIfValueDoesNotMatchMultiTypedArrayValueArray must be array<int, mixed>'
                 ),
             ],
             [
@@ -48,7 +48,7 @@ class MultiTypedArrayPropertyImplementationTest extends TestCase
                 (
                     'Argument 3 passed to ' .
                     DaftObject\TypeUtilities::class .
-                    '::MaybeThrowIfValueDoesNotMatchMultiTypedArray' .
+                    '::MaybeThrowIfValueDoesNotMatchMultiTypedArrayValueArray' .
                     ' contained values that did not match the provided types!'
                 ),
             ],
@@ -118,7 +118,7 @@ class MultiTypedArrayPropertyImplementationTest extends TestCase
         static::expectExceptionMessage(
             'Argument 3 passed to ' .
             DaftObject\TypeUtilities::class .
-            '::MaybeThrowIfValueDoesNotMatchMultiTypedArray contained non-unique values!'
+            '::MaybeThrowIfValueDoesNotMatchMultiTypedArrayValueArray contained non-unique values!'
         );
 
         $obj->$property = $value;
