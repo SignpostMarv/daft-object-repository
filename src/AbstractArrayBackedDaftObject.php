@@ -228,6 +228,36 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         $this->MaybeThrowForPropertyOnNudge($property);
         $this->MaybeThrowOnNudge($property, $value, $nullables);
 
+        $value = $this->MaybeModifyValueBeforeNudge(
+            $property,
+            $value,
+            $autoTrimStrings,
+            $throwIfNotUnique
+        );
+
+        $isChanged = (
+            ! array_key_exists($property, $this->data) ||
+            $this->data[$property] !== $value
+        );
+
+        $this->data[$property] = $value;
+
+        if ($isChanged && true !== isset($this->changedProperties[$property])) {
+            $this->changedProperties[$property] = $this->wormProperties[$property] = true;
+        }
+    }
+
+    /**
+    * @param scalar|array|object|null $value
+    *
+    * @return scalar|array|object|null
+    */
+    protected function MaybeModifyValueBeforeNudge(
+        string $property,
+        $value,
+        bool $autoTrimStrings = false,
+        bool $throwIfNotUnique = false
+    ) {
         /**
         * @var array<int, string>|null
         */
@@ -258,16 +288,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
             $value = trim($value);
         }
 
-        $isChanged = (
-            ! array_key_exists($property, $this->data) ||
-            $this->data[$property] !== $value
-        );
-
-        $this->data[$property] = $value;
-
-        if ($isChanged && true !== isset($this->changedProperties[$property])) {
-            $this->changedProperties[$property] = $this->wormProperties[$property] = true;
-        }
+        return $value;
     }
 
     /**
