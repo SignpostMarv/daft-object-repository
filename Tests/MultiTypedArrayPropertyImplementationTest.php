@@ -23,7 +23,7 @@ class MultiTypedArrayPropertyImplementationTest extends TestCase
                 0,
                 InvalidArgumentException::class,
                 (
-                    'Argument 4 passed to ' .
+                    'Argument 3 passed to ' .
                     DaftObject\AbstractArrayBackedDaftObject::class .
                     '::MaybeThrowIfValueDoesNotMatchMultiTypedArray must be an array' .
                     ', integer given!'
@@ -35,7 +35,7 @@ class MultiTypedArrayPropertyImplementationTest extends TestCase
                 ['foo' => 'bar'],
                 InvalidArgumentException::class,
                 (
-                    'Argument 4 passed to ' .
+                    'Argument 3 passed to ' .
                     DaftObject\AbstractArrayBackedDaftObject::class .
                     '::MaybeThrowIfValueDoesNotMatchMultiTypedArray must be array<int, mixed>'
                 ),
@@ -46,7 +46,7 @@ class MultiTypedArrayPropertyImplementationTest extends TestCase
                 [new DateTime()],
                 InvalidArgumentException::class,
                 (
-                    'Argument 4 passed to ' .
+                    'Argument 3 passed to ' .
                     DaftObject\AbstractArrayBackedDaftObject::class .
                     '::MaybeThrowIfValueDoesNotMatchMultiTypedArray' .
                     ' contained values that did not match the provided types!'

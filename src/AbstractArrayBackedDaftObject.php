@@ -246,8 +246,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         }
 
         if (is_array($spec)) {
-            $value = $this->MaybeThrowIfValueDoesNotMatchMultiTypedArray(
-                $property,
+            $value = static::MaybeThrowIfValueDoesNotMatchMultiTypedArray(
                 $autoTrimStrings,
                 $throwIfNotUnique,
                 $value,
@@ -305,8 +304,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     *
     * @return array<int, mixed> filtered $value
     */
-    protected function MaybeThrowIfValueDoesNotMatchMultiTypedArray(
-        string $prop,
+    protected static function MaybeThrowIfValueDoesNotMatchMultiTypedArray(
         bool $autoTrimStrings,
         bool $throwIfNotUnique,
         $value,
@@ -314,7 +312,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     ) : array {
         if ( ! is_array($value)) {
             throw new InvalidArgumentException(
-                'Argument 4 passed to ' .
+                'Argument 3 passed to ' .
                 __METHOD__ .
                 ' must be an array, ' .
                 (is_object($value) ? get_class($value) : gettype($value)) .
@@ -327,7 +325,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
 
         if (count($value) !== $initialCount) {
             throw new InvalidArgumentException(
-                'Argument 4 passed to ' .
+                'Argument 3 passed to ' .
                 __METHOD__ .
                 ' must be array<int, mixed>'
             );
@@ -357,7 +355,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
 
         if (count($value) !== $initialCount) {
             throw new InvalidArgumentException(
-                'Argument 4 passed to ' .
+                'Argument 3 passed to ' .
                 __METHOD__ .
                 ' contained values that did not match the provided types!'
             );
