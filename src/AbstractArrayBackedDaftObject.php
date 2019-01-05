@@ -38,7 +38,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     private $wormProperties = [];
 
     /**
-    * @param array<int|string, scalar|null|array|object> $data
+    * @param array<int|string, scalar|array|object|null> $data
     */
     public function __construct(array $data = [], bool $writeAll = false)
     {
@@ -103,7 +103,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
 
         foreach ($properties as $property) {
             /**
-            * @var scalar|null|array|object
+            * @var scalar|array|object|null
             */
             $val = $this->DoGetSet($property, false);
 
@@ -128,7 +128,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         $mapper = static::DaftJsonClosure($array, $writeAll);
 
         /**
-        * @var array<int, scalar|null|object|array>
+        * @var array<int, scalar|object|array|null>
         */
         $vals = array_map($mapper, $props);
 
@@ -212,7 +212,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     }
 
     /**
-    * @param scalar|null|array|object $value
+    * @param scalar|array|object|null $value
     */
     protected function NudgePropertyValue(
         string $property,

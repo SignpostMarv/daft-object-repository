@@ -10,10 +10,10 @@ use DateTimeImmutable;
 use Generator;
 use RuntimeException;
 use SignpostMarv\DaftObject\DaftObject;
+use SignpostMarv\DaftObject\MultiTypedArrayPropertiesTester;
 use SignpostMarv\DaftObject\NotPublicGetterPropertyException;
 use SignpostMarv\DaftObject\NotPublicSetterPropertyException;
 use SignpostMarv\DaftObject\PasswordHashTestObject;
-use SignpostMarv\DaftObject\MultiTypedArrayPropertiesTester;
 use SignpostMarv\DaftObject\ReadWrite;
 
 class DaftObjectGetterSetterTest extends TestCase
@@ -267,7 +267,7 @@ class DaftObjectGetterSetterTest extends TestCase
         ));
 
         /**
-        * @var scalar|null|array|DaftObject
+        * @var scalar|array|DaftObject|null
         */
         $foo = $obj->$property;
     }

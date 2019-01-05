@@ -12,7 +12,6 @@ use Generator;
 use InvalidArgumentException;
 use SignpostMarv\DaftObject;
 
-
 class MultiTypedArrayPropertyImplementationTest extends TestCase
 {
     public function DataProviderObjectPropertyValueException() : Generator
@@ -78,7 +77,7 @@ class MultiTypedArrayPropertyImplementationTest extends TestCase
                 new DaftObject\MultiTypedArrayPropertiesTester(),
                 'trimmedStrings',
                 [' foo', 'foo', 'foo ', ' foo '],
-                ['foo']
+                ['foo'],
             ],
             [
                 new DaftObject\MultiTypedArrayPropertiesTester(),

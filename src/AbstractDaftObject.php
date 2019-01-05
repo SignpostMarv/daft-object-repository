@@ -294,7 +294,7 @@ abstract class AbstractDaftObject implements DaftObject
     * Nudge the state of a given property, marking it as dirty.
     *
     * @param string $property property being nudged
-    * @param scalar|null|array|object $value value to nudge property with
+    * @param scalar|array|object|null $value value to nudge property with
     *
     * @throws UndefinedPropertyException if $property is not in static::DaftObjectProperties()
     * @throws PropertyNotNullableException if $property is not in static::DaftObjectNullableProperties()

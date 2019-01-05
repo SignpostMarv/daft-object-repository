@@ -29,7 +29,7 @@ trait DaftObjectIdValuesHashLazyInt
 
         foreach ($properties as $prop) {
             /**
-            * @var scalar|null|array|object|resource
+            * @var scalar|array|object|resource|null
             */
             $val = $object->$prop;
 

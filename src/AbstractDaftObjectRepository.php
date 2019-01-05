@@ -53,7 +53,7 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
 
         foreach ($properties as $prop) {
             /**
-            * @var scalar|null|array|object
+            * @var scalar|array|object|null
             */
             $val = $object->$prop;
 
@@ -76,7 +76,7 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
 
         foreach ($properties as $prop) {
             /**
-            * @var scalar|null|array|object
+            * @var scalar|array|object|null
             */
             $val = $object->$prop;
 

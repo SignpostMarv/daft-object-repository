@@ -73,7 +73,7 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
             $getter = TypeUtilities::MethodNameFromProperty($property);
 
             /**
-            * @var scalar|null|array|object
+            * @var scalar|array|object|null
             */
             $val = $object->$getter();
 

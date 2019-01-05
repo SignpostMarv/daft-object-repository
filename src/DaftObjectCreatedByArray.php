@@ -18,7 +18,7 @@ interface DaftObjectCreatedByArray extends DaftObject
     /**
     * Create an array-backed daft object.
     *
-    * @param array<int|string, scalar|null|array|object> $data key-value pairs
+    * @param array<int|string, scalar|array|object|null> $data key-value pairs
     * @param bool $writeAll if TRUE, route $data through static::__set()
     */
     public function __construct(array $data = [], bool $writeAll = false);

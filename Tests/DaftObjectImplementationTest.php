@@ -2130,7 +2130,7 @@ class DaftObjectImplementationTest extends TestCase
         static::assertTrue(is_a($className, DaftObject\DaftSortableObject::class, true));
 
         /**
-        * @var scalar|array|null|object|resource
+        * @var scalar|array|object|resource|null
         */
         $publicOrProtected = $className::DaftObjectPublicOrProtectedGetters();
 
@@ -2249,7 +2249,7 @@ class DaftObjectImplementationTest extends TestCase
     protected static function RegexForObject(DaftObject\DaftObject $obj) : string
     {
         /**
-        * @var array<string, scalar|null|array|DaftObject\DaftObject>
+        * @var array<string, scalar|array|DaftObject\DaftObject|null>
         */
         $props = [];
 
@@ -2266,7 +2266,7 @@ class DaftObjectImplementationTest extends TestCase
                 (new ReflectionMethod($obj, $expectedMethod))->isPublic()
             ) {
                 /**
-                * @var scalar|null|array|DaftObject\DaftObject
+                * @var scalar|array|DaftObject\DaftObject|null
                 */
                 $res = $obj->$expectedMethod();
 

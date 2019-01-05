@@ -310,7 +310,7 @@ class DaftTestObjectTest extends TestCase
     }
 
     /**
-    * @param array<string, scalar|null|array|object> $params
+    * @param array<string, scalar|array|object|null> $params
     *
     * @dataProvider GoodDataProvider
     *
@@ -416,7 +416,7 @@ class DaftTestObjectTest extends TestCase
         $debugInfo = $this->VarDumpDaftObject($obj);
 
         /**
-        * @var array<string, scalar|null|array|object|bool|float>
+        * @var array<string, scalar|array|object|bool|float|null>
         */
         $props = [];
 
@@ -430,7 +430,7 @@ class DaftTestObjectTest extends TestCase
                 )->isPublic()
             ) {
                 /**
-                * @var scalar|null|array|object
+                * @var scalar|array|object|null
                 */
                 $propVal = $obj->$expectedMethod();
 
@@ -524,7 +524,7 @@ class DaftTestObjectTest extends TestCase
 
             foreach ($paramKeys as $property) {
                 /**
-                * @var scalar|null|array|object
+                * @var scalar|array|object|null
                 */
                 $var = $obj->$property;
             }
@@ -547,7 +547,7 @@ class DaftTestObjectTest extends TestCase
         $obj = new $implementation($params, false);
 
         /**
-        * @var array<int, scalar|null|array|object>|null
+        * @var array<int, scalar|array|object|null>|null
         */
         $val = $obj->id;
 
@@ -568,7 +568,7 @@ class DaftTestObjectTest extends TestCase
             static::assertIsArray($val);
 
             /**
-            * @var array<int, scalar|null|array|object>
+            * @var array<int, scalar|array|object|null>
             */
             $val = $val;
 

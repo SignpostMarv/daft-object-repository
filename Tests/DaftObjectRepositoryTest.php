@@ -7,7 +7,6 @@ declare(strict_types=1);
 namespace SignpostMarv\DaftObject\Tests;
 
 use Generator;
-use InvalidArgumentException;
 use RuntimeException;
 use SignpostMarv\DaftObject\DaftObject;
 use SignpostMarv\DaftObject\DaftObjectMemoryRepository;
@@ -122,7 +121,7 @@ class DaftObjectRepositoryTest extends TestCase
 
             foreach ($props as $prop) {
                 /**
-                * @var scalar|array|null|\SignpostMarv\DaftObject\DaftObject
+                * @var scalar|array|\SignpostMarv\DaftObject\DaftObject|null
                 */
                 $val = $obj->$prop;
 
@@ -361,7 +360,7 @@ class DaftObjectRepositoryTest extends TestCase
                 true === is_numeric($obj->$prop)
             ) {
                 /**
-                * @var int|float|string|scalar|array|null|DaftObject\DaftObject
+                * @var int|float|string|scalar|array|DaftObject\DaftObject|null
                 */
                 $propVal = $retrieved->$prop;
 
