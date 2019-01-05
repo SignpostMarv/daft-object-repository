@@ -8,6 +8,7 @@ namespace SignpostMarv\DaftObject\Tests;
 
 use SignpostMarv\DaftObject\ClassDoesNotImplementClassException;
 use SignpostMarv\DaftObject\DaftJson;
+use SignpostMarv\DaftObject\DaftObject;
 use SignpostMarv\DaftObject\PropertyNotJsonDecodableException;
 use SignpostMarv\DaftObject\PropertyNotJsonDecodableShouldBeArrayException;
 use SignpostMarv\DaftObject\PropertyNotNullableException;
@@ -105,6 +106,8 @@ class DaftJsonExceptionTest extends TestCase
 
     /**
     * @dataProvider dataProviderClassDoesNotImplementClassException
+    *
+    * @psalm-suppress InvalidStringClass
     */
     public function testClassDoesNotImplementClassException(
         string $implementation,
@@ -112,6 +115,8 @@ class DaftJsonExceptionTest extends TestCase
         array $args,
         bool $writeAll
     ) : void {
+        static::assertTrue(is_subclass_of($implementation, DaftObject::class, true));
+
         $this->expectException(ClassDoesNotImplementClassException::class);
         $this->expectExceptionMessage(sprintf(
             '%s does not implement %s',
@@ -124,6 +129,8 @@ class DaftJsonExceptionTest extends TestCase
 
     /**
     * @dataProvider dataProviderPropertyNotThingableException
+    *
+    * @psalm-suppress InvalidStringClass
     */
     public function testPropertyNotThingableException(
         string $implementation,
@@ -141,7 +148,7 @@ class DaftJsonExceptionTest extends TestCase
             $expectingFailureWithClass,
             $expectingFailureWithProperty
         ));
-        static::assertTrue(is_a($implementation, DaftJson::class, true));
+        static::assertTrue(is_subclass_of($implementation, DaftJson::class, true));
 
         /**
         * @var DaftJson

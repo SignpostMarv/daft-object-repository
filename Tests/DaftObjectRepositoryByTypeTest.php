@@ -10,6 +10,7 @@ use SignpostMarv\DaftObject\DaftObjectCreatedByArray;
 use SignpostMarv\DaftObject\DaftObjectMemoryRepository;
 use SignpostMarv\DaftObject\DaftObjectNullStub;
 use SignpostMarv\DaftObject\DaftObjectNullStubCreatedByArray;
+use SignpostMarv\DaftObject\DaftObjectRepository;
 use SignpostMarv\DaftObject\DaftObjectRepositoryTypeException;
 use SignpostMarv\DaftObject\DefinesOwnIdPropertiesInterface;
 
@@ -40,6 +41,8 @@ class DaftObjectRepositoryByTypeTest extends TestCase
     * @param mixed ...$additionalArgs
     *
     * @dataProvider RepositoryTypeDataProvider
+    *
+    * @psalm-suppress InvalidStringClass
     */
     public function testForCreatedByArray(
         string $repoImplementation,
@@ -47,6 +50,8 @@ class DaftObjectRepositoryByTypeTest extends TestCase
         string $typeExpected,
         ...$additionalArgs
     ) : void {
+        static::assertTrue(is_subclass_of($repoImplementation, DaftObjectRepository::class, true));
+
         $this->expectException(DaftObjectRepositoryTypeException::class);
         $this->expectExceptionMessage(
             'Argument 1 passed to ' .

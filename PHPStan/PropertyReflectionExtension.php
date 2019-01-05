@@ -202,8 +202,16 @@ class PropertyReflectionExtension implements PropertyReflection
         );
     }
 
+    /**
+    * @psalm-suppress InvalidStringClass
+    * @psalm-suppress MixedMethodCall
+    */
     protected static function PropertyIsPublic(string $className, string $property) : bool
     {
+        if ( ! is_subclass_of($className, DaftObject::class, true)) {
+            return false;
+        }
+
         return
             (is_a($className, DefinesOwnIdPropertiesInterface::class, true) && 'id' === $property) ||
             in_array($property, (array) $className::DaftObjectPublicGetters(), true) ||

@@ -313,6 +313,8 @@ class DaftTestObjectTest extends TestCase
     * @param array<string, scalar|null|array|object> $params
     *
     * @dataProvider GoodDataProvider
+    *
+    * @psalm-suppress InvalidStringClass
     */
     public function testGood(
         string $implementation,
@@ -320,6 +322,8 @@ class DaftTestObjectTest extends TestCase
         bool $readable = false,
         bool $writeable = false
     ) : void {
+        static::assertTrue(is_subclass_of($implementation, DaftObject::class, true));
+
         /**
         * @var DaftObject
         */
@@ -495,6 +499,8 @@ class DaftTestObjectTest extends TestCase
 
     /**
     * @dataProvider ThrowsExceptionProvider
+    *
+    * @psalm-suppress InvalidStringClass
     */
     public function testThrowsException(
         string $implementation,
@@ -504,6 +510,8 @@ class DaftTestObjectTest extends TestCase
         bool $readable,
         bool $writeable
     ) : void {
+        static::assertTrue(is_subclass_of($implementation, DaftObject::class, true));
+
         if ($readable) {
             $this->expectException($expectedExceptionType);
             $this->expectExceptionMessage($expectedExceptionMessage);
@@ -529,9 +537,13 @@ class DaftTestObjectTest extends TestCase
 
     /**
     * @dataProvider DefinesOwnUntypedIdInterfaceProvider
+    *
+    * @psalm-suppress InvalidStringClass
     */
     public function testDefinesOwnUntypedIdInterface(string $implementation, array $params) : void
     {
+        static::assertTrue(is_subclass_of($implementation, DaftObject::class, true));
+
         $obj = new $implementation($params, false);
 
         /**
@@ -594,6 +606,8 @@ class DaftTestObjectTest extends TestCase
 
     /**
     * @dataProvider RetrievePropertyValueFromDataNotNullableExceptionDataProvider
+    *
+    * @psalm-suppress InvalidStringClass
     */
     public function testRetrievePropertyValueFromDataNotNullableException(
         string $implementation
@@ -605,12 +619,12 @@ class DaftTestObjectTest extends TestCase
         /**
         * @var array<int, string>
         */
-        $props = (array) $implementation::DaftObjectProperties();
+        $props = $implementation::DaftObjectProperties();
 
         /**
         * @var array<int, string>
         */
-        $nullables = (array) $implementation::DaftObjectNullableProperties();
+        $nullables = $implementation::DaftObjectNullableProperties();
 
         $allNullable = true;
 
