@@ -33,7 +33,7 @@ trait DaftObjectIdValuesHashLazyInt
             */
             $val = $object->$prop;
 
-            $id[] = (string) $val;
+            $id[] = TypeParanoia::VarExportNonScalars($val);
         }
 
         return static::DaftObjectIdValuesHash($id);

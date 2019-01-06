@@ -96,8 +96,7 @@
             "ignore": [
                 "SignpostMarv\\DaftObject\\JsonTypeUtilities::ThrowIfNotDaftJson",
                 "SignpostMarv\\DaftObject\\JsonTypeUtilities::ThrowIfNotJsonType",
-                "SignpostMarv\\DaftObject\\TypeUtilities::IsSubThingStrings",
-                "SignpostMarv\\DaftObject\\TypeUtilities::IsThingStrings"
+                "SignpostMarv\\DaftObject\\TypeParanoia::IsSubThingStrings"
             ]
         },
         "ProtectedVisibility": {
@@ -119,9 +118,9 @@
             "ignore": [
                 "SignpostMarv\\DaftObject\\AbstractArrayBackedDaftObject::MaybeThrowForPropertyOnNudge",
                 "SignpostMarv\\DaftObject\\AbstractDaftObject::CompareToDaftSortableObject",
-                "SignpostMarv\\DaftObject\\TypeUtilities::EnsureArgumentIsString",
-                "SignpostMarv\\DaftObject\\TypeUtilities::EnsureArgumentIsArray",
-                "SignpostMarv\\DaftObject\\TypeUtilities::MaybeInMaybeArray",
+                "SignpostMarv\\DaftObject\\TypeParanoia::EnsureArgumentIsString",
+                "SignpostMarv\\DaftObject\\TypeParanoia::EnsureArgumentIsArray",
+                "SignpostMarv\\DaftObject\\TypeParanoia::MaybeInMaybeArray",
                 "SignpostMarv\\DaftObject\\PHPStan\\ClassReflectionExtension::getProperty",
                 "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::__construct",
                 "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::getDeclaringClass",
@@ -132,8 +131,8 @@
         "TrueValue": {
             "ignore": [
                 "SignpostMarv\\DaftObject\\DaftObjectMemoryRepository::RecallDaftObjectFromData",
-                "SignpostMarv\\DaftObject\\TypeUtilities::MaybeInArray",
-                "SignpostMarv\\DaftObject\\TypeUtilities::IsSubThingStrings"
+                "SignpostMarv\\DaftObject\\TypeParanoia::MaybeInArray",
+                "SignpostMarv\\DaftObject\\TypeParanoia::IsSubThingStrings"
             ]
         }
     }

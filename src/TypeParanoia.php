@@ -14,6 +14,8 @@ class TypeParanoia
 
     const INDEX_SECOND_ARG = 2;
 
+    const BOOL_VAR_EXPORT_RETURN = true;
+
     /**
     * @param mixed $needle
     * @param mixed $haystack
@@ -59,6 +61,24 @@ class TypeParanoia
     public static function ForceArgumentAsArray($maybe) : array
     {
         return is_array($maybe) ? $maybe : [$maybe];
+    }
+
+    /**
+    * @param mixed $maybe
+    *
+    * @psalm-suppress InvalidNullableReturnType
+    * @psalm-suppress NullableReturnStatement
+    */
+    public static function VarExportNonScalars($maybe) : string
+    {
+        if (is_string($maybe)) {
+            return $maybe;
+        }
+
+        return
+            is_scalar($maybe)
+                ? (string) $maybe
+                : var_export($maybe, self::BOOL_VAR_EXPORT_RETURN);
     }
 
     /**
