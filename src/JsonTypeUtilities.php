@@ -17,13 +17,6 @@ class JsonTypeUtilities
         }
     }
 
-    private static function ThrowIfNotJsonType(string $jsonType) : void
-    {
-        if ( ! TypeParanoia::IsThingStrings($jsonType, DaftJson::class)) {
-            throw new ClassDoesNotImplementClassException($jsonType, DaftJson::class);
-        }
-    }
-
     /**
     * @return array<int, DaftJson>|DaftJson
     */
@@ -76,6 +69,13 @@ class JsonTypeUtilities
         }
 
         return $object;
+    }
+
+    private static function ThrowIfNotJsonType(string $jsonType) : void
+    {
+        if ( ! TypeParanoia::IsThingStrings($jsonType, DaftJson::class)) {
+            throw new ClassDoesNotImplementClassException($jsonType, DaftJson::class);
+        }
     }
 
     private static function MakeMapperThrowIfJsonDefNotValid(
