@@ -12,14 +12,14 @@ class JsonTypeUtilities
 {
     public static function ThrowIfNotDaftJson(string $class) : void
     {
-        if (false === is_a($class, DaftJson::class, true)) {
+        if ( ! TypeParanoia::IsThingStrings($class, DaftJson::class)) {
             throw new DaftObjectNotDaftJsonBadMethodCallException($class);
         }
     }
 
-    public static function ThrowIfNotJsonType(string $jsonType) : void
+    private static function ThrowIfNotJsonType(string $jsonType) : void
     {
-        if (false === is_a($jsonType, DaftJson::class, true)) {
+        if ( ! TypeParanoia::IsThingStrings($jsonType, DaftJson::class)) {
             throw new ClassDoesNotImplementClassException($jsonType, DaftJson::class);
         }
     }
@@ -141,7 +141,7 @@ class JsonTypeUtilities
         array $propVal,
         bool $writeAll
     ) : array {
-        JsonTypeUtilities::ThrowIfNotJsonType($jsonType);
+        self::ThrowIfNotJsonType($jsonType);
 
         return array_map(
             /**

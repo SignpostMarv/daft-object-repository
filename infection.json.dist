@@ -94,9 +94,6 @@
         },
         "PublicVisibility": {
             "ignore": [
-                "SignpostMarv\\DaftObject\\JsonTypeUtilities::ThrowIfNotDaftJson",
-                "SignpostMarv\\DaftObject\\JsonTypeUtilities::ThrowIfNotJsonType",
-                "SignpostMarv\\DaftObject\\TypeParanoia::IsSubThingStrings"
             ]
         },
         "ProtectedVisibility": {
