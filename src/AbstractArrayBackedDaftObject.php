@@ -75,7 +75,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         $properties = static::PROPERTIES;
 
         return
-            TypeUtilities::MaybeInMaybeArray($property, $properties) &&
+            TypeParanoia::MaybeInMaybeArray($property, $properties) &&
             isset($this->data, $this->data[$property]);
     }
 
@@ -147,7 +147,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     {
         JsonTypeUtilities::ThrowIfNotDaftJson(static::class);
 
-        return static::DaftObjectFromJsonArray(TypeUtilities::ForceArgumentAsArray(json_decode(
+        return static::DaftObjectFromJsonArray(TypeParanoia::ForceArgumentAsArray(json_decode(
             $string,
             true
         )));
@@ -186,7 +186,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
                 return JsonTypeUtilities::DaftJsonFromJsonType(
                     $jsonType,
                     $prop,
-                    TypeUtilities::ForceArgumentAsArray($array[$prop]),
+                    TypeParanoia::ForceArgumentAsArray($array[$prop]),
                     $writeAll
                 );
             };
@@ -203,7 +203,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     */
     protected function RetrievePropertyValueFromData(string $property)
     {
-        $isNullable = TypeUtilities::MaybeInMaybeArray($property, static::NULLABLE_PROPERTIES);
+        $isNullable = TypeParanoia::MaybeInMaybeArray($property, static::NULLABLE_PROPERTIES);
 
         if (
             ! array_key_exists($property, $this->data) &&
@@ -307,7 +307,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         */
         $properties = static::PROPERTIES;
 
-        if ( ! TypeUtilities::MaybeInArray($property, $properties)) {
+        if ( ! TypeParanoia::MaybeInArray($property, $properties)) {
             throw new UndefinedPropertyException(static::class, $property);
         } elseif ($this->DaftObjectWormPropertyWritten($property)) {
             throw new PropertyNotRewriteableException(static::class, $property);
@@ -321,7 +321,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     */
     protected function MaybeThrowOnNudge(string $property, $value, array $properties) : void
     {
-        if (true === is_null($value) && ! TypeUtilities::MaybeInArray($property, $properties)) {
+        if (true === is_null($value) && ! TypeParanoia::MaybeInArray($property, $properties)) {
             throw new PropertyNotNullableException(static::class, $property);
         }
     }

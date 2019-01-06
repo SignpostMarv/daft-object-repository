@@ -15,6 +15,7 @@ use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\PropertiesClassReflectionExtension;
 use PHPStan\Reflection\PropertyReflection;
 use SignpostMarv\DaftObject\DaftObject;
+use SignpostMarv\DaftObject\TypeParanoia;
 use SignpostMarv\DaftObject\TypeUtilities;
 
 class ClassReflectionExtension implements BrokerAwareExtension, PropertiesClassReflectionExtension
@@ -42,7 +43,7 @@ class ClassReflectionExtension implements BrokerAwareExtension, PropertiesClassR
         $setter = TypeUtilities::MethodNameFromProperty($property, self::BOOL_SETNOTGET_SETTER);
 
         return
-            TypeUtilities::IsThingStrings($className, DaftObject::class) &&
+            TypeParanoia::IsThingStrings($className, DaftObject::class) &&
             (
                 $classReflection->getNativeReflection()->hasMethod($getter) ||
                 $classReflection->getNativeReflection()->hasMethod($setter)

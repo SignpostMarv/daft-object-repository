@@ -19,6 +19,7 @@ use PHPStan\Type\TypehintHelper;
 use ReflectionMethod;
 use SignpostMarv\DaftObject\DaftObject;
 use SignpostMarv\DaftObject\DefinesOwnIdPropertiesInterface;
+use SignpostMarv\DaftObject\TypeParanoia;
 use SignpostMarv\DaftObject\TypeUtilities;
 
 class PropertyReflectionExtension implements PropertyReflection
@@ -78,7 +79,7 @@ class PropertyReflectionExtension implements PropertyReflection
 
     public function __construct(ClassReflection $classReflection, Broker $broker, string $property)
     {
-        if ( ! TypeUtilities::IsThingStrings($classReflection->getName(), DaftObject::class)) {
+        if ( ! TypeParanoia::IsThingStrings($classReflection->getName(), DaftObject::class)) {
             throw new InvalidArgumentException(sprintf('%s is not an implementation of %s',
                 $classReflection->getName(),
                 DaftObject::class
@@ -219,19 +220,19 @@ class PropertyReflectionExtension implements PropertyReflection
     */
     private static function PropertyIsPublic(string $className, string $property) : bool
     {
-        if ( ! TypeUtilities::IsSubThingStrings($className, DaftObject::class)) {
+        if ( ! TypeParanoia::IsSubThingStrings($className, DaftObject::class)) {
             return self::BOOL_CLASS_NOT_DAFTOBJECT;
         }
 
         return
             (
-                TypeUtilities::IsThingStrings(
+                TypeParanoia::IsThingStrings(
                     $className,
                     DefinesOwnIdPropertiesInterface::class
                 ) &&
                 'id' === $property
             ) ||
-            TypeUtilities::MaybeInMaybeArray($property, $className::DaftObjectPublicGetters()) ||
-            TypeUtilities::MaybeInMaybeArray($property, $className::DaftObjectPublicSetters());
+            TypeParanoia::MaybeInMaybeArray($property, $className::DaftObjectPublicGetters()) ||
+            TypeParanoia::MaybeInMaybeArray($property, $className::DaftObjectPublicSetters());
     }
 }

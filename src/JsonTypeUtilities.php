@@ -37,7 +37,7 @@ class JsonTypeUtilities
                 if (isset($jsonDef[$prop]) && false === is_array($array[$prop])) {
                     static::ThrowBecauseArrayJsonTypeNotValid(
                         $class,
-                        TypeUtilities::EnsureArgumentIsString($jsonDef[$prop]),
+                        TypeParanoia::EnsureArgumentIsString($jsonDef[$prop]),
                         $prop
                     );
                 }
@@ -54,7 +54,7 @@ class JsonTypeUtilities
         array $array
     ) : array {
         $filter = function (string $prop) use ($jsonProps, $array, $class) : bool {
-            if ( ! TypeUtilities::MaybeInArray($prop, $jsonProps)) {
+            if ( ! TypeParanoia::MaybeInArray($prop, $jsonProps)) {
                 throw new PropertyNotJsonDecodableException($class, $prop);
             }
 
@@ -104,9 +104,9 @@ class JsonTypeUtilities
     public static function ThrowIfJsonDefNotValid(string $type, array $array) : array
     {
         self::ThrowIfNotDaftJson($type);
-        $jsonProps = TypeUtilities::EnsureArgumentIsArray($type::DaftObjectJsonPropertyNames());
+        $jsonProps = TypeParanoia::EnsureArgumentIsArray($type::DaftObjectJsonPropertyNames());
         $array = JsonTypeUtilities::FilterThrowIfJsonDefNotValid($type, $jsonProps, $array);
-        $jsonDef = TypeUtilities::EnsureArgumentIsArray($type::DaftObjectJsonProperties());
+        $jsonDef = TypeParanoia::EnsureArgumentIsArray($type::DaftObjectJsonProperties());
 
         $keys = array_keys($array);
 

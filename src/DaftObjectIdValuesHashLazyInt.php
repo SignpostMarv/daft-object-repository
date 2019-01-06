@@ -33,7 +33,7 @@ trait DaftObjectIdValuesHashLazyInt
             */
             $val = $object->$prop;
 
-            $id[] = $val;
+            $id[] = (string) $val;
         }
 
         return static::DaftObjectIdValuesHash($id);
@@ -51,7 +51,7 @@ trait DaftObjectIdValuesHashLazyInt
         $objectIds = '';
 
         foreach (array_values($id) as $i => $idVal) {
-            if ($i >= TypeUtilities::INDEX_FIRST_ARG) {
+            if ($i >= TypeParanoia::INDEX_FIRST_ARG) {
                 $objectIds .= '::';
             }
             $objectIds .= (string) $idVal;

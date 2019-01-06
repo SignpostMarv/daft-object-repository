@@ -117,9 +117,9 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     */
     protected function ObjectHashId($id) : string
     {
-        return TypeUtilities::EnsureArgumentIsString(
+        return TypeParanoia::EnsureArgumentIsString(
             $this->type::DaftObjectIdValuesHash(
-                TypeUtilities::ForceArgumentAsArray($id)
+                TypeParanoia::ForceArgumentAsArray($id)
             )
         );
     }

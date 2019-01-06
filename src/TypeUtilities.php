@@ -12,10 +12,6 @@ use ReflectionMethod;
 
 class TypeUtilities
 {
-    const INDEX_FIRST_ARG = 1;
-
-    const INDEX_SECOND_ARG = 2;
-
     const BOOL_EXPECTING_NON_PUBLIC_METHOD = false;
 
     const BOOL_EXPECTING_GETTER = false;
@@ -82,7 +78,7 @@ class TypeUtilities
 
     public static function MethodNameFromProperty(string $prop, bool $SetNotGet = false) : string
     {
-        if (static::MaybeInArray(mb_substr($prop, 0, 1), self::SUPPORTED_INVALID_LEADING_CHARACTERS)) {
+        if (TypeParanoia::MaybeInArray(mb_substr($prop, 0, 1), self::SUPPORTED_INVALID_LEADING_CHARACTERS)) {
             return ($SetNotGet ? 'Alter' : 'Obtain') . ucfirst(mb_substr($prop, 1));
         }
 
@@ -101,7 +97,7 @@ class TypeUtilities
         string $class,
         bool $throwIfNotImplementation = self::BOOL_DEFAULT_THROWIFNOTIMPLEMENTATION
     ) : void {
-        if (self::IsThingStrings($class, DefinesOwnIdPropertiesInterface::class)) {
+        if (TypeParanoia::IsThingStrings($class, DefinesOwnIdPropertiesInterface::class)) {
             self::CheckTypeDefinesOwnIdPropertiesIsImplementation($class);
         } elseif ($throwIfNotImplementation) {
             throw new ClassDoesNotImplementClassException(
@@ -141,31 +137,12 @@ class TypeUtilities
     }
 
     /**
-    * @param mixed $needle
-    * @param mixed $haystack
-    */
-    public static function MaybeInMaybeArray($needle, $haystack) : bool
-    {
-        $haystack = self::EnsureArgumentIsArray($haystack, self::INDEX_SECOND_ARG, __METHOD__);
-
-        return static::MaybeInArray($needle, $haystack);
-    }
-
-    /**
-    * @param mixed $needle
-    */
-    public static function MaybeInArray($needle, array $haystack) : bool
-    {
-        return in_array($needle, $haystack, true);
-    }
-
-    /**
     * @param mixed $maybe
     */
     private static function FilterMaybeArray($maybe, callable $filter) : array
     {
         return array_filter(
-            self::EnsureArgumentIsArray($maybe, self::INDEX_FIRST_ARG, __METHOD__),
+            TypeParanoia::EnsureArgumentIsArray($maybe, TypeParanoia::INDEX_FIRST_ARG, __METHOD__),
             $filter
         );
     }
@@ -175,49 +152,11 @@ class TypeUtilities
     */
     private static function CountMaybeArray($maybe) : int
     {
-        return count(self::EnsureArgumentIsArray($maybe, self::INDEX_FIRST_ARG, __METHOD__));
-    }
-
-    /**
-    * @param mixed $maybe
-    */
-    public static function EnsureArgumentIsArray($maybe, int $argument = null, string $method = __METHOD__) : array
-    {
-        if ( ! is_array($maybe)) {
-            throw new InvalidArgumentException(
-                'Argument ' .
-                (is_int($argument) ? $argument : self::INDEX_FIRST_ARG) .
-                ' passed to ' .
-                $method .
-                ' must be an array, ' .
-                (is_object($maybe) ? get_class($maybe) : gettype($maybe)) .
-                ' given!'
-            );
-        }
-
-        return $maybe;
-    }
-
-    public static function ForceArgumentAsArray($maybe) : array
-    {
-        return is_array($maybe) ? $maybe : [$maybe];
-    }
-
-    /**
-    * @param mixed $maybe
-    */
-    public static function EnsureArgumentIsString($maybe) : string
-    {
-        if ( ! is_string($maybe)) {
-            throw new InvalidArgumentException(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be a string, ' .
-                (is_object($maybe) ? get_class($maybe) : gettype($maybe))
-            );
-        }
-
-        return $maybe;
+        return count(TypeParanoia::EnsureArgumentIsArray(
+            $maybe,
+            TypeParanoia::INDEX_FIRST_ARG,
+            __METHOD__
+        ));
     }
 
     /**
@@ -270,7 +209,7 @@ class TypeUtilities
                     return false;
                 }
 
-                return static::MaybeInArray(gettype($maybe), $types);
+                return TypeParanoia::MaybeInArray(gettype($maybe), $types);
             }
         );
 
@@ -295,7 +234,7 @@ class TypeUtilities
         bool $autoTrimStrings,
         string ...$types
     ) : array {
-        if (static::MaybeInArray('string', $types) && $autoTrimStrings) {
+        if (TypeParanoia::MaybeInArray('string', $types) && $autoTrimStrings) {
             $value = array_map(
                 /**
                 * @param mixed $maybe
@@ -346,22 +285,12 @@ class TypeUtilities
             self::$Getters[$class] = [];
             self::$publicSetters[$class] = [];
 
-            if (self::IsThingStrings($class, DefinesOwnIdPropertiesInterface::class)) {
+            if (TypeParanoia::IsThingStrings($class, DefinesOwnIdPropertiesInterface::class)) {
                 self::$Getters[$class]['id'] = true;
             }
 
             self::CachePublicGettersAndSettersProperties($class);
         }
-    }
-
-    public static function IsThingStrings(string $maybe, string $thing) : bool
-    {
-        return is_a($maybe, $thing, true);
-    }
-
-    public static function IsSubThingStrings(string $maybe, string $thing) : bool
-    {
-        return is_subclass_of($maybe, $thing, true);
     }
 
     /**
