@@ -15,7 +15,7 @@ class ClassMethodReturnIsNotArrayOfStringsException extends IncorrectlyImplement
     public function __construct(
         string $class,
         string $method,
-        int $code = 0,
+        int $code = self::INT_DEFAULT_CODE,
         Throwable $previous = null
     ) {
         parent::__construct(

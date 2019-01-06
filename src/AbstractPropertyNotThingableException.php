@@ -16,6 +16,8 @@ use Throwable;
 */
 abstract class AbstractPropertyNotThingableException extends Exception
 {
+    const INT_DEFAULT_CODE = 0;
+
     /**
     * Wraps to Exception::__construct().
     *
@@ -29,7 +31,7 @@ abstract class AbstractPropertyNotThingableException extends Exception
         string $thing,
         string $className,
         string $property,
-        int $code = 0,
+        int $code = self::INT_DEFAULT_CODE,
         Throwable $previous = null
     ) {
         parent::__construct(

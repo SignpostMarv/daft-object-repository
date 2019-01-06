@@ -12,13 +12,15 @@ use Throwable;
 
 class DaftObjectRepositoryTypeByClassMethodAndTypeException extends DaftObjectRepositoryTypeException
 {
+    const INT_DEFAULT_CODE = 0;
+
     public function __construct(
         int $argumentNumber,
         string $className,
         string $method,
         string $expectedType,
         string $receivedType,
-        int $code = 0,
+        int $code = self::INT_DEFAULT_CODE,
         Throwable $previous = null
     ) {
         parent::__construct(

@@ -26,7 +26,7 @@ class UndefinedPropertyException extends AbstractPropertyNotThingableException
     public function __construct(
         string $className,
         string $property,
-        int $code = 0,
+        int $code = self::INT_DEFAULT_CODE,
         Throwable $previous = null
     ) {
         parent::__construct('defined', $className, $property, $code, $previous);

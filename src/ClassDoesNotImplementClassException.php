@@ -15,7 +15,7 @@ class ClassDoesNotImplementClassException extends IncorrectlyImplementedTypeExce
     public function __construct(
         string $class,
         string $doesNotImplementClass,
-        int $code = 0,
+        int $code = self::INT_DEFAULT_CODE,
         Throwable $previous = null
     ) {
         parent::__construct(

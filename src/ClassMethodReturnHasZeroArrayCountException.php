@@ -16,7 +16,7 @@ class ClassMethodReturnHasZeroArrayCountException extends IncorrectlyImplemented
         string $class,
         string $method,
         string $labelOfReturnType = 'property',
-        int $code = 0,
+        int $code = self::INT_DEFAULT_CODE,
         Throwable $previous = null
     ) {
         parent::__construct(

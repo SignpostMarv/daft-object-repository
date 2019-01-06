@@ -40,6 +40,8 @@ trait DaftObjectIdValuesHashLazyInt
     }
 
     /**
+    * @param string[] $id
+    *
     * @see DefinesOwnIdPropertiesInterface::DaftObjectIdValuesHash()
     */
     public static function DaftObjectIdValuesHash(array $id) : string
@@ -48,13 +50,8 @@ trait DaftObjectIdValuesHashLazyInt
 
         $objectIds = '';
 
-        /**
-        * @var array<int, string>
-        */
-        $id = array_values($id);
-
-        foreach ($id as $i => $idVal) {
-            if ($i >= 1) {
+        foreach (array_values($id) as $i => $idVal) {
+            if ($i >= TypeUtilities::INDEX_FIRST_ARG) {
                 $objectIds .= '::';
             }
             $objectIds .= (string) $idVal;

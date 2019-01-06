@@ -12,6 +12,22 @@ use ReflectionMethod;
 
 class TypeUtilities
 {
+    const INDEX_FIRST_ARG = 1;
+
+    const INDEX_SECOND_ARG = 2;
+
+    const BOOL_EXPECTING_NON_PUBLIC_METHOD = false;
+
+    const BOOL_EXPECTING_GETTER = false;
+
+    const BOOL_DEFAULT_THROWIFNOTIMPLEMENTATION = false;
+
+    const BOOL_DEFAULT_EXPECTING_NON_PUBLIC_METHOD = true;
+
+    const BOOL_METHOD_IS_PUBLIC = true;
+
+    const BOOL_METHOD_IS_NON_PUBLIC = false;
+
     const SUPPORTED_INVALID_LEADING_CHARACTERS = [
         '@',
     ];
@@ -47,11 +63,11 @@ class TypeUtilities
         return self::$publicSetters[$class];
     }
 
-    public static function HasMethod(
+    private static function HasMethod(
         string $class,
         string $property,
         bool $SetNotGet,
-        bool $pub = true
+        bool $pub = self::BOOL_DEFAULT_EXPECTING_NON_PUBLIC_METHOD
     ) : bool {
         $method = static::MethodNameFromProperty($property, $SetNotGet);
 
@@ -66,7 +82,7 @@ class TypeUtilities
 
     public static function MethodNameFromProperty(string $prop, bool $SetNotGet = false) : string
     {
-        if (in_array(mb_substr($prop, 0, 1), self::SUPPORTED_INVALID_LEADING_CHARACTERS, true)) {
+        if (static::MaybeInArray(mb_substr($prop, 0, 1), self::SUPPORTED_INVALID_LEADING_CHARACTERS)) {
             return ($SetNotGet ? 'Alter' : 'Obtain') . ucfirst(mb_substr($prop, 1));
         }
 
@@ -83,9 +99,9 @@ class TypeUtilities
     */
     public static function CheckTypeDefinesOwnIdProperties(
         string $class,
-        bool $throwIfNotImplementation = false
+        bool $throwIfNotImplementation = self::BOOL_DEFAULT_THROWIFNOTIMPLEMENTATION
     ) : void {
-        if (is_a($class, DefinesOwnIdPropertiesInterface::class, true)) {
+        if (self::IsThingStrings($class, DefinesOwnIdPropertiesInterface::class)) {
             self::CheckTypeDefinesOwnIdPropertiesIsImplementation($class);
         } elseif ($throwIfNotImplementation) {
             throw new ClassDoesNotImplementClassException(
@@ -125,9 +141,89 @@ class TypeUtilities
     }
 
     /**
+    * @param mixed $needle
+    * @param mixed $haystack
+    */
+    public static function MaybeInMaybeArray($needle, $haystack) : bool
+    {
+        $haystack = self::EnsureArgumentIsArray($haystack, self::INDEX_SECOND_ARG, __METHOD__);
+
+        return static::MaybeInArray($needle, $haystack);
+    }
+
+    /**
+    * @param mixed $needle
+    */
+    public static function MaybeInArray($needle, array $haystack) : bool
+    {
+        return in_array($needle, $haystack, true);
+    }
+
+    /**
+    * @param mixed $maybe
+    */
+    private static function FilterMaybeArray($maybe, callable $filter) : array
+    {
+        return array_filter(
+            self::EnsureArgumentIsArray($maybe, self::INDEX_FIRST_ARG, __METHOD__),
+            $filter
+        );
+    }
+
+    /**
+    * @param mixed $maybe
+    */
+    private static function CountMaybeArray($maybe) : int
+    {
+        return count(self::EnsureArgumentIsArray($maybe, self::INDEX_FIRST_ARG, __METHOD__));
+    }
+
+    /**
+    * @param mixed $maybe
+    */
+    public static function EnsureArgumentIsArray($maybe, int $argument = null, string $method = __METHOD__) : array
+    {
+        if ( ! is_array($maybe)) {
+            throw new InvalidArgumentException(
+                'Argument ' .
+                (is_int($argument) ? $argument : self::INDEX_FIRST_ARG) .
+                ' passed to ' .
+                $method .
+                ' must be an array, ' .
+                (is_object($maybe) ? get_class($maybe) : gettype($maybe)) .
+                ' given!'
+            );
+        }
+
+        return $maybe;
+    }
+
+    public static function ForceArgumentAsArray($maybe) : array
+    {
+        return is_array($maybe) ? $maybe : [$maybe];
+    }
+
+    /**
+    * @param mixed $maybe
+    */
+    public static function EnsureArgumentIsString($maybe) : string
+    {
+        if ( ! is_string($maybe)) {
+            throw new InvalidArgumentException(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be a string, ' .
+                (is_object($maybe) ? get_class($maybe) : gettype($maybe))
+            );
+        }
+
+        return $maybe;
+    }
+
+    /**
     * @return array<int, mixed> filtered $value
     */
-    protected static function MaybeThrowIfNotArrayIntKeys(array $value) : array
+    private static function MaybeThrowIfNotArrayIntKeys(array $value) : array
     {
         $initialCount = count($value);
 
@@ -152,7 +248,7 @@ class TypeUtilities
     *
     * @return array<int, mixed> filtered $value
     */
-    protected static function MaybeThrowIfValueArrayDoesNotMatchTypes(
+    private static function MaybeThrowIfValueArrayDoesNotMatchTypes(
         array $value,
         string ...$types
     ) : array {
@@ -174,7 +270,7 @@ class TypeUtilities
                     return false;
                 }
 
-                return in_array(gettype($maybe), $types, true);
+                return static::MaybeInArray(gettype($maybe), $types);
             }
         );
 
@@ -194,12 +290,12 @@ class TypeUtilities
     *
     * @return array<int, mixed>
     */
-    protected static function MaybeRemapStringsToTrimmedStrings(
+    private static function MaybeRemapStringsToTrimmedStrings(
         array $value,
         bool $autoTrimStrings,
         string ...$types
     ) : array {
-        if (in_array('string', $types, true) && $autoTrimStrings) {
+        if (static::MaybeInArray('string', $types) && $autoTrimStrings) {
             $value = array_map(
                 /**
                 * @param mixed $maybe
@@ -219,7 +315,7 @@ class TypeUtilities
     /**
     * @return array<int, mixed> filtered $value
     */
-    protected static function MaybeThrowIfValueDoesNotMatchMultiTypedArrayValueArray(
+    private static function MaybeThrowIfValueDoesNotMatchMultiTypedArrayValueArray(
         bool $autoTrimStrings,
         bool $throwIfNotUnique,
         array $value,
@@ -244,13 +340,13 @@ class TypeUtilities
         return array_values($value);
     }
 
-    final protected static function CachePublicGettersAndSetters(string $class) : void
+    private static function CachePublicGettersAndSetters(string $class) : void
     {
         if (false === isset(self::$Getters[$class])) {
             self::$Getters[$class] = [];
             self::$publicSetters[$class] = [];
 
-            if (is_a($class, DefinesOwnIdPropertiesInterface::class, true)) {
+            if (self::IsThingStrings($class, DefinesOwnIdPropertiesInterface::class)) {
                 self::$Getters[$class]['id'] = true;
             }
 
@@ -258,10 +354,20 @@ class TypeUtilities
         }
     }
 
+    public static function IsThingStrings(string $maybe, string $thing) : bool
+    {
+        return is_a($maybe, $thing, true);
+    }
+
+    public static function IsSubThingStrings(string $maybe, string $thing) : bool
+    {
+        return is_subclass_of($maybe, $thing, true);
+    }
+
     /**
     * @psalm-suppress InvalidStringClass
     */
-    final protected static function CachePublicGettersAndSettersProperties(string $class) : void
+    private static function CachePublicGettersAndSettersProperties(string $class) : void
     {
         /**
         * @var string[]
@@ -269,10 +375,15 @@ class TypeUtilities
         $props = $class::DaftObjectProperties();
 
         foreach ($props as $prop) {
-            if (static::HasMethod($class, $prop, false)) {
-                self::$Getters[$class][$prop] = true;
-            } elseif (static::HasMethod($class, $prop, false, false)) {
-                self::$Getters[$class][$prop] = false;
+            if (static::HasMethod($class, $prop, self::BOOL_EXPECTING_GETTER)) {
+                self::$Getters[$class][$prop] = self::BOOL_METHOD_IS_PUBLIC;
+            } elseif (static::HasMethod(
+                $class,
+                $prop,
+                self::BOOL_EXPECTING_GETTER,
+                self::BOOL_EXPECTING_NON_PUBLIC_METHOD
+            )) {
+                self::$Getters[$class][$prop] = self::BOOL_METHOD_IS_NON_PUBLIC;
             }
 
             if (static::HasMethod($class, $prop, true)) {
@@ -284,17 +395,23 @@ class TypeUtilities
     /**
     * @psalm-suppress InvalidStringClass
     */
-    final protected static function CheckTypeDefinesOwnIdPropertiesIsImplementation(
+    private static function CheckTypeDefinesOwnIdPropertiesIsImplementation(
         string $class
     ) : void {
-        $properties = (array) $class::DaftObjectIdProperties();
+        /**
+        * @var scalar|array|object|null
+        */
+        $properties = $class::DaftObjectIdProperties();
 
-        if (count($properties) < 1) {
+        if (self::CountMaybeArray($properties) < 1) {
             throw new ClassMethodReturnHasZeroArrayCountException(
                 $class,
                 'DaftObjectIdProperties'
             );
-        } elseif (count($properties) !== count(array_filter($properties, 'is_string'))) {
+        } elseif (
+            self::CountMaybeArray($properties) !==
+            count(self::FilterMaybeArray($properties, 'is_string'))
+        ) {
             throw new ClassMethodReturnIsNotArrayOfStringsException(
                 $class,
                 'DaftObjectIdProperties'

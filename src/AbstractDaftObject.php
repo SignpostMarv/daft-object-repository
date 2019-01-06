@@ -107,7 +107,7 @@ abstract class AbstractDaftObject implements DaftObject
         * @var array<int, string>
         */
         $properties = array_filter($exportables, function (string $prop) use ($getters) : bool {
-            return $this->__isset($prop) && in_array($prop, $getters, true);
+            return $this->__isset($prop) && TypeUtilities::MaybeInArray($prop, $getters);
         });
 
         /**
@@ -304,8 +304,8 @@ abstract class AbstractDaftObject implements DaftObject
 
     protected function MaybeThrowOnDoGetSet(string $property, bool $setter, array $props) : void
     {
-        if (false === in_array($property, $props, true)) {
-            if (false === in_array($property, static::DaftObjectProperties(), true)) {
+        if ( ! TypeUtilities::MaybeInArray($property, $props)) {
+            if ( ! TypeUtilities::MaybeInArray($property, static::DaftObjectProperties())) {
                 throw new UndefinedPropertyException(static::class, $property);
             } elseif ($setter) {
                 throw new NotPublicSetterPropertyException(static::class, $property);

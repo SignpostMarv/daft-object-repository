@@ -10,6 +10,8 @@ namespace SignpostMarv\DaftObject;
 
 class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
 {
+    const BOOL_DEFAULT_ASSUMEDOESNOTEXIST = false;
+
     /**
     * @var DefinesOwnIdPropertiesInterface[]
     */
@@ -63,7 +65,7 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
 
     public function RememberDaftObjectData(
         DefinesOwnIdPropertiesInterface $object,
-        bool $assumeDoesNotExist = false
+        bool $assumeDoesNotExist = self::BOOL_DEFAULT_ASSUMEDOESNOTEXIST
     ) : void {
         $hashId = $object::DaftObjectIdHash($object);
 
@@ -115,7 +117,11 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     */
     protected function ObjectHashId($id) : string
     {
-        return (string) ($this->type::DaftObjectIdValuesHash((array) $id));
+        return TypeUtilities::EnsureArgumentIsString(
+            $this->type::DaftObjectIdValuesHash(
+                TypeUtilities::ForceArgumentAsArray($id)
+            )
+        );
     }
 
     protected function ForgetDaftObjectByHashId(string $hashId) : void

@@ -12,4 +12,5 @@ use Exception;
 
 class IncorrectlyImplementedTypeException extends Exception
 {
+    const INT_DEFAULT_CODE = 0;
 }
