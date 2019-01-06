@@ -91,7 +91,8 @@ class TypeParanoia
                 'Argument 1 passed to ' .
                 __METHOD__ .
                 ' must be a string, ' .
-                (is_object($maybe) ? get_class($maybe) : gettype($maybe))
+                (is_object($maybe) ? get_class($maybe) : gettype($maybe)) .
+                ' given!'
             );
         }
 
