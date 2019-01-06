@@ -24,7 +24,7 @@ class MultiTypedArrayPropertyImplementationTest extends TestCase
                 InvalidArgumentException::class,
                 (
                     'Argument 3 passed to ' .
-                    DaftObject\TypeUtilities::class .
+                    DaftObject\TypeParanoia::class .
                     '::MaybeThrowIfValueDoesNotMatchMultiTypedArray must be an array' .
                     ', integer given!'
                 ),
@@ -36,7 +36,7 @@ class MultiTypedArrayPropertyImplementationTest extends TestCase
                 InvalidArgumentException::class,
                 (
                     'Argument 3 passed to ' .
-                    DaftObject\TypeUtilities::class .
+                    DaftObject\TypeParanoia::class .
                     '::MaybeThrowIfNotArrayIntKeys must be array<int, mixed>'
                 ),
             ],
@@ -47,7 +47,7 @@ class MultiTypedArrayPropertyImplementationTest extends TestCase
                 InvalidArgumentException::class,
                 (
                     'Argument 3 passed to ' .
-                    DaftObject\TypeUtilities::class .
+                    DaftObject\TypeParanoia::class .
                     '::MaybeThrowIfValueArrayDoesNotMatchTypes' .
                     ' contained values that did not match the provided types!'
                 ),
@@ -117,7 +117,7 @@ class MultiTypedArrayPropertyImplementationTest extends TestCase
         static::expectException(InvalidArgumentException::class);
         static::expectExceptionMessage(
             'Argument 3 passed to ' .
-            DaftObject\TypeUtilities::class .
+            DaftObject\TypeParanoia::class .
             '::MaybeThrowIfValueDoesNotMatchMultiTypedArrayValueArray contained non-unique values!'
         );
 
