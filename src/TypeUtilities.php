@@ -190,20 +190,16 @@ class TypeUtilities
     }
 
     /**
-    * @return array<int, mixed> filtered $value
+    * @param array<int, mixed> $value
+    *
+    * @return array<int, mixed>
     */
-    protected static function MaybeThrowIfValueDoesNotMatchMultiTypedArrayValueArray(
-        bool $autoTrimStrings,
-        bool $throwIfNotUnique,
+    protected static function MaybeRemapStringsToTrimmedStrings(
         array $value,
+        bool $autoTrimStrings,
         string ...$types
     ) : array {
-        $value = static::MaybeThrowIfNotArrayIntKeys($value);
-        $value = static::MaybeThrowIfValueArrayDoesNotMatchTypes($value, ...$types);
-
-        $initialCount = count($value);
-
-        if (in_array('string', $types, true) && $autoTrimStrings && $initialCount > 0) {
+        if (in_array('string', $types, true) && $autoTrimStrings) {
             $value = array_map(
                 /**
                 * @param mixed $maybe
@@ -216,6 +212,24 @@ class TypeUtilities
                 $value
             );
         }
+
+        return $value;
+    }
+
+    /**
+    * @return array<int, mixed> filtered $value
+    */
+    protected static function MaybeThrowIfValueDoesNotMatchMultiTypedArrayValueArray(
+        bool $autoTrimStrings,
+        bool $throwIfNotUnique,
+        array $value,
+        string ...$types
+    ) : array {
+        $value = static::MaybeThrowIfNotArrayIntKeys($value);
+        $value = static::MaybeThrowIfValueArrayDoesNotMatchTypes($value, ...$types);
+        $value = static::MaybeRemapStringsToTrimmedStrings($value, $autoTrimStrings, ...$types);
+
+        $initialCount = count($value);
 
         $value = array_unique($value, SORT_REGULAR);
 
