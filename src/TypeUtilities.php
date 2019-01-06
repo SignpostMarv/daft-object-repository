@@ -59,23 +59,6 @@ class TypeUtilities
         return self::$publicSetters[$class];
     }
 
-    private static function HasMethod(
-        string $class,
-        string $property,
-        bool $SetNotGet,
-        bool $pub = self::BOOL_DEFAULT_EXPECTING_NON_PUBLIC_METHOD
-    ) : bool {
-        $method = static::MethodNameFromProperty($property, $SetNotGet);
-
-        try {
-            $ref = new ReflectionMethod($class, $method);
-
-            return ($pub ? $ref->isPublic() : $ref->isProtected()) && false === $ref->isStatic();
-        } catch (ReflectionException $e) {
-            return false;
-        }
-    }
-
     public static function MethodNameFromProperty(string $prop, bool $SetNotGet = false) : string
     {
         if (TypeParanoia::MaybeInArray(mb_substr($prop, 0, 1), self::SUPPORTED_INVALID_LEADING_CHARACTERS)) {
@@ -134,6 +117,23 @@ class TypeUtilities
             $value,
             ...$types
         );
+    }
+
+    private static function HasMethod(
+        string $class,
+        string $property,
+        bool $SetNotGet,
+        bool $pub = self::BOOL_DEFAULT_EXPECTING_NON_PUBLIC_METHOD
+    ) : bool {
+        $method = static::MethodNameFromProperty($property, $SetNotGet);
+
+        try {
+            $ref = new ReflectionMethod($class, $method);
+
+            return ($pub ? $ref->isPublic() : $ref->isProtected()) && false === $ref->isStatic();
+        } catch (ReflectionException $e) {
+            return false;
+        }
     }
 
     /**
