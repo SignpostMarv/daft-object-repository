@@ -54,7 +54,7 @@ trait DaftObjectIdValuesHashLazyInt
             if ($i >= TypeParanoia::INDEX_FIRST_ARG) {
                 $objectIds .= '::';
             }
-            $objectIds .= (string) $idVal;
+            $objectIds .= TypeParanoia::VarExportNonScalars($idVal);
         }
 
         if ( ! isset(self::$ids[$className])) {
@@ -62,9 +62,11 @@ trait DaftObjectIdValuesHashLazyInt
         }
 
         if ( ! isset(self::$ids[$className][$objectIds])) {
-            self::$ids[$className][$objectIds] = (string) count(self::$ids[$className]);
+            self::$ids[$className][$objectIds] = TypeParanoia::VarExportNonScalars(count(
+                self::$ids[$className]
+            ));
         }
 
-        return (string) self::$ids[$className][$objectIds];
+        return self::$ids[$className][$objectIds];
     }
 }

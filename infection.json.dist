@@ -16,15 +16,6 @@
                 "SignpostMarv\\DaftObject\\DaftObjectIdValuesHashLazyInt::DaftObjectIdValuesHash"
             ]
         },
-        "CastString": {
-            "ignore": [
-                "SignpostMarv\\DaftObject\\DaftObjectIdValuesHashLazyInt::DaftObjectIdValuesHash"
-            ]
-        },
-        "FalseValue": {
-            "ignore": [
-            ]
-        },
         "Foreach_": {
             "ignore": [
                 "SignpostMarv\\DaftObject\\AbstractArrayBackedDaftObject::jsonSerialize",
