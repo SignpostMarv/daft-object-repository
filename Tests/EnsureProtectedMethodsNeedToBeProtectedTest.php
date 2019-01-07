@@ -6,7 +6,6 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject\Tests;
 
-use SignpostMarv\DaftObject\AbstractDaftObjectRepository;
 use SignpostMarv\DaftObject\EnsureProtectedMethodsNeedToBeProtectedOnRepository;
 use SignpostMarv\DaftObject\ReadOnly;
 
