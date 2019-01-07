@@ -115,7 +115,7 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     *
     * @psalm-suppress InvalidStringClass
     */
-    protected function ObjectHashId($id) : string
+    private function ObjectHashId($id) : string
     {
         return TypeParanoia::EnsureArgumentIsString(
             $this->type::DaftObjectIdValuesHash(
@@ -124,14 +124,14 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
         );
     }
 
-    protected function ForgetDaftObjectByHashId(string $hashId) : void
+    private function ForgetDaftObjectByHashId(string $hashId) : void
     {
         if (true === isset($this->memory[$hashId])) {
             unset($this->memory[$hashId]);
         }
     }
 
-    protected function RemoveDaftObjectByHashId(string $hashId) : void
+    private function RemoveDaftObjectByHashId(string $hashId) : void
     {
         $this->ForgetDaftObjectByHashId($hashId);
 
