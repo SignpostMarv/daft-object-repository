@@ -141,6 +141,46 @@ class PropertyReflectionExtension implements PropertyReflection
         return $reflection;
     }
 
+    protected static function DetermineDeclaringClass(
+        Broker $broker,
+        ReflectionMethod $refMethod
+    ) : ClassReflection {
+        $reflectionClass = $refMethod->getDeclaringClass();
+
+        $filename = null;
+        if (self::BOOL_REFLECTION_NO_FILE !== $reflectionClass->getFileName()) {
+            $filename = $reflectionClass->getFileName();
+        }
+
+        return $broker->getClassFromReflection(
+            $reflectionClass,
+            $reflectionClass->getName(),
+            $reflectionClass->isAnonymous() ? $filename : null
+        );
+    }
+
+    /**
+    * @psalm-suppress InvalidStringClass
+    * @psalm-suppress MixedMethodCall
+    */
+    protected static function PropertyIsPublic(string $className, string $property) : bool
+    {
+        if ( ! TypeParanoia::IsSubThingStrings($className, DaftObject::class)) {
+            return self::BOOL_CLASS_NOT_DAFTOBJECT;
+        }
+
+        return
+            (
+                TypeParanoia::IsThingStrings(
+                    $className,
+                    DefinesOwnIdPropertiesInterface::class
+                ) &&
+                'id' === $property
+            ) ||
+            TypeParanoia::MaybeInMaybeArray($property, $className::DaftObjectPublicGetters()) ||
+            TypeParanoia::MaybeInMaybeArray($property, $className::DaftObjectPublicSetters());
+    }
+
     private function SetupReflections(ClassReflection $classReflection, string $property) : void
     {
         $class = $classReflection->getName();
@@ -194,45 +234,5 @@ class PropertyReflectionExtension implements PropertyReflection
         }
 
         return static::DetermineDeclaringClass($this->broker, $refMethod);
-    }
-
-    protected static function DetermineDeclaringClass(
-        Broker $broker,
-        ReflectionMethod $refMethod
-    ) : ClassReflection {
-        $reflectionClass = $refMethod->getDeclaringClass();
-
-        $filename = null;
-        if (self::BOOL_REFLECTION_NO_FILE !== $reflectionClass->getFileName()) {
-            $filename = $reflectionClass->getFileName();
-        }
-
-        return $broker->getClassFromReflection(
-            $reflectionClass,
-            $reflectionClass->getName(),
-            $reflectionClass->isAnonymous() ? $filename : null
-        );
-    }
-
-    /**
-    * @psalm-suppress InvalidStringClass
-    * @psalm-suppress MixedMethodCall
-    */
-    protected static function PropertyIsPublic(string $className, string $property) : bool
-    {
-        if ( ! TypeParanoia::IsSubThingStrings($className, DaftObject::class)) {
-            return self::BOOL_CLASS_NOT_DAFTOBJECT;
-        }
-
-        return
-            (
-                TypeParanoia::IsThingStrings(
-                    $className,
-                    DefinesOwnIdPropertiesInterface::class
-                ) &&
-                'id' === $property
-            ) ||
-            TypeParanoia::MaybeInMaybeArray($property, $className::DaftObjectPublicGetters()) ||
-            TypeParanoia::MaybeInMaybeArray($property, $className::DaftObjectPublicSetters());
     }
 }

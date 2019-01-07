@@ -6,13 +6,11 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject\Tests;
 
-use Nette\DI\MissingServiceException;
-use PHPStan\Reflection\ClassReflection;
 use SignpostMarv\DaftObject\EnsureProtectedMethodsNeedToBeProtectedOnAbstractDaftObject;
 use SignpostMarv\DaftObject\EnsureProtectedMethodsNeedToBeProtectedOnRepository;
+use SignpostMarv\DaftObject\PHPStan\EnsurePropertyReflectionExtensionMethodsNeedToBeProtected;
 use SignpostMarv\DaftObject\ReadOnly;
 use SignpostMarv\DaftObject\UndefinedPropertyException;
-use SignpostMarv\DaftObject\PHPStan\EnsurePropertyReflectionExtensionMethodsNeedToBeProtected;
 use TypeError;
 
 class EnsureProtectedMethodsNeedToBeProtectedTest extends TestCase
