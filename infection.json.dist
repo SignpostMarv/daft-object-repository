@@ -92,25 +92,6 @@
                 "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::DetermineDeclaringClass"
             ]
         },
-        "PublicVisibility": {
-            "ignore": [
-            ]
-        },
-        "ProtectedVisibility": {
-            "ignore": [
-                "SignpostMarv\\DaftObject\\AbstractArrayBackedDaftObject::DaftJsonClosure",
-                "SignpostMarv\\DaftObject\\AbstractArrayBackedDaftObject::MaybeModifyValueBeforeNudge",
-                "SignpostMarv\\DaftObject\\AbstractArrayBackedDaftObject::MaybeThrowForPropertyOnNudge",
-                "SignpostMarv\\DaftObject\\AbstractArrayBackedDaftObject::MaybeThrowOnNudge",
-                "SignpostMarv\\DaftObject\\AbstractDaftObject::MaybeThrowOnDoGetSet",
-                "SignpostMarv\\DaftObject\\AbstractDaftObject::MaybeThrowOnNudge",
-                "SignpostMarv\\DaftObject\\AbstractDaftObjectRepository::__construct",
-                "SignpostMarv\\DaftObject\\DaftObjectMemoryRepository::ForgetDaftObjectByHashId",
-                "SignpostMarv\\DaftObject\\DaftObjectMemoryRepository::ObjectHashId",
-                "SignpostMarv\\DaftObject\\DaftObjectMemoryRepository::RecallDaftObjectFromData",
-                "SignpostMarv\\DaftObject\\DaftObjectMemoryRepository::RemoveDaftObjectByHashId"
-            ]
-        },
         "Throw_": {
             "ignore": [
                 "SignpostMarv\\DaftObject\\AbstractArrayBackedDaftObject::MaybeThrowForPropertyOnNudge",
