@@ -37,7 +37,7 @@
         ],
         "infection": [
             "@tests",
-            "infection"
+            "infection --test-framework-options=\"--configuration ./phpunit-coverage-on-tests.xml\""
         ],
         "check-coverage-on-tests": [
             "php ./vendor/phpunit/phpunit/phpunit -vc ./phpunit-coverage-on-tests.xml"
