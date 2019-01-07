@@ -165,33 +165,6 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
             );
     }
 
-    final protected static function DaftJsonClosure(array $array, bool $writeAll) : Closure
-    {
-        $jsonDef = static::DaftObjectJsonProperties();
-
-        return
-            /**
-            * @return mixed
-            */
-            function (string $prop) use ($array, $jsonDef, $writeAll) {
-                /**
-                * @var string|null
-                */
-                $jsonType = $jsonDef[$prop] ?? null;
-
-                if ( ! is_string($jsonType)) {
-                    return $array[$prop];
-                }
-
-                return JsonTypeUtilities::DaftJsonFromJsonType(
-                    $jsonType,
-                    $prop,
-                    TypeParanoia::ForceArgumentAsArray($array[$prop]),
-                    $writeAll
-                );
-            };
-    }
-
     /**
     * Retrieve a property from data.
     *
@@ -253,12 +226,39 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         }
     }
 
+    private static function DaftJsonClosure(array $array, bool $writeAll) : Closure
+    {
+        $jsonDef = static::DaftObjectJsonProperties();
+
+        return
+            /**
+            * @return mixed
+            */
+            function (string $prop) use ($array, $jsonDef, $writeAll) {
+                /**
+                * @var string|null
+                */
+                $jsonType = $jsonDef[$prop] ?? null;
+
+                if ( ! is_string($jsonType)) {
+                    return $array[$prop];
+                }
+
+                return JsonTypeUtilities::DaftJsonFromJsonType(
+                    $jsonType,
+                    $prop,
+                    TypeParanoia::ForceArgumentAsArray($array[$prop]),
+                    $writeAll
+                );
+            };
+    }
+
     /**
     * @param scalar|array|object|null $value
     *
     * @return scalar|array|object|null
     */
-    protected function MaybeModifyValueBeforeNudge(
+    private function MaybeModifyValueBeforeNudge(
         string $property,
         $value,
         bool $autoTrimStrings = self::BOOL_DEFAULT_AUTOTRIMSTRINGS,
@@ -300,7 +300,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     /**
     * @see AbstractArrayBackedDaftObject::NudgePropertyValue()
     */
-    protected function MaybeThrowForPropertyOnNudge(string $property) : void
+    private function MaybeThrowForPropertyOnNudge(string $property) : void
     {
         /**
         * @var array<int, string>
@@ -319,7 +319,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     *
     * @see AbstractArrayBackedDaftObject::NudgePropertyValue()
     */
-    protected function MaybeThrowOnNudge(string $property, $value, array $properties) : void
+    private function MaybeThrowOnNudge(string $property, $value, array $properties) : void
     {
         if (true === is_null($value) && ! TypeParanoia::MaybeInArray($property, $properties)) {
             throw new PropertyNotNullableException(static::class, $property);
