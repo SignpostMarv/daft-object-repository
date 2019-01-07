@@ -6,11 +6,8 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject\Tests;
 
-use DateTimeImmutable;
-use DateTimeInterface;
-use InvalidArgumentException;
-use SignpostMarv\DaftObject\ReadOnly;
 use SignpostMarv\DaftObject\EnsureProtectedMethodsNeedToBeProtectedOnRepository;
+use SignpostMarv\DaftObject\ReadOnly;
 
 class EnsureProtectedMethodsNeedToBeProtectedTest extends TestCase
 {
