@@ -48,12 +48,6 @@ class EnsureProtectedMethodsNeedToBeProtectedTest extends TestCase
         $obj->EnsureMaybeThrowOnDoGetSet('foo', true, []);
     }
 
-    public function testDetermineDeclaringClass() : void
-    {
-        static::expectException(MissingServiceException::class);
-        EnsurePropertyReflectionExtensionMethodsNeedToBeProtected::EnsureDetermineDeclaringClass();
-    }
-
     public function testPropertyIsPublic() : void
     {
         static::assertTrue(EnsurePropertyReflectionExtensionMethodsNeedToBeProtected::EnsurePropertyIsPublic(
