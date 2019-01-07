@@ -11,7 +11,6 @@ use OutOfBoundsException;
 use PHPStan\Command\AnalyseCommand;
 use PHPStan\Command\DumpDependenciesCommand;
 use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class PHPStanTest extends TestCase
