@@ -15,4 +15,11 @@ class EnsureProtectedMethodsNeedToBeProtectedOnRepository extends DaftObjectMemo
     {
         return $this->RecallDaftObjectFromData($id);
     }
+
+    public static function EnsureConstructorNeedsToBeProtected(
+        string $type,
+        ...$args
+    ) : AbstractDaftObjectRepository {
+        return new static($type, ...$args);
+    }
 }
