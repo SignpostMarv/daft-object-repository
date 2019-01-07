@@ -92,6 +92,11 @@
                 "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::DetermineDeclaringClass"
             ]
         },
+        "ProtectedVisibility": {
+            "ignore": [
+                "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::DetermineDeclaringClass"
+            ]
+        },
         "Throw_": {
             "ignore": [
                 "SignpostMarv\\DaftObject\\AbstractArrayBackedDaftObject::MaybeThrowForPropertyOnNudge",

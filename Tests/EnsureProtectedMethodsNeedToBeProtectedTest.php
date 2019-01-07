@@ -6,10 +6,14 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject\Tests;
 
+use Nette\DI\MissingServiceException;
+use PHPStan\Reflection\ClassReflection;
 use SignpostMarv\DaftObject\EnsureProtectedMethodsNeedToBeProtectedOnAbstractDaftObject;
 use SignpostMarv\DaftObject\EnsureProtectedMethodsNeedToBeProtectedOnRepository;
 use SignpostMarv\DaftObject\ReadOnly;
 use SignpostMarv\DaftObject\UndefinedPropertyException;
+use SignpostMarv\DaftObject\PHPStan\EnsurePropertyReflectionExtensionMethodsNeedToBeProtected;
+use TypeError;
 
 class EnsureProtectedMethodsNeedToBeProtectedTest extends TestCase
 {
@@ -42,5 +46,23 @@ class EnsureProtectedMethodsNeedToBeProtectedTest extends TestCase
         static::expectException(UndefinedPropertyException::class);
 
         $obj->EnsureMaybeThrowOnDoGetSet('foo', true, []);
+    }
+
+    public function testDetermineDeclaringClass() : void
+    {
+        static::expectException(MissingServiceException::class);
+        EnsurePropertyReflectionExtensionMethodsNeedToBeProtected::EnsureDetermineDeclaringClass();
+    }
+
+    public function testPropertyIsPublic() : void
+    {
+        static::assertTrue(EnsurePropertyReflectionExtensionMethodsNeedToBeProtected::EnsurePropertyIsPublic(
+            ReadOnly::class,
+            'Foo'
+        ));
+        static::assertFalse(EnsurePropertyReflectionExtensionMethodsNeedToBeProtected::EnsurePropertyIsPublic(
+            TypeError::class,
+            'Foo'
+        ));
     }
 }

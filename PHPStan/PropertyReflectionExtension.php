@@ -196,7 +196,7 @@ class PropertyReflectionExtension implements PropertyReflection
         return static::DetermineDeclaringClass($this->broker, $refMethod);
     }
 
-    private static function DetermineDeclaringClass(
+    protected static function DetermineDeclaringClass(
         Broker $broker,
         ReflectionMethod $refMethod
     ) : ClassReflection {
@@ -218,7 +218,7 @@ class PropertyReflectionExtension implements PropertyReflection
     * @psalm-suppress InvalidStringClass
     * @psalm-suppress MixedMethodCall
     */
-    private static function PropertyIsPublic(string $className, string $property) : bool
+    protected static function PropertyIsPublic(string $className, string $property) : bool
     {
         if ( ! TypeParanoia::IsSubThingStrings($className, DaftObject::class)) {
             return self::BOOL_CLASS_NOT_DAFTOBJECT;
