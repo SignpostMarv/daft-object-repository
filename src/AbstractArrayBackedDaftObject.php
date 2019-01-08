@@ -100,25 +100,33 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     {
         JsonTypeUtilities::ThrowIfNotDaftJson(static::class);
 
-        $out = [];
-
         /**
         * @var array<int, string>
         */
         $properties = static::DaftObjectJsonPropertyNames();
 
-        foreach ($properties as $property) {
+        /**
+        * @var array<string, string>
+        */
+        $properties = array_combine($properties, $properties);
+
+        return array_filter(
+            array_map(
+                /**
+                * @return mixed
+                */
+                function (string $property) {
+                    return $this->DoGetSet($property, false);
+                },
+                $properties
+            ),
             /**
-            * @var scalar|array|object|null
+            * @param mixed $maybe
             */
-            $val = $this->DoGetSet($property, false);
-
-            if (false === is_null($val)) {
-                $out[$property] = $val;
+            function ($maybe) : bool {
+                return ! is_null($maybe);
             }
-        }
-
-        return $out;
+        );
     }
 
     final public static function DaftObjectFromJsonArray(
