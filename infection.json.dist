@@ -16,16 +16,6 @@
                 "SignpostMarv\\DaftObject\\DaftObjectIdValuesHashLazyInt::DaftObjectIdValuesHash"
             ]
         },
-        "GreaterThanOrEqualTo": {
-            "ignore": [
-                "SignpostMarv\\DaftObject\\DaftObjectIdValuesHashLazyInt::DaftObjectIdValuesHash"
-            ]
-        },
-        "GreaterThanOrEqualToNegotiation": {
-            "ignore": [
-                "SignpostMarv\\DaftObject\\DaftObjectIdValuesHashLazyInt::DaftObjectIdValuesHash"
-            ]
-        },
         "Identical": {
             "ignore": [
                 "SignpostMarv\\DaftObject\\DaftObjectMemoryRepository::RecallDaftObjectFromData",
