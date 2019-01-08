@@ -98,7 +98,6 @@
         },
         "TrueValue": {
             "ignore": [
-                "SignpostMarv\\DaftObject\\DaftObjectMemoryRepository::RecallDaftObjectFromData",
                 "SignpostMarv\\DaftObject\\TypeParanoia::MaybeInArray",
                 "SignpostMarv\\DaftObject\\TypeParanoia::IsSubThingStrings"
             ]

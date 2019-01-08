@@ -94,7 +94,7 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     {
         $hashId = $this->ObjectHashId($id);
 
-        if (true === isset($this->data[$hashId])) {
+        if (isset($this->data[$hashId])) {
             $type = $this->type;
 
             /**
