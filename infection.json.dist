@@ -16,11 +16,6 @@
                 "SignpostMarv\\DaftObject\\DaftObjectIdValuesHashLazyInt::DaftObjectIdValuesHash"
             ]
         },
-        "Foreach_": {
-            "ignore": [
-                "SignpostMarv\\DaftObject\\DaftObjectIdValuesHashLazyInt::DaftObjectIdValuesHash"
-            ]
-        },
         "GreaterThanOrEqualTo": {
             "ignore": [
                 "SignpostMarv\\DaftObject\\DaftObjectIdValuesHashLazyInt::DaftObjectIdValuesHash"

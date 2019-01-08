@@ -48,14 +48,7 @@ trait DaftObjectIdValuesHashLazyInt
     {
         $className = static::class;
 
-        $objectIds = '';
-
-        foreach (array_values($id) as $i => $idVal) {
-            if ($i >= TypeParanoia::INDEX_FIRST_ARG) {
-                $objectIds .= '::';
-            }
-            $objectIds .= TypeParanoia::VarExportNonScalars($idVal);
-        }
+        $objectIds = implode('::', array_map(TypeParanoia::class . '::VarExportNonScalars', $id));
 
         if ( ! isset(self::$ids[$className])) {
             self::$ids[$className] = [];
