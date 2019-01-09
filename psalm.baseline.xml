@@ -29,4 +29,9 @@
       <code>$class::DaftObjectIdProperties()</code>
     </InvalidStringClass>
   </file>
+  <file src="tests-src\PasswordHashTestObject.php">
+    <PossiblyNullArgument occurrences="1">
+      <code>password_hash($password, PASSWORD_DEFAULT)</code>
+    </PossiblyNullArgument>
+  </file>
 </files>
