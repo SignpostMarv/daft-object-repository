@@ -11,14 +11,8 @@
     },
     "mutators": {
         "@default": true,
-        "Assignment": {
-            "ignore": [
-                "SignpostMarv\\DaftObject\\DaftObjectIdValuesHashLazyInt::DaftObjectIdValuesHash"
-            ]
-        },
         "Identical": {
             "ignore": [
-                "SignpostMarv\\DaftObject\\DaftObjectMemoryRepository::RecallDaftObjectFromData",
                 "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::__construct",
                 "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::isPrivate",
                 "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::PropertyIsPublic"
