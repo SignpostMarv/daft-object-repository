@@ -6,6 +6,7 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject\Tests;
 
+use SignpostMarv\DaftObject\AbstractArrayBackedDaftObject;
 use SignpostMarv\DaftObject\ClassDoesNotImplementClassException;
 use SignpostMarv\DaftObject\DaftJson;
 use SignpostMarv\DaftObject\DaftObject;
@@ -106,8 +107,6 @@ class DaftJsonExceptionTest extends TestCase
 
     /**
     * @dataProvider dataProviderClassDoesNotImplementClassException
-    *
-    * @psalm-suppress InvalidStringClass
     */
     public function testClassDoesNotImplementClassException(
         string $implementation,
@@ -115,7 +114,16 @@ class DaftJsonExceptionTest extends TestCase
         array $args,
         bool $writeAll
     ) : void {
-        static::assertTrue(is_subclass_of($implementation, DaftObject::class, true));
+        if ( ! is_subclass_of($implementation, AbstractArrayBackedDaftObject::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                AbstractArrayBackedDaftObject::class
+            );
+
+            return;
+        }
 
         $this->expectException(ClassDoesNotImplementClassException::class);
         $this->expectExceptionMessage(sprintf(
@@ -129,8 +137,6 @@ class DaftJsonExceptionTest extends TestCase
 
     /**
     * @dataProvider dataProviderPropertyNotThingableException
-    *
-    * @psalm-suppress InvalidStringClass
     */
     public function testPropertyNotThingableException(
         string $implementation,
@@ -141,6 +147,17 @@ class DaftJsonExceptionTest extends TestCase
         array $args,
         bool $writeAll
     ) : void {
+        if ( ! is_subclass_of($implementation, DaftJson::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DaftJson::class
+            );
+
+            return;
+        }
+
         $this->expectException($expectingException);
         $this->expectExceptionMessage(sprintf(
             'Property not %s: %s::$%s',
@@ -148,7 +165,6 @@ class DaftJsonExceptionTest extends TestCase
             $expectingFailureWithClass,
             $expectingFailureWithProperty
         ));
-        static::assertTrue(is_subclass_of($implementation, DaftJson::class, true));
 
         /**
         * @var DaftJson

@@ -143,9 +143,6 @@ class TypeUtilities
         }
     }
 
-    /**
-    * @psalm-suppress InvalidStringClass
-    */
     private static function CachePublicGettersAndSettersProperties(string $class) : void
     {
         /**
@@ -171,9 +168,6 @@ class TypeUtilities
         }
     }
 
-    /**
-    * @psalm-suppress InvalidStringClass
-    */
     private static function CheckTypeDefinesOwnIdPropertiesIsImplementation(
         string $class
     ) : void {

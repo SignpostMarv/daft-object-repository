@@ -169,8 +169,6 @@ class DaftObjectGetterSetterTest extends TestCase
     * @param scalar|array|object|null $value
     *
     * @dataProvider dataProviderGetterSetterGoodGetterOnly
-    *
-    * @psalm-suppress InvalidStringClass
     */
     public function testGetterOnly(
         string $implementation,
@@ -178,11 +176,20 @@ class DaftObjectGetterSetterTest extends TestCase
         $value,
         string $changedProperty = null
     ) : void {
+        if ( ! is_subclass_of($implementation, DaftObject::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DaftObject::class
+            );
+
+            return;
+        }
+
         $arr = [];
 
         $arr[$property] = $value;
-
-        static::assertTrue(is_subclass_of($implementation, DaftObject::class, true));
 
         $obj = new $implementation($arr);
 
@@ -193,8 +200,6 @@ class DaftObjectGetterSetterTest extends TestCase
     * @param mixed $value
     *
     * @dataProvider dataProviderGetterSetterGoodSetterOnly
-    *
-    * @psalm-suppress InvalidStringClass
     */
     public function testSetterOnly(
         string $implementation,
@@ -202,9 +207,18 @@ class DaftObjectGetterSetterTest extends TestCase
         $value,
         string $changedProperty
     ) : void {
-        $arr = [];
+        if ( ! is_subclass_of($implementation, DaftObject::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DaftObject::class
+            );
 
-        static::assertTrue(is_subclass_of($implementation, DaftObject::class, true));
+            return;
+        }
+
+        $arr = [];
 
         /**
         * @var DaftObject
@@ -220,8 +234,6 @@ class DaftObjectGetterSetterTest extends TestCase
     * @param mixed $value
     *
     * @dataProvider dataProviderGetterSetterGoodGetterSetter
-    *
-    * @psalm-suppress InvalidStringClass
     */
     public function testGetterSetterGood(
         string $implementation,
@@ -229,7 +241,16 @@ class DaftObjectGetterSetterTest extends TestCase
         $value,
         string $changedProperty
     ) : void {
-        static::assertTrue(is_subclass_of($implementation, DaftObject::class, true));
+        if ( ! is_subclass_of($implementation, DaftObject::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DaftObject::class
+            );
+
+            return;
+        }
 
         /**
         * @var DaftObject
@@ -248,12 +269,19 @@ class DaftObjectGetterSetterTest extends TestCase
     * @dataProvider dataProviderGetterBad
     *
     * @depends testGetterSetterGood
-    *
-    * @psalm-suppress InvalidStringClass
     */
     public function testGetterBad(string $implementation, string $property, $value) : void
     {
-        static::assertTrue(is_subclass_of($implementation, DaftObject::class, true));
+        if ( ! is_subclass_of($implementation, DaftObject::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DaftObject::class
+            );
+
+            return;
+        }
 
         $obj = new $implementation([
             $property => $value,
@@ -278,12 +306,19 @@ class DaftObjectGetterSetterTest extends TestCase
     * @dataProvider dataProviderSetterBad
     *
     * @depends testGetterSetterGood
-    *
-    * @psalm-suppress InvalidStringClass
     */
     public function testSetterBad(string $implementation, string $property, $value) : void
     {
-        static::assertTrue(is_subclass_of($implementation, DaftObject::class, true));
+        if ( ! is_subclass_of($implementation, DaftObject::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DaftObject::class
+            );
+
+            return;
+        }
 
         $obj = new $implementation();
 

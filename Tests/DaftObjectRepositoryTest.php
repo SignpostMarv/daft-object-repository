@@ -68,8 +68,6 @@ class DaftObjectRepositoryTest extends TestCase
 
     /**
     * @dataProvider RepositoryDataProvider
-    *
-    * @psalm-suppress InvalidStringClass
     */
     public function testRepositoryForImplementaion(
         string $objImplementation,
@@ -77,18 +75,16 @@ class DaftObjectRepositoryTest extends TestCase
         bool $writeable,
         array ...$paramsArray
     ) : void {
-        static::assertTrue(
-            is_subclass_of(
-                $objImplementation,
-                DefinesOwnIdPropertiesInterface::class,
-                true
-            ),
-            sprintf(
-                'Argument 1 passed to %s must be an implementation of %s',
-                __METHOD__,
+        if ( ! is_subclass_of($objImplementation, DefinesOwnIdPropertiesInterface::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
                 DefinesOwnIdPropertiesInterface::class
-            )
-        );
+            );
+
+            return;
+        }
 
         $repo = static::DaftObjectRepositoryByType($objImplementation);
 
@@ -161,8 +157,6 @@ class DaftObjectRepositoryTest extends TestCase
 
     /**
     * @dataProvider DaftObjectRepositoryTypeExceptionForgetRemoveDataProvider
-    *
-    * @psalm-suppress InvalidStringClass
     */
     public function testForgetDaftObjectRepositoryTypeException(
         string $objectTypeA,
@@ -170,16 +164,25 @@ class DaftObjectRepositoryTest extends TestCase
         array $dataTypeA,
         array $dataTypeB
     ) : void {
-        static::assertTrue(is_subclass_of(
-            $objectTypeA,
-            DefinesOwnIdPropertiesInterface::class,
-            true
-        ));
-        static::assertTrue(is_subclass_of(
-            $objectTypeB,
-            DefinesOwnIdPropertiesInterface::class,
-            true
-        ));
+        if ( ! is_subclass_of($objectTypeA, DefinesOwnIdPropertiesInterface::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DefinesOwnIdPropertiesInterface::class
+            );
+
+            return;
+        } elseif ( ! is_subclass_of($objectTypeB, DefinesOwnIdPropertiesInterface::class, true)) {
+            static::markTestSkipped(
+                'Argument 2 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DefinesOwnIdPropertiesInterface::class
+            );
+
+            return;
+        }
 
         /**
         * @var DefinesOwnIdPropertiesInterface
@@ -209,8 +212,6 @@ class DaftObjectRepositoryTest extends TestCase
 
     /**
     * @dataProvider DaftObjectRepositoryTypeExceptionForgetRemoveDataProvider
-    *
-    * @psalm-suppress InvalidStringClass
     */
     public function testRemoveDaftObjectRepositoryTypeException(
         string $objectTypeA,
@@ -218,16 +219,25 @@ class DaftObjectRepositoryTest extends TestCase
         array $dataTypeA,
         array $dataTypeB
     ) : void {
-        static::assertTrue(is_subclass_of(
-            $objectTypeA,
-            DefinesOwnIdPropertiesInterface::class,
-            true
-        ));
-        static::assertTrue(is_subclass_of(
-            $objectTypeB,
-            DefinesOwnIdPropertiesInterface::class,
-            true
-        ));
+        if ( ! is_subclass_of($objectTypeA, DefinesOwnIdPropertiesInterface::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DefinesOwnIdPropertiesInterface::class
+            );
+
+            return;
+        } elseif ( ! is_subclass_of($objectTypeB, DefinesOwnIdPropertiesInterface::class, true)) {
+            static::markTestSkipped(
+                'Argument 2 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DefinesOwnIdPropertiesInterface::class
+            );
+
+            return;
+        }
 
         /**
         * @var DefinesOwnIdPropertiesInterface
@@ -257,8 +267,6 @@ class DaftObjectRepositoryTest extends TestCase
 
     /**
     * @dataProvider DaftObjectRepositoryTypeExceptionForgetRemoveDataProvider
-    *
-    * @psalm-suppress InvalidStringClass
     */
     public function testRememberDaftObjectRepositoryTypeException(
         string $objectTypeA,
@@ -266,16 +274,25 @@ class DaftObjectRepositoryTest extends TestCase
         array $dataTypeA,
         array $dataTypeB
     ) : void {
-        static::assertTrue(is_subclass_of(
-            $objectTypeA,
-            DefinesOwnIdPropertiesInterface::class,
-            true
-        ));
-        static::assertTrue(is_subclass_of(
-            $objectTypeB,
-            DefinesOwnIdPropertiesInterface::class,
-            true
-        ));
+        if ( ! is_subclass_of($objectTypeA, DefinesOwnIdPropertiesInterface::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DefinesOwnIdPropertiesInterface::class
+            );
+
+            return;
+        } elseif ( ! is_subclass_of($objectTypeB, DefinesOwnIdPropertiesInterface::class, true)) {
+            static::markTestSkipped(
+                'Argument 2 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DefinesOwnIdPropertiesInterface::class
+            );
+
+            return;
+        }
 
         /**
         * @var DefinesOwnIdPropertiesInterface
@@ -303,9 +320,6 @@ class DaftObjectRepositoryTest extends TestCase
         $repo->RememberDaftObject($B);
     }
 
-    /**
-    * @psalm-suppress InvalidStringClass
-    */
     protected function repositoryForImplementaionTestRetrievedInLoopOne(
         DefinesOwnIdPropertiesInterface $retrieved,
         DefinesOwnIdPropertiesInterface $obj,
@@ -315,7 +329,16 @@ class DaftObjectRepositoryTest extends TestCase
         array $idProps,
         bool $writeable
     ) : void {
-        static::assertTrue(is_subclass_of($objImplementation, DaftObject::class, true));
+        if ( ! is_subclass_of($objImplementation, DefinesOwnIdPropertiesInterface::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DefinesOwnIdPropertiesInterface::class
+            );
+
+            return;
+        }
 
         static::assertSame(get_class($obj), get_class($retrieved));
         static::assertNotSame($obj, $retrieved);
@@ -397,9 +420,6 @@ class DaftObjectRepositoryTest extends TestCase
         }
     }
 
-    /**
-    * @psalm-suppress InvalidStringClass
-    */
     protected function repositoryForImplementaionTestRetrievedInLoopTwo(
         DefinesOwnIdPropertiesInterface $retrieved,
         DefinesOwnIdPropertiesInterface $obj,
@@ -409,14 +429,16 @@ class DaftObjectRepositoryTest extends TestCase
         array $idProps,
         bool $writeable
     ) : void {
-        static::assertTrue(
-            is_a($retrieved, $objImplementation, true),
-            (
-                get_class($repo) .
-                '::RecallDaftObject() must return an implementation of ' .
-                $objImplementation
-            )
-        );
+        if ( ! is_subclass_of($objImplementation, DaftObject::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DaftObject::class
+            );
+
+            return;
+        }
 
         /**
         * @var array<int, string>

@@ -75,15 +75,12 @@ class DaftObjectImplementationTest extends TestCase
         }
     }
 
-    /**
-    * @psalm-suppress InvalidStringClass
-    */
     final public function dataProviderNonAbstractGoodImplementations() : Generator
     {
         $invalid = $this->dataProviderInvalidImplementations();
 
         /**
-        * @var \Traversable<string|ReflectionClass>
+        * @var iterable<array>
         */
         $implementations = $this->dataProviderNonAbstractImplementations();
 
@@ -91,15 +88,23 @@ class DaftObjectImplementationTest extends TestCase
             if (false === in_array($args[0] ?? null, $invalid, true)) {
                 list($implementation) = $args;
 
-                static::assertIsString($implementation);
+                if ( ! is_string($implementation)) {
+                    static::markTestSkipped(
+                        'Index 0 retrieved from ' .
+                        get_class($this) .
+                        '::dataProviderNonAbstractImplementations must be a string'
+                    );
 
-                /**
-                * @var string
-                */
-                $implementation = $implementation;
+                    return;
+                } elseif ( ! is_subclass_of($implementation, DaftObject\DaftObject::class, true)) {
+                    static::markTestSkipped(
+                        'Index 0 retrieved from ' .
+                        get_class($this) .
+                        '::dataProviderNonAbstractImplementations must be an implementation of ' .
+                        DaftObject\DaftObject::class
+                    );
 
-                if ( ! is_subclass_of($implementation, DaftObject\DaftObject::class, true)) {
-                    continue;
+                    return;
                 }
 
                 /**
@@ -122,9 +127,6 @@ class DaftObjectImplementationTest extends TestCase
         }
     }
 
-    /**
-    * @psalm-suppress InvalidStringClass
-    */
     final public function dataProviderNonAbstractGoodImplementationsWithMixedCaseProperties() : Generator
     {
         $invalid = $this->dataProviderInvalidImplementations();
@@ -167,32 +169,37 @@ class DaftObjectImplementationTest extends TestCase
         }
     }
 
-    /**
-    * @psalm-suppress InvalidStringClass
-    */
     final public function dataProviderNonAbstractGoodImplementationsWithProperties() : Generator
     {
         /**
-        * @var \Traversable<array<int, string|ReflectionClass>>
+        * @var iterable<array>
         */
         $implementations = $this->dataProviderNonAbstractGoodImplementations();
 
         foreach ($implementations as $args) {
             /**
-            * @var array{0:scalar, 1:ReflectionClass}
+            * @var scalar
             */
-            $args = $args;
-
             $className = $args[0];
 
-            static::assertIsString($className);
+            if ( ! is_string($className)) {
+                static::markTestSkipped(
+                    'Index 0 retrieved from ' .
+                    get_class($this) .
+                    '::dataProviderNonAbstractImplementations must be a string'
+                );
 
-            /**
-            * @var string
-            */
-            $className = $className;
+                return;
+            } elseif ( ! is_subclass_of($className, DaftObject\DaftObject::class, true)) {
+                static::markTestSkipped(
+                    'Index 0 retrieved from ' .
+                    get_class($this) .
+                    '::dataProviderNonAbstractGoodImplementations must be an implementation of ' .
+                    DaftObject\DaftObject::class
+                );
 
-            static::assertTrue(is_subclass_of($className, DaftObject\DaftObject::class, true));
+                return;
+            }
 
             /**
             * @var array
@@ -224,9 +231,6 @@ class DaftObjectImplementationTest extends TestCase
         }
     }
 
-    /**
-    * @psalm-suppress InvalidStringClass
-    */
     final public function dataProviderNonAbstractGoodNullableImplementations() : Generator
     {
         /**
@@ -245,7 +249,16 @@ class DaftObjectImplementationTest extends TestCase
             */
             $className = $args[0];
 
-            static::assertTrue(is_subclass_of($className, DaftObject\DaftObject::class, true));
+            if ( ! is_subclass_of($className, DaftObject\DaftObject::class, true)) {
+                static::markTestSkipped(
+                    'Index 0 retrieved from ' .
+                    get_class($this) .
+                    '::dataProviderNonAbstractGoodImplementations must be an implementation of ' .
+                    DaftObject\DaftObject::class
+                );
+
+                return;
+            }
 
             /**
             * @var array
@@ -258,9 +271,6 @@ class DaftObjectImplementationTest extends TestCase
         }
     }
 
-    /**
-    * @psalm-suppress InvalidStringClass
-    */
     final public function dataProviderNonAbstractGoodExportableImplementations() : Generator
     {
         /**
@@ -281,7 +291,16 @@ class DaftObjectImplementationTest extends TestCase
             */
             $className = $args[0];
 
-            static::assertTrue(is_subclass_of($className, DaftObject\DaftObject::class, true));
+            if ( ! is_subclass_of($className, DaftObject\DaftObject::class, true)) {
+                static::markTestSkipped(
+                    'Index 0 retrieved from ' .
+                    get_class($this) .
+                    '::dataProviderNonAbstractGoodImplementations must be an implementation of ' .
+                    DaftObject\DaftObject::class
+                );
+
+                return;
+            }
 
             /**
             * @var array
@@ -302,9 +321,6 @@ class DaftObjectImplementationTest extends TestCase
         }
     }
 
-    /**
-    * @psalm-suppress InvalidStringClass
-    */
     final public function dataProviderNonAbstractGoodPropertiesImplementations() : Generator
     {
         /**
@@ -325,7 +341,16 @@ class DaftObjectImplementationTest extends TestCase
             */
             $className = $args[0];
 
-            static::assertTrue(is_subclass_of($className, DaftObject\DaftObject::class, true));
+            if ( ! is_subclass_of($className, DaftObject\DaftObject::class, true)) {
+                static::markTestSkipped(
+                    'Index 0 retrieved from ' .
+                    get_class($this) .
+                    '::dataProviderNonAbstractGoodImplementations must be an implementation of ' .
+                    DaftObject\DaftObject::class
+                );
+
+                return;
+            }
 
             /**
             * @var array
@@ -394,9 +419,6 @@ class DaftObjectImplementationTest extends TestCase
         }
     }
 
-    /**
-    * @psalm-suppress InvalidStringClass
-    */
     final public function dataProviderGoodNonAbstractGetterSettersNotId() : Generator
     {
         /**
@@ -416,6 +438,17 @@ class DaftObjectImplementationTest extends TestCase
             * @var string
             */
             $className = $args[0];
+
+            if ( ! is_subclass_of($className, DaftObject\DaftObject::class, true)) {
+                static::markTestSkipped(
+                    'Index 0 retrieved from ' .
+                    get_class($this) .
+                    '::dataProviderGoodNonAbstractGetterSetters must be an implementation of ' .
+                    DaftObject\DaftObject::class
+                );
+
+                return;
+            }
 
             /**
             * @var ReflectionClass
@@ -711,9 +744,6 @@ class DaftObjectImplementationTest extends TestCase
         }
     }
 
-    /**
-    * @psalm-suppress InvalidStringClass
-    */
     final public function dataProviderNonAbstractGoodFuzzingHasSettersPerPropertyNotNullable(
     ) : Generator {
         /**
@@ -733,6 +763,18 @@ class DaftObjectImplementationTest extends TestCase
             * @var string
             */
             $className = $args[0];
+
+            if ( ! is_subclass_of($className, DaftObject\DaftObject::class, true)) {
+                static::markTestSkipped(
+                    'Index 0 retrieved from ' .
+                    get_class($this) .
+                    '::dataProviderNonAbstractGoodFuzzingHasSettersPerProperty' .
+                    ' must be an implementation of ' .
+                    DaftObject\DaftObject::class
+                );
+
+                return;
+            }
 
             /**
             * @var string
@@ -758,14 +800,21 @@ class DaftObjectImplementationTest extends TestCase
 
     /**
     * @dataProvider dataProviderNonAbstractGoodImplementationsWithProperties
-    *
-    * @psalm-suppress InvalidStringClass
     */
     final public function testHasDefinedAllPropertiesCorrectly(
         string $className,
         ReflectionClass $reflector
     ) : void {
-        static::assertTrue(is_subclass_of($className, DaftObject\DaftObject::class, true));
+        if ( ! is_subclass_of($className, DaftObject\DaftObject::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DaftObject\DaftObject::class
+            );
+
+            return;
+        }
 
         /**
         * @var array<int, string|null>
@@ -786,15 +835,22 @@ class DaftObjectImplementationTest extends TestCase
     * @dataProvider dataProviderNonAbstractGoodImplementationsWithMixedCaseProperties
     *
     * @depends testHasDefinedAllPropertiesCorrectly
-    *
-    * @psalm-suppress InvalidStringClass
     */
     final public function testHasDefinedAllPropertiesCorrectlyExceptMixedCase(
         string $className,
         ReflectionClass $reflector,
         bool $hasMixedCase
     ) : void {
-        static::assertTrue(is_subclass_of($className, DaftObject\DaftObject::class, true));
+        if ( ! is_subclass_of($className, DaftObject\DaftObject::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DaftObject\DaftObject::class
+            );
+
+            return;
+        }
 
         /**
         * @var array<int, string>
@@ -813,20 +869,21 @@ class DaftObjectImplementationTest extends TestCase
 
     /**
     * @dataProvider dataProviderNonAbstractDefinesOwnIdGoodImplementations
-    *
-    * @psalm-suppress InvalidStringClass
     */
     final public function testHasDefinedAllIdPropertiesCorrectly(
         string $className,
         ReflectionClass $reflector
     ) : void {
-        $interfaceCheck = $className;
+        if ( ! is_subclass_of($className, DaftObject\DefinesOwnIdPropertiesInterface::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DaftObject\DefinesOwnIdPropertiesInterface::class
+            );
 
-        static::assertTrue(is_subclass_of(
-            $interfaceCheck,
-            DaftObject\DefinesOwnIdPropertiesInterface::class,
-            true
-        ));
+            return;
+        }
 
         /**
         * @var array<int, string>
@@ -891,14 +948,21 @@ class DaftObjectImplementationTest extends TestCase
     * @dataProvider dataProviderNonAbstractGoodNullableImplementations
     *
     * @depends testHasDefinedAllPropertiesCorrectly
-    *
-    * @psalm-suppress InvalidStringClass
     */
     final public function testHasDefinedAllNullablesCorrectly(
         string $className,
         ReflectionClass $reflector
     ) : void {
-        static::assertTrue(is_subclass_of($className, DaftObject\DaftObject::class, true));
+        if ( ! is_subclass_of($className, DaftObject\DaftObject::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DaftObject\DaftObject::class
+            );
+
+            return;
+        }
 
         /**
         * @var array<int, string|null>
@@ -1023,14 +1087,21 @@ class DaftObjectImplementationTest extends TestCase
     * @dataProvider dataProviderNonAbstractGoodExportableImplementations
     *
     * @depends testHasDefinedAllPropertiesCorrectly
-    *
-    * @psalm-suppress InvalidStringClass
     */
     final public function testHasDefinedAllExportablesCorrectly(
         string $className,
         ReflectionClass $reflector
     ) : void {
-        static::assertTrue(is_subclass_of($className, DaftObject\DaftObject::class, true));
+        if ( ! is_subclass_of($className, DaftObject\DaftObject::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DaftObject\DaftObject::class
+            );
+
+            return;
+        }
 
         /**
         * @var array<int, string|null>
@@ -1097,14 +1168,21 @@ class DaftObjectImplementationTest extends TestCase
 
     /**
     * @dataProvider dataProviderNonAbstractGoodPropertiesImplementations
-    *
-    * @psalm-suppress InvalidStringClass
     */
     final public function testHasDefinedImplementationCorrectly(
         string $className,
         ReflectionClass $reflector
     ) : void {
-        static::assertTrue(is_subclass_of($className, DaftObject\DaftObject::class, true));
+        if ( ! is_subclass_of($className, DaftObject\DaftObject::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DaftObject\DaftObject::class
+            );
+
+            return;
+        }
 
         /**
         * @var array<int, string>
@@ -1358,14 +1436,21 @@ class DaftObjectImplementationTest extends TestCase
     * @dataProvider dataProviderGoodNonAbstractGetterSettersNotId
     *
     * @depends testHasDefinedImplementationCorrectly
-    *
-    * @psalm-suppress InvalidStringClass
     */
     final public function testHasAllGettersAndSettersDefinedAsProperties(
         string $className,
         ReflectionMethod $reflector
     ) : void {
-        static::assertTrue(is_subclass_of($className, DaftObject\DaftObject::class, true));
+        if ( ! is_subclass_of($className, DaftObject\DaftObject::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DaftObject\DaftObject::class
+            );
+
+            return;
+        }
 
         $property = mb_substr($reflector->getName(), 3);
 
@@ -1400,8 +1485,6 @@ class DaftObjectImplementationTest extends TestCase
     * @dataProvider dataProviderNonAbstractNonWormGoodFuzzingHasSetters
     *
     * @depends testHasDefinedImplementationCorrectly
-    *
-    * @psalm-suppress InvalidStringClass
     */
     final public function testProviderNonAbstractGoodFuzzingSetFromBlank(
         string $className,
@@ -1410,7 +1493,16 @@ class DaftObjectImplementationTest extends TestCase
         array $getters,
         array $setters
     ) : void {
-        static::assertTrue(is_subclass_of($className, DaftObject\DaftObject::class, true));
+        if ( ! is_subclass_of($className, DaftObject\DaftObject::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DaftObject\DaftObject::class
+            );
+
+            return;
+        }
 
         /**
         * @var DaftObject\DaftObject
@@ -1632,8 +1724,6 @@ class DaftObjectImplementationTest extends TestCase
     * @dataProvider dataProviderNonAbstractGoodFuzzingHasSetters
     *
     * @depends testHasDefinedImplementationCorrectly
-    *
-    * @psalm-suppress InvalidStringClass
     */
     final public function testProviderNonAbstractGoodFuzzingSetFromBlankThenJsonSerialiseMaybeFailure(
         string $className,
@@ -1642,12 +1732,30 @@ class DaftObjectImplementationTest extends TestCase
         array $getters,
         array $setters
     ) : void {
-        static::assertTrue(is_subclass_of($className, DaftObject\DaftObject::class, true));
+        if ( ! is_subclass_of($className, DaftObject\DaftObject::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DaftObject\DaftObject::class
+            );
+
+            return;
+        }
 
         $obj = new $className($args);
 
         if ($obj instanceof DaftObject\DaftJson) {
-            static::assertTrue(is_subclass_of($className, DaftObject\DaftJson::class, true));
+            if ( ! is_subclass_of($className, DaftObject\DaftJson::class, true)) {
+                static::markTestSkipped(
+                    'Argument 1 passed to ' .
+                    __METHOD__ .
+                    ' must be an implementation of ' .
+                    DaftObject\DaftJson::class
+                );
+
+                return;
+            }
 
             $obj->jsonSerialize();
 
@@ -1657,7 +1765,7 @@ class DaftObjectImplementationTest extends TestCase
                 $json,
                 (
                     'Instances of ' .
-                    $className .
+                    get_class($obj) .
                     ' should resolve to a string when passed to json_encode()'
                 )
             );
@@ -1673,7 +1781,7 @@ class DaftObjectImplementationTest extends TestCase
                     'JSON-encoded implementations of ' .
                     DaftObject\DaftJson::class .
                     ' (' .
-                    $className .
+                    get_class($obj) .
                     ')' .
                     ' must decode to an array!'
                 )
@@ -1736,8 +1844,6 @@ class DaftObjectImplementationTest extends TestCase
     * @dataProvider dataProviderNonAbstractJsonArrayBackedGoodFuzzingHasSetters
     *
     * @depends testHasDefinedImplementationCorrectly
-    *
-    * @psalm-suppress TypeDoesNotContainType
     */
     final public function testProviderNonAbstractGoodFuzzingJsonFromArrayFailure(
         string $className,
@@ -1746,17 +1852,23 @@ class DaftObjectImplementationTest extends TestCase
         array $getters,
         array $setters
     ) : void {
+        if ( ! is_a($className, DaftObject\AbstractArrayBackedDaftObject::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DaftObject\AbstractArrayBackedDaftObject::class
+            );
+
+            return;
+        }
+
         $this->expectException(DaftObject\DaftObjectNotDaftJsonBadMethodCallException::class);
         $this->expectExceptionMessage(sprintf(
             '%s does not implement %s',
             $className,
             DaftObject\DaftJson::class
         ));
-
-        /**
-        * @var DaftObject\DaftJson
-        */
-        $className = $className;
 
         $className::DaftObjectFromJsonArray([]);
     }
@@ -1765,8 +1877,6 @@ class DaftObjectImplementationTest extends TestCase
     * @dataProvider dataProviderNonAbstractJsonArrayBackedGoodFuzzingHasSetters
     *
     * @depends testHasDefinedImplementationCorrectly
-    *
-    * @psalm-suppress InvalidStringClass
     */
     final public function testProviderNonAbstractGoodFuzzingDaftObjectIsNotDaftJson(
         string $className,
@@ -1775,7 +1885,16 @@ class DaftObjectImplementationTest extends TestCase
         array $getters,
         array $setters
     ) : void {
-        static::assertTrue(is_subclass_of($className, DaftObject\DaftObject::class, true));
+        if ( ! is_subclass_of($className, DaftObject\DaftObject::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DaftObject\DaftObject::class
+            );
+
+            return;
+        }
 
         /**
         * @var DaftObject\DaftObject
@@ -1796,8 +1915,6 @@ class DaftObjectImplementationTest extends TestCase
     * @dataProvider dataProviderNonAbstractJsonArrayBackedGoodFuzzingHasSetters
     *
     * @depends testHasDefinedImplementationCorrectly
-    *
-    * @psalm-suppress InvalidStringClass
     */
     final public function testProviderNonAbstractGoodFuzzingJsonFromStringFailure(
         string $className,
@@ -1806,7 +1923,16 @@ class DaftObjectImplementationTest extends TestCase
         array $getters,
         array $setters
     ) : void {
-        static::assertTrue(is_subclass_of($className, DaftObject\DaftObject::class, true));
+        if ( ! is_subclass_of($className, DaftObject\AbstractArrayBackedDaftObject::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DaftObject\AbstractArrayBackedDaftObject::class
+            );
+
+            return;
+        }
 
         $this->expectException(DaftObject\DaftObjectNotDaftJsonBadMethodCallException::class);
         $this->expectExceptionMessage(sprintf(
@@ -1995,8 +2121,6 @@ class DaftObjectImplementationTest extends TestCase
     * @dataProvider dataProviderNonAbstractGoodFuzzingHasSettersPerPropertyWorm
     *
     * @depends testHasDefinedImplementationCorrectly
-    *
-    * @psalm-suppress InvalidStringClass
     */
     final public function testProviderNonAbstractGoodFuzzingHasSettersPerPropertyWorm(
         string $className,
@@ -2006,7 +2130,16 @@ class DaftObjectImplementationTest extends TestCase
         array $setters,
         string $property
     ) : void {
-        static::assertTrue(is_subclass_of($className, DaftObject\DaftObject::class, true));
+        if ( ! is_subclass_of($className, DaftObject\DaftObject::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DaftObject\DaftObject::class
+            );
+
+            return;
+        }
 
         $obj = new $className($args, true);
 
@@ -2025,8 +2158,6 @@ class DaftObjectImplementationTest extends TestCase
     * @dataProvider dataProviderNonAbstractGoodFuzzingHasSettersPerPropertyWorm
     *
     * @depends testHasDefinedImplementationCorrectly
-    *
-    * @psalm-suppress InvalidStringClass
     */
     final public function testProviderNonAbstractGoodFuzzingHasSettersPerPropertyWormAfterCreate(
         string $className,
@@ -2036,7 +2167,16 @@ class DaftObjectImplementationTest extends TestCase
         array $setters,
         string $property
     ) : void {
-        static::assertTrue(is_subclass_of($className, DaftObject\DaftObject::class, true));
+        if ( ! is_subclass_of($className, DaftObject\DaftObject::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DaftObject\DaftObject::class
+            );
+
+            return;
+        }
 
         $obj = new $className([], true);
 
@@ -2055,8 +2195,6 @@ class DaftObjectImplementationTest extends TestCase
 
     /**
     * @dataProvider dataProviderNonAbstractGoodFuzzingHasSettersPerPropertyNotNullable
-    *
-    * @psalm-suppress AbstractInstantiation
     */
     final public function testNonAbstractGoodFuzzingHasSettersPerPropertyNotNullable(
         string $className,
@@ -2066,8 +2204,16 @@ class DaftObjectImplementationTest extends TestCase
         array $setters,
         string $property
     ) : void {
-        if (
-            is_a($className, DaftObject\AbstractDaftObject::class, true) &&
+        if ( ! is_subclass_of($className, DaftObject\AbstractDaftObject::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DaftObject\AbstractDaftObject::class
+            );
+
+            return;
+        } elseif (
             ! $reflector->isAbstract() &&
             in_array($property, $setters, true)
         ) {
@@ -2132,12 +2278,20 @@ class DaftObjectImplementationTest extends TestCase
 
     /**
     * @dataProvider dataProviderDaftObjectCreatedByArray
-    *
-    * @psalm-suppress InvalidStringClass
     */
     final public function testConstructorArrayKeys(string $className, bool $writeAll) : void
     {
-        static::assertTrue(is_subclass_of($className, DaftObject\DaftObject::class, true));
+        if ( ! is_a($className, DaftObject\DaftObject::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DaftObject\DaftObject::class
+            );
+
+            return;
+        }
+
         static::expectException(InvalidArgumentException::class);
         static::expectExceptionMessage('Properties must be strings!');
 
@@ -2146,12 +2300,19 @@ class DaftObjectImplementationTest extends TestCase
 
     /**
     * @dataProvider dataProviderNonAbstractGoodSortableImplementations
-    *
-    * @psalm-suppress InvalidStringClass
     */
     public function testSortableImplementation(string $className) : void
     {
-        static::assertTrue(is_a($className, DaftObject\DaftSortableObject::class, true));
+        if ( ! is_a($className, DaftObject\DaftSortableObject::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DaftObject\DaftSortableObject::class
+            );
+
+            return;
+        }
 
         /**
         * @var scalar|array|object|resource|null
@@ -2196,12 +2357,20 @@ class DaftObjectImplementationTest extends TestCase
 
     /**
     * @dataProvider dataProviderNonAbstractGoodNonSortableImplementations
-    *
-    * @psalm-suppress InvalidStringClass
     */
     public function testNotSortableImplementation(string $className) : void
     {
-        static::assertTrue(is_subclass_of($className, DaftObject\AbstractDaftObject::class, true));
+        if ( ! is_a($className, DaftObject\AbstractDaftObject::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DaftObject\AbstractDaftObject::class
+            );
+
+            return;
+        }
+
         static::assertFalse(is_subclass_of(
             $className,
             DaftObject\DaftSortableObject::class,
@@ -2266,13 +2435,21 @@ class DaftObjectImplementationTest extends TestCase
 
     /**
     * @dataProvider DataProviderNotDaftObjectHasPropertiesWithMultiTypedArraysOfUniqueValues
-    *
-    * @psalm-suppress InvalidStringClass
     */
     public function testNotDaftObjectHasPropertiesWithMultiTypedArraysOfUniqueValues(
         string $implementation
     ) : void {
-        static::assertTrue(is_a($implementation, DaftObject\AbstractDaftObject::class, true));
+        if ( ! is_a($implementation, DaftObject\AbstractDaftObject::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DaftObject\AbstractDaftObject::class
+            );
+
+            return;
+        }
+
         static::expectException(DaftObject\ClassDoesNotImplementClassException::class);
         static::expectExceptionMessage(
             $implementation .

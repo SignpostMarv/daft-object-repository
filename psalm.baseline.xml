@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files>
+  <file src="Tests\DaftObjectImplementationTest.php">
+    <MixedMethodCall occurrences="2">
+      <code>$className::DaftObjectFromJsonArray($decoded)</code>
+      <code>$className::DaftObjectFromJsonString($json)</code>
+    </MixedMethodCall>
+  </file>
+  <file src="src\DaftObjectMemoryRepository.php">
+    <InvalidStringClass occurrences="2">
+      <code>new $type($this-&gt;data[$hashId])</code>
+    </InvalidStringClass>
+  </file>
+  <file src="src\JsonTypeUtilities.php">
+    <InvalidStringClass occurrences="2">
+      <code>$type::DaftObjectJsonPropertyNames()</code>
+      <code>$type::DaftObjectJsonProperties()</code>
+    </InvalidStringClass>
+  </file>
+  <file src="src\TypeParanoia.php">
+    <InvalidNullableReturnType occurrences="1">
+      <code>string</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="1"/>
+  </file>
+  <file src="src\TypeUtilities.php">
+    <InvalidStringClass occurrences="2">
+      <code>$class::DaftObjectProperties()</code>
+      <code>$class::DaftObjectIdProperties()</code>
+    </InvalidStringClass>
+  </file>
+</files>

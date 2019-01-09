@@ -87,8 +87,6 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     * Recalls the corresponding daft object instance from cached data.
     *
     * @param mixed $id
-    *
-    * @psalm-suppress InvalidStringClass
     */
     protected function RecallDaftObjectFromData($id) : ? DaftObject
     {
@@ -112,8 +110,6 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     * Converts an id to a unique-enough-for-now string.
     *
     * @param mixed $id
-    *
-    * @psalm-suppress InvalidStringClass
     */
     private function ObjectHashId($id) : string
     {

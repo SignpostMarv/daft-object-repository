@@ -313,8 +313,6 @@ class DaftTestObjectTest extends TestCase
     * @param array<string, scalar|array|object|null> $params
     *
     * @dataProvider GoodDataProvider
-    *
-    * @psalm-suppress InvalidStringClass
     */
     public function testGood(
         string $implementation,
@@ -322,7 +320,16 @@ class DaftTestObjectTest extends TestCase
         bool $readable = false,
         bool $writeable = false
     ) : void {
-        static::assertTrue(is_subclass_of($implementation, DaftObject::class, true));
+        if ( ! is_subclass_of($implementation, DaftObject::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DaftObject::class
+            );
+
+            return;
+        }
 
         /**
         * @var DaftObject
@@ -499,8 +506,6 @@ class DaftTestObjectTest extends TestCase
 
     /**
     * @dataProvider ThrowsExceptionProvider
-    *
-    * @psalm-suppress InvalidStringClass
     */
     public function testThrowsException(
         string $implementation,
@@ -510,7 +515,16 @@ class DaftTestObjectTest extends TestCase
         bool $readable,
         bool $writeable
     ) : void {
-        static::assertTrue(is_subclass_of($implementation, DaftObject::class, true));
+        if ( ! is_subclass_of($implementation, DaftObject::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DaftObject::class
+            );
+
+            return;
+        }
 
         if ($readable) {
             $this->expectException($expectedExceptionType);
@@ -538,11 +552,20 @@ class DaftTestObjectTest extends TestCase
     /**
     * @dataProvider DefinesOwnUntypedIdInterfaceProvider
     *
-    * @psalm-suppress InvalidStringClass
+    * @psalm-suppress NoInterfaceProperties
     */
     public function testDefinesOwnUntypedIdInterface(string $implementation, array $params) : void
     {
-        static::assertTrue(is_subclass_of($implementation, DaftObject::class, true));
+        if ( ! is_subclass_of($implementation, DefinesOwnIdPropertiesInterface::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DefinesOwnIdPropertiesInterface::class
+            );
+
+            return;
+        }
 
         $obj = new $implementation($params, false);
 
@@ -550,11 +573,6 @@ class DaftTestObjectTest extends TestCase
         * @var array<int, scalar|array|object|null>|null
         */
         $val = $obj->id;
-
-        /**
-        * @var DefinesOwnIdPropertiesInterface
-        */
-        $implementation = $implementation;
 
         /**
         * @var array<int, string>
@@ -606,13 +624,20 @@ class DaftTestObjectTest extends TestCase
 
     /**
     * @dataProvider RetrievePropertyValueFromDataNotNullableExceptionDataProvider
-    *
-    * @psalm-suppress InvalidStringClass
     */
     public function testRetrievePropertyValueFromDataNotNullableException(
         string $implementation
     ) : void {
-        static::assertTrue(is_a($implementation, DaftObject::class, true));
+        if ( ! is_subclass_of($implementation, DaftObject::class, true)) {
+            static::markTestSkipped(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an implementation of ' .
+                DaftObject::class
+            );
+
+            return;
+        }
 
         $obj = new $implementation();
 

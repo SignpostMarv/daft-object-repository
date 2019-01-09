@@ -39,8 +39,6 @@ class JsonTypeUtilities
 
     /**
     * @param array<int|string, mixed> $array
-    *
-    * @psalm-suppress InvalidStringClass
     */
     public static function ThrowIfJsonDefNotValid(string $type, array $array) : array
     {

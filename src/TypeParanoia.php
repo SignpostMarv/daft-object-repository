@@ -65,9 +65,6 @@ class TypeParanoia
 
     /**
     * @param mixed $maybe
-    *
-    * @psalm-suppress InvalidNullableReturnType
-    * @psalm-suppress NullableReturnStatement
     */
     public static function VarExportNonScalars($maybe) : string
     {
