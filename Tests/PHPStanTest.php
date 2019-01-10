@@ -9,7 +9,6 @@ namespace SignpostMarv\DaftObject\Tests;
 use Jean85\PrettyVersions;
 use OutOfBoundsException;
 use PHPStan\Command\AnalyseCommand;
-use PHPStan\Command\DumpDependenciesCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -25,7 +24,6 @@ class PHPStanTest extends TestCase
 
         $application = new Application('PHPStan Checking', $version);
         $application->add(new AnalyseCommand());
-        $application->add(new DumpDependenciesCommand());
 
         $command = $application->find('analyse');
 
