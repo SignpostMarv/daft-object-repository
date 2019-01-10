@@ -49,9 +49,17 @@ class PHPStanTest extends TestCase
 
         $firstLine = trim(current(explode("\n", $commandTester->getDisplay())));
 
-        static::assertSame(
+        static::assertTrue(in_array(
+            $firstLine,
+            [
             'Note: Using configuration file ' . realpath(__DIR__ . '/../phpstan.neon') . '.',
-            $firstLine
-        );
+                (
+                    'Note: Using configuration file ' .
+                    realpath(__DIR__ . '/../../../../phpstan.neon') .
+                    '.'
+                ),
+            ],
+            true
+        ));
     }
 }
