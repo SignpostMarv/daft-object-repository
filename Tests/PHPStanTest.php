@@ -52,7 +52,11 @@ class PHPStanTest extends TestCase
         static::assertTrue(in_array(
             $firstLine,
             [
-            'Note: Using configuration file ' . realpath(__DIR__ . '/../phpstan.neon') . '.',
+                (
+                    'Note: Using configuration file ' .
+                    realpath(__DIR__ . '/../phpstan.neon') .
+                    '.'
+                ),
                 (
                     'Note: Using configuration file ' .
                     realpath(__DIR__ . '/../../../../phpstan.neon') .
