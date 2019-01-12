@@ -41,7 +41,7 @@ class PHPStanTest extends TestCase
                 ],
             ],
             [
-                'configuration' => __DIR__ . '/../phpstan.neon',
+                'configuration' => static::ObtainConfiguration(),
             ]
         );
 
@@ -63,5 +63,10 @@ class PHPStanTest extends TestCase
             ],
             true
         ));
+    }
+
+    protected static function ObtainConfiguration() : string
+    {
+        return  __DIR__ . '/../phpstan.neon';
     }
 }
