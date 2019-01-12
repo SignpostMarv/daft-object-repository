@@ -10,6 +10,8 @@ namespace SignpostMarv\DaftObject;
 
 abstract class AbstractDaftObjectRepository implements DaftObjectRepository
 {
+    use TraitThrowIfNotType;
+
     /**
     * @var DefinesOwnIdPropertiesInterface[]
     */
@@ -113,25 +115,5 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
         ...$args
     ) : DaftObjectRepository {
         return static::DaftObjectRepositoryByType(get_class($object), ...$args);
-    }
-
-    /**
-    * @param DaftObject|string $object
-    */
-    protected static function ThrowIfNotType(
-        $object,
-        string $type,
-        int $argument,
-        string $function
-    ) : void {
-        if (false === is_a($object, $type, is_string($object))) {
-            throw new DaftObjectRepositoryTypeByClassMethodAndTypeException(
-                $argument,
-                static::class,
-                $function,
-                $type,
-                is_string($object) ? $object : get_class($object)
-            );
-        }
     }
 }
