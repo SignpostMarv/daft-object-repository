@@ -10,8 +10,6 @@ namespace SignpostMarv\DaftObject;
 
 abstract class AbstractDaftObjectRepository implements DaftObjectRepository
 {
-    use TraitThrowIfNotType;
-
     /**
     * @var DefinesOwnIdPropertiesInterface[]
     */
@@ -44,7 +42,7 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
 
     public function ForgetDaftObject(DefinesOwnIdPropertiesInterface $object) : void
     {
-        static::ThrowIfNotType($object, $this->type, 1, __FUNCTION__);
+        TypeParanoia::ThrowIfNotType($object, $this->type, 1, static::class, __FUNCTION__);
 
         $id = [];
 
@@ -67,7 +65,7 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
 
     public function RemoveDaftObject(DefinesOwnIdPropertiesInterface $object) : void
     {
-        static::ThrowIfNotType($object, $this->type, 1, __FUNCTION__);
+        TypeParanoia::ThrowIfNotType($object, $this->type, 1, static::class, __FUNCTION__);
 
         $id = [];
 
@@ -101,7 +99,7 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
                 DefinesOwnIdPropertiesInterface::class,
             ] as $checkFor
         ) {
-            static::ThrowIfNotType($type, $checkFor, 1, __FUNCTION__);
+            TypeParanoia::ThrowIfNotType($type, $checkFor, 1, static::class, __FUNCTION__);
         }
 
         return new static($type, ...$args);

@@ -138,16 +138,17 @@ class TypeParanoia
     /**
     * @param DaftObject|string $object
     */
-    protected static function ThrowIfNotType(
+    public static function ThrowIfNotType(
         $object,
         string $type,
         int $argument,
+        string $class,
         string $function
     ) : void {
         if (false === is_a($object, $type, is_string($object))) {
             throw new DaftObjectRepositoryTypeByClassMethodAndTypeException(
                 $argument,
-                static::class,
+                $class,
                 $function,
                 $type,
                 is_string($object) ? $object : get_class($object)
