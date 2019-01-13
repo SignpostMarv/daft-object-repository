@@ -214,7 +214,6 @@ class TypeParanoia
         );
     }
 
-
     /**
     * @return array<int, mixed> filtered $value
     */
