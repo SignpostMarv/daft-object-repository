@@ -61,6 +61,17 @@
                 "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::DetermineDeclaringClass"
             ]
         },
+        "Plus": {
+            "ignore": [
+                "SignpostMarv\\DaftObject\\TypeParanoia::ThrowIfNotType"
+            ]
+        },
+        "PublicVisibility": {
+            "ignore": [
+                "SignpostMarv\\DaftObject\\TypeParanoia::ThrowIfNotDaftObjectType",
+                "SignpostMarv\\DaftObject\\TypeParanoia::ThrowIfNotType"
+            ]
+        },
         "ProtectedVisibility": {
             "ignore": [
                 "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::DetermineDeclaringClass"
@@ -73,6 +84,7 @@
                 "SignpostMarv\\DaftObject\\TypeParanoia::EnsureArgumentIsString",
                 "SignpostMarv\\DaftObject\\TypeParanoia::EnsureArgumentIsArray",
                 "SignpostMarv\\DaftObject\\TypeParanoia::MaybeInMaybeArray",
+                "SignpostMarv\\DaftObject\\TypeParanoia::ThrowIfNotType",
                 "SignpostMarv\\DaftObject\\PHPStan\\ClassReflectionExtension::getProperty",
                 "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::__construct",
                 "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::getDeclaringClass",

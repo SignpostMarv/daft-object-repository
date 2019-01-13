@@ -16,6 +16,8 @@ class TypeParanoia
 
     const BOOL_VAR_EXPORT_RETURN = true;
 
+    const INT_ARG_OFFSET = 4;
+
     /**
     * @param mixed $needle
     * @param mixed $haystack
@@ -157,7 +159,7 @@ class TypeParanoia
             if ( ! interface_exists($type) && ! class_exists($type)) {
                 throw new InvalidArgumentException(
                     'Argument ' .
-                    (4 + $i) .
+                    (self::INT_ARG_OFFSET + $i) .
                     ' passed to ' .
                     __METHOD__ .
                     ' must be a class or interface!'
