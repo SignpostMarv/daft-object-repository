@@ -163,13 +163,13 @@ class TypeParanoia
                     ' must be a class or interface!'
                 );
             } elseif ( ! is_a($object, $type, is_string($object))) {
-            throw new DaftObjectRepositoryTypeByClassMethodAndTypeException(
-                $argument,
-                $class,
-                $function,
-                $type,
-                is_string($object) ? $object : get_class($object)
-            );
+                throw new DaftObjectRepositoryTypeByClassMethodAndTypeException(
+                    $argument,
+                    $class,
+                    $function,
+                    $type,
+                    is_string($object) ? $object : get_class($object)
+                );
             }
         }
     }
