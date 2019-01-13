@@ -68,6 +68,7 @@
         },
         "PublicVisibility": {
             "ignore": [
+                "SignpostMarv\\DaftObject\\TypeCertainty::EnsureArgumentIsObjectOrString",
                 "SignpostMarv\\DaftObject\\TypeParanoia::ThrowIfNotDaftObjectType",
                 "SignpostMarv\\DaftObject\\TypeParanoia::ThrowIfNotType"
             ]
