@@ -74,4 +74,24 @@ class TypeCertainty
 
         return $maybe;
     }
+
+    /**
+    * @param mixed $maybe
+    *
+    * @return object|string
+    */
+    public static function EnsureArgumentIsObjectOrString($maybe, int $argument, string $method)
+    {
+        if ( ! is_object($maybe) && ! is_string($maybe)) {
+            throw new InvalidArgumentException(
+                'Argument ' .
+                $argument .
+                ' passed to ' .
+                $method .
+                ' must be an object or a string!'
+            );
+        }
+
+        return $maybe;
+    }
 }

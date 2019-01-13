@@ -82,13 +82,7 @@ class TypeParanoia extends TypeCertainty
         string $function,
         string ...$types
     ) : void {
-        if ( ! is_object($object) && ! is_string($object)) {
-            throw new InvalidArgumentException(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an object or a string!'
-            );
-        }
+        $object = static::EnsureArgumentIsObjectOrString($object, 1, __METHOD__);
 
         foreach ($types as $i => $type) {
             if ( ! interface_exists($type) && ! class_exists($type)) {
