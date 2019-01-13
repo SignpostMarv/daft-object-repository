@@ -16,7 +16,7 @@ class TypeParanoia
 
     const BOOL_VAR_EXPORT_RETURN = true;
 
-    const INT_ARG_OFFSET = 4;
+    const INT_ARG_OFFSET = 5;
 
     /**
     * @param mixed $needle

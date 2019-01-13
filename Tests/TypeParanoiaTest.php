@@ -9,6 +9,8 @@ namespace SignpostMarv\DaftObject\Tests;
 use DateTimeImmutable;
 use DateTimeInterface;
 use InvalidArgumentException;
+use SignpostMarv\DaftObject\DaftObject;
+use SignpostMarv\DaftObject\DaftObjectRepositoryTypeByClassMethodAndTypeException;
 use SignpostMarv\DaftObject\TypeParanoia;
 
 class TypeParanoiaTest extends TestCase
@@ -99,5 +101,118 @@ class TypeParanoiaTest extends TestCase
 
             TypeParanoia::EnsureArgumentIsString($maybe);
         }
+    }
+
+    public function DataProviderThrowIfNotType() : array
+    {
+        return [
+            [
+                1,
+                5,
+                TypeParanoia::class,
+                'ThrowIfNotType',
+                [
+                    DaftObject::class,
+                ],
+                InvalidArgumentException::class,
+                (
+                    'Argument 1 passed to ' .
+                    TypeParanoia::class .
+                    '::ThrowIfNotType must be an object or a string!'
+                ),
+            ],
+            [
+                'foo',
+                5,
+                TypeParanoia::class,
+                'ThrowIfNotType',
+                [
+                    'bar',
+                ],
+                InvalidArgumentException::class,
+                (
+                    'Argument 5 passed to ' .
+                    TypeParanoia::class .
+                    '::ThrowIfNotType must be a class or interface!'
+                ),
+            ],
+        ];
+    }
+
+    /**
+    * @param mixed $object
+    * @param string[] $types
+    *
+    * @dataProvider DataProviderThrowIfNotType
+    */
+    public function testThrowIfNotType(
+        $object,
+        int $argument,
+        string $class,
+        string $function,
+        array $types,
+        string $expectedException,
+        string $expectedExceptionMessage
+    ) : void {
+        static::expectException($expectedException);
+        static::expectExceptionMessage($expectedExceptionMessage);
+
+        TypeParanoia::ThrowIfNotType(
+            $object,
+            $argument,
+            $class,
+            $function,
+            ...array_values($types)
+        );
+    }
+
+    public function DataProviderThrowIfNotDaftObjectType() : array
+    {
+        return [
+            [
+                'stdClass',
+                1,
+                TypeParanoia::class,
+                'ThrowIfNotType',
+                [
+                    DateTimeImmutable::class,
+                ],
+                DaftObjectRepositoryTypeByClassMethodAndTypeException::class,
+                (
+                    'Argument 1 passed to ' .
+                    TypeParanoia::class .
+                    '::ThrowIfNotType() must be an implementation of ' .
+                    DaftObject::class .
+                    ', stdClass given.'
+                ),
+            ],
+        ];
+    }
+
+    /**
+    * @param mixed $object
+    * @param string[] $types
+    *
+    * @dataProvider DataProviderThrowIfNotDaftObjectType
+    */
+    public function testThrowIfNotDaftObjectType(
+        $object,
+        int $argument,
+        string $class,
+        string $function,
+        array $types,
+        string $expectedException,
+        string $expectedExceptionMessage
+    ) : void {
+        static::expectException($expectedException);
+        static::expectExceptionMessage($expectedExceptionMessage);
+
+        TypeParanoia::ThrowIfNotDaftObjectType(
+            $object,
+            $argument,
+            $class,
+            $function,
+            ...array_values($types)
+        );
     }
 }
