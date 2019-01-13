@@ -11,6 +11,7 @@ use DateTimeInterface;
 use InvalidArgumentException;
 use SignpostMarv\DaftObject\DaftObject;
 use SignpostMarv\DaftObject\DaftObjectRepositoryTypeByClassMethodAndTypeException;
+use SignpostMarv\DaftObject\TypeCertainty;
 use SignpostMarv\DaftObject\TypeParanoia;
 
 class TypeParanoiaTest extends TestCase
@@ -93,7 +94,7 @@ class TypeParanoiaTest extends TestCase
             static::expectException(InvalidArgumentException::class);
             static::expectExceptionMessage(
                 'Argument 1 passed to ' .
-                TypeParanoia::class .
+                TypeCertainty::class .
                 '::EnsureArgumentIsString must be a string, ' .
                 (is_object($maybe) ? get_class($maybe) : gettype($maybe)) .
                 ' given!'

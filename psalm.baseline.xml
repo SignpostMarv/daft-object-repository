@@ -17,7 +17,7 @@
       <code>$type::DaftObjectJsonProperties()</code>
     </InvalidStringClass>
   </file>
-  <file src="src\TypeParanoia.php">
+  <file src="src\TypeCertainty.php">
     <InvalidNullableReturnType occurrences="1">
       <code>string</code>
     </InvalidNullableReturnType>
