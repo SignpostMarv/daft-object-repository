@@ -136,16 +136,33 @@ class TypeParanoia
     }
 
     /**
-    * @param DaftObject|string $object
+    * @param mixed $object
     */
     public static function ThrowIfNotType(
         $object,
-        string $type,
         int $argument,
         string $class,
-        string $function
+        string $function,
+        string ...$types
     ) : void {
-        if (false === is_a($object, $type, is_string($object))) {
+        if ( ! is_object($object) && ! is_string($object)) {
+            throw new InvalidArgumentException(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                ' must be an object or a string!'
+            );
+        }
+
+        foreach ($types as $i => $type) {
+            if ( ! interface_exists($type) && ! class_exists($type)) {
+                throw new InvalidArgumentException(
+                    'Argument ' .
+                    (4 + $i) .
+                    ' passed to ' .
+                    __METHOD__ .
+                    ' must be a class or interface!'
+                );
+            } elseif ( ! is_a($object, $type, is_string($object))) {
             throw new DaftObjectRepositoryTypeByClassMethodAndTypeException(
                 $argument,
                 $class,
@@ -153,8 +170,50 @@ class TypeParanoia
                 $type,
                 is_string($object) ? $object : get_class($object)
             );
+            }
         }
     }
+
+    /**
+    * @param mixed $object
+    */
+    public static function ThrowIfNotDaftObjectType(
+        $object,
+        int $argument,
+        string $class,
+        string $function,
+        string ...$types
+    ) : void {
+        static::ThrowIfNotType(
+            $object,
+            $argument,
+            $class,
+            $function,
+            DaftObject::class,
+            ...$types
+        );
+    }
+
+    /**
+    * @param mixed $object
+    */
+    public static function ThrowIfNotDaftObjectIdPropertiesType(
+        $object,
+        int $argument,
+        string $class,
+        string $function,
+        string ...$types
+    ) : void {
+        static::ThrowIfNotDaftObjectType(
+            $object,
+            $argument,
+            $class,
+            $function,
+            DefinesOwnIdPropertiesInterface::class,
+            ...$types
+        );
+    }
+
 
     /**
     * @return array<int, mixed> filtered $value
