@@ -7,3 +7,4 @@
 /composer-require-checker/vendor/
 /tools/
 /infection.log
+/xdebug-filter.phpunit.php

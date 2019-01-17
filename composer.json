@@ -26,8 +26,23 @@
         "sort-packages": true
     },
     "scripts": {
+        "phpunit": [
+            "phpunit --dump-xdebug-filter ./xdebug-filter.phpunit.php",
+            "php-cs-fixer fix --verbose ./xdebug-filter.phpunit.php",
+            "phpunit -vvvv --prepend ./xdebug-filter.phpunit.php --coverage-clover=phpunit.clover"
+        ],
+        "phpunit-no-coverage": [
+            "phpunit -vvvv --no-coverage"
+        ],
         "tests": [
-            "phpunit -vvvv --coverage-clover=phpunit.clover",
+            "@phpunit-no-coverage",
+            "@other-tests"
+        ],
+        "scrutinizer": [
+            "@phpunit",
+            "@other-tests"
+        ],
+        "other-tests": [
             "phpstan analyse -c ./phpstan.neon .php_cs.dist src PHPStan Tests",
             "psalm",
             "phpcpd ./src/ ./Tests/ ./tests-src/",
