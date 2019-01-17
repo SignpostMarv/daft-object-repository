@@ -116,12 +116,7 @@ class DaftObjectRepositoryTest extends TestCase
             $props = array_values($idProps);
 
             foreach ($props as $prop) {
-                /**
-                * @var scalar|array|\SignpostMarv\DaftObject\DaftObject|null
-                */
-                $val = $obj->$prop;
-
-                $ids[] = $val;
+                $ids[] = $obj->__get($prop);
             }
 
             if (1 === count($ids)) {
@@ -363,7 +358,7 @@ class DaftObjectRepositoryTest extends TestCase
                 true === method_exists($obj, $expectedMethod) &&
                 true === method_exists($retrieved, $expectedMethod)
             ) {
-                static::assertSame($obj->$prop, $retrieved->$prop);
+                static::assertSame($obj->__get($prop), $retrieved->__get($prop));
             }
         }
 
@@ -380,20 +375,26 @@ class DaftObjectRepositoryTest extends TestCase
                 false === in_array($prop, $idProps, true) &&
                 true === method_exists($obj, $setter) &&
                 true === method_exists($retrieved, $getter) &&
-                true === is_numeric($obj->$prop)
+                true === is_numeric($obj->__get($prop))
             ) {
-                /**
-                * @var int|float|string|scalar|array|DaftObject\DaftObject|null
-                */
-                $propVal = $retrieved->$prop;
+                $propVal = $retrieved->__get($prop);
 
                 if ( ! is_null($propVal) && is_numeric($propVal)) {
                     /**
-                    * @var int|float
+                    * @var string|int|float
                     */
                     $propVal = $propVal;
 
-                    $retrieved->$prop = $propVal * 2;
+                    $propVal =
+                        (is_int($propVal) || is_float($propVal))
+                            ? $propVal
+                            : (
+                                ctype_digit($propVal)
+                                    ? (int) $propVal
+                                    : (float) $propVal
+                            );
+
+                    $retrieved->__set($prop, $propVal * 2);
                 }
             }
         }
@@ -454,14 +455,14 @@ class DaftObjectRepositoryTest extends TestCase
                 false === in_array($prop, $idProps, true) &&
                 true === method_exists($obj, $setter) &&
                 true === method_exists($retrieved, $getter) &&
-                true === is_numeric($obj->$prop)
+                true === is_numeric($obj->__get($prop))
             ) {
                 /**
                 * @var int|float
                 */
-                $propVal = $obj->$prop;
-                static::assertSame($propVal * 2, $retrieved->$prop);
-                $retrieved->$prop /= 2;
+                $propVal = $obj->__get($prop);
+                static::assertSame($propVal * 2, $retrieved->__get($prop));
+                $retrieved->__set($prop, $propVal);
             }
         }
 

@@ -78,12 +78,9 @@ class UndefinedPropertyExceptionTest extends TestCase
         $obj = new $implementation($args, $writeAll);
 
         if ($getNotSet) {
-            /**
-            * @var array|scalar|object|null
-            */
-            $foo = $obj->$property;
+            $foo = $obj->__get($property);
         } else {
-            $obj->$property = 1;
+            $obj->__set($property, 1);
         }
     }
 }

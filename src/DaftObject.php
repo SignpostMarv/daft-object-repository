@@ -20,7 +20,7 @@ interface DaftObject
     *
     * @throws UndefinedPropertyException if a property is undefined
     *
-    * @return mixed
+    * @return scalar|array|object|null
     */
     public function __get(string $property);
 
@@ -31,10 +31,8 @@ interface DaftObject
     * @param mixed $v
     *
     * @throws NotPublicSetterPropertyException if a property is not publicly settable
-    *
-    * @return mixed
     */
-    public function __set(string $property, $v);
+    public function __set(string $property, $v) : void;
 
     /**
     * required to support isset($foo->bar);.

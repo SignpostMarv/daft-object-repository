@@ -340,21 +340,9 @@ class DaftTestObjectTest extends TestCase
             static::assertCount(($writeable ? count($params) : 0), $obj->ChangedProperties());
 
             foreach ($params as $k => $v) {
-                $getterMethod = static::MethodNameFromProperty($k);
-
                 static::assertSame(
                     $params[$k],
-                    $obj->$getterMethod(),
-                    (
-                        $implementation .
-                        '::' .
-                        $getterMethod .
-                        '() does not match supplied $params'
-                    )
-                );
-                static::assertSame(
-                    $params[$k],
-                    $obj->$k,
+                    $obj->__get($k),
                     (
                         $implementation .
                         '::$' .
@@ -365,7 +353,7 @@ class DaftTestObjectTest extends TestCase
 
                 static::assertSame(
                     (is_null($params[$k]) ? false : true),
-                    isset($obj->$k),
+                    $obj->__isset($k),
                     (
                         $implementation .
                         '::$' .
@@ -412,8 +400,8 @@ class DaftTestObjectTest extends TestCase
                             $property
                         ));
                     }
-                    unset($obj->$property);
-                    $obj->$property = null;
+                    $obj->__unset($property);
+                    $obj->__set($property, null);
                 }
             }
         }
@@ -436,12 +424,7 @@ class DaftTestObjectTest extends TestCase
                     new ReflectionMethod($obj, $expectedMethod)
                 )->isPublic()
             ) {
-                /**
-                * @var scalar|array|object|null
-                */
-                $propVal = $obj->$expectedMethod();
-
-                $props[$prop] = $propVal;
+                $props[$prop] = $obj->__get($prop);
             }
         }
 
@@ -526,21 +509,24 @@ class DaftTestObjectTest extends TestCase
             return;
         }
 
+        $initialCount = count($params);
+
+        $params = array_filter($params, 'is_string', ARRAY_FILTER_USE_KEY);
+
+        static::assertCount($initialCount, $params);
+
         if ($readable) {
             $this->expectException($expectedExceptionType);
             $this->expectExceptionMessage($expectedExceptionMessage);
             $obj = new $implementation($params, $writeable);
 
             /**
-            * @var array<int, int|string>
+            * @var array<int, string>
             */
             $paramKeys = array_keys($params);
 
             foreach ($paramKeys as $property) {
-                /**
-                * @var scalar|array|object|null
-                */
-                $var = $obj->$property;
+                $var = $obj->__get($property);
             }
         } elseif ($writeable) {
             $this->expectException($expectedExceptionType);
@@ -581,7 +567,7 @@ class DaftTestObjectTest extends TestCase
 
         if (count($keys) < self::MIN_EXPECTED_ARRAY_COUNT) {
             $key = $keys[0];
-            static::assertSame($val, $obj->$key);
+            static::assertSame($val, $obj->__get($key));
         } else {
             static::assertIsArray($val);
 
@@ -592,7 +578,7 @@ class DaftTestObjectTest extends TestCase
 
             $keyVals = [];
             foreach ($keys as $i => $key) {
-                static::assertSame($val[$i], $obj->$key);
+                static::assertSame($val[$i], $obj->__get($key));
             }
         }
 
@@ -675,7 +661,7 @@ class DaftTestObjectTest extends TestCase
             $prop
         ));
 
-        $obj->$prop;
+        $obj->__get($prop);
     }
 
     /**

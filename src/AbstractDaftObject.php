@@ -8,6 +8,8 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject;
 
+use Closure;
+
 /**
 * Base daft object.
 */
@@ -72,9 +74,6 @@ abstract class AbstractDaftObject implements DaftObject
         );
     }
 
-    /**
-    * @return mixed
-    */
     public function __get(string $property)
     {
         return $this->DoGetSet($property, false);
@@ -118,9 +117,7 @@ abstract class AbstractDaftObject implements DaftObject
             * @return mixed
             */
             function (string $prop) {
-                $expectedMethod = TypeUtilities::MethodNameFromProperty($prop);
-
-                return $this->$expectedMethod();
+                return $this->__get($prop);
             },
             $properties
         ));
@@ -138,8 +135,7 @@ abstract class AbstractDaftObject implements DaftObject
         }
 
         foreach (static::DaftSortableObjectProperties() as $property) {
-            $method = TypeUtilities::MethodNameFromProperty($property);
-            $sort = $this->$method() <=> $otherObject->$method();
+            $sort = $this->__get($property) <=> $otherObject->__get($property);
 
             if (0 !== $sort) {
                 return $sort;
@@ -318,7 +314,7 @@ abstract class AbstractDaftObject implements DaftObject
     /**
     * @param mixed $v
     *
-    * @return mixed
+    * @return scalar|array|object|null
     */
     protected function DoGetSet(string $property, bool $setter, $v = null)
     {
@@ -326,6 +322,17 @@ abstract class AbstractDaftObject implements DaftObject
 
         $this->MaybeThrowOnDoGetSet($property, $setter, $props);
 
-        return $this->{TypeUtilities::MethodNameFromProperty($property, $setter)}($v);
+        /**
+        * @var callable
+        */
+        $callable = [$this, TypeUtilities::MethodNameFromProperty($property, $setter)];
+        $closure = Closure::fromCallable($callable);
+
+        /**
+        * @var scalar|array|object|null
+        */
+        $out = $closure->__invoke($v);
+
+        return $out;
     }
 }

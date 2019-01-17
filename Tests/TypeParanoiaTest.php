@@ -50,7 +50,10 @@ class TypeParanoiaTest extends TestCase
         string $method
     ) : void {
         if (is_array($maybe)) {
-            static::assertIsArray(TypeParanoia::EnsureArgumentIsArray($maybe, $argument, $method));
+            static::assertSame(
+                $maybe,
+                TypeParanoia::EnsureArgumentIsArray($maybe, $argument, $method)
+            );
         } else {
             static::expectException(InvalidArgumentException::class);
             static::expectExceptionMessage(

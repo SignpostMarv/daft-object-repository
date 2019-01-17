@@ -103,7 +103,7 @@ class MultiTypedArrayPropertyImplementationTest extends TestCase
         static::expectException($expectedException);
         static::expectExceptionMessage($expectedExceptionMessage);
 
-        $obj->$property = $value;
+        $obj->__set($property, $value);
     }
 
     /**
@@ -121,7 +121,7 @@ class MultiTypedArrayPropertyImplementationTest extends TestCase
             '::MaybeThrowIfValueDoesNotMatchMultiTypedArrayValueArray contained non-unique values!'
         );
 
-        $obj->$property = $value;
+        $obj->__set($property, $value);
     }
 
     /**
@@ -136,9 +136,9 @@ class MultiTypedArrayPropertyImplementationTest extends TestCase
         $value,
         $expected
     ) : void {
-        $obj->$property = $value;
+        $obj->__set($property, $value);
 
-        static::assertSame($expected, $obj->$property);
+        static::assertSame($expected, $obj->__get($property));
     }
 
     protected function DataProviderObjectPropertyValueNotUnique() : Generator

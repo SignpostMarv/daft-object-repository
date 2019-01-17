@@ -193,7 +193,7 @@ class DaftObjectGetterSetterTest extends TestCase
 
         $obj = new $implementation($arr);
 
-        static::assertSame($value, $obj->$property);
+        static::assertSame($value, $obj->__get($property));
     }
 
     /**
@@ -225,7 +225,7 @@ class DaftObjectGetterSetterTest extends TestCase
         */
         $obj = new $implementation($arr);
 
-        $obj->$property = $value;
+        $obj->__set($property, $value);
 
         static::assertTrue($obj->HasPropertyChanged($changedProperty));
     }
@@ -257,9 +257,9 @@ class DaftObjectGetterSetterTest extends TestCase
         */
         $obj = new $implementation([]);
 
-        $obj->$property = $value;
+        $obj->__set($property, $value);
 
-        static::assertSame($value, $obj->$property);
+        static::assertSame($value, $obj->__get($property));
         static::assertTrue($obj->HasPropertyChanged($changedProperty));
     }
 
@@ -297,7 +297,7 @@ class DaftObjectGetterSetterTest extends TestCase
         /**
         * @var scalar|array|DaftObject|null
         */
-        $foo = $obj->$property;
+        $foo = $obj->__get($property);
     }
 
     /**
@@ -329,6 +329,6 @@ class DaftObjectGetterSetterTest extends TestCase
             $property
         ));
 
-        $obj->$property = $value;
+        $obj->__set($property, $value);
     }
 }
