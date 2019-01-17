@@ -43,7 +43,7 @@
             "@other-tests"
         ],
         "other-tests": [
-            "phpstan analyse -c ./phpstan.neon .php_cs.dist src PHPStan Tests",
+            "phpstan analyse -c ./phpstan.neon .php_cs.dist src PHPStan Tests quick-checks",
             "psalm",
             "phpcpd ./src/ ./Tests/ ./tests-src/",
             "phpmnd ./ --exclude=./phpdoc/ --exclude=./phpunit/ --exclude=./vendor/ --non-zero-exit-on-violation --hint",

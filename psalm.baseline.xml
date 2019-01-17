@@ -29,4 +29,10 @@
       <code>$class::DaftObjectIdProperties()</code>
     </InvalidStringClass>
   </file>
+  <file src="tests-src\ReadWriteJsonJsonArrayBad.php">
+    <MixedTypeCoercion occurrences="2">
+      <code>return (array) $this-&gt;RetrievePropertyValueFromData('json');</code>
+      <code>@return ReadWriteJson[]</code>
+    </MixedTypeCoercion>
+  </file>
 </files>

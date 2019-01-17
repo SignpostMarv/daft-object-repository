@@ -25,12 +25,7 @@ class ReadWriteJsonJsonArrayBad extends AbstractArrayBackedDaftObject implements
     */
     public function GetJson() : array
     {
-        /**
-        * @var ReadWriteJson[]
-        */
-        $out = (array) $this->RetrievePropertyValueFromData('json');
-
-        return $out;
+        return (array) $this->RetrievePropertyValueFromData('json');
     }
 
     public function SetJson(array $json) : void
