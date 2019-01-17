@@ -1604,23 +1604,23 @@ class DaftObjectImplementationTest extends TestCase
                 }
             }
 
-                $obj->MakePropertiesUnchanged(...$checkingProperties);
+            $obj->MakePropertiesUnchanged(...$checkingProperties);
 
-                foreach (
-                    $checkingProperties as $property
-                ) {
-                    static::assertFalse(
-                        $obj->HasPropertyChanged($property),
-                        (
-                            $className .
-                            '::$' .
-                            $property .
-                            ' should be marked as unchanged after calling ' .
-                            $className .
-                            '::MakePropertiesUnchanged()'
-                        )
-                    );
-                }
+            foreach (
+                $checkingProperties as $property
+            ) {
+                static::assertFalse(
+                    $obj->HasPropertyChanged($property),
+                    (
+                        $className .
+                        '::$' .
+                        $property .
+                        ' should be marked as unchanged after calling ' .
+                        $className .
+                        '::MakePropertiesUnchanged()'
+                    )
+                );
+            }
         }
 
         /**
