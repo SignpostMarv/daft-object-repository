@@ -72,7 +72,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         /**
         * @var array<int, string>|string
         */
-        $properties = static::PROPERTIES;
+        $properties = static::DaftObjectProperties();
 
         return
             TypeParanoia::MaybeInMaybeArray($property, $properties) &&
@@ -184,7 +184,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     */
     protected function RetrievePropertyValueFromData(string $property)
     {
-        $isNullable = TypeParanoia::MaybeInMaybeArray($property, static::NULLABLE_PROPERTIES);
+        $isNullable = TypeParanoia::MaybeInMaybeArray($property, static::DaftObjectNullableProperties());
 
         if (
             ! array_key_exists($property, $this->data) &&
@@ -210,7 +210,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         /**
         * @var array<int, string>
         */
-        $nullables = static::NULLABLE_PROPERTIES;
+        $nullables = static::DaftObjectNullableProperties();
 
         $this->MaybeThrowForPropertyOnNudge($property);
         $this->MaybeThrowOnNudge($property, $value, $nullables);
@@ -313,7 +313,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         /**
         * @var array<int, string>
         */
-        $properties = static::PROPERTIES;
+        $properties = static::DaftObjectProperties();
 
         if ( ! TypeParanoia::MaybeInArray($property, $properties)) {
             throw new UndefinedPropertyException(static::class, $property);
