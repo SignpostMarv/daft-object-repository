@@ -63,8 +63,7 @@ class TypeUtilities
     public static function MethodNameFromProperty(
         string $prop,
         bool $SetNotGet = self::BOOL_DEFAULT_SET_NOT_GET
-    ) : string
-    {
+    ) : string {
         if (TypeParanoia::MaybeInArray(mb_substr($prop, 0, 1), self::SUPPORTED_INVALID_LEADING_CHARACTERS)) {
             return ($SetNotGet ? 'Alter' : 'Obtain') . ucfirst(mb_substr($prop, 1));
         }
