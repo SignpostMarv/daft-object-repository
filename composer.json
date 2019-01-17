@@ -61,19 +61,19 @@
     "require": {
         "php": "^7.1",
         "ext-json": "*",
-        "ext-mbstring": "*",
-        "phpstan/phpstan": "^0.11.0",
-        "phpstan/phpstan-phpunit": "^0.11.0",
-        "phpstan/phpstan-strict-rules": "^0.11.0",
-        "vimeo/psalm": "^3.0,>=3.0.11"
+        "ext-mbstring": "*"
     },
     "require-dev": {
         "infection/infection": "^0.11.4",
         "maglnet/composer-require-checker": "^1.1",
+        "phpstan/phpstan": "^0.11.0",
+        "phpstan/phpstan-phpunit": "^0.11.0",
+        "phpstan/phpstan-strict-rules": "^0.11.0",
         "phpunit/phpunit": "^7.5",
         "povils/phpmnd": "^2.0",
         "roave/security-advisories": "dev-master",
         "sebastian/phpcpd": "^4.1",
-        "signpostmarv/php-cs-fixer-config": "^0.6.0"
+        "signpostmarv/php-cs-fixer-config": "^0.6.0",
+        "vimeo/psalm": "^3.0"
     }
 }
