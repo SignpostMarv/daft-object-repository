@@ -23,6 +23,8 @@ class TypeUtilities
 
     const BOOL_METHOD_IS_NON_PUBLIC = false;
 
+    const BOOL_DEFAULT_SET_NOT_GET = false;
+
     const SUPPORTED_INVALID_LEADING_CHARACTERS = [
         '@',
     ];
@@ -58,7 +60,10 @@ class TypeUtilities
         return self::$publicSetters[$class];
     }
 
-    public static function MethodNameFromProperty(string $prop, bool $SetNotGet = false) : string
+    public static function MethodNameFromProperty(
+        string $prop,
+        bool $SetNotGet = self::BOOL_DEFAULT_SET_NOT_GET
+    ) : string
     {
         if (TypeParanoia::MaybeInArray(mb_substr($prop, 0, 1), self::SUPPORTED_INVALID_LEADING_CHARACTERS)) {
             return ($SetNotGet ? 'Alter' : 'Obtain') . ucfirst(mb_substr($prop, 1));
