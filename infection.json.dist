@@ -24,6 +24,7 @@
                 "SignpostMarv\\DaftObject\\DefinitionAssistant::ObtainExpectedOrDefaultPropertiesWithAutoRegister",
                 "SignpostMarv\\DaftObject\\TypeUtilities::HasMethod",
                 "SignpostMarv\\DaftObject\\PHPStan\\ClassReflectionExtension::hasProperty",
+                "SignpostMarv\\DaftObject\\PHPStan\\ClassReflectionExtension::MaybeRegisterTypesOrExitEarly",
                 "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::PropertyIsPublic"
             ]
         },
@@ -31,6 +32,7 @@
             "ignore": [
                 "SignpostMarv\\DaftObject\\PHPStan\\ClassReflectionExtension::getProperty",
                 "SignpostMarv\\DaftObject\\PHPStan\\ClassReflectionExtension::hasProperty",
+                "SignpostMarv\\DaftObject\\PHPStan\\ClassReflectionExtension::MaybeRegisterTypesOrExitEarly",
                 "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::__construct",
                 "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::getDeclaringClass",
                 "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::isPrivate",
@@ -56,6 +58,7 @@
                 "SignpostMarv\\DaftObject\\JsonTypeUtilities::ThrowIfJsonDefNotValid",
                 "SignpostMarv\\DaftObject\\TypeUtilities::DaftObjectFromJsonTypeArray",
                 "SignpostMarv\\DaftObject\\TypeUtilities::DaftObjectPublicOrProtectedGetters",
+                "SignpostMarv\\DaftObject\\PHPStan\\ClassReflectionExtension::MaybeRegisterTypesOrExitEarly",
                 "SignpostMarv\\DaftObject\\PHPStan\\ClassReflectionExtension::hasProperty",
                 "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::__construct"
             ]
@@ -80,7 +83,15 @@
         },
         "ProtectedVisibility": {
             "ignore": [
-                "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::DetermineDeclaringClass"
+                "SignpostMarv\\DaftObject\\PHPStan\\ClassReflectionExtension::MaybeRegisterTypesOrExitEarly",
+                "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::DetermineDeclaringClass",
+                "SignpostMarv\\DaftObject\\TypeUtilities::CachePublicGettersAndSetters",
+                "SignpostMarv\\DaftObject\\TypeUtilities::CachePublicGettersAndSettersProperties",
+                "SignpostMarv\\DaftObject\\TypeUtilities::CheckTypeDefinesOwnIdPropertiesIsImplementation",
+                "SignpostMarv\\DaftObject\\TypeUtilities::CountMaybeArray",
+                "SignpostMarv\\DaftObject\\TypeUtilities::FilterMaybeArray",
+                "SignpostMarv\\DaftObject\\TypeUtilities::HasMethod",
+                "SignpostMarv\\DaftObject\\TypeUtilities::ObtainExpectedOrDefaultPropertiesWithAutoRegister"
             ]
         },
         "Throw_": {

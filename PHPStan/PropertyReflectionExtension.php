@@ -170,11 +170,11 @@ class PropertyReflectionExtension implements PropertyReflection
         } elseif (interface_exists($className)) {
             $getter = TypeUtilities::MethodNameFromProperty(
                 $property,
-                ! TypeUtilities::BOOL_DEFAULT_SET_NOT_GET
+                self::BOOL_SETNOTGET_GETTER
             );
             $setter = TypeUtilities::MethodNameFromProperty(
                 $property,
-                TypeUtilities::BOOL_DEFAULT_SET_NOT_GET
+                self::BOOL_SETNOTGET_SETTER
             );
 
             return
