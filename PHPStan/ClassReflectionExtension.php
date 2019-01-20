@@ -14,7 +14,9 @@ use PHPStan\Reflection\BrokerAwareExtension;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\PropertiesClassReflectionExtension;
 use PHPStan\Reflection\PropertyReflection;
+use SignpostMarv\DaftObject\AbstractDaftObject;
 use SignpostMarv\DaftObject\DaftObject;
+use SignpostMarv\DaftObject\DefinitionAssistant;
 use SignpostMarv\DaftObject\TypeParanoia;
 use SignpostMarv\DaftObject\TypeUtilities;
 
@@ -38,16 +40,24 @@ class ClassReflectionExtension implements BrokerAwareExtension, PropertiesClassR
     {
         $className = $classReflection->getName();
 
+        if ( ! TypeParanoia::IsThingStrings($className, DaftObject::class)) {
+            return false;
+        } elseif (
+            DefinitionAssistant::IsTypeUnregistered($className) &&
+            is_a($className, AbstractDaftObject::class, true)
+        ) {
+            DefinitionAssistant::RegisterAbstractDaftObjectType($className);
+        }
+
         $property = ucfirst($propertyName);
         $getter = TypeUtilities::MethodNameFromProperty($property, self::BOOL_SETNOTGET_GETTER);
         $setter = TypeUtilities::MethodNameFromProperty($property, self::BOOL_SETNOTGET_SETTER);
 
         return
-            TypeParanoia::IsThingStrings($className, DaftObject::class) &&
-            (
+            in_array($property, DefinitionAssistant::ObtainExpectedProperties($className), true) ||
                 $classReflection->getNativeReflection()->hasMethod($getter) ||
                 $classReflection->getNativeReflection()->hasMethod($setter)
-            );
+            ;
     }
 
     public function getProperty(ClassReflection $ref, string $propertyName) : PropertyReflection

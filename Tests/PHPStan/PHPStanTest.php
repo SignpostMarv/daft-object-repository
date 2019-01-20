@@ -39,6 +39,8 @@ class PHPStanTest extends TestCase
                     __DIR__ . '/../../src/',
                     __DIR__ . '/../../PHPStan/',
                     __DIR__ . '/../../Tests/',
+                    __DIR__ . '/../../tests-src/',
+                    __DIR__ . '/../../quick-checks/',
                 ],
             ],
             [
