@@ -180,17 +180,17 @@ abstract class AbstractDaftObject implements DaftObject
         return $out;
     }
 
-    final public static function DaftObjectPublicGetters() : array
+    public static function DaftObjectPublicGetters() : array
     {
         return TypeUtilities::DaftObjectPublicGetters(static::class);
     }
 
-    final public static function DaftObjectPublicOrProtectedGetters() : array
+    public static function DaftObjectPublicOrProtectedGetters() : array
     {
         return TypeUtilities::DaftObjectPublicOrProtectedGetters(static::class);
     }
 
-    final public static function DaftObjectPublicSetters() : array
+    public static function DaftObjectPublicSetters() : array
     {
         return TypeUtilities::DaftObjectPublicSetters(static::class);
     }

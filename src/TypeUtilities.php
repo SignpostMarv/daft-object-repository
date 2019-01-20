@@ -84,7 +84,7 @@ class TypeUtilities
         bool $throwIfNotImplementation = self::BOOL_DEFAULT_THROWIFNOTIMPLEMENTATION
     ) : void {
         if (TypeParanoia::IsThingStrings($class, DefinesOwnIdPropertiesInterface::class)) {
-            self::CheckTypeDefinesOwnIdPropertiesIsImplementation($class);
+            static::CheckTypeDefinesOwnIdPropertiesIsImplementation($class);
         } elseif ($throwIfNotImplementation) {
             throw new ClassDoesNotImplementClassException(
                 $class,
@@ -93,7 +93,16 @@ class TypeUtilities
         }
     }
 
-    private static function HasMethod(
+    /**
+    * @return array<int, string>
+    */
+    protected static function ObtainExpectedOrDefaultPropertiesWithAutoRegister(
+        string $class
+    ) : array {
+        return DefinitionAssistant::ObtainExpectedOrDefaultPropertiesWithAutoRegister($class);
+    }
+
+    protected static function HasMethod(
         string $class,
         string $property,
         bool $SetNotGet,
@@ -113,7 +122,7 @@ class TypeUtilities
     /**
     * @param mixed $maybe
     */
-    private static function FilterMaybeArray($maybe, callable $filter) : array
+    protected static function FilterMaybeArray($maybe, callable $filter) : array
     {
         return array_filter(
             TypeParanoia::EnsureArgumentIsArray($maybe, TypeParanoia::INDEX_FIRST_ARG, __METHOD__),
@@ -124,7 +133,7 @@ class TypeUtilities
     /**
     * @param mixed $maybe
     */
-    private static function CountMaybeArray($maybe) : int
+    protected static function CountMaybeArray($maybe) : int
     {
         return count(TypeParanoia::EnsureArgumentIsArray(
             $maybe,
@@ -133,7 +142,7 @@ class TypeUtilities
         ));
     }
 
-    private static function CachePublicGettersAndSetters(string $class) : void
+    protected static function CachePublicGettersAndSetters(string $class) : void
     {
         if (false === isset(self::$Getters[$class])) {
             self::$Getters[$class] = [];
@@ -143,14 +152,14 @@ class TypeUtilities
                 self::$Getters[$class]['id'] = self::BOOL_METHOD_IS_PUBLIC;
             }
 
-            self::CachePublicGettersAndSettersProperties($class);
+            static::CachePublicGettersAndSettersProperties($class);
         }
     }
 
-    private static function CachePublicGettersAndSettersProperties(string $class) : void
+    protected static function CachePublicGettersAndSettersProperties(string $class) : void
     {
         foreach (
-            DefinitionAssistant::ObtainExpectedOrDefaultPropertiesWithAutoRegister($class) as $prop
+            static::ObtainExpectedOrDefaultPropertiesWithAutoRegister($class) as $prop
         ) {
             if (static::HasMethod($class, $prop, self::BOOL_EXPECTING_GETTER)) {
                 self::$Getters[$class][$prop] = self::BOOL_METHOD_IS_PUBLIC;
@@ -169,7 +178,7 @@ class TypeUtilities
         }
     }
 
-    private static function CheckTypeDefinesOwnIdPropertiesIsImplementation(
+    protected static function CheckTypeDefinesOwnIdPropertiesIsImplementation(
         string $class
     ) : void {
         /**
