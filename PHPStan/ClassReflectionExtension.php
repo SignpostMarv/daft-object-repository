@@ -55,9 +55,8 @@ class ClassReflectionExtension implements BrokerAwareExtension, PropertiesClassR
 
         return
             in_array($property, DefinitionAssistant::ObtainExpectedProperties($className), true) ||
-                $classReflection->getNativeReflection()->hasMethod($getter) ||
-                $classReflection->getNativeReflection()->hasMethod($setter)
-            ;
+            $classReflection->getNativeReflection()->hasMethod($getter) ||
+            $classReflection->getNativeReflection()->hasMethod($setter);
     }
 
     public function getProperty(ClassReflection $ref, string $propertyName) : PropertyReflection
