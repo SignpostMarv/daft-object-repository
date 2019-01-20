@@ -149,23 +149,9 @@ class TypeUtilities
 
     private static function CachePublicGettersAndSettersProperties(string $class) : void
     {
-        /**
-        * @var string[]
-        */
-        $props = $class::DaftObjectProperties();
-
-        if (
-            DefinitionAssistant::IsTypeUnregistered($class) &&
-            TypeParanoia::IsThingStrings($class, AbstractDaftObject::class)
+        foreach (
+            DefinitionAssistant::ObtainExpectedOrDefaultPropertiesWithAutoRegister($class) as $prop
         ) {
-            DefinitionAssistant::RegisterAbstractDaftObjectType($class);
-        }
-
-        if ( ! DefinitionAssistant::IsTypeUnregistered($class)) {
-            $props = DefinitionAssistant::ObtainExpectedProperties($class);
-        }
-
-        foreach ($props as $prop) {
             if (static::HasMethod($class, $prop, self::BOOL_EXPECTING_GETTER)) {
                 self::$Getters[$class][$prop] = self::BOOL_METHOD_IS_PUBLIC;
             } elseif (static::HasMethod(

@@ -111,15 +111,8 @@ class DefinitionAssistant
     */
     public static function ObtainExpectedProperties($maybe) : array
     {
-        if ( ! is_string($maybe) && ! is_object($maybe)) {
-            throw new InvalidArgumentException(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                '() must be either a string or an object, ' .
-                gettype($maybe) .
-                ' given!'
-            );
-        } elseif (is_object($maybe) && ! ($maybe instanceof DaftObject)) {
+        if (is_object($maybe)) {
+            if (! ($maybe instanceof DaftObject)) {
             throw new InvalidArgumentException(
                 'Argument 1 passed to ' .
                 __METHOD__ .
@@ -129,19 +122,55 @@ class DefinitionAssistant
                 get_class($maybe) .
                 ' given!'
             );
+            }
+        } elseif ( ! is_string($maybe)) {
+            throw new InvalidArgumentException(
+                'Argument 1 passed to ' .
+                __METHOD__ .
+                '() must be either a string or an object, ' .
+                gettype($maybe) .
+                ' given!'
+            );
         }
 
         /**
         * @var array<int, string>
         */
-        $out = [];
+        $out = array_values(array_unique(array_reduce(
+            array_filter(
+                self::$types,
+                function (string $type) use ($maybe) : bool {
+                    return is_a($maybe, $type, is_string($maybe));
+                },
+                ARRAY_FILTER_USE_KEY
+            ),
+            'array_merge',
+            []
+        )));
 
-        foreach (self::$types as $type => $properties) {
-            if (is_a($maybe, $type, is_string($maybe))) {
-                $out = array_merge($out, $properties);
-            }
+        return $out;
+    }
+
+    /**
+    * @return array<int, string>
+    */
+    public static function ObtainExpectedOrDefaultPropertiesWithAutoRegister(string $class) : array
+    {
+        if (
+            static::IsTypeUnregistered($class) &&
+            TypeParanoia::IsThingStrings($class, AbstractDaftObject::class)
+        ) {
+            static::RegisterAbstractDaftObjectType($class);
         }
 
-        return array_values(array_unique($out));
+        /**
+        * @var array<int, string>
+        */
+        $out =
+            ! static::IsTypeUnregistered($class)
+                ? static::ObtainExpectedProperties($class)
+                : $class::DaftObjectProperties();
+
+        return $out;
     }
 }
