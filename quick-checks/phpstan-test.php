@@ -22,5 +22,5 @@ $foo->Foo = strrev($fooVal);
 
 $bar = new DefinesPropertyOnInterfaceClassImplementation();
 
-$shouldBeTrue = $bar->foo === '';
+$shouldBeTrue = '' === $bar->foo;
 $bar->foo = 'bar';

@@ -20,6 +20,16 @@ class DefinesPropertyOnInterfaceClassImplementation extends AbstractDaftObject i
     */
     protected $was = '';
 
+    public function __isset(string $k) : bool
+    {
+        return 'foo' === $k;
+    }
+
+    public function __unset(string $k) : void
+    {
+        $this->__set('foo', null);
+    }
+
     public function GetFoo() : string
     {
         return (string) $this->foo;
@@ -29,16 +39,6 @@ class DefinesPropertyOnInterfaceClassImplementation extends AbstractDaftObject i
     {
         $was = $this->foo;
         $this->foo = $value;
-    }
-
-    public function __isset(string $k) : bool
-    {
-        return 'foo' === $k;
-    }
-
-    public function __unset(string $k) : void
-    {
-        $this->__set('foo', null);
     }
 
     public function ChangedProperties() : array
