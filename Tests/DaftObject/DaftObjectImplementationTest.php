@@ -16,9 +16,9 @@ use SignpostMarv\DaftObject\AbstractArrayBackedDaftObject;
 use SignpostMarv\DaftObject\AbstractDaftObject;
 use SignpostMarv\DaftObject\AbstractTestObject;
 use SignpostMarv\DaftObject\ClassDoesNotImplementClassException;
-use SignpostMarv\DaftObject\DaftObjectCreatedByArray;
 use SignpostMarv\DaftObject\DaftJson;
 use SignpostMarv\DaftObject\DaftObject;
+use SignpostMarv\DaftObject\DaftObjectCreatedByArray;
 use SignpostMarv\DaftObject\DaftObjectHasPropertiesWithMultiTypedArraysOfUniqueValues;
 use SignpostMarv\DaftObject\DaftObjectNotDaftJsonBadMethodCallException;
 use SignpostMarv\DaftObject\DaftObjectWorm;
@@ -39,8 +39,8 @@ use SignpostMarv\DaftObject\ReadWriteJson;
 use SignpostMarv\DaftObject\ReadWriteJsonJson;
 use SignpostMarv\DaftObject\ReadWriteJsonJsonArray;
 use SignpostMarv\DaftObject\SortableReadWrite;
-use SignpostMarv\DaftObject\TypeUtilities;
 use SignpostMarv\DaftObject\Tests\TestCase;
+use SignpostMarv\DaftObject\TypeUtilities;
 
 class DaftObjectImplementationTest extends TestCase
 {
