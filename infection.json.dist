@@ -21,7 +21,7 @@
         "LogicalAnd": {
             "ignore": [
                 "SignpostMarv\\DaftObject\\AbstractArrayBackedDaftObject::NudgePropertyValue",
-                "SignpostMarv\\DaftObject\\TypeUtilities::CachePublicGettersAndSettersProperties",
+                "SignpostMarv\\DaftObject\\DefinitionAssistant::ObtainExpectedOrDefaultPropertiesWithAutoRegister",
                 "SignpostMarv\\DaftObject\\TypeUtilities::HasMethod",
                 "SignpostMarv\\DaftObject\\PHPStan\\ClassReflectionExtension::hasProperty",
                 "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::PropertyIsPublic"
@@ -35,7 +35,7 @@
                 "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::getDeclaringClass",
                 "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::isPrivate",
                 "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::PropertyIsPublic",
-                "SignpostMarv\\DaftObject\\TypeUtilities::CachePublicGettersAndSettersProperties"
+                "SignpostMarv\\DaftObject\\DefinitionAssistant::ObtainExpectedOrDefaultPropertiesWithAutoRegister"
             ]
         },
         "LogicalOr": {
@@ -49,11 +49,11 @@
                 "SignpostMarv\\DaftObject\\AbstractArrayBackedDaftObject::jsonSerialize",
                 "SignpostMarv\\DaftObject\\AbstractArrayBackedDaftObject::DaftObjectFromJsonString",
                 "SignpostMarv\\DaftObject\\DaftObjectMemoryRepository::RememberDaftObject",
+                "SignpostMarv\\DaftObject\\DefinitionAssistant::ObtainExpectedOrDefaultPropertiesWithAutoRegister",
                 "SignpostMarv\\DaftObject\\JsonTypeUtilities::ArrayToJsonType",
                 "SignpostMarv\\DaftObject\\JsonTypeUtilities::DaftJsonFromJsonType",
                 "SignpostMarv\\DaftObject\\JsonTypeUtilities::DaftObjectFromJsonTypeArray",
                 "SignpostMarv\\DaftObject\\JsonTypeUtilities::ThrowIfJsonDefNotValid",
-                "SignpostMarv\\DaftObject\\TypeUtilities::CachePublicGettersAndSettersProperties",
                 "SignpostMarv\\DaftObject\\TypeUtilities::DaftObjectFromJsonTypeArray",
                 "SignpostMarv\\DaftObject\\TypeUtilities::DaftObjectPublicOrProtectedGetters",
                 "SignpostMarv\\DaftObject\\PHPStan\\ClassReflectionExtension::hasProperty",
