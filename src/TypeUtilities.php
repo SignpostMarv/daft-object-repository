@@ -140,7 +140,7 @@ class TypeUtilities
             self::$publicSetters[$class] = [];
 
             if (TypeParanoia::IsThingStrings($class, DefinesOwnIdPropertiesInterface::class)) {
-                self::$Getters[$class]['id'] = true;
+                self::$Getters[$class]['id'] = self::BOOL_METHOD_IS_PUBLIC;
             }
 
             self::CachePublicGettersAndSettersProperties($class);
@@ -156,7 +156,7 @@ class TypeUtilities
 
         if (
             DefinitionAssistant::IsTypeUnregistered($class) &&
-            is_a($class, AbstractDaftObject::class, true)
+            TypeParanoia::IsThingStrings($class, AbstractDaftObject::class)
         ) {
             DefinitionAssistant::RegisterAbstractDaftObjectType($class);
         }

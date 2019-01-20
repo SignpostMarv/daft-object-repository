@@ -101,7 +101,7 @@ class DefinitionAssistant
             );
         }
 
-        self::$types[$maybe] = (array) $maybe::PROPERTIES;
+        self::$types[$maybe] = TypeCertainty::EnsureArgumentIsArray($maybe::PROPERTIES);
     }
 
     /**

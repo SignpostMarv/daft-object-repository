@@ -22,6 +22,8 @@ use SignpostMarv\DaftObject\TypeUtilities;
 
 class ClassReflectionExtension implements BrokerAwareExtension, PropertiesClassReflectionExtension
 {
+    const BOOL_DOES_NOT_HAVE_PROPERTY = false;
+
     const BOOL_SETNOTGET_SETTER = true;
 
     const BOOL_SETNOTGET_GETTER = false;
@@ -41,10 +43,10 @@ class ClassReflectionExtension implements BrokerAwareExtension, PropertiesClassR
         $className = $classReflection->getName();
 
         if ( ! TypeParanoia::IsThingStrings($className, DaftObject::class)) {
-            return false;
+            return self::BOOL_DOES_NOT_HAVE_PROPERTY;
         } elseif (
             DefinitionAssistant::IsTypeUnregistered($className) &&
-            is_a($className, AbstractDaftObject::class, true)
+            TypeParanoia::IsThingStrings($className, AbstractDaftObject::class)
         ) {
             DefinitionAssistant::RegisterAbstractDaftObjectType($className);
         }
@@ -54,7 +56,10 @@ class ClassReflectionExtension implements BrokerAwareExtension, PropertiesClassR
         $setter = TypeUtilities::MethodNameFromProperty($property, self::BOOL_SETNOTGET_SETTER);
 
         return
-            in_array($property, DefinitionAssistant::ObtainExpectedProperties($className), true) ||
+            TypeParanoia::MaybeInArray(
+                $property,
+                DefinitionAssistant::ObtainExpectedProperties($className)
+            ) ||
             $classReflection->getNativeReflection()->hasMethod($getter) ||
             $classReflection->getNativeReflection()->hasMethod($setter);
     }

@@ -21,6 +21,7 @@
         "LogicalAnd": {
             "ignore": [
                 "SignpostMarv\\DaftObject\\AbstractArrayBackedDaftObject::NudgePropertyValue",
+                "SignpostMarv\\DaftObject\\TypeUtilities::CachePublicGettersAndSettersProperties",
                 "SignpostMarv\\DaftObject\\TypeUtilities::HasMethod",
                 "SignpostMarv\\DaftObject\\PHPStan\\ClassReflectionExtension::hasProperty",
                 "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::PropertyIsPublic"
@@ -29,10 +30,12 @@
         "LogicalNot": {
             "ignore": [
                 "SignpostMarv\\DaftObject\\PHPStan\\ClassReflectionExtension::getProperty",
+                "SignpostMarv\\DaftObject\\PHPStan\\ClassReflectionExtension::hasProperty",
                 "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::__construct",
                 "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::getDeclaringClass",
                 "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::isPrivate",
-                "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::PropertyIsPublic"
+                "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::PropertyIsPublic",
+                "SignpostMarv\\DaftObject\\TypeUtilities::CachePublicGettersAndSettersProperties"
             ]
         },
         "LogicalOr": {
@@ -50,8 +53,10 @@
                 "SignpostMarv\\DaftObject\\JsonTypeUtilities::DaftJsonFromJsonType",
                 "SignpostMarv\\DaftObject\\JsonTypeUtilities::DaftObjectFromJsonTypeArray",
                 "SignpostMarv\\DaftObject\\JsonTypeUtilities::ThrowIfJsonDefNotValid",
+                "SignpostMarv\\DaftObject\\TypeUtilities::CachePublicGettersAndSettersProperties",
                 "SignpostMarv\\DaftObject\\TypeUtilities::DaftObjectFromJsonTypeArray",
                 "SignpostMarv\\DaftObject\\TypeUtilities::DaftObjectPublicOrProtectedGetters",
+                "SignpostMarv\\DaftObject\\PHPStan\\ClassReflectionExtension::hasProperty",
                 "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::__construct"
             ]
         },
