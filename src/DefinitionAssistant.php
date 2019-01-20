@@ -112,16 +112,16 @@ class DefinitionAssistant
     public static function ObtainExpectedProperties($maybe) : array
     {
         if (is_object($maybe)) {
-            if (! ($maybe instanceof DaftObject)) {
-            throw new InvalidArgumentException(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                '() must be either a string or an instance of ' .
-                DaftObject::class .
-                ', ' .
-                get_class($maybe) .
-                ' given!'
-            );
+            if ( ! ($maybe instanceof DaftObject)) {
+                throw new InvalidArgumentException(
+                    'Argument 1 passed to ' .
+                    __METHOD__ .
+                    '() must be either a string or an instance of ' .
+                    DaftObject::class .
+                    ', ' .
+                    get_class($maybe) .
+                    ' given!'
+                );
             }
         } elseif ( ! is_string($maybe)) {
             throw new InvalidArgumentException(
