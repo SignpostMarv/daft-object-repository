@@ -6,8 +6,6 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject\Tests;
 
-require_once(__DIR__ . '/../test-src/bootstrapper.php');
-
 use SignpostMarv\DaftObject\ReadWrite;
 use SignpostMarv\DaftObject\Tests\DefinitionAssistant\DefinesPropertyOnInterfaceClassImplementation;
 

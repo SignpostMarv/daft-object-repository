@@ -156,7 +156,7 @@ class TypeUtilities
 
         if (
             DefinitionAssistant::IsTypeUnregistered($class) &&
-            is_a($class, AbstractDaftObject::class)
+            is_a($class, AbstractDaftObject::class, true)
         ) {
             DefinitionAssistant::RegisterAbstractDaftObjectType($class);
         }

@@ -10,13 +10,19 @@ use SignpostMarv\DaftObject\AbstractDaftObject;
 
 class DefinesPropertyOnInterfaceClassImplementation extends AbstractDaftObject implements DefinesPropertyOnInterface
 {
+    /**
+    * @var string|null
+    */
     protected $foo = '';
 
+    /**
+    * @var string|null
+    */
     protected $was = '';
 
     public function GetFoo() : string
     {
-        return $this->foo;
+        return (string) $this->foo;
     }
 
     public function SetFoo(string $value) : void
@@ -32,7 +38,7 @@ class DefinesPropertyOnInterfaceClassImplementation extends AbstractDaftObject i
 
     public function __unset(string $k) : void
     {
-        $this->__set($foo, null);
+        $this->__set('foo', null);
     }
 
     public function ChangedProperties() : array
@@ -47,7 +53,7 @@ class DefinesPropertyOnInterfaceClassImplementation extends AbstractDaftObject i
 
     public function MakePropertiesUnchanged(string ...$properties) : void
     {
-        if (in_array('foo', $properties)) {
+        if (in_array('foo', $properties, true)) {
             $this->was = $this->foo;
         }
     }
