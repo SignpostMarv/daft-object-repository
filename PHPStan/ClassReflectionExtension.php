@@ -52,6 +52,8 @@ class ClassReflectionExtension implements BrokerAwareExtension, PropertiesClassR
         ) {
             DefinitionAssistant::RegisterAbstractDaftObjectType($className);
         }
+
+        return null;
     }
 
     public function hasProperty(ClassReflection $classReflection, string $propertyName) : bool
