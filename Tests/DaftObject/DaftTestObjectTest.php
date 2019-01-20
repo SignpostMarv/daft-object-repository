@@ -4,7 +4,7 @@
 */
 declare(strict_types=1);
 
-namespace SignpostMarv\DaftObject\Tests;
+namespace SignpostMarv\DaftObject\Tests\DaftObject;
 
 use ReflectionMethod;
 use SignpostMarv\DaftObject\ClassDoesNotImplementClassException;
@@ -26,6 +26,7 @@ use SignpostMarv\DaftObject\ReadOnlyTwoColumnPrimaryKey;
 use SignpostMarv\DaftObject\ReadWrite;
 use SignpostMarv\DaftObject\ReadWriteTwoColumnPrimaryKey;
 use SignpostMarv\DaftObject\ReadWriteWorm;
+use SignpostMarv\DaftObject\Tests\TestCase;
 use SignpostMarv\DaftObject\UndefinedPropertyException;
 use SignpostMarv\DaftObject\WriteOnly;
 use SignpostMarv\DaftObject\WriteOnlyWorm;

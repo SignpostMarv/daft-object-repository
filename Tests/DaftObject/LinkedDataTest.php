@@ -4,9 +4,10 @@
 */
 declare(strict_types=1);
 
-namespace SignpostMarv\DaftObject\Tests;
+namespace SignpostMarv\DaftObject\Tests\DaftObject;
 
 use SignpostMarv\DaftObject\LinkedData\HasId;
+use SignpostMarv\DaftObject\Tests\TestCase;
 
 class LinkedDataTest extends TestCase
 {

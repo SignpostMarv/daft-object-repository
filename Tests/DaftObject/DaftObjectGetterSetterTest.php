@@ -4,7 +4,7 @@
 */
 declare(strict_types=1);
 
-namespace SignpostMarv\DaftObject\Tests;
+namespace SignpostMarv\DaftObject\Tests\DaftObject;
 
 use DateTimeImmutable;
 use Generator;
@@ -15,6 +15,7 @@ use SignpostMarv\DaftObject\NotPublicGetterPropertyException;
 use SignpostMarv\DaftObject\NotPublicSetterPropertyException;
 use SignpostMarv\DaftObject\PasswordHashTestObject;
 use SignpostMarv\DaftObject\ReadWrite;
+use SignpostMarv\DaftObject\Tests\TestCase;
 
 class DaftObjectGetterSetterTest extends TestCase
 {

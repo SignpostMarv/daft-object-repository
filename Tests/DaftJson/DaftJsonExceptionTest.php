@@ -4,7 +4,7 @@
 */
 declare(strict_types=1);
 
-namespace SignpostMarv\DaftObject\Tests;
+namespace SignpostMarv\DaftObject\Tests\DaftJson;
 
 use SignpostMarv\DaftObject\AbstractArrayBackedDaftObject;
 use SignpostMarv\DaftObject\ClassDoesNotImplementClassException;
@@ -16,6 +16,7 @@ use SignpostMarv\DaftObject\ReadWriteJson;
 use SignpostMarv\DaftObject\ReadWriteJsonJson;
 use SignpostMarv\DaftObject\ReadWriteJsonJsonArray;
 use SignpostMarv\DaftObject\ReadWriteJsonJsonArrayBad;
+use SignpostMarv\DaftObject\Tests\TestCase;
 
 class DaftJsonExceptionTest extends TestCase
 {

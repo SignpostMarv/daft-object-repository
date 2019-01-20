@@ -4,7 +4,7 @@
 */
 declare(strict_types=1);
 
-namespace SignpostMarv\DaftObject\Tests;
+namespace SignpostMarv\DaftObject\Tests\DaftObjectRepository;
 
 use SignpostMarv\DaftObject\DaftObjectCreatedByArray;
 use SignpostMarv\DaftObject\DaftObjectMemoryRepository;
@@ -13,6 +13,7 @@ use SignpostMarv\DaftObject\DaftObjectNullStubCreatedByArray;
 use SignpostMarv\DaftObject\DaftObjectRepository;
 use SignpostMarv\DaftObject\DaftObjectRepositoryTypeException;
 use SignpostMarv\DaftObject\DefinesOwnIdPropertiesInterface;
+use SignpostMarv\DaftObject\Tests\TestCase;
 
 class DaftObjectRepositoryByTypeTest extends TestCase
 {

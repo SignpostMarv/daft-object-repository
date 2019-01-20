@@ -4,7 +4,7 @@
 */
 declare(strict_types=1);
 
-namespace SignpostMarv\DaftObject\Tests;
+namespace SignpostMarv\DaftObject\Tests\DaftObjectRepository;
 
 use Generator;
 use RuntimeException;
@@ -16,6 +16,7 @@ use SignpostMarv\DaftObject\DefinesOwnIdPropertiesInterface;
 use SignpostMarv\DaftObject\ReadOnly;
 use SignpostMarv\DaftObject\ReadWrite;
 use SignpostMarv\DaftObject\ReadWriteTwoColumnPrimaryKey;
+use SignpostMarv\DaftObject\Tests\TestCase;
 
 class DaftObjectRepositoryTest extends TestCase
 {

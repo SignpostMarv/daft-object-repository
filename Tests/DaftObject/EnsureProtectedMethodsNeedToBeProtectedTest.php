@@ -4,12 +4,13 @@
 */
 declare(strict_types=1);
 
-namespace SignpostMarv\DaftObject\Tests;
+namespace SignpostMarv\DaftObject\Tests\DaftObject;
 
 use SignpostMarv\DaftObject\EnsureProtectedMethodsNeedToBeProtectedOnAbstractDaftObject;
 use SignpostMarv\DaftObject\EnsureProtectedMethodsNeedToBeProtectedOnRepository;
 use SignpostMarv\DaftObject\PHPStan\EnsurePropertyReflectionExtensionMethodsNeedToBeProtected;
 use SignpostMarv\DaftObject\ReadOnly;
+use SignpostMarv\DaftObject\Tests\TestCase;
 use SignpostMarv\DaftObject\UndefinedPropertyException;
 use TypeError;
 

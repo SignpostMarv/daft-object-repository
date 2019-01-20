@@ -4,13 +4,16 @@
 */
 declare(strict_types=1);
 
-namespace SignpostMarv\DaftObject\Tests;
+namespace SignpostMarv\DaftObject\Tests\DaftObject;
 
 use DateTime;
 use DateTimeImmutable;
 use Generator;
 use InvalidArgumentException;
-use SignpostMarv\DaftObject;
+use SignpostMarv\DaftObject\DaftObject;
+use SignpostMarv\DaftObject\MultiTypedArrayPropertiesTester;
+use SignpostMarv\DaftObject\Tests\TestCase;
+use SignpostMarv\DaftObject\TypeParanoia;
 
 class MultiTypedArrayPropertyImplementationTest extends TestCase
 {
@@ -18,36 +21,36 @@ class MultiTypedArrayPropertyImplementationTest extends TestCase
     {
         yield from [
             [
-                new DaftObject\MultiTypedArrayPropertiesTester(),
+                new MultiTypedArrayPropertiesTester(),
                 'dates',
                 0,
                 InvalidArgumentException::class,
                 (
                     'Argument 3 passed to ' .
-                    DaftObject\TypeParanoia::class .
+                    TypeParanoia::class .
                     '::MaybeThrowIfValueDoesNotMatchMultiTypedArray must be an array' .
                     ', integer given!'
                 ),
             ],
             [
-                new DaftObject\MultiTypedArrayPropertiesTester(),
+                new MultiTypedArrayPropertiesTester(),
                 'dates',
                 ['foo' => 'bar'],
                 InvalidArgumentException::class,
                 (
                     'Argument 3 passed to ' .
-                    DaftObject\TypeParanoia::class .
+                    TypeParanoia::class .
                     '::MaybeThrowIfNotArrayIntKeys must be array<int, mixed>'
                 ),
             ],
             [
-                new DaftObject\MultiTypedArrayPropertiesTester(),
+                new MultiTypedArrayPropertiesTester(),
                 'dates',
                 [new DateTime()],
                 InvalidArgumentException::class,
                 (
                     'Argument 3 passed to ' .
-                    DaftObject\TypeParanoia::class .
+                    TypeParanoia::class .
                     '::MaybeThrowIfValueArrayDoesNotMatchTypes' .
                     ' contained values that did not match the provided types!'
                 ),
@@ -74,13 +77,13 @@ class MultiTypedArrayPropertyImplementationTest extends TestCase
     {
         yield from [
             [
-                new DaftObject\MultiTypedArrayPropertiesTester(),
+                new MultiTypedArrayPropertiesTester(),
                 'trimmedStrings',
                 [' foo', 'foo', 'foo ', ' foo '],
                 ['foo'],
             ],
             [
-                new DaftObject\MultiTypedArrayPropertiesTester(),
+                new MultiTypedArrayPropertiesTester(),
                 'trimmedString',
                 ' foo ',
                 'foo',
@@ -94,7 +97,7 @@ class MultiTypedArrayPropertyImplementationTest extends TestCase
     * @dataProvider DataProviderObjectPropertyValueException
     */
     public function testNudgingThrows(
-        DaftObject\DaftObject $obj,
+        DaftObject $obj,
         string $property,
         $value,
         string $expectedException,
@@ -110,14 +113,14 @@ class MultiTypedArrayPropertyImplementationTest extends TestCase
     * @dataProvider DataProviderObjectPropertyValueNotUniqueAutoDouble
     */
     public function testNonUniqueThrows(
-        DaftObject\DaftObject $obj,
+        DaftObject $obj,
         string $property,
         array $value
     ) : void {
         static::expectException(InvalidArgumentException::class);
         static::expectExceptionMessage(
             'Argument 3 passed to ' .
-            DaftObject\TypeParanoia::class .
+            TypeParanoia::class .
             '::MaybeThrowIfValueDoesNotMatchMultiTypedArrayValueArray contained non-unique values!'
         );
 
@@ -131,7 +134,7 @@ class MultiTypedArrayPropertyImplementationTest extends TestCase
     * @dataProvider DataProviderObjectPropertyValueTrimmedStrings
     */
     public function testAutoTrimmedStrings(
-        DaftObject\DaftObject $obj,
+        DaftObject $obj,
         string $property,
         $value,
         $expected
@@ -145,7 +148,7 @@ class MultiTypedArrayPropertyImplementationTest extends TestCase
     {
         yield from [
             [
-                new DaftObject\MultiTypedArrayPropertiesTester(),
+                new MultiTypedArrayPropertiesTester(),
                 'dates',
                 [new DateTimeImmutable()],
             ],

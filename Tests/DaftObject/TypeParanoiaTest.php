@@ -4,13 +4,14 @@
 */
 declare(strict_types=1);
 
-namespace SignpostMarv\DaftObject\Tests;
+namespace SignpostMarv\DaftObject\Tests\DaftObject;
 
 use DateTimeImmutable;
 use DateTimeInterface;
 use InvalidArgumentException;
 use SignpostMarv\DaftObject\DaftObject;
 use SignpostMarv\DaftObject\DaftObjectRepositoryTypeByClassMethodAndTypeException;
+use SignpostMarv\DaftObject\Tests\TestCase;
 use SignpostMarv\DaftObject\TypeCertainty;
 use SignpostMarv\DaftObject\TypeParanoia;
 

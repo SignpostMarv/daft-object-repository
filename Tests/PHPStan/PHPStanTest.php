@@ -4,11 +4,12 @@
 */
 declare(strict_types=1);
 
-namespace SignpostMarv\DaftObject\Tests;
+namespace SignpostMarv\DaftObject\Tests\PHPStan;
 
 use Jean85\PrettyVersions;
 use OutOfBoundsException;
 use PHPStan\Command\AnalyseCommand;
+use SignpostMarv\DaftObject\Tests\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -34,10 +35,10 @@ class PHPStanTest extends TestCase
         $commandTester->execute(
             [
                 'paths' => [
-                    __DIR__ . '/../.php_cs.dist',
-                    __DIR__ . '/../src/',
-                    __DIR__ . '/../PHPStan/',
-                    __DIR__ . '/../Tests/',
+                    __DIR__ . '/../../.php_cs.dist',
+                    __DIR__ . '/../../src/',
+                    __DIR__ . '/../../PHPStan/',
+                    __DIR__ . '/../../Tests/',
                 ],
             ],
             [
@@ -52,12 +53,12 @@ class PHPStanTest extends TestCase
             [
                 (
                     'Note: Using configuration file ' .
-                    realpath(__DIR__ . '/../phpstan.neon') .
+                    realpath(__DIR__ . '/../../phpstan.neon') .
                     '.'
                 ),
                 (
                     'Note: Using configuration file ' .
-                    realpath(__DIR__ . '/../../../../phpstan.neon') .
+                    realpath(__DIR__ . '/../../../../../phpstan.neon') .
                     '.'
                 ),
             ],
@@ -67,6 +68,6 @@ class PHPStanTest extends TestCase
 
     protected static function ObtainConfiguration() : string
     {
-        return  __DIR__ . '/../phpstan.neon';
+        return  __DIR__ . '/../../phpstan.neon';
     }
 }
