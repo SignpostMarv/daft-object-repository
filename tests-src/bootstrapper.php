@@ -7,9 +7,12 @@ declare(strict_types=1);
 namespace SignpostMarv\DaftObject;
 
 if (DefinitionAssistant::IsTypeUnregistered(DefinesOwnIdPropertiesInterface::class)) {
-    DefinitionAssistant::RegisterType(DefinesOwnIdPropertiesInterface::class, [
-        'id',
-    ]);
+    DefinitionAssistant::RegisterType(
+        DefinesOwnIdPropertiesInterface::class,
+        DefinitionAssistant::GetterClosure(DefinesOwnIdPropertiesInterface::class, 'id'),
+        null,
+        'id'
+    );
 }
 
 if (
@@ -17,10 +20,8 @@ if (
         Tests\DefinitionAssistant\DefinesPropertyOnInterfaceClassImplementation::class
     )
 ) {
-    DefinitionAssistant::RegisterType(
+    DefinitionAssistant::AutoRegisterType(
         Tests\DefinitionAssistant\DefinesPropertyOnInterfaceClassImplementation::class,
-        [
-            'foo',
-        ]
+        'foo'
     );
 }

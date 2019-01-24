@@ -16,6 +16,8 @@
     },
     "autoload-dev": {
         "psr-4": {
+            "SignpostMarv\\DaftMagicPropertyAnalysis\\": "./vendor/signpostmarv/daft-magic-property-analysis/src/",
+            "SignpostMarv\\DaftMagicPropertyAnalysis\\PHPStan\\": "./vendor/signpostmarv/daft-magic-property-analysis/PHPStan/",
             "SignpostMarv\\DaftObject\\": "./tests-src/",
             "SignpostMarv\\DaftObject\\PHPStan\\": "./PHPStan/",
             "SignpostMarv\\DaftObject\\Tests\\": "./Tests/"
@@ -47,7 +49,7 @@
             "psalm",
             "phpcpd ./src/ ./Tests/ ./tests-src/",
             "phpmnd ./ --exclude=./phpdoc/ --exclude=./phpunit/ --exclude=./vendor/ --non-zero-exit-on-violation --hint",
-            "composer-require-checker check ./composer.json",
+            "composer-require-checker check --config-file=./composer-require-checker.json ./composer.json",
             "php-cs-fixer fix --verbose --allow-risky=yes --dry-run"
         ],
         "infection": [
@@ -73,7 +75,8 @@
         "povils/phpmnd": "^2.0",
         "roave/security-advisories": "dev-master",
         "sebastian/phpcpd": "^4.1",
+        "signpostmarv/daft-magic-property-analysis": "^0.1.1",
         "signpostmarv/php-cs-fixer-config": "^0.6.0",
-        "vimeo/psalm": "^3.0,>=3.0.11"
+        "vimeo/psalm": "dev-master"
     }
 }

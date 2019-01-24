@@ -6,11 +6,17 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject\Tests\DefinitionAssistant;
 
+use Closure;
+use Error;
 use InvalidArgumentException;
 use SignpostMarv\DaftObject\AbstractArrayBackedDaftObject;
 use SignpostMarv\DaftObject\AbstractDaftObject;
 use SignpostMarv\DaftObject\DaftObject;
+use SignpostMarv\DaftObject\DateTimeImmutableTestObject;
+use SignpostMarv\DaftObject\DefinitionAssistant as BaseDefinitionAssistant;
+use SignpostMarv\DaftMagicPropertyAnalysis\DefinitionAssistant as ParentDefinitionAssistant;
 use SignpostMarv\DaftObject\Tests\TestCase;
+use TypeError;
 
 class DefinitionAssistantTest extends TestCase
 {
@@ -19,36 +25,23 @@ class DefinitionAssistantTest extends TestCase
         DefinitionAssistant::ClearTypes();
 
         static::assertTrue(DefinitionAssistant::IsTypeUnregistered(DaftObject::class));
-        DefinitionAssistant::RegisterType(DaftObject::class, ['foo']);
+        DefinitionAssistant::AutoRegisterType(DaftObject::class, 'foo');
         static::assertFalse(DefinitionAssistant::IsTypeUnregistered(DaftObject::class));
         static::assertCount(1, DefinitionAssistant::ObtainExpectedProperties(DaftObject::class));
 
+
         static::assertTrue(DefinitionAssistant::IsTypeUnregistered(
-            AbstractArrayBackedDaftObject::class
+            DateTimeImmutableTestObject::class
         ));
-        DefinitionAssistant::RegisterAbstractDaftObjectType(AbstractArrayBackedDaftObject::class);
+        DefinitionAssistant::ClearTypes();
+        DefinitionAssistant::RegisterAbstractDaftObjectType(DateTimeImmutableTestObject::class);
         static::assertCount(
             1,
             DefinitionAssistant::ObtainExpectedProperties(
-                AbstractArrayBackedDaftObject::class
+                DateTimeImmutableTestObject::class
             )
         );
         DefinitionAssistant::ClearTypes();
-    }
-
-    public function testAlreadyRegistered() : void
-    {
-        DefinitionAssistant::ClearTypes();
-        static::assertTrue(DefinitionAssistant::IsTypeUnregistered(DaftObject::class));
-        DefinitionAssistant::RegisterType(DaftObject::class, ['foo']);
-        static::expectException(InvalidArgumentException::class);
-        static::expectExceptionMessage(
-            'Argument 1 passed to ' .
-            'SignpostMarv\DaftObject\DefinitionAssistant::RegisterType()' .
-            ' has already been registered!'
-        );
-
-        DefinitionAssistant::RegisterType(DaftObject::class, ['foo']);
     }
 
     public function DataProviderExceptionsInRegisterType() : array
@@ -58,36 +51,33 @@ class DefinitionAssistantTest extends TestCase
                 DaftObject::class,
                 [],
                 InvalidArgumentException::class,
-                (
-                    'Argument 2 passed to ' .
-                    'SignpostMarv\DaftObject\DefinitionAssistant::RegisterType()' .
-                    ' must be a non-empty array!'
-                ),
+                'Argument 4 must be specified!',
             ],
             [
                 DaftObject::class,
                 ['foo' => 'foo'],
-                InvalidArgumentException::class,
-                (
-                    'Argument 2 passed to ' .
-                    'SignpostMarv\DaftObject\DefinitionAssistant::RegisterType()' .
-                    ' must be an array with only integer keys!'
-                ),
+                Error::class,
+                'Cannot unpack array with string keys',
             ],
             [
                 DaftObject::class,
                 [1],
-                InvalidArgumentException::class,
+                TypeError::class,
                 (
                     'Argument 2 passed to ' .
-                    'SignpostMarv\DaftObject\DefinitionAssistant::RegisterType()' .
-                    ' must be an array of shape array<int, string>!'
+                    BaseDefinitionAssistant::class .
+                    '::AutoRegisterType() must be of the type string, integer given, called in ' .
+                    __FILE__ .
+                    ' on line ' .
+                    (__LINE__ + 24)
                 ),
             ],
         ];
     }
 
     /**
+    * @param array<int, string> $properties
+    *
     * @dataProvider DataProviderExceptionsInRegisterType
     */
     public function testExceptionsInRegisterType(
@@ -99,23 +89,11 @@ class DefinitionAssistantTest extends TestCase
         DefinitionAssistant::ClearTypes();
 
         static::assertTrue(DefinitionAssistant::IsTypeUnregistered($type));
+
         static::expectException($exception);
         static::expectExceptionMessage($message);
 
-        DefinitionAssistant::RegisterType($type, $properties);
-    }
-
-    public function testNotStringOrObject() : void
-    {
-        DefinitionAssistant::ClearTypes();
-        static::expectException(InvalidArgumentException::class);
-        static::expectExceptionMessage(
-            'Argument 1 passed to ' .
-            'SignpostMarv\DaftObject\DefinitionAssistant::ObtainExpectedProperties()' .
-            ' must be either a string or an object, integer given!'
-        );
-
-        DefinitionAssistant::ObtainExpectedProperties(1);
+        DefinitionAssistant::AutoRegisterType($type, ...$properties);
     }
 
     public function testNotDaftObject() : void
@@ -124,8 +102,8 @@ class DefinitionAssistantTest extends TestCase
         static::expectException(InvalidArgumentException::class);
         static::expectExceptionMessage(
             'Argument 1 passed to ' .
-            'SignpostMarv\DaftObject\DefinitionAssistant::ObtainExpectedProperties()' .
-            ' must be either a string or an instance of ' .
+            'SignpostMarv\DaftObject\DefinitionAssistant::IsTypeUnregistered()' .
+            ' must be an implementation of ' .
             DaftObject::class .
             ', ' .
             get_class($this) .
@@ -142,7 +120,7 @@ class DefinitionAssistantTest extends TestCase
         static::expectExceptionMessage(
             'Argument 1 passed to ' .
             'SignpostMarv\DaftObject\DefinitionAssistant::IsTypeUnregistered()' .
-            ' must be an instance of ' .
+            ' must be an implementation of ' .
             DaftObject::class .
             ', ' .
             get_class($this) .
@@ -173,17 +151,26 @@ class DefinitionAssistantTest extends TestCase
     {
         DefinitionAssistant::ClearTypes();
 
-        static::assertTrue(DefinitionAssistant::IsTypeUnregistered(AbstractDaftObject::class));
+        static::assertTrue(DefinitionAssistant::IsTypeUnregistered(
+            DefinesPropertyOnInterfaceClassImplementation::class
+        ));
 
-        DefinitionAssistant::RegisterAbstractDaftObjectType(AbstractDaftObject::class);
+        DefinitionAssistant::AutoRegisterType(
+            DefinesPropertyOnInterfaceClassImplementation::class,
+            'foo'
+        );
 
         static::expectException(InvalidArgumentException::class);
         static::expectExceptionMessage(
             'Argument 1 passed to ' .
-            'SignpostMarv\DaftObject\DefinitionAssistant::RegisterAbstractDaftObjectType()' .
+            ParentDefinitionAssistant::class .
+            '::RegisterType()' .
             ' has already been registered!'
         );
 
-        DefinitionAssistant::RegisterAbstractDaftObjectType(AbstractDaftObject::class);
+        DefinitionAssistant::AutoRegisterType(
+            DefinesPropertyOnInterfaceClassImplementation::class,
+            'foo'
+        );
     }
 }

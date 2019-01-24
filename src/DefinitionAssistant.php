@@ -6,9 +6,11 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject;
 
+use Closure;
 use InvalidArgumentException;
+use SignpostMarv\DaftMagicPropertyAnalysis\DefinitionAssistant as Base;
 
-class DefinitionAssistant
+class DefinitionAssistant extends Base
 {
     /**
     * @var array<string, array<int, string>>
@@ -21,7 +23,7 @@ class DefinitionAssistant
             throw new InvalidArgumentException(
                 'Argument 1 passed to ' .
                 __METHOD__ .
-                '() must be an instance of ' .
+                '() must be an implementation of ' .
                 DaftObject::class .
                 ', ' .
                 $type .
@@ -29,56 +31,7 @@ class DefinitionAssistant
             );
         }
 
-        return ! isset(self::$types[$type]);
-    }
-
-    public static function RegisterType(string $type, array $matrix) : void
-    {
-        if ( ! static::IsTypeUnregistered($type)) {
-            throw new InvalidArgumentException(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                '() has already been registered!'
-            );
-        }
-
-        $initialCount = count($matrix);
-
-        if ($initialCount < 1) {
-            throw new InvalidArgumentException(
-                'Argument 2 passed to ' .
-                __METHOD__ .
-                '() must be a non-empty array!'
-            );
-        }
-
-        /**
-        * @var array<int, mixed>
-        */
-        $matrix = array_filter($matrix, 'is_int', ARRAY_FILTER_USE_KEY);
-
-        if (count($matrix) !== $initialCount) {
-            throw new InvalidArgumentException(
-                'Argument 2 passed to ' .
-                __METHOD__ .
-                '() must be an array with only integer keys!'
-            );
-        }
-
-        /**
-        * @var array<int, string>
-        */
-        $matrix = array_filter($matrix, 'is_string');
-
-        if (count($matrix) !== $initialCount) {
-            throw new InvalidArgumentException(
-                'Argument 2 passed to ' .
-                __METHOD__ .
-                '() must be an array of shape array<int, string>!'
-            );
-        }
-
-        self::$types[$type] = $matrix;
+        return parent::IsTypeUnregistered($type);
     }
 
     public static function RegisterAbstractDaftObjectType(string $maybe) : void
@@ -93,84 +46,130 @@ class DefinitionAssistant
                 $maybe .
                 ' given!'
             );
-        } elseif ( ! static::IsTypeUnregistered($maybe)) {
-            throw new InvalidArgumentException(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                '() has already been registered!'
-            );
         }
 
-        self::$types[$maybe] = TypeCertainty::EnsureArgumentIsArray($maybe::PROPERTIES);
+        /**
+        * @var array<int, string>
+        */
+        $props = TypeCertainty::EnsureArgumentIsArray($maybe::PROPERTIES);
+
+        $args = static::TypeAndGetterAndSetterClosureWithProps($maybe, ...$props);
+
+        /**
+        * @var string
+        */
+        $type = array_shift($args);
+
+        /**
+        * @var Closure|null
+        */
+        $getter = array_shift($args);
+
+        /**
+        * @var Closure|null
+        */
+        $setter = array_shift($args);
+
+        /**
+        * @var array<int, string>
+        */
+        $props = $args;
+
+        static::RegisterType($type, $getter, $setter, ...$props);
     }
 
     /**
-    * @param scalar|object $maybe
+    * @param mixed $maybe
     *
     * @return array<int, string>
     */
     public static function ObtainExpectedProperties($maybe) : array
     {
-        if (is_object($maybe)) {
-            if ( ! ($maybe instanceof DaftObject)) {
-                throw new InvalidArgumentException(
-                    'Argument 1 passed to ' .
-                    __METHOD__ .
-                    '() must be either a string or an instance of ' .
-                    DaftObject::class .
-                    ', ' .
-                    get_class($maybe) .
-                    ' given!'
-                );
-            }
-        } elseif ( ! is_string($maybe)) {
-            throw new InvalidArgumentException(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                '() must be either a string or an object, ' .
-                gettype($maybe) .
-                ' given!'
-            );
+        /**
+        * @var scalar|array|object|resource|null
+        */
+        $maybe = is_object($maybe) ? get_class($maybe) : $maybe;
+
+        if (
+            is_string($maybe) &&
+            static::IsTypeUnregistered($maybe) &&
+            TypeParanoia::IsThingStrings($maybe, AbstractDaftObject::class)
+        ) {
+            static::RegisterAbstractDaftObjectType($maybe);
         }
 
-        /**
-        * @var array<int, string>
-        */
-        $out = array_values(array_unique(array_reduce(
-            array_filter(
-                self::$types,
-                function (string $type) use ($maybe) : bool {
-                    return is_a($maybe, $type, is_string($maybe));
-                },
-                ARRAY_FILTER_USE_KEY
-            ),
-            'array_merge',
-            []
-        )));
-
-        return $out;
+        return parent::ObtainExpectedProperties($maybe);
     }
 
-    /**
-    * @return array<int, string>
-    */
-    public static function ObtainExpectedOrDefaultPropertiesWithAutoRegister(string $class) : array
+    public static function GetterClosure(string $type, string ...$props) : Closure
     {
-        if (
-            static::IsTypeUnregistered($class) &&
-            TypeParanoia::IsThingStrings($class, AbstractDaftObject::class)
-        ) {
-            static::RegisterAbstractDaftObjectType($class);
-        }
+        return static::SetterOrGetterClosure($type, false, ...$props);
+    }
+
+    public static function SetterClosure(string $type, string ...$props) : Closure
+    {
+        return static::SetterOrGetterClosure($type, false, ...$props);
+    }
+
+    public static function TypeAndGetterAndSetterClosureWithProps(
+        string $type,
+        string ...$props
+    ) : array {
+        return array_merge(
+            [
+                $type,
+                static::GetterClosure($type, ...$props),
+                static::SetterClosure($type, ...$props),
+            ],
+            $props
+        );
+    }
+
+    public static function AutoRegisterType(string $type, string ...$properties) : void
+    {
+        $args = static::TypeAndGetterAndSetterClosureWithProps($type, ...$properties);
+
+        /**
+        * @var string
+        */
+        $type = array_shift($args);
+
+        /**
+        * @var Closure|null
+        */
+        $getter = array_shift($args);
+
+        /**
+        * @var Closure|null
+        */
+        $setter = array_shift($args);
 
         /**
         * @var array<int, string>
         */
-        $out =
-            ! static::IsTypeUnregistered($class)
-                ? static::ObtainExpectedProperties($class)
-                : $class::DaftObjectProperties();
+        $properties = $args;
 
-        return $out;
+        static::RegisterType($type, $getter, $setter, ...$properties);
+    }
+
+    protected static function SetterOrGetterClosure(
+        string $type,
+        bool $SetNotGet,
+        string ...$props
+    ) : Closure {
+        return function (string $property) use ($type, $props, $SetNotGet) : ? string {
+            if (TypeParanoia::MaybeInArray($property, $props)) {
+                /**
+                * @var string
+                */
+                $method = TypeUtilities::MethodNameFromProperty($property, $SetNotGet);
+
+                if (method_exists($type, $method)) {
+                    return $method;
+                }
+            }
+
+            return null;
+        };
     }
 }

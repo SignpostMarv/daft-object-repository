@@ -12,6 +12,8 @@ class DefinitionAssistant extends Base
 {
     public static function ClearTypes() : void
     {
-        self::$types = [];
+        static::$properties = [];
+        static::$getters = [];
+        static::$setters = [];
     }
 }

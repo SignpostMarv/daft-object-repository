@@ -99,7 +99,7 @@ class TypeUtilities
     protected static function ObtainExpectedOrDefaultPropertiesWithAutoRegister(
         string $class
     ) : array {
-        return DefinitionAssistant::ObtainExpectedOrDefaultPropertiesWithAutoRegister($class);
+        return DefinitionAssistant::ObtainExpectedProperties($class);
     }
 
     protected static function HasMethod(
