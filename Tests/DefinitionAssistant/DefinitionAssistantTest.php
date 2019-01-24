@@ -6,15 +6,13 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject\Tests\DefinitionAssistant;
 
-use Closure;
 use Error;
 use InvalidArgumentException;
-use SignpostMarv\DaftObject\AbstractArrayBackedDaftObject;
+use SignpostMarv\DaftMagicPropertyAnalysis\DefinitionAssistant as ParentDefinitionAssistant;
 use SignpostMarv\DaftObject\AbstractDaftObject;
 use SignpostMarv\DaftObject\DaftObject;
 use SignpostMarv\DaftObject\DateTimeImmutableTestObject;
 use SignpostMarv\DaftObject\DefinitionAssistant as BaseDefinitionAssistant;
-use SignpostMarv\DaftMagicPropertyAnalysis\DefinitionAssistant as ParentDefinitionAssistant;
 use SignpostMarv\DaftObject\Tests\TestCase;
 use TypeError;
 
@@ -28,7 +26,6 @@ class DefinitionAssistantTest extends TestCase
         DefinitionAssistant::AutoRegisterType(DaftObject::class, 'foo');
         static::assertFalse(DefinitionAssistant::IsTypeUnregistered(DaftObject::class));
         static::assertCount(1, DefinitionAssistant::ObtainExpectedProperties(DaftObject::class));
-
 
         static::assertTrue(DefinitionAssistant::IsTypeUnregistered(
             DateTimeImmutableTestObject::class

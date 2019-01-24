@@ -8,20 +8,12 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject\PHPStan;
 
-use BadMethodCallException;
 use InvalidArgumentException;
 use PHPStan\Broker\Broker;
 use PHPStan\Reflection\ClassReflection;
-use PHPStan\Reflection\PropertyReflection;
-use PHPStan\Type\MixedType;
-use PHPStan\Type\Type;
-use PHPStan\Type\TypehintHelper;
-use ReflectionMethod;
 use SignpostMarv\DaftMagicPropertyAnalysis\PHPStan\PropertyReflectionExtension as Base;
 use SignpostMarv\DaftObject\DaftObject;
-use SignpostMarv\DaftObject\DefinesOwnIdPropertiesInterface;
 use SignpostMarv\DaftObject\TypeParanoia;
-use SignpostMarv\DaftObject\TypeUtilities;
 
 class PropertyReflectionExtension extends Base
 {
