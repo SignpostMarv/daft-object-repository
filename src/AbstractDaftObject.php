@@ -170,6 +170,9 @@ abstract class AbstractDaftObject implements DaftObject
         return $out;
     }
 
+    /**
+    * @return array<int, string>
+    */
     public static function DaftObjectExportableProperties() : array
     {
         /**
@@ -195,6 +198,9 @@ abstract class AbstractDaftObject implements DaftObject
         return TypeUtilities::DaftObjectPublicSetters(static::class);
     }
 
+    /**
+    * @return array<int|string, string>
+    */
     public static function DaftObjectJsonProperties() : array
     {
         JsonTypeUtilities::ThrowIfNotDaftJson(static::class);
@@ -207,8 +213,14 @@ abstract class AbstractDaftObject implements DaftObject
         return $out;
     }
 
+    /**
+    * @return array<int, string>
+    */
     final public static function DaftObjectJsonPropertyNames() : array
     {
+        /**
+        * @var array<int, string>
+        */
         $out = [];
 
         /**

@@ -16,6 +16,9 @@ trait DefineIdPropertiesInsufficientlyTrait
         return null;
     }
 
+    /**
+    * @return string[]
+    */
     public static function DaftObjectIdProperties() : array
     {
         return [];

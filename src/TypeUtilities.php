@@ -39,6 +39,9 @@ class TypeUtilities
     */
     private static $publicSetters = [];
 
+    /**
+    * @return array<int, string>
+    */
     public static function DaftObjectPublicGetters(string $class) : array
     {
         static::CachePublicGettersAndSetters($class);
@@ -46,6 +49,9 @@ class TypeUtilities
         return array_keys(array_filter(self::$Getters[$class]));
     }
 
+    /**
+    * @return array<int, string>
+    */
     public static function DaftObjectPublicOrProtectedGetters(string $class) : array
     {
         static::CachePublicGettersAndSetters($class);

@@ -5,31 +5,25 @@
       <code>new $type($this-&gt;data[$hashId])</code>
     </InvalidStringClass>
   </file>
-  <file src="src\DefinitionAssistant.php">
-    <InvalidStringClass occurrences="1">
-      <code>$class::DaftObjectProperties()</code>
-    </InvalidStringClass>
-  </file>
   <file src="src\JsonTypeUtilities.php">
     <InvalidStringClass occurrences="2">
       <code>$type::DaftObjectJsonPropertyNames()</code>
       <code>$type::DaftObjectJsonProperties()</code>
     </InvalidStringClass>
   </file>
-  <file src="src\TypeCertainty.php">
-    <InvalidNullableReturnType occurrences="1">
-      <code>string</code>
-    </InvalidNullableReturnType>
-    <NullableReturnStatement occurrences="1"/>
-  </file>
   <file src="src\TypeUtilities.php">
     <InvalidStringClass occurrences="1">
       <code>$class::DaftObjectIdProperties()</code>
     </InvalidStringClass>
   </file>
+  <file src="tests-src\DefineIdPropertiesIncorrectlyTrait.php">
+    <LessSpecificImplementedReturnType occurrences="1">
+      <code>array</code>
+    </LessSpecificImplementedReturnType>
+  </file>
   <file src="tests-src\ReadWriteJsonJsonArrayBad.php">
     <MixedTypeCoercion occurrences="2">
-      <code>return (array) $this-&gt;RetrievePropertyValueFromData('json');</code>
+      <code>return TypeCertainty::ForceArgumentAsArray($this-&gt;RetrievePropertyValueFromData('json'));</code>
       <code>@return ReadWriteJson[]</code>
     </MixedTypeCoercion>
   </file>

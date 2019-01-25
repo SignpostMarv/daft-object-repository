@@ -13,6 +13,9 @@ trait DefineIdPropertiesCorrectlyTrait
         return $this->GetFoo();
     }
 
+    /**
+    * @return array<int, string>
+    */
     public static function DaftObjectIdProperties() : array
     {
         return [

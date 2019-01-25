@@ -16,6 +16,9 @@ trait DefineArrayIdPropertiesCorrectlyTrait
         ];
     }
 
+    /**
+    * @return array<int, string>
+    */
     public static function DaftObjectIdProperties() : array
     {
         return [
