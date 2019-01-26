@@ -152,10 +152,20 @@ class DefinitionAssistantTest extends TestCase
             DefinesPropertyOnInterfaceClassImplementation::class
         ));
 
+        static::assertNull(DefinitionAssistant::GetterMethodName(
+            DefinesPropertyOnInterfaceClassImplementation::class,
+            'foo'
+        ));
+
         DefinitionAssistant::AutoRegisterType(
             DefinesPropertyOnInterfaceClassImplementation::class,
             'foo'
         );
+
+        static::assertSame('GetFoo', DefinitionAssistant::GetterMethodName(
+            DefinesPropertyOnInterfaceClassImplementation::class,
+            'foo'
+        ));
 
         static::expectException(InvalidArgumentException::class);
         static::expectExceptionMessage(
