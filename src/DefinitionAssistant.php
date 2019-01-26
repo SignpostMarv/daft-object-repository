@@ -56,36 +56,6 @@ class DefinitionAssistant extends Base
         static::RegisterDaftObjectTypeFromTypeAndProps($maybe, ...$props);
     }
 
-    protected static function RegisterDaftObjectTypeFromTypeAndProps(
-        string $maybe,
-        string ...$props
-    ) : void {
-        $args = static::TypeAndGetterAndSetterClosureWithProps($maybe, ...$props);
-
-        /**
-        * @var string
-        */
-        $type = array_shift($args);
-
-        /**
-        * @var Closure|null
-        */
-        $getter = array_shift($args);
-
-        /**
-        * @var Closure|null
-        */
-        $setter = array_shift($args);
-
-        /**
-        * @var array<int, string>
-        */
-        $props = $args;
-
-        static::RegisterType($type, $getter, $setter, ...$props);
-        self::MaybeRegisterAdditionalTypes($type);
-    }
-
     /**
     * @param mixed $maybe
     *
@@ -160,6 +130,36 @@ class DefinitionAssistant extends Base
         $properties = $args;
 
         static::RegisterType($type, $getter, $setter, ...$properties);
+    }
+
+    protected static function RegisterDaftObjectTypeFromTypeAndProps(
+        string $maybe,
+        string ...$props
+    ) : void {
+        $args = static::TypeAndGetterAndSetterClosureWithProps($maybe, ...$props);
+
+        /**
+        * @var string
+        */
+        $type = array_shift($args);
+
+        /**
+        * @var Closure|null
+        */
+        $getter = array_shift($args);
+
+        /**
+        * @var Closure|null
+        */
+        $setter = array_shift($args);
+
+        /**
+        * @var array<int, string>
+        */
+        $props = $args;
+
+        static::RegisterType($type, $getter, $setter, ...$props);
+        self::MaybeRegisterAdditionalTypes($type);
     }
 
     protected static function SetterOrGetterClosure(
