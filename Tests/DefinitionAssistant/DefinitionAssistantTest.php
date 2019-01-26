@@ -157,6 +157,19 @@ class DefinitionAssistantTest extends TestCase
             'foo'
         ));
 
+        static::assertNull(DefinitionAssistant::GetterMethodName(
+            DefinesPropertyOnInterfaceClassImplementation::class,
+            'bar'
+        ));
+
+        static::assertNull(
+            DefinitionAssistant::PublicSetterOrGetterClosure(
+                DefinesPropertyOnInterfaceClassImplementation::class,
+                false,
+                'bar'
+            )('bar')
+        );
+
         DefinitionAssistant::AutoRegisterType(
             DefinesPropertyOnInterfaceClassImplementation::class,
             'foo'

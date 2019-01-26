@@ -6,6 +6,7 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject\Tests\DefinitionAssistant;
 
+use Closure;
 use SignpostMarv\DaftObject\DefinitionAssistant as Base;
 
 class DefinitionAssistant extends Base
@@ -15,5 +16,13 @@ class DefinitionAssistant extends Base
         static::$properties = [];
         static::$getters = [];
         static::$setters = [];
+    }
+
+    public static function PublicSetterOrGetterClosure(
+        string $type,
+        bool $SetNotGet,
+        string ...$props
+    ) : Closure {
+        return static::SetterOrGetterClosure($type, $SetNotGet, ...$props);
     }
 }
