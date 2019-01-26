@@ -42,7 +42,11 @@
         ],
         "scrutinizer": [
             "@phpunit",
+            "@infection",
             "@other-tests"
+        ],
+        "infection": [
+            "infection --min-msi=100"
         ],
         "other-tests": [
             "phpstan analyse -c ./phpstan.neon .php_cs.dist src PHPStan Tests quick-checks",
@@ -51,10 +55,6 @@
             "phpmnd ./ --exclude=./phpdoc/ --exclude=./phpunit/ --exclude=./vendor/ --non-zero-exit-on-violation --hint",
             "composer-require-checker check --config-file=./composer-require-checker.json ./composer.json",
             "php-cs-fixer fix --verbose --allow-risky=yes --dry-run"
-        ],
-        "infection": [
-            "@tests",
-            "infection"
         ],
         "check-coverage-on-tests": [
             "php ./vendor/phpunit/phpunit/phpunit -vc ./phpunit-coverage-on-tests.xml"

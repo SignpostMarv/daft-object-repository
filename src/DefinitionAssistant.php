@@ -12,6 +12,10 @@ use SignpostMarv\DaftMagicPropertyAnalysis\DefinitionAssistant as Base;
 
 class DefinitionAssistant extends Base
 {
+    const BOOL_EXPECTING_GETTER = false;
+
+    const BOOL_EXPECTING_SETTER = true;
+
     /**
     * @var array<string, array<int, string>>
     */
@@ -83,12 +87,12 @@ class DefinitionAssistant extends Base
 
     public static function GetterClosure(string $type, string ...$props) : Closure
     {
-        return static::SetterOrGetterClosure($type, false, ...$props);
+        return static::SetterOrGetterClosure($type, self::BOOL_EXPECTING_GETTER, ...$props);
     }
 
     public static function SetterClosure(string $type, string ...$props) : Closure
     {
-        return static::SetterOrGetterClosure($type, false, ...$props);
+        return static::SetterOrGetterClosure($type, self::BOOL_EXPECTING_SETTER, ...$props);
     }
 
     public static function TypeAndGetterAndSetterClosureWithProps(

@@ -11,6 +11,11 @@
     },
     "mutators": {
         "@default": true,
+        "Foreach_": {
+            "ignore": [
+                "SignpostMarv\\DaftObject\\DefinitionAssistant::MaybeRegisterAdditionalTypes"
+            ]
+        },
         "Identical": {
             "ignore": [
                 "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::__construct",
@@ -21,7 +26,6 @@
         "LogicalAnd": {
             "ignore": [
                 "SignpostMarv\\DaftObject\\AbstractArrayBackedDaftObject::NudgePropertyValue",
-                "SignpostMarv\\DaftObject\\DefinitionAssistant::ObtainExpectedOrDefaultPropertiesWithAutoRegister",
                 "SignpostMarv\\DaftObject\\TypeUtilities::HasMethod",
                 "SignpostMarv\\DaftObject\\PHPStan\\ClassReflectionExtension::hasProperty",
                 "SignpostMarv\\DaftObject\\PHPStan\\ClassReflectionExtension::MaybeRegisterTypesOrExitEarly",
@@ -36,8 +40,7 @@
                 "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::__construct",
                 "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::getDeclaringClass",
                 "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::isPrivate",
-                "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::PropertyIsPublic",
-                "SignpostMarv\\DaftObject\\DefinitionAssistant::ObtainExpectedOrDefaultPropertiesWithAutoRegister"
+                "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::PropertyIsPublic"
             ]
         },
         "LogicalOr": {
@@ -51,7 +54,9 @@
                 "SignpostMarv\\DaftObject\\AbstractArrayBackedDaftObject::jsonSerialize",
                 "SignpostMarv\\DaftObject\\AbstractArrayBackedDaftObject::DaftObjectFromJsonString",
                 "SignpostMarv\\DaftObject\\DaftObjectMemoryRepository::RememberDaftObject",
-                "SignpostMarv\\DaftObject\\DefinitionAssistant::ObtainExpectedOrDefaultPropertiesWithAutoRegister",
+                "SignpostMarv\\DaftObject\\DefinitionAssistant::MaybeRegisterAdditionalTypes",
+                "SignpostMarv\\DaftObject\\DefinitionAssistant::ObtainExpectedProperties",
+                "SignpostMarv\\DaftObject\\DefinitionAssistant::RegisterDaftObjectTypeFromTypeAndProps",
                 "SignpostMarv\\DaftObject\\JsonTypeUtilities::ArrayToJsonType",
                 "SignpostMarv\\DaftObject\\JsonTypeUtilities::DaftJsonFromJsonType",
                 "SignpostMarv\\DaftObject\\JsonTypeUtilities::DaftObjectFromJsonTypeArray",
@@ -66,6 +71,7 @@
         "NotIdentical": {
             "ignore": [
                 "SignpostMarv\\DaftObject\\AbstractArrayBackedDaftObject::NudgePropertyValue",
+                "SignpostMarv\\DaftObject\\DefinitionAssistant::MaybeRegisterAdditionalTypes",
                 "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::DetermineDeclaringClass"
             ]
         },
@@ -76,6 +82,8 @@
         },
         "PublicVisibility": {
             "ignore": [
+                "SignpostMarv\\DaftObject\\DefinitionAssistant::SetterClosure",
+                "SignpostMarv\\DaftObject\\DefinitionAssistant::TypeAndGetterAndSetterClosureWithProps",
                 "SignpostMarv\\DaftObject\\TypeCertainty::EnsureArgumentIsObjectOrString",
                 "SignpostMarv\\DaftObject\\TypeParanoia::ThrowIfNotDaftObjectType",
                 "SignpostMarv\\DaftObject\\TypeParanoia::ThrowIfNotType"
@@ -83,6 +91,8 @@
         },
         "ProtectedVisibility": {
             "ignore": [
+                "SignpostMarv\\DaftObject\\DefinitionAssistant::MaybeRegisterAdditionalTypes",
+                "SignpostMarv\\DaftObject\\DefinitionAssistant::RegisterDaftObjectTypeFromTypeAndProps",
                 "SignpostMarv\\DaftObject\\PHPStan\\ClassReflectionExtension::MaybeRegisterTypesOrExitEarly",
                 "SignpostMarv\\DaftObject\\PHPStan\\PropertyReflectionExtension::DetermineDeclaringClass",
                 "SignpostMarv\\DaftObject\\TypeUtilities::CachePublicGettersAndSetters",
