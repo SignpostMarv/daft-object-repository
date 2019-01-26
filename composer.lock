@@ -4,8 +4,58 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8cfd1c7aa636ec62232fadb5a85f5403",
-    "packages": [],
+    "content-hash": "8129fd775363e2b706c2ea13015ba5c8",
+    "packages": [
+        {
+            "name": "signpostmarv/daft-magic-property-analysis",
+            "version": "v0.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SignpostMarv/daft-magic-property-analysis.git",
+                "reference": "586b040777cb230381add31d04903351a1f2683f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SignpostMarv/daft-magic-property-analysis/zipball/586b040777cb230381add31d04903351a1f2683f",
+                "reference": "586b040777cb230381add31d04903351a1f2683f",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1"
+            },
+            "require-dev": {
+                "infection/infection": "^0.11.5",
+                "maglnet/composer-require-checker": "^1.1",
+                "phpstan/phpstan": "^0.11.1",
+                "phpstan/phpstan-phpunit": "^0.11.0",
+                "phpstan/phpstan-strict-rules": "^0.11.0",
+                "phpunit/phpunit": "^7.5",
+                "povils/phpmnd": "^2.0",
+                "roave/security-advisories": "dev-master",
+                "sebastian/phpcpd": "^4.1",
+                "signpostmarv/php-cs-fixer-config": "^0.6.0",
+                "vimeo/psalm": "^3.0,>=3.0.11"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SignpostMarv\\DaftMagicPropertyAnalysis\\": "./src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "SignpostMarv",
+                    "email": "me@signpostmarv.name"
+                }
+            ],
+            "description": "Daft way to implement static analysis for magic properties",
+            "time": "2019-01-26T16:56:27+00:00"
+        }
+    ],
     "packages-dev": [
         {
             "name": "composer/ca-bundle",
@@ -3864,55 +3914,6 @@
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
             "time": "2016-10-03T07:35:21+00:00"
-        },
-        {
-            "name": "signpostmarv/daft-magic-property-analysis",
-            "version": "v0.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/SignpostMarv/daft-magic-property-analysis.git",
-                "reference": "b77f2763d861a5e7f221b0bdce11ada7a6978a2a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/SignpostMarv/daft-magic-property-analysis/zipball/b77f2763d861a5e7f221b0bdce11ada7a6978a2a",
-                "reference": "b77f2763d861a5e7f221b0bdce11ada7a6978a2a",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.1"
-            },
-            "require-dev": {
-                "infection/infection": "^0.11.5",
-                "maglnet/composer-require-checker": "^1.1",
-                "phpstan/phpstan": "^0.11.1",
-                "phpstan/phpstan-phpunit": "^0.11.0",
-                "phpstan/phpstan-strict-rules": "^0.11.0",
-                "phpunit/phpunit": "^7.5",
-                "povils/phpmnd": "^2.0",
-                "roave/security-advisories": "dev-master",
-                "sebastian/phpcpd": "^4.1",
-                "signpostmarv/php-cs-fixer-config": "^0.6.0",
-                "vimeo/psalm": "^3.0,>=3.0.11"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "SignpostMarv\\DaftMagicPropertyAnalysis\\": "./src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "SignpostMarv",
-                    "email": "me@signpostmarv.name"
-                }
-            ],
-            "description": "Daft way to implement static analysis for magic properties",
-            "time": "2019-01-23T22:20:06+00:00"
         },
         {
             "name": "signpostmarv/php-cs-fixer-config",
