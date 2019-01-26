@@ -53,6 +53,13 @@ class DefinitionAssistant extends Base
         */
         $props = TypeCertainty::EnsureArgumentIsArray($maybe::PROPERTIES);
 
+        static::RegisterDaftObjectTypeFromTypeAndProps($maybe, ...$props);
+    }
+
+    protected static function RegisterDaftObjectTypeFromTypeAndProps(
+        string $maybe,
+        string ...$props
+    ) : void {
         $args = static::TypeAndGetterAndSetterClosureWithProps($maybe, ...$props);
 
         /**
@@ -76,6 +83,7 @@ class DefinitionAssistant extends Base
         $props = $args;
 
         static::RegisterType($type, $getter, $setter, ...$props);
+        self::MaybeRegisterAdditionalTypes($type);
     }
 
     /**
@@ -90,12 +98,18 @@ class DefinitionAssistant extends Base
         */
         $maybe = is_object($maybe) ? get_class($maybe) : $maybe;
 
-        if (
-            is_string($maybe) &&
-            static::IsTypeUnregistered($maybe) &&
+        if (is_string($maybe)) {
+            if (
+                static::IsTypeUnregistered($maybe)
+            ) {
+                if (
             TypeParanoia::IsThingStrings($maybe, AbstractDaftObject::class)
         ) {
             static::RegisterAbstractDaftObjectType($maybe);
+            }
+        }
+
+            self::MaybeRegisterAdditionalTypes($maybe);
         }
 
         return parent::ObtainExpectedProperties($maybe);
@@ -171,5 +185,20 @@ class DefinitionAssistant extends Base
 
             return null;
         };
+    }
+
+    protected static function MaybeRegisterAdditionalTypes(string $maybe) : void
+    {
+        foreach (
+            [
+                DefinesOwnArrayIdInterface::class,
+                DefinesOwnIntegerIdInterface::class,
+                DefinesOwnStringIdInterface::class,
+            ] as $otherType
+        ) {
+            if ($otherType !== $maybe && self::IsTypeUnregistered($otherType)) {
+                self::RegisterDaftObjectTypeFromTypeAndProps($otherType, 'id');
+            }
+        }
     }
 }
