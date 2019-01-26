@@ -99,15 +99,11 @@ class DefinitionAssistant extends Base
         $maybe = is_object($maybe) ? get_class($maybe) : $maybe;
 
         if (is_string($maybe)) {
-            if (
-                static::IsTypeUnregistered($maybe)
-            ) {
-                if (
-            TypeParanoia::IsThingStrings($maybe, AbstractDaftObject::class)
-        ) {
-            static::RegisterAbstractDaftObjectType($maybe);
+            if (static::IsTypeUnregistered($maybe)) {
+                if (TypeParanoia::IsThingStrings($maybe, AbstractDaftObject::class)) {
+                    static::RegisterAbstractDaftObjectType($maybe);
+                }
             }
-        }
 
             self::MaybeRegisterAdditionalTypes($maybe);
         }
