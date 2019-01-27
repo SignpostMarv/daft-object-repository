@@ -110,7 +110,7 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     *
     * @param mixed $id
     */
-    private function ObjectHashId($id) : string
+    protected function ObjectHashId($id) : string
     {
         return TypeParanoia::EnsureArgumentIsString(
             $this->type::DaftObjectIdValuesHash(
