@@ -146,9 +146,12 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         */
         $vals = array_map($mapper, $props);
 
+        /**
+        * @var DaftJson
+        */
         $out = new static(array_combine($props, $vals), $writeAll);
 
-        return JsonTypeUtilities::ThrowIfDaftObjectObjectNotDaftJson($out);
+        return $out;
     }
 
     public static function DaftObjectFromJsonString(string $string) : DaftJson
