@@ -40,7 +40,7 @@ trait DaftObjectIdValuesHashLazyInt
     }
 
     /**
-    * @param string[] $id
+    * @param (scalar|array|object|null)[] $id
     *
     * @see DefinesOwnIdPropertiesInterface::DaftObjectIdValuesHash()
     */

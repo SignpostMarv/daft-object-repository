@@ -9,13 +9,16 @@ namespace SignpostMarv\DaftObject;
 class EnsureProtectedMethodsNeedToBeProtectedOnRepository extends DaftObjectMemoryRepository
 {
     /**
-    * @param mixed $id
+    * @param scalar|array<string, scalar|null> $id
     */
     public function EnsureRecallDaftObjectFromData($id) : ? DaftObject
     {
         return $this->RecallDaftObjectFromData($id);
     }
 
+    /**
+    * @psalm-param class-string<DefinesOwnIdPropertiesInterface> $type
+    */
     public static function EnsureConstructorNeedsToBeProtected(
         string $type,
         ...$args

@@ -22,6 +22,8 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
 
     /**
     * @var string
+    *
+    * @psalm-var class-string<DefinesOwnIdPropertiesInterface>
     */
     protected $type;
 
@@ -32,6 +34,8 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
 
     /**
     * @param mixed ...$args
+    *
+    * @psalm-param class-string<DefinesOwnIdPropertiesInterface> $type
     */
     protected function __construct(string $type, ...$args)
     {
@@ -50,6 +54,9 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
             $this->type
         );
 
+        /**
+        * @var (scalar|array|object|null)[]
+        */
         $id = [];
 
         /**
@@ -58,7 +65,12 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
         $properties = $object::DaftObjectIdProperties();
 
         foreach ($properties as $prop) {
-            $id[] = $object->__get($prop);
+            /**
+            * @var scalar|array|object|null
+            */
+            $id_val = $object->__get($prop);
+
+            $id[] = $id_val;
         }
 
         $this->ForgetDaftObjectById($id);
@@ -74,6 +86,9 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
             $this->type
         );
 
+        /**
+        * @var (scalar|array|object|null)[]
+        */
         $id = [];
 
         /**
@@ -82,7 +97,12 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
         $properties = $object::DaftObjectIdProperties();
 
         foreach ($properties as $prop) {
-            $id[] = $object->__get($prop);
+            /**
+            * @var scalar|array|object|null
+            */
+            $id_val = $object->__get($prop);
+
+            $id[] = $id_val;
         }
 
         $this->RemoveDaftObjectById($id);

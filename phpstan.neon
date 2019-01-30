@@ -7,3 +7,6 @@ includes:
 
 parameters:
     bootstrap: ./tests-src/bootstrapper.php
+    ignoreErrors:
+        - "/^Parameter #\\d+ .+ of static method .+\\(\\) expects string, SignpostMarv\\\\DaftObject\\\\class given.$/"
+        - "/^Call to static method .+ on an unknown class SignpostMarv\\\\DaftObject\\\\class\\.$/"

@@ -28,7 +28,7 @@ interface DefinesOwnIdPropertiesInterface extends DaftObject
     /**
     * Get the hash of the id properties.
     *
-    * @param string[] $id
+    * @param (scalar|array|object|null)[] $id
     */
     public static function DaftObjectIdValuesHash(array $id) : string;
 

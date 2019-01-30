@@ -41,6 +41,8 @@ class DaftObjectRepositoryByTypeTest extends TestCase
     /**
     * @param mixed ...$additionalArgs
     *
+    * @psalm-param class-string<DefinesOwnIdPropertiesInterface> $typeImplementation
+    *
     * @dataProvider RepositoryTypeDataProvider
     */
     public function testForCreatedByArray(
@@ -71,13 +73,6 @@ class DaftObjectRepositoryByTypeTest extends TestCase
             ' given.'
         );
 
-        array_unshift($additionalArgs, $typeImplementation);
-
-        /**
-        * @var array{0:string}
-        */
-        $additionalArgs = $additionalArgs;
-
-        $repoImplementation::DaftObjectRepositoryByType(...$additionalArgs);
+        $repoImplementation::DaftObjectRepositoryByType($typeImplementation, ...$additionalArgs);
     }
 }

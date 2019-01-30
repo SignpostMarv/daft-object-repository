@@ -80,6 +80,8 @@ class TypeUtilities
     /**
     * Checks if a type correctly defines it's own id.
     *
+    * @psalm-param class-string<DaftObject> $class
+    *
     * @throws ClassDoesNotImplementClassException if $class is not an implementation of DefinesOwnIdPropertiesInterface
     * @throws ClassMethodReturnHasZeroArrayCountException if $class::DaftObjectIdProperties() does not contain at least one property
     * @throws ClassMethodReturnIsNotArrayOfStringsException if $class::DaftObjectIdProperties() is not string[]
@@ -90,6 +92,11 @@ class TypeUtilities
         bool $throwIfNotImplementation = self::BOOL_DEFAULT_THROWIFNOTIMPLEMENTATION
     ) : void {
         if (TypeParanoia::IsThingStrings($class, DefinesOwnIdPropertiesInterface::class)) {
+            /**
+            * @var class-string<DefinesOwnIdPropertiesInterface>
+            */
+            $class = $class;
+
             static::CheckTypeDefinesOwnIdPropertiesIsImplementation($class);
         } elseif ($throwIfNotImplementation) {
             throw new ClassDoesNotImplementClassException(
@@ -184,6 +191,9 @@ class TypeUtilities
         }
     }
 
+    /**
+    * @psalm-param class-string<DefinesOwnIdPropertiesInterface> $class
+    */
     protected static function CheckTypeDefinesOwnIdPropertiesIsImplementation(
         string $class
     ) : void {

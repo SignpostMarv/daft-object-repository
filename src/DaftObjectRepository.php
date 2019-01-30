@@ -23,24 +23,26 @@ interface DaftObjectRepository
     public function ForgetDaftObject(DefinesOwnIdPropertiesInterface $object) : void;
 
     /**
-    * @param mixed $id
+    * @param scalar|(scalar|array|object|null)[] $id
     */
     public function ForgetDaftObjectById($id) : void;
 
     public function RemoveDaftObject(DefinesOwnIdPropertiesInterface $object) : void;
 
     /**
-    * @param mixed $id
+    * @param scalar|(scalar|array|object|null)[] $id
     */
     public function RemoveDaftObjectById($id) : void;
 
     /**
-    * @param mixed $id
+    * @param scalar|(scalar|array|object|null)[] $id
     */
     public function RecallDaftObject($id) : ? DaftObject;
 
     /**
     * @param mixed ...$args
+    *
+    * @psalm-param class-string<DefinesOwnIdPropertiesInterface> $type
     *
     * @return static
     */

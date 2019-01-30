@@ -39,10 +39,18 @@ class JsonTypeUtilities
 
     /**
     * @param array<int|string, mixed> $array
+    *
+    * @psalm-param class-string<DaftObject> $type
     */
     public static function ThrowIfJsonDefNotValid(string $type, array $array) : array
     {
         self::ThrowIfNotDaftJson($type);
+
+        /**
+        * @var class-string<DaftJson>
+        */
+        $type = $type;
+
         $jsonProps = TypeParanoia::EnsureArgumentIsArray($type::DaftObjectJsonPropertyNames());
         $array = JsonTypeUtilities::FilterThrowIfJsonDefNotValid($type, $jsonProps, $array);
         $jsonDef = TypeParanoia::EnsureArgumentIsArray($type::DaftObjectJsonProperties());

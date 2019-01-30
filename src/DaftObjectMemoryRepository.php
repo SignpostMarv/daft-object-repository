@@ -40,7 +40,7 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     }
 
     /**
-    * @param mixed $id
+    * @param scalar|(scalar|array|object|null)[] $id
     */
     public function ForgetDaftObjectById($id) : void
     {
@@ -48,7 +48,7 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     }
 
     /**
-    * @param mixed $id
+    * @param scalar|(scalar|array|object|null)[] $id
     */
     public function RemoveDaftObjectById($id) : void
     {
@@ -56,7 +56,7 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     }
 
     /**
-    * @param mixed $id
+    * @param scalar|(scalar|array|object|null)[] $id
     */
     public function RecallDaftObject($id) : ? DaftObject
     {
@@ -85,7 +85,7 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     /**
     * Recalls the corresponding daft object instance from cached data.
     *
-    * @param mixed $id
+    * @param scalar|(scalar|array|object|null)[] $id
     */
     protected function RecallDaftObjectFromData($id) : ? DaftObject
     {
@@ -108,14 +108,16 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     /**
     * Converts an id to a unique-enough-for-now string.
     *
-    * @param mixed $id
+    * @param scalar|(scalar|array|object|null)[] $id
     */
     protected function ObjectHashId($id) : string
     {
         return TypeParanoia::EnsureArgumentIsString(
-            $this->type::DaftObjectIdValuesHash(
-                TypeParanoia::ForceArgumentAsArray($id)
-            )
+            is_array($id)
+                ? $this->type::DaftObjectIdValuesHash($id)
+                : $this->type::DaftObjectIdValuesHash(
+                    TypeParanoia::ForceArgumentAsArray($id)
+                )
         );
     }
 

@@ -36,10 +36,25 @@ class TypeCertainty
 
     /**
     * @param mixed $maybe
+    *
+    * @template T
+    *
+    * @psalm-param T|T[] $maybe
+    *
+    * @psalm-return T[]
     */
     public static function ForceArgumentAsArray($maybe) : array
     {
-        return is_array($maybe) ? $maybe : [$maybe];
+        if (is_array($maybe)) {
+            /**
+            * @psalm-var T[]
+            */
+            $maybe = $maybe;
+
+            return $maybe;
+        }
+
+        return [$maybe];
     }
 
     /**

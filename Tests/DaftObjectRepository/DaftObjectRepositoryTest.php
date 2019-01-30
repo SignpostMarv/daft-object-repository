@@ -20,6 +20,9 @@ use SignpostMarv\DaftObject\Tests\TestCase;
 
 class DaftObjectRepositoryTest extends TestCase
 {
+    /**
+    * @psalm-param class-string<DefinesOwnIdPropertiesInterface> $type
+    */
     public static function DaftObjectRepositoryByType(string $type) : DaftObjectRepository
     {
         return DaftObjectMemoryRepository::DaftObjectRepositoryByType($type);
@@ -110,6 +113,9 @@ class DaftObjectRepositoryTest extends TestCase
 
             static::assertSame(get_class($repo), get_class($repoByObject));
 
+            /**
+            * @var (scalar|array|object|null)[]
+            */
             $ids = [];
 
             $repo->RememberDaftObject($obj);
@@ -117,11 +123,23 @@ class DaftObjectRepositoryTest extends TestCase
             $props = array_values($idProps);
 
             foreach ($props as $prop) {
-                $ids[] = $obj->__get($prop);
+                /**
+                * @var scalar|array|object|null
+                */
+                $id_val = $obj->__get($prop);
+
+                $ids[] = $id_val;
             }
 
             if (1 === count($ids)) {
-                static::assertSame($obj, $repo->RecallDaftObject($ids[0]));
+                static::assertIsScalar($ids[0]);
+
+                /**
+                * @var scalar
+                */
+                $id = $ids[0];
+
+                static::assertSame($obj, $repo->RecallDaftObject($id));
             }
 
             static::assertSame($obj, $repo->RecallDaftObject($ids));
@@ -316,6 +334,9 @@ class DaftObjectRepositoryTest extends TestCase
         $repo->RememberDaftObject($B);
     }
 
+    /**
+    * @param (scalar|array|object|null)[] $ids
+    */
     protected function repositoryForImplementaionTestRetrievedInLoopOne(
         DefinesOwnIdPropertiesInterface $retrieved,
         DefinesOwnIdPropertiesInterface $obj,
@@ -422,6 +443,9 @@ class DaftObjectRepositoryTest extends TestCase
         }
     }
 
+    /**
+    * @param (scalar|array|object|null)[] $ids
+    */
     protected function repositoryForImplementaionTestRetrievedInLoopTwo(
         DefinesOwnIdPropertiesInterface $retrieved,
         DefinesOwnIdPropertiesInterface $obj,

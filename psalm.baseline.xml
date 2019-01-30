@@ -1,30 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files>
-  <file src="src\DaftObjectMemoryRepository.php">
-    <InvalidStringClass occurrences="2">
-      <code>new $type($this-&gt;data[$hashId])</code>
-    </InvalidStringClass>
-  </file>
-  <file src="src\JsonTypeUtilities.php">
-    <InvalidStringClass occurrences="2">
-      <code>$type::DaftObjectJsonPropertyNames()</code>
-      <code>$type::DaftObjectJsonProperties()</code>
-    </InvalidStringClass>
-  </file>
-  <file src="src\TypeUtilities.php">
-    <InvalidStringClass occurrences="1">
-      <code>$class::DaftObjectIdProperties()</code>
-    </InvalidStringClass>
-  </file>
   <file src="tests-src\DefineIdPropertiesIncorrectlyTrait.php">
     <LessSpecificImplementedReturnType occurrences="1">
       <code>array</code>
     </LessSpecificImplementedReturnType>
-  </file>
-  <file src="tests-src\ReadWriteJsonJsonArrayBad.php">
-    <MixedTypeCoercion occurrences="2">
-      <code>return TypeCertainty::ForceArgumentAsArray($this-&gt;RetrievePropertyValueFromData('json'));</code>
-      <code>@return ReadWriteJson[]</code>
-    </MixedTypeCoercion>
   </file>
 </files>
