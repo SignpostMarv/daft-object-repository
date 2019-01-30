@@ -153,9 +153,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
 
     public static function DaftObjectFromJsonString(string $string) : DaftJson
     {
-        JsonTypeUtilities::ThrowIfNotDaftJson(static::class);
-
-        return static::DaftObjectFromJsonArray(TypeParanoia::ForceArgumentAsArray(json_decode(
+        return JsonTypeUtilities::ThrowIfNotDaftJson(static::class)::DaftObjectFromJsonArray(TypeParanoia::ForceArgumentAsArray(json_decode(
             $string,
             true
         )));

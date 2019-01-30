@@ -10,11 +10,14 @@ use Closure;
 
 class JsonTypeUtilities
 {
-    public static function ThrowIfNotDaftJson(string $class) : void
+    /**
+    * @psalm-param class-string<DaftObject> $class
+    *
+    * @psalm-return class-string<DaftJson>
+    */
+    public static function ThrowIfNotDaftJson(string $class) : string
     {
-        if ( ! TypeParanoia::IsThingStrings($class, DaftJson::class)) {
-            throw new DaftObjectNotDaftJsonBadMethodCallException($class);
-        }
+        return TypeParanoia::StringOfIsThingSrings($class, DaftJson::class);
     }
 
     /**
@@ -44,12 +47,7 @@ class JsonTypeUtilities
     */
     public static function ThrowIfJsonDefNotValid(string $type, array $array) : array
     {
-        self::ThrowIfNotDaftJson($type);
-
-        /**
-        * @var class-string<DaftJson>
-        */
-        $type = $type;
+        $type = static::ThrowIfNotDaftJson($type);
 
         $jsonProps = TypeParanoia::EnsureArgumentIsArray($type::DaftObjectJsonPropertyNames());
         $array = JsonTypeUtilities::FilterThrowIfJsonDefNotValid($type, $jsonProps, $array);

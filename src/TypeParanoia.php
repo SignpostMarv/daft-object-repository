@@ -33,9 +33,29 @@ class TypeParanoia extends TypeCertainty
         return in_array($needle, $haystack, true);
     }
 
+    /**
+    * @tempalte T as class-string
+    */
     public static function IsThingStrings(string $maybe, string $thing) : bool
     {
         return is_a($maybe, $thing, true);
+    }
+
+    /**
+    * @template T
+    *
+    * @psalm-param class-string<DaftObject> $maybe
+    * @psalm-param class-string<T> $thing
+    *
+    * @psalm-return class-string<T>
+    */
+    public static function StringOfIsThingSrings(string $maybe, string $thing) : string
+    {
+        if ( ! TypeParanoia::IsThingStrings($maybe, $thing)) {
+            throw new DaftObjectNotDaftJsonBadMethodCallException($maybe);
+        }
+
+        return $maybe;
     }
 
     public static function IsSubThingStrings(string $maybe, string $thing) : bool

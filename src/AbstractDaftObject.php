@@ -203,12 +203,13 @@ abstract class AbstractDaftObject implements DaftObject
     */
     public static function DaftObjectJsonProperties() : array
     {
-        JsonTypeUtilities::ThrowIfNotDaftJson(static::class);
-
         /**
         * @var array<int|string, string>
         */
-        $out = static::JSON_PROPERTIES;
+        $out = TypeParanoia::StringOfIsThingSrings(
+            static::class,
+            DaftJson::class
+        )::JSON_PROPERTIES;
 
         return $out;
     }
