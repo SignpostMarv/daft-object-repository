@@ -1498,7 +1498,7 @@ class DaftObjectImplementationTest extends TestCase
     }
 
     /**
-    * @param array<string, mixed> $args
+    * @param array<string, scalar|array|object|null> $args
     * @param array<int, string> $getters
     * @param array<int, string> $setters
     *
@@ -2152,6 +2152,8 @@ class DaftObjectImplementationTest extends TestCase
     }
 
     /**
+    * @param array<string, scalar|array|object|null> $args
+    *
     * @dataProvider dataProviderNonAbstractGoodFuzzingHasSettersPerPropertyWorm
     *
     * @depends testHasDefinedImplementationCorrectly
@@ -2189,6 +2191,8 @@ class DaftObjectImplementationTest extends TestCase
     }
 
     /**
+    * @param array<string, scalar|array|object|null> $args
+    *
     * @dataProvider dataProviderNonAbstractGoodFuzzingHasSettersPerPropertyWorm
     *
     * @depends testHasDefinedImplementationCorrectly

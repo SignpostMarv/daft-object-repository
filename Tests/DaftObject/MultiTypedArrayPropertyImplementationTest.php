@@ -92,7 +92,7 @@ class MultiTypedArrayPropertyImplementationTest extends TestCase
     }
 
     /**
-    * @param mixed $value
+    * @param scalar|array|object|null $value
     *
     * @dataProvider DataProviderObjectPropertyValueException
     */
@@ -128,8 +128,8 @@ class MultiTypedArrayPropertyImplementationTest extends TestCase
     }
 
     /**
-    * @param mixed $value
-    * @param mixed $expected
+    * @param scalar|array|object|null $value
+    * @param scalar|array|object|null $expected
     *
     * @dataProvider DataProviderObjectPropertyValueTrimmedStrings
     */

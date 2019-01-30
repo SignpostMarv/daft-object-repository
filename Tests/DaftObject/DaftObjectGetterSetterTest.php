@@ -198,7 +198,7 @@ class DaftObjectGetterSetterTest extends TestCase
     }
 
     /**
-    * @param mixed $value
+    * @param scalar|array|object|null $value
     *
     * @dataProvider dataProviderGetterSetterGoodSetterOnly
     */
@@ -232,7 +232,7 @@ class DaftObjectGetterSetterTest extends TestCase
     }
 
     /**
-    * @param mixed $value
+    * @param scalar|array|object|null $value
     *
     * @dataProvider dataProviderGetterSetterGoodGetterSetter
     */
@@ -302,7 +302,7 @@ class DaftObjectGetterSetterTest extends TestCase
     }
 
     /**
-    * @param mixed $value
+    * @param scalar|array|object|null $value
     *
     * @dataProvider dataProviderSetterBad
     *

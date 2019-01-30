@@ -28,7 +28,7 @@ interface DaftObject
     * Maps param $property to the getter method.
     *
     * @param string $property the property being retrieved
-    * @param mixed $v
+    * @param scalar|array|object|null $v
     *
     * @throws NotPublicSetterPropertyException if a property is not publicly settable
     */
