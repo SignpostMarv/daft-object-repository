@@ -133,7 +133,9 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         array $array,
         bool $writeAll = self::BOOL_DEFAULT_WRITEALL
     ) : DaftJson {
-        $array = JsonTypeUtilities::ThrowIfJsonDefNotValid(static::class, $array);
+        $type = JsonTypeUtilities::ThrowIfNotDaftJson(static::class);
+
+        $array = JsonTypeUtilities::ThrowIfJsonDefNotValid($type, $array);
 
         /**
         * @var array<int, string>
@@ -146,12 +148,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         */
         $vals = array_map($mapper, $props);
 
-        /**
-        * @var DaftJson
-        */
-        $out = new static(array_combine($props, $vals), $writeAll);
-
-        return $out;
+        return new $type(array_combine($props, $vals), $writeAll);
     }
 
     public static function DaftObjectFromJsonString(string $string) : DaftJson
