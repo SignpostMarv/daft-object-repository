@@ -311,9 +311,6 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     */
     private function MaybeThrowForPropertyOnNudge(string $property) : void
     {
-        /**
-        * @var array<int, string>
-        */
         $properties = static::DaftObjectProperties();
 
         if ( ! TypeParanoia::MaybeInArray($property, $properties)) {
