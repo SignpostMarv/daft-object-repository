@@ -50,6 +50,8 @@ interface DaftObject
 
     /**
     * required to support var_dump(<DaftObject>);.
+    *
+    * @return array<string, mixed>
     */
     public function __debugInfo() : array;
 
@@ -79,7 +81,7 @@ interface DaftObject
     /**
     * List of properties that can be defined on an implementation.
     *
-    * @return string[]
+    * @return array<int, string>
     */
     public static function DaftObjectProperties() : array;
 

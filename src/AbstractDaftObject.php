@@ -79,9 +79,6 @@ abstract class AbstractDaftObject implements DaftObject
         return $this->DoGetSet($property, false);
     }
 
-    /**
-    * @param mixed $v
-    */
     public function __set(string $property, $v) : void
     {
         $this->DoGetSet($property, true, $v);
@@ -95,13 +92,11 @@ abstract class AbstractDaftObject implements DaftObject
         $this->NudgePropertyValue($property, null);
     }
 
-    /**
-    * @return array<string, mixed>
-    */
     public function __debugInfo() : array
     {
         $getters = static::DaftObjectPublicGetters();
         $exportables = static::DaftObjectExportableProperties();
+
         /**
         * @var array<int, string>
         */
@@ -145,11 +140,6 @@ abstract class AbstractDaftObject implements DaftObject
         return 0;
     }
 
-    /**
-    * List of properties that can be defined on an implementation.
-    *
-    * @return array<int, string>
-    */
     public static function DaftObjectProperties() : array
     {
         /**
@@ -170,9 +160,6 @@ abstract class AbstractDaftObject implements DaftObject
         return $out;
     }
 
-    /**
-    * @return array<int, string>
-    */
     public static function DaftObjectExportableProperties() : array
     {
         /**
