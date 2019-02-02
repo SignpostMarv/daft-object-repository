@@ -11,7 +11,6 @@ use SignpostMarv\DaftObject\EnsureProtectedMethodsNeedToBeProtectedOnRepository;
 use SignpostMarv\DaftObject\ReadOnly;
 use SignpostMarv\DaftObject\Tests\TestCase;
 use SignpostMarv\DaftObject\UndefinedPropertyException;
-use TypeError;
 
 class EnsureProtectedMethodsNeedToBeProtectedTest extends TestCase
 {
