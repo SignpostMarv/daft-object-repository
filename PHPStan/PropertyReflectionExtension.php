@@ -20,8 +20,6 @@ use SignpostMarv\DaftObject\TypeParanoia;
 */
 class PropertyReflectionExtension extends Base
 {
-    const BOOL_CLASS_NOT_DAFTOBJECT = false;
-
     public function __construct(ClassReflection $classReflection, Broker $broker, string $property)
     {
         if ( ! TypeParanoia::IsThingStrings($classReflection->getName(), DaftObject::class)) {
