@@ -44,7 +44,9 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     */
     public function ForgetDaftObjectById($id) : void
     {
-        $this->ForgetDaftObjectByHashId($this->ObjectHashId($id));
+        $this->ForgetDaftObjectByHashId($this->type::DaftObjectIdValuesHash(
+            TypeParanoia::ForceArgumentAsArray($id)
+        ));
     }
 
     /**
@@ -52,7 +54,9 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     */
     public function RemoveDaftObjectById($id) : void
     {
-        $this->RemoveDaftObjectByHashId($this->ObjectHashId($id));
+        $this->RemoveDaftObjectByHashId($this->type::DaftObjectIdValuesHash(
+            TypeParanoia::ForceArgumentAsArray($id)
+        ));
     }
 
     /**
@@ -60,7 +64,9 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     */
     public function RecallDaftObject($id) : ? DaftObject
     {
-        $hashId = $this->ObjectHashId($id);
+        $hashId = $this->type::DaftObjectIdValuesHash(
+            TypeParanoia::ForceArgumentAsArray($id)
+        );
 
         if (false === isset($this->memory[$hashId])) {
             return $this->RecallDaftObjectFromData($id);
@@ -89,7 +95,9 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     */
     protected function RecallDaftObjectFromData($id) : ? DaftObject
     {
-        $hashId = $this->ObjectHashId($id);
+        $hashId = $this->type::DaftObjectIdValuesHash(
+            TypeParanoia::ForceArgumentAsArray($id)
+        );
 
         if (isset($this->data[$hashId])) {
             $type = $this->type;
@@ -103,22 +111,6 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
         }
 
         return null;
-    }
-
-    /**
-    * Converts an id to a unique-enough-for-now string.
-    *
-    * @param scalar|(scalar|array|object|null)[] $id
-    */
-    protected function ObjectHashId($id) : string
-    {
-        return TypeParanoia::EnsureArgumentIsString(
-            is_array($id)
-                ? $this->type::DaftObjectIdValuesHash($id)
-                : $this->type::DaftObjectIdValuesHash(
-                    TypeParanoia::ForceArgumentAsArray($id)
-                )
-        );
     }
 
     private function ForgetDaftObjectByHashId(string $hashId) : void

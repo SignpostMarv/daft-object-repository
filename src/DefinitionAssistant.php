@@ -19,6 +19,12 @@ class DefinitionAssistant extends Base
 
     const BOOL_EXPECTING_SETTER = true;
 
+    const INT_ARRAY_INDEX_TYPE = 0;
+
+    const INT_ARRAY_INDEX_GETTER = 1;
+
+    const INT_ARRAY_INDEX_SETTER = 2;
+
     public static function IsTypeUnregistered(string $type) : bool
     {
         if ( ! is_a($type, DaftObject::class, true)) {
@@ -138,7 +144,12 @@ class DefinitionAssistant extends Base
         */
         $props = array_slice($args, 3);
 
-        static::RegisterType($args[0], $args[1], $args[2], ...$props);
+        static::RegisterType(
+            $args[self::INT_ARRAY_INDEX_TYPE],
+            $args[self::INT_ARRAY_INDEX_GETTER],
+            $args[self::INT_ARRAY_INDEX_SETTER],
+            ...$props
+        );
         self::MaybeRegisterAdditionalTypes($args[0]);
     }
 

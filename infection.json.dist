@@ -108,6 +108,7 @@
             "ignore": [
                 "SignpostMarv\\DaftObject\\AbstractArrayBackedDaftObject::MaybeThrowForPropertyOnNudge",
                 "SignpostMarv\\DaftObject\\AbstractDaftObject::CompareToDaftSortableObject",
+                "SignpostMarv\\DaftObject\\DefinitionAssistant::RegisterAbstractDaftObjectType",
                 "SignpostMarv\\DaftObject\\TypeParanoia::EnsureArgumentIsString",
                 "SignpostMarv\\DaftObject\\TypeParanoia::EnsureArgumentIsArray",
                 "SignpostMarv\\DaftObject\\TypeParanoia::MaybeInMaybeArray",
