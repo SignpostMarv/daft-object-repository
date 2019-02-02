@@ -193,7 +193,7 @@ abstract class AbstractDaftObject implements DaftObject
         /**
         * @var array<int|string, string>
         */
-        $out = TypeParanoia::StringOfIsThingSrings(
+        $out = TypeParanoia::StringOfIsThingStrings(
             static::class,
             DaftJson::class
         )::JSON_PROPERTIES;

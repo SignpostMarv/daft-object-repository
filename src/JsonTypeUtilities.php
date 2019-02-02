@@ -17,7 +17,7 @@ class JsonTypeUtilities
     */
     public static function ThrowIfNotDaftJson(string $class) : string
     {
-        return TypeParanoia::StringOfIsThingSrings($class, DaftJson::class);
+        return TypeParanoia::StringOfIsThingStrings($class, DaftJson::class);
     }
 
     /**

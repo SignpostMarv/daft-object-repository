@@ -49,7 +49,7 @@ class TypeParanoia extends TypeCertainty
     *
     * @psalm-return class-string<T>
     */
-    public static function StringOfIsThingSrings(string $maybe, string $thing) : string
+    public static function StringOfIsThingStrings(string $maybe, string $thing) : string
     {
         if ( ! TypeParanoia::IsThingStrings($maybe, $thing)) {
             throw new DaftObjectNotDaftJsonBadMethodCallException($maybe);
