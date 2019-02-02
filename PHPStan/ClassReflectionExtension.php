@@ -17,6 +17,9 @@ use SignpostMarv\DaftObject\DaftObject;
 use SignpostMarv\DaftObject\DefinitionAssistant;
 use SignpostMarv\DaftObject\TypeParanoia;
 
+/**
+* @template-extends Base<DaftObject>
+*/
 class ClassReflectionExtension extends Base
 {
     const BOOL_DOES_NOT_HAVE_PROPERTY = false;
@@ -37,10 +40,22 @@ class ClassReflectionExtension extends Base
 
         if ( ! TypeParanoia::IsThingStrings($className, DaftObject::class)) {
             return self::BOOL_DOES_NOT_HAVE_PROPERTY;
-        } elseif (
+        }
+
+        /**
+        * @psalm-var class-string<DaftObject>
+        */
+        $className = $className;
+
+        if (
             DefinitionAssistant::IsTypeUnregistered($className) &&
             TypeParanoia::IsThingStrings($className, AbstractDaftObject::class)
         ) {
+            /**
+            * @psalm-var class-string<AbstractDaftObject>
+            */
+            $className = $className;
+
             DefinitionAssistant::RegisterAbstractDaftObjectType($className);
         }
 

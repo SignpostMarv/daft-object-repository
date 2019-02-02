@@ -46,34 +46,17 @@ class DefinitionAssistantTest extends TestCase
         return [
             [
                 DaftObject::class,
-                [],
-                InvalidArgumentException::class,
-                'Argument 4 must be specified!',
-            ],
-            [
-                DaftObject::class,
                 ['foo' => 'foo'],
                 Error::class,
                 'Cannot unpack array with string keys',
-            ],
-            [
-                DaftObject::class,
-                [1],
-                TypeError::class,
-                (
-                    'Argument 2 passed to ' .
-                    BaseDefinitionAssistant::class .
-                    '::AutoRegisterType() must be of the type string, integer given, called in ' .
-                    __FILE__ .
-                    ' on line ' .
-                    (__LINE__ + 24)
-                ),
             ],
         ];
     }
 
     /**
     * @param array<int, string> $properties
+    *
+    * @psalm-param class-string<DaftObject> $type
     *
     * @dataProvider DataProviderExceptionsInRegisterType
     */
@@ -125,23 +108,6 @@ class DefinitionAssistantTest extends TestCase
         );
 
         DefinitionAssistant::IsTypeUnregistered(static::class);
-    }
-
-    public function testRegisterAbstractDaftObjectTypeIsNotAbstractDaftObject() : void
-    {
-        DefinitionAssistant::ClearTypes();
-        static::expectException(InvalidArgumentException::class);
-        static::expectExceptionMessage(
-            'Argument 1 passed to ' .
-            'SignpostMarv\DaftObject\DefinitionAssistant::RegisterAbstractDaftObjectType()' .
-            ' must be an implementation of ' .
-            AbstractDaftObject::class .
-            ', ' .
-            DaftObject::class .
-            ' given!'
-        );
-
-        DefinitionAssistant::RegisterAbstractDaftObjectType(DaftObject::class);
     }
 
     public function testRegisterAbstractDaftObjectTypeHasAlreadyBeenRegistered() : void

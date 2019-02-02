@@ -10,16 +10,14 @@ use Closure;
 use InvalidArgumentException;
 use SignpostMarv\DaftMagicPropertyAnalysis\DefinitionAssistant as Base;
 
+/**
+* @template-extends Base<DaftObject>
+*/
 class DefinitionAssistant extends Base
 {
     const BOOL_EXPECTING_GETTER = false;
 
     const BOOL_EXPECTING_SETTER = true;
-
-    /**
-    * @var array<string, array<int, string>>
-    */
-    protected static $types = [];
 
     public static function IsTypeUnregistered(string $type) : bool
     {
@@ -38,6 +36,9 @@ class DefinitionAssistant extends Base
         return parent::IsTypeUnregistered($type);
     }
 
+    /**
+    * @psalm-param class-string<AbstractDaftObject> $maybe
+    */
     public static function RegisterAbstractDaftObjectType(string $maybe) : void
     {
         if ( ! is_a($maybe, AbstractDaftObject::class, true)) {
@@ -60,19 +61,10 @@ class DefinitionAssistant extends Base
         static::RegisterDaftObjectTypeFromTypeAndProps($maybe, ...$props);
     }
 
-    /**
-    * @param mixed $maybe
-    *
-    * @return array<int, string>
-    */
     public static function ObtainExpectedProperties($maybe) : array
     {
-        /**
-        * @var scalar|array|object|resource|null
-        */
         $maybe = is_object($maybe) ? get_class($maybe) : $maybe;
 
-        if (is_string($maybe)) {
             if (static::IsTypeUnregistered($maybe)) {
                 if (TypeParanoia::IsThingStrings($maybe, AbstractDaftObject::class)) {
                     static::RegisterAbstractDaftObjectType($maybe);
@@ -80,26 +72,39 @@ class DefinitionAssistant extends Base
             }
 
             self::MaybeRegisterAdditionalTypes($maybe);
-        }
 
         return parent::ObtainExpectedProperties($maybe);
     }
 
+    /**
+    * @return Closure(string):?string
+    */
     public static function GetterClosure(string $type, string ...$props) : Closure
     {
         return static::SetterOrGetterClosure($type, self::BOOL_EXPECTING_GETTER, ...$props);
     }
 
+    /**
+    * @return Closure(string):?string
+    */
     public static function SetterClosure(string $type, string ...$props) : Closure
     {
         return static::SetterOrGetterClosure($type, self::BOOL_EXPECTING_SETTER, ...$props);
     }
 
+    /**
+    * @psalm-param class-string<DaftObject> $type
+    *
+    * @psalm-return array{0:class-string<DaftObject>, 1:null|Closure(string):?string, 2:null|Closure(string):?string, 4:string}
+    */
     public static function TypeAndGetterAndSetterClosureWithProps(
         string $type,
         string ...$props
     ) : array {
-        return array_merge(
+        /**
+        * @psalm-var array{0:class-string<DaftObject>, 1:null|Closure(string):?string, 2:null|Closure(string):?string, 4:string}
+        */
+        $out = array_merge(
             [
                 $type,
                 static::GetterClosure($type, ...$props),
@@ -107,35 +112,21 @@ class DefinitionAssistant extends Base
             ],
             $props
         );
+
+        return $out;
     }
 
+    /**
+    * @psalm-param class-string<DaftObject> $type
+    */
     public static function AutoRegisterType(string $type, string ...$properties) : void
     {
-        $args = static::TypeAndGetterAndSetterClosureWithProps($type, ...$properties);
-
-        /**
-        * @var string
-        */
-        $type = array_shift($args);
-
-        /**
-        * @var Closure|null
-        */
-        $getter = array_shift($args);
-
-        /**
-        * @var Closure|null
-        */
-        $setter = array_shift($args);
-
-        /**
-        * @var array<int, string>
-        */
-        $properties = $args;
-
-        static::RegisterType($type, $getter, $setter, ...$properties);
+        static::RegisterDaftObjectTypeFromTypeAndProps($type, ...$properties);
     }
 
+    /**
+    * @psalm-param class-string<DaftObject> $maybe
+    */
     protected static function RegisterDaftObjectTypeFromTypeAndProps(
         string $maybe,
         string ...$props
@@ -143,29 +134,17 @@ class DefinitionAssistant extends Base
         $args = static::TypeAndGetterAndSetterClosureWithProps($maybe, ...$props);
 
         /**
-        * @var string
-        */
-        $type = array_shift($args);
-
-        /**
-        * @var Closure|null
-        */
-        $getter = array_shift($args);
-
-        /**
-        * @var Closure|null
-        */
-        $setter = array_shift($args);
-
-        /**
         * @var array<int, string>
         */
-        $props = $args;
+        $props = array_slice($args, 3);
 
-        static::RegisterType($type, $getter, $setter, ...$props);
-        self::MaybeRegisterAdditionalTypes($type);
+        static::RegisterType($args[0], $args[1], $args[2], ...$props);
+        self::MaybeRegisterAdditionalTypes($args[0]);
     }
 
+    /**
+    * @psalm-return Closure(string):?string
+    */
     protected static function SetterOrGetterClosure(
         string $type,
         bool $SetNotGet,

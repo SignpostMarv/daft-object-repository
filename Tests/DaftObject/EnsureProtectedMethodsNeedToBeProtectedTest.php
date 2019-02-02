@@ -8,7 +8,6 @@ namespace SignpostMarv\DaftObject\Tests\DaftObject;
 
 use SignpostMarv\DaftObject\EnsureProtectedMethodsNeedToBeProtectedOnAbstractDaftObject;
 use SignpostMarv\DaftObject\EnsureProtectedMethodsNeedToBeProtectedOnRepository;
-use SignpostMarv\DaftObject\PHPStan\EnsurePropertyReflectionExtensionMethodsNeedToBeProtected;
 use SignpostMarv\DaftObject\ReadOnly;
 use SignpostMarv\DaftObject\Tests\TestCase;
 use SignpostMarv\DaftObject\UndefinedPropertyException;
@@ -45,17 +44,5 @@ class EnsureProtectedMethodsNeedToBeProtectedTest extends TestCase
         static::expectException(UndefinedPropertyException::class);
 
         $obj->EnsureMaybeThrowOnDoGetSet('foo', true, []);
-    }
-
-    public function testPropertyIsPublic() : void
-    {
-        static::assertTrue(EnsurePropertyReflectionExtensionMethodsNeedToBeProtected::EnsurePropertyIsPublic(
-            ReadOnly::class,
-            'Foo'
-        ));
-        static::assertFalse(EnsurePropertyReflectionExtensionMethodsNeedToBeProtected::EnsurePropertyIsPublic(
-            TypeError::class,
-            'Foo'
-        ));
     }
 }

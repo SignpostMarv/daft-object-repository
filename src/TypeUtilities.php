@@ -31,15 +31,21 @@ class TypeUtilities
 
     /**
     * @var array<string, array<string, bool>>
+    *
+    * @psalm-var array<class-string<DaftObject>, array<string, bool>>
     */
     private static $Getters = [];
 
     /**
     * @var array<string, array<int, string>>
+    *
+    * @psalm-var array<class-string<DaftObject>, array<int, string>>
     */
     private static $publicSetters = [];
 
     /**
+    * @psalm-param class-string<DaftObject> $class
+    *
     * @return array<int, string>
     */
     public static function DaftObjectPublicGetters(string $class) : array
@@ -50,6 +56,8 @@ class TypeUtilities
     }
 
     /**
+    * @psalm-param class-string<DaftObject> $class
+    *
     * @return array<int, string>
     */
     public static function DaftObjectPublicOrProtectedGetters(string $class) : array
@@ -59,6 +67,9 @@ class TypeUtilities
         return array_keys(self::$Getters[$class]);
     }
 
+    /**
+    * @psalm-param class-string<DaftObject> $class
+    */
     public static function DaftObjectPublicSetters(string $class) : array
     {
         static::CachePublicGettersAndSetters($class);
@@ -106,15 +117,6 @@ class TypeUtilities
         }
     }
 
-    /**
-    * @return array<int, string>
-    */
-    protected static function ObtainExpectedOrDefaultPropertiesWithAutoRegister(
-        string $class
-    ) : array {
-        return DefinitionAssistant::ObtainExpectedProperties($class);
-    }
-
     protected static function HasMethod(
         string $class,
         string $property,
@@ -155,6 +157,9 @@ class TypeUtilities
         ));
     }
 
+    /**
+    * @psalm-param class-string<DaftObject> $class
+    */
     protected static function CachePublicGettersAndSetters(string $class) : void
     {
         if (false === isset(self::$Getters[$class])) {
@@ -169,10 +174,13 @@ class TypeUtilities
         }
     }
 
+    /**
+    * @psalm-param class-string<DaftObject> $class
+    */
     protected static function CachePublicGettersAndSettersProperties(string $class) : void
     {
         foreach (
-            static::ObtainExpectedOrDefaultPropertiesWithAutoRegister($class) as $prop
+            DefinitionAssistant::ObtainExpectedProperties($class) as $prop
         ) {
             if (static::HasMethod($class, $prop, self::BOOL_EXPECTING_GETTER)) {
                 self::$Getters[$class][$prop] = self::BOOL_METHOD_IS_PUBLIC;

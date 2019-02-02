@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0b5f21f43c9cdb79742fc6f3f1b959d6",
+    "content-hash": "6e3f6b3abf520f3c0faa5e80df394ee7",
     "packages": [
         {
             "name": "signpostmarv/daft-magic-property-analysis",
-            "version": "v0.2.0",
+            "version": "v0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SignpostMarv/daft-magic-property-analysis.git",
-                "reference": "586b040777cb230381add31d04903351a1f2683f"
+                "reference": "591e4c976beb1b66879c2162f0fce1262188ed39"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SignpostMarv/daft-magic-property-analysis/zipball/586b040777cb230381add31d04903351a1f2683f",
-                "reference": "586b040777cb230381add31d04903351a1f2683f",
+                "url": "https://api.github.com/repos/SignpostMarv/daft-magic-property-analysis/zipball/591e4c976beb1b66879c2162f0fce1262188ed39",
+                "reference": "591e4c976beb1b66879c2162f0fce1262188ed39",
                 "shasum": ""
             },
             "require": {
@@ -53,7 +53,7 @@
                 }
             ],
             "description": "Daft way to implement static analysis for magic properties",
-            "time": "2019-01-26T16:56:27+00:00"
+            "time": "2019-02-02T19:35:25+00:00"
         }
     ],
     "packages-dev": [

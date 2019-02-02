@@ -64,7 +64,7 @@
         "php": "^7.1",
         "ext-json": "*",
         "ext-mbstring": "*",
-        "signpostmarv/daft-magic-property-analysis": "^0.2.0"
+        "signpostmarv/daft-magic-property-analysis": "^0.5.0"
     },
     "require-dev": {
         "infection/infection": "^0.12.0",
