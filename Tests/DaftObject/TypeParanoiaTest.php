@@ -6,10 +6,8 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject\Tests\DaftObject;
 
-use DateTimeImmutable;
 use InvalidArgumentException;
 use SignpostMarv\DaftObject\Tests\TestCase;
-use SignpostMarv\DaftObject\TypeCertainty;
 use SignpostMarv\DaftObject\TypeParanoia;
 
 class TypeParanoiaTest extends TestCase

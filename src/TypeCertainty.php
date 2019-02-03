@@ -6,8 +6,6 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject;
 
-use InvalidArgumentException;
-
 class TypeCertainty
 {
     const INDEX_FIRST_ARG = 1;
