@@ -28,26 +28,6 @@ class DefinitionAssistant extends Base
     const IS_A_STRINGS = true;
 
     /**
-    * @psalm-param class-string<DaftObject> $type
-    */
-    public static function IsTypeUnregistered(string $type) : bool
-    {
-        if ( ! is_a($type, DaftObject::class, true)) {
-            throw new InvalidArgumentException(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                '() must be an implementation of ' .
-                DaftObject::class .
-                ', ' .
-                $type .
-                ' given!'
-            );
-        }
-
-        return parent::IsTypeUnregistered($type);
-    }
-
-    /**
     * @psalm-param class-string<AbstractDaftObject> $maybe
     */
     public static function RegisterAbstractDaftObjectType(string $maybe) : void
