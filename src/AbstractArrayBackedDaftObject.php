@@ -150,10 +150,17 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
 
     public static function DaftObjectFromJsonString(string $string) : DaftJson
     {
-        return JsonTypeUtilities::ThrowIfNotDaftJson(static::class)::DaftObjectFromJsonArray(TypeParanoia::ForceArgumentAsArray(json_decode(
+        /**
+        * @var scalar|array|object|null
+        */
+        $decoded = json_decode(
             $string,
             true
-        )));
+        );
+
+        return JsonTypeUtilities::ThrowIfNotDaftJson(static::class)::DaftObjectFromJsonArray(
+            is_array($decoded) ? $decoded : [$decoded]
+        );
     }
 
     public function DaftObjectWormPropertyWritten(string $property) : bool
@@ -254,7 +261,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
                 return JsonTypeUtilities::DaftJsonFromJsonType(
                     $jsonType,
                     $prop,
-                    TypeParanoia::ForceArgumentAsArray($array[$prop]),
+                    (is_array($array[$prop]) ? $array[$prop] : [$array[$prop]]),
                     $writeAll
                 );
             };
