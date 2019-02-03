@@ -73,7 +73,7 @@ class JsonTypeUtilities
     */
     private static function ThrowIfNotJsonType(string $jsonType) : string
     {
-        if ( ! TypeParanoia::IsThingStrings($jsonType, DaftJson::class)) {
+        if ( ! is_a($jsonType, DaftJson::class, DefinitionAssistant::IS_A_STRINGS)) {
             throw new ClassDoesNotImplementClassException($jsonType, DaftJson::class);
         }
 
@@ -146,8 +146,6 @@ class JsonTypeUtilities
         array $propVal,
         bool $writeAll
     ) : array {
-        $jsonType = self::ThrowIfNotJsonType($jsonType);
-
         return array_map(
             /**
             * @param mixed $val

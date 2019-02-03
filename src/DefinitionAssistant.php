@@ -25,6 +25,8 @@ class DefinitionAssistant extends Base
 
     const INT_ARRAY_INDEX_SETTER = 2;
 
+    const IS_A_STRINGS = true;
+
     public static function IsTypeUnregistered(string $type) : bool
     {
         if ( ! is_a($type, DaftObject::class, true)) {
@@ -60,7 +62,7 @@ class DefinitionAssistant extends Base
         $maybe = is_object($maybe) ? get_class($maybe) : $maybe;
 
         if (static::IsTypeUnregistered($maybe)) {
-            if (TypeParanoia::IsThingStrings($maybe, AbstractDaftObject::class)) {
+            if (is_a($maybe, AbstractDaftObject::class, self::IS_A_STRINGS)) {
                 static::RegisterAbstractDaftObjectType($maybe);
             }
         }

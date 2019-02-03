@@ -38,7 +38,7 @@ class ClassReflectionExtension extends Base
     ) : ? bool {
         $className = $classReflection->getName();
 
-        if ( ! TypeParanoia::IsThingStrings($className, DaftObject::class)) {
+        if ( ! is_a($className, DaftObject::class, true)) {
             return self::BOOL_DOES_NOT_HAVE_PROPERTY;
         }
 
@@ -48,8 +48,8 @@ class ClassReflectionExtension extends Base
         $className = $className;
 
         if (
-            DefinitionAssistant::IsTypeUnregistered($className) &&
-            TypeParanoia::IsThingStrings($className, AbstractDaftObject::class)
+            is_a($className, AbstractDaftObject::class, true) &&
+            DefinitionAssistant::IsTypeUnregistered($className)
         ) {
             /**
             * @psalm-var class-string<AbstractDaftObject>

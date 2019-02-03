@@ -15,14 +15,6 @@ class TypeParanoia extends TypeCertainty
     const INT_ARG_OFFSET = 5;
 
     /**
-    * @tempalte T as class-string
-    */
-    public static function IsThingStrings(string $maybe, string $thing) : bool
-    {
-        return is_a($maybe, $thing, true);
-    }
-
-    /**
     * @param string|object $object
     *
     * @psalm-param class-string|object $object

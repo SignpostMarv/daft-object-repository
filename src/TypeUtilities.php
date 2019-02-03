@@ -108,9 +108,15 @@ class TypeUtilities
         string $class,
         bool $throwIfNotImplementation = self::BOOL_DEFAULT_THROWIFNOTIMPLEMENTATION
     ) : void {
-        if (TypeParanoia::IsThingStrings($class, DefinesOwnIdPropertiesInterface::class)) {
+        if (
+            is_a(
+                $class,
+                DefinesOwnIdPropertiesInterface::class,
+                true
+            )
+        ) {
             /**
-            * @var class-string<DefinesOwnIdPropertiesInterface>
+            * @psalm-var class-string<DefinesOwnIdPropertiesInterface>
             */
             $class = $class;
 
@@ -172,7 +178,18 @@ class TypeUtilities
             self::$Getters[$class] = [];
             self::$publicSetters[$class] = [];
 
-            if (TypeParanoia::IsThingStrings($class, DefinesOwnIdPropertiesInterface::class)) {
+            if (
+                is_a(
+                    $class,
+                    DefinesOwnIdPropertiesInterface::class,
+                    true
+                )
+            ) {
+                /**
+                * @psalm-var class-string<DefinesOwnIdPropertiesInterface>
+                */
+                $class = $class;
+
                 self::$Getters[$class]['id'] = self::BOOL_METHOD_IS_PUBLIC;
             }
 
