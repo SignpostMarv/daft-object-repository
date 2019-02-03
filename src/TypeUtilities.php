@@ -158,18 +158,6 @@ class TypeUtilities
     }
 
     /**
-    * @param mixed $maybe
-    */
-    protected static function CountMaybeArray($maybe) : int
-    {
-        return count(TypeParanoia::EnsureArgumentIsArray(
-            $maybe,
-            TypeParanoia::INDEX_FIRST_ARG,
-            __METHOD__
-        ));
-    }
-
-    /**
     * @psalm-param class-string<DaftObject> $class
     */
     protected static function CachePublicGettersAndSetters(string $class) : void
@@ -228,18 +216,15 @@ class TypeUtilities
     protected static function CheckTypeDefinesOwnIdPropertiesIsImplementation(
         string $class
     ) : void {
-        /**
-        * @var scalar|array|object|null
-        */
         $properties = $class::DaftObjectIdProperties();
 
-        if (self::CountMaybeArray($properties) < 1) {
+        if (count($properties) < 1) {
             throw new ClassMethodReturnHasZeroArrayCountException(
                 $class,
                 'DaftObjectIdProperties'
             );
         } elseif (
-            self::CountMaybeArray($properties) !==
+            count($properties) !==
             count(self::FilterMaybeArray($properties, 'is_string'))
         ) {
             throw new ClassMethodReturnIsNotArrayOfStringsException(
