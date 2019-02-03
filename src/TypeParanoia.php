@@ -58,27 +58,7 @@ class TypeParanoia extends TypeCertainty
     /**
     * @param string|object $object
     *
-    * @psalm-param class-string|object $object
-    */
-    public static function ThrowIfNotDaftObjectType(
-        $object,
-        int $argument,
-        string $class,
-        string $function,
-        string ...$types
-    ) : void {
-        static::ThrowIfNotType(
-            $object,
-            $argument,
-            $class,
-            $function,
-            DaftObject::class,
-            ...$types
-        );
-    }
-
-    /**
-    * @param mixed $object
+    * @psalm-param class-string<DefinesOwnIdPropertiesInterface>|DefinesOwnIdPropertiesInterface $object
     */
     public static function ThrowIfNotDaftObjectIdPropertiesType(
         $object,
@@ -87,7 +67,7 @@ class TypeParanoia extends TypeCertainty
         string $function,
         string ...$types
     ) : void {
-        static::ThrowIfNotDaftObjectType(
+        static::ThrowIfNotType(
             $object,
             $argument,
             $class,
