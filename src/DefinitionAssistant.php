@@ -223,7 +223,7 @@ class DefinitionAssistant extends Base
                 $otherType = $otherType;
 
                 if (self::IsTypeUnregistered($otherType)) {
-                    $otherType = self::RegisterDaftObjectTypeFromTypeAndProps($otherType, 'id');
+                    self::RegisterDaftObjectTypeFromTypeAndProps($otherType, 'id');
                 }
 
                 return $maybe;

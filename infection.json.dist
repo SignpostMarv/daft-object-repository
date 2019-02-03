@@ -14,6 +14,7 @@
         "LogicalAnd": {
             "ignore": [
                 "SignpostMarv\\DaftObject\\AbstractArrayBackedDaftObject::NudgePropertyValue",
+                "SignpostMarv\\DaftObject\\TypeUtilities::HasMethod",
                 "SignpostMarv\\DaftObject\\PHPStan\\ClassReflectionExtension::MaybeRegisterTypesOrExitEarly"
             ]
         },
@@ -25,6 +26,7 @@
         "MethodCallRemoval": {
             "ignore": [
                 "SignpostMarv\\DaftObject\\DaftObjectMemoryRepository::RememberDaftObject",
+                "SignpostMarv\\DaftObject\\DefinitionAssistant::MaybeRegisterAdditionalTypes",
                 "SignpostMarv\\DaftObject\\PHPStan\\ClassReflectionExtension::MaybeRegisterTypesOrExitEarly",
                 "SignpostMarv\\DaftObject\\TypeUtilities::DaftObjectPublicOrProtectedGetters"
             ]
