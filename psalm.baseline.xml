@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files>
+  <file src="quick-checks\psalm-test.php">
+    <TypeCoercion occurrences="4">
+      <code>$a</code>
+      <code>$a</code>
+      <code>$a</code>
+      <code>$a</code>
+    </TypeCoercion>
+  </file>
   <file src="src\DefinitionAssistant.php">
     <DocblockTypeContradiction occurrences="1">
       <code>is_object($maybe)</code>
