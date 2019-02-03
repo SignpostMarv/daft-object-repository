@@ -79,7 +79,6 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
         $this->ForgetDaftObjectById($id);
     }
 
-
     /**
     * {@inheritdoc}
     */
