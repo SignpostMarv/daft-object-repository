@@ -204,10 +204,10 @@ class DefinitionAssistant extends Base
     {
         return array_reduce(
             array_filter(
-            [
-                DefinesOwnArrayIdInterface::class,
-                DefinesOwnIntegerIdInterface::class,
-                DefinesOwnStringIdInterface::class,
+                [
+                    DefinesOwnArrayIdInterface::class,
+                    DefinesOwnIntegerIdInterface::class,
+                    DefinesOwnStringIdInterface::class,
                 ],
                 function (string $otherType) use ($maybe) : bool {
                     return $otherType !== $maybe;
