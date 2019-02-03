@@ -10,6 +10,8 @@ use Closure;
 
 class JsonTypeUtilities
 {
+    const IS_A_STRINGS = true;
+
     /**
     * @psalm-param class-string<DaftObject> $class
     *
@@ -17,7 +19,11 @@ class JsonTypeUtilities
     */
     public static function ThrowIfNotDaftJson(string $class) : string
     {
-        return TypeParanoia::StringOfIsThingStrings($class, DaftJson::class);
+        if ( ! is_a($class, DaftJson::class, self::IS_A_STRINGS)) {
+            throw new DaftObjectNotDaftJsonBadMethodCallException($class);
+        }
+
+        return $class;
     }
 
     /**

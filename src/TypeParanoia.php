@@ -22,23 +22,6 @@ class TypeParanoia extends TypeCertainty
         return is_a($maybe, $thing, true);
     }
 
-    /**
-    * @template T
-    *
-    * @psalm-param class-string<DaftObject> $maybe
-    * @psalm-param class-string<T> $thing
-    *
-    * @psalm-return class-string<T>
-    */
-    public static function StringOfIsThingStrings(string $maybe, string $thing) : string
-    {
-        if ( ! TypeParanoia::IsThingStrings($maybe, $thing)) {
-            throw new DaftObjectNotDaftJsonBadMethodCallException($maybe);
-        }
-
-        return $maybe;
-    }
-
     public static function IsSubThingStrings(string $maybe, string $thing) : bool
     {
         return is_subclass_of($maybe, $thing, true);
