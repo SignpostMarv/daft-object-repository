@@ -49,6 +49,9 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
         unset($this->args);
     }
 
+    /**
+    * {@inheritdoc}
+    */
     public function ForgetDaftObject(DefinesOwnIdPropertiesInterface $object) : void
     {
         TypeParanoia::ThrowIfNotDaftObjectIdPropertiesType(
@@ -76,6 +79,10 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
         $this->ForgetDaftObjectById($id);
     }
 
+
+    /**
+    * {@inheritdoc}
+    */
     public function RemoveDaftObject(DefinesOwnIdPropertiesInterface $object) : void
     {
         TypeParanoia::ThrowIfNotDaftObjectIdPropertiesType(
