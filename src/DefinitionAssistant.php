@@ -47,18 +47,6 @@ class DefinitionAssistant extends Base
     */
     public static function RegisterAbstractDaftObjectType(string $maybe) : void
     {
-        if ( ! is_a($maybe, AbstractDaftObject::class, true)) {
-            throw new InvalidArgumentException(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                '() must be an implementation of ' .
-                AbstractDaftObject::class .
-                ', ' .
-                $maybe .
-                ' given!'
-            );
-        }
-
         /**
         * @var array<int, string>
         */
@@ -77,25 +65,9 @@ class DefinitionAssistant extends Base
             }
         }
 
-        self::MaybeRegisterAdditionalTypes($maybe);
+        $maybe = self::MaybeRegisterAdditionalTypes($maybe);
 
         return parent::ObtainExpectedProperties($maybe);
-    }
-
-    /**
-    * @return Closure(string):?string
-    */
-    public static function GetterClosure(string $type, string ...$props) : Closure
-    {
-        return static::SetterOrGetterClosure($type, self::BOOL_EXPECTING_GETTER, ...$props);
-    }
-
-    /**
-    * @return Closure(string):?string
-    */
-    public static function SetterClosure(string $type, string ...$props) : Closure
-    {
-        return static::SetterOrGetterClosure($type, self::BOOL_EXPECTING_SETTER, ...$props);
     }
 
     /**
@@ -103,7 +75,7 @@ class DefinitionAssistant extends Base
     *
     * @psalm-return array{0:class-string<DaftObject>, 1:null|Closure(string):?string, 2:null|Closure(string):?string, 4:string}
     */
-    public static function TypeAndGetterAndSetterClosureWithProps(
+    private static function TypeAndGetterAndSetterClosureWithProps(
         string $type,
         string ...$props
     ) : array {
@@ -113,8 +85,8 @@ class DefinitionAssistant extends Base
         $out = array_merge(
             [
                 $type,
-                static::GetterClosure($type, ...$props),
-                static::SetterClosure($type, ...$props),
+                static::SetterOrGetterClosure($type, self::BOOL_EXPECTING_GETTER, ...$props),
+                static::SetterOrGetterClosure($type, self::BOOL_EXPECTING_SETTER, ...$props),
             ],
             $props
         );
@@ -133,7 +105,7 @@ class DefinitionAssistant extends Base
     /**
     * @psalm-param class-string<DaftObject> $maybe
     */
-    protected static function RegisterDaftObjectTypeFromTypeAndProps(
+    private static function RegisterDaftObjectTypeFromTypeAndProps(
         string $maybe,
         string ...$props
     ) : void {
@@ -156,7 +128,7 @@ class DefinitionAssistant extends Base
     /**
     * @psalm-return Closure(string):?string
     */
-    protected static function SetterOrGetterClosure(
+    public static function SetterOrGetterClosure(
         string $type,
         bool $SetNotGet,
         string ...$props
@@ -177,7 +149,12 @@ class DefinitionAssistant extends Base
         };
     }
 
-    protected static function MaybeRegisterAdditionalTypes(string $maybe) : void
+    /**
+    * @psalm-param class-string<DaftObject> $maybe
+    *
+    * @psalm-return class-string<DaftObject>
+    */
+    private static function MaybeRegisterAdditionalTypes(string $maybe) : string
     {
         foreach (
             [
@@ -190,5 +167,7 @@ class DefinitionAssistant extends Base
                 self::RegisterDaftObjectTypeFromTypeAndProps($otherType, 'id');
             }
         }
+
+        return $maybe;
     }
 }

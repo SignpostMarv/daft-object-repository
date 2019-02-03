@@ -17,6 +17,14 @@
       <code>$maybe</code>
     </RedundantConditionGivenDocblockType>
   </file>
+  <file src="src\TypeParanoia.php">
+    <MixedArgument occurrences="1">
+      <code>$object</code>
+    </MixedArgument>
+    <PossiblyInvalidArgument occurrences="1">
+      <code>$object</code>
+    </PossiblyInvalidArgument>
+  </file>
   <file src="tests-src\DefineIdPropertiesIncorrectlyTrait.php">
     <LessSpecificImplementedReturnType occurrences="1">
       <code>array</code>

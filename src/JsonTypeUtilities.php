@@ -30,9 +30,7 @@ class JsonTypeUtilities
         bool $writeAll
     ) {
         if ('[]' === mb_substr($jsonType, -2)) {
-            $jsonType = mb_substr($jsonType, 0, -2);
-
-            self::ThrowIfNotJsonType($jsonType);
+            $jsonType = self::ThrowIfNotJsonType(mb_substr($jsonType, 0, -2));
 
             return self::DaftObjectFromJsonTypeArray($jsonType, $prop, $propVal, $writeAll);
         }
@@ -43,12 +41,10 @@ class JsonTypeUtilities
     /**
     * @param array<int|string, mixed> $array
     *
-    * @psalm-param class-string<DaftObject> $type
+    * @psalm-param class-string<DaftJson> $type
     */
     public static function ThrowIfJsonDefNotValid(string $type, array $array) : array
     {
-        $type = static::ThrowIfNotDaftJson($type);
-
         $jsonProps = TypeParanoia::EnsureArgumentIsArray($type::DaftObjectJsonPropertyNames());
         $array = JsonTypeUtilities::FilterThrowIfJsonDefNotValid($type, $jsonProps, $array);
         $jsonDef = TypeParanoia::EnsureArgumentIsArray($type::DaftObjectJsonProperties());
@@ -75,11 +71,21 @@ class JsonTypeUtilities
         return $object;
     }
 
-    private static function ThrowIfNotJsonType(string $jsonType) : void
+    /**
+    * @psalm-return class-string<DaftJson>
+    */
+    private static function ThrowIfNotJsonType(string $jsonType) : string
     {
         if ( ! TypeParanoia::IsThingStrings($jsonType, DaftJson::class)) {
             throw new ClassDoesNotImplementClassException($jsonType, DaftJson::class);
         }
+
+        /**
+        * @psalm-var class-string<DaftJson>
+        */
+        $jsonType = $jsonType;
+
+        return $jsonType;
     }
 
     private static function MakeMapperThrowIfJsonDefNotValid(
@@ -106,6 +112,9 @@ class JsonTypeUtilities
         return $mapper;
     }
 
+    /**
+    * @psalm-param class-string<DaftJson> $class
+    */
     private static function FilterThrowIfJsonDefNotValid(
         string $class,
         array $jsonProps,
@@ -124,18 +133,13 @@ class JsonTypeUtilities
 
     private static function ArrayToJsonType(string $type, array $value, bool $writeAll) : DaftJson
     {
-        self::ThrowIfNotJsonType($type);
-
-        /**
-        * @var DaftJson
-        */
-        $type = $type;
-
-        return $type::DaftObjectFromJsonArray($value, $writeAll);
+        return self::ThrowIfNotJsonType($type)::DaftObjectFromJsonArray($value, $writeAll);
     }
 
     /**
     * @param mixed[] $propVal
+    *
+    * @psalm-param class-string<DaftJson> $jsonType
     *
     * @return array<int, DaftJson>
     */
@@ -145,7 +149,7 @@ class JsonTypeUtilities
         array $propVal,
         bool $writeAll
     ) : array {
-        self::ThrowIfNotJsonType($jsonType);
+        $jsonType = self::ThrowIfNotJsonType($jsonType);
 
         return array_map(
             /**

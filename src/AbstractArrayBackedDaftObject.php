@@ -98,8 +98,6 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
 
     public function jsonSerialize() : array
     {
-        JsonTypeUtilities::ThrowIfNotDaftJson(static::class);
-
         /**
         * @var array<int, string>
         */

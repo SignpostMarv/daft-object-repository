@@ -112,21 +112,6 @@ class TypeParanoiaTest extends TestCase
     {
         return [
             [
-                1,
-                5,
-                TypeParanoia::class,
-                'ThrowIfNotType',
-                [
-                    DaftObject::class,
-                ],
-                InvalidArgumentException::class,
-                (
-                    'Argument 1 passed to ' .
-                    TypeParanoia::class .
-                    '::ThrowIfNotType must be an object or a string!'
-                ),
-            ],
-            [
                 'foo',
                 5,
                 TypeParanoia::class,
@@ -145,8 +130,10 @@ class TypeParanoiaTest extends TestCase
     }
 
     /**
-    * @param mixed $object
+    * @param string|object $object
     * @param string[] $types
+    *
+    * @psalm-param class-string|object $object
     *
     * @dataProvider DataProviderThrowIfNotType
     */
@@ -195,8 +182,10 @@ class TypeParanoiaTest extends TestCase
     }
 
     /**
-    * @param mixed $object
+    * @param string|object $object
     * @param string[] $types
+    *
+    * @psalm-param class-string|object $object
     *
     * @dataProvider DataProviderThrowIfNotDaftObjectType
     */

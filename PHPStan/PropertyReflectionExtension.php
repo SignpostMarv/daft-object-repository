@@ -20,15 +20,4 @@ use SignpostMarv\DaftObject\TypeParanoia;
 */
 class PropertyReflectionExtension extends Base
 {
-    public function __construct(ClassReflection $classReflection, Broker $broker, string $property)
-    {
-        if ( ! TypeParanoia::IsThingStrings($classReflection->getName(), DaftObject::class)) {
-            throw new InvalidArgumentException(sprintf('%s is not an implementation of %s',
-                $classReflection->getName(),
-                DaftObject::class
-            ));
-        }
-
-        parent::__construct($classReflection, $broker, $property);
-    }
 }

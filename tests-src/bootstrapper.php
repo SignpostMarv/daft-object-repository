@@ -9,7 +9,11 @@ namespace SignpostMarv\DaftObject;
 if (DefinitionAssistant::IsTypeUnregistered(DefinesOwnIdPropertiesInterface::class)) {
     DefinitionAssistant::RegisterType(
         DefinesOwnIdPropertiesInterface::class,
-        DefinitionAssistant::GetterClosure(DefinesOwnIdPropertiesInterface::class, 'id'),
+        DefinitionAssistant::SetterOrGetterClosure(
+            DefinesOwnIdPropertiesInterface::class,
+            DefinitionAssistant::BOOL_EXPECTING_GETTER,
+            'id'
+        ),
         null,
         'id'
     );

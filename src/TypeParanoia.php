@@ -93,7 +93,9 @@ class TypeParanoia extends TypeCertainty
     }
 
     /**
-    * @param mixed $object
+    * @param string|object $object
+    *
+    * @psalm-param class-string|object $object
     */
     public static function ThrowIfNotType(
         $object,
@@ -102,8 +104,6 @@ class TypeParanoia extends TypeCertainty
         string $function,
         string ...$types
     ) : void {
-        $object = static::EnsureArgumentIsObjectOrString($object, 1, __METHOD__);
-
         foreach ($types as $i => $type) {
             if ( ! interface_exists($type) && ! class_exists($type)) {
                 throw new InvalidArgumentException(
@@ -126,7 +126,9 @@ class TypeParanoia extends TypeCertainty
     }
 
     /**
-    * @param mixed $object
+    * @param string|object $object
+    *
+    * @psalm-param class-string|object $object
     */
     public static function ThrowIfNotDaftObjectType(
         $object,
