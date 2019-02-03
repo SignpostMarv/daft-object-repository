@@ -69,13 +69,8 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
 
     public function __isset(string $property) : bool
     {
-        /**
-        * @var array<int, string>|string
-        */
-        $properties = static::DaftObjectProperties();
-
         return
-            TypeParanoia::MaybeInMaybeArray($property, $properties) &&
+            TypeParanoia::MaybeInMaybeArray($property, static::DaftObjectProperties()) &&
             isset($this->data, $this->data[$property]);
     }
 
