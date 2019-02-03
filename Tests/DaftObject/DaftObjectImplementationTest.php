@@ -1912,44 +1912,6 @@ class DaftObjectImplementationTest extends TestCase
     *
     * @depends testHasDefinedImplementationCorrectly
     */
-    final public function testProviderNonAbstractGoodFuzzingDaftObjectIsNotDaftJson(
-        string $className,
-        ReflectionClass $reflector,
-        array $args,
-        array $getters,
-        array $setters
-    ) : void {
-        if ( ! is_subclass_of($className, DaftObject::class, true)) {
-            static::markTestSkipped(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                DaftObject::class
-            );
-
-            return;
-        }
-
-        /**
-        * @var DaftObject
-        */
-        $obj = new $className($args);
-
-        static::expectException(ClassDoesNotImplementClassException::class);
-        static::expectExceptionMessage(sprintf(
-            '%s does not implement %s',
-            $className,
-            DaftJson::class
-        ));
-
-        JsonTypeUtilities::ThrowIfDaftObjectObjectNotDaftJson($obj);
-    }
-
-    /**
-    * @dataProvider dataProviderNonAbstractJsonArrayBackedGoodFuzzingHasSetters
-    *
-    * @depends testHasDefinedImplementationCorrectly
-    */
     final public function testProviderNonAbstractGoodFuzzingJsonFromStringFailure(
         string $className,
         ReflectionClass $reflector,

@@ -62,15 +62,6 @@ class JsonTypeUtilities
         return $out;
     }
 
-    public static function ThrowIfDaftObjectObjectNotDaftJson(DaftObject $object) : DaftJson
-    {
-        if ( ! ($object instanceof DaftJson)) {
-            throw new ClassDoesNotImplementClassException(get_class($object), DaftJson::class);
-        }
-
-        return $object;
-    }
-
     /**
     * @psalm-return class-string<DaftJson>
     */
