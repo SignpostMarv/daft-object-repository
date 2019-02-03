@@ -26,9 +26,6 @@
     </RedundantConditionGivenDocblockType>
   </file>
   <file src="src\TypeParanoia.php">
-    <MixedArgument occurrences="1">
-      <code>$object</code>
-    </MixedArgument>
     <PossiblyInvalidArgument occurrences="1">
       <code>$object</code>
     </PossiblyInvalidArgument>
