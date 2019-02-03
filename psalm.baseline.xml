@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files>
   <file src="quick-checks\psalm-test.php">
-    <TypeCoercion occurrences="4">
+    <TypeCoercion occurrences="5">
+      <code>$a</code>
       <code>$a</code>
       <code>$a</code>
       <code>$a</code>
@@ -24,11 +25,6 @@
     <RedundantConditionGivenDocblockType occurrences="1">
       <code>$maybe</code>
     </RedundantConditionGivenDocblockType>
-  </file>
-  <file src="src\TypeParanoia.php">
-    <PossiblyInvalidArgument occurrences="1">
-      <code>$object</code>
-    </PossiblyInvalidArgument>
   </file>
   <file src="tests-src\DefineIdPropertiesIncorrectlyTrait.php">
     <LessSpecificImplementedReturnType occurrences="1">
