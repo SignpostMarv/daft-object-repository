@@ -73,7 +73,6 @@ class DefinitionAssistant extends Base
         $maybe = is_object($maybe) ? get_class($maybe) : $maybe;
 
         if (static::IsTypeUnregistered($maybe)) {
-
             if (is_a($maybe, AbstractDaftObject::class, true)) {
                 static::RegisterAbstractDaftObjectType($maybe);
             }
@@ -224,7 +223,6 @@ class DefinitionAssistant extends Base
                 $otherType = $otherType;
 
                 if (self::IsTypeUnregistered($otherType)) {
-
                     $otherType = self::RegisterDaftObjectTypeFromTypeAndProps($otherType, 'id');
                 }
 
