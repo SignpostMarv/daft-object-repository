@@ -28,22 +28,4 @@ class TypeCertainty
                 ? (string) $maybe
                 : var_export($maybe, self::BOOL_VAR_EXPORT_RETURN);
     }
-
-    /**
-    * @param mixed $maybe
-    */
-    public static function EnsureArgumentIsString($maybe) : string
-    {
-        if ( ! is_string($maybe)) {
-            throw new InvalidArgumentException(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be a string, ' .
-                (is_object($maybe) ? get_class($maybe) : gettype($maybe)) .
-                ' given!'
-            );
-        }
-
-        return $maybe;
-    }
 }

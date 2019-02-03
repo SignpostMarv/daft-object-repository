@@ -14,44 +14,6 @@ use SignpostMarv\DaftObject\TypeParanoia;
 
 class TypeParanoiaTest extends TestCase
 {
-    public function DataProviderEnsureArgumentIsString() : array
-    {
-        return [
-            [
-                'foo',
-            ],
-            [
-                1,
-            ],
-            [
-                new DateTimeImmutable(),
-            ],
-        ];
-    }
-
-    /**
-    * @dataProvider DataProviderEnsureArgumentIsString
-    *
-    * @param mixed $maybe
-    */
-    public function testEnsureArgumentIsString($maybe) : void
-    {
-        if (is_string($maybe)) {
-            static::assertSame($maybe, TypeParanoia::EnsureArgumentIsString($maybe));
-        } else {
-            static::expectException(InvalidArgumentException::class);
-            static::expectExceptionMessage(
-                'Argument 1 passed to ' .
-                TypeCertainty::class .
-                '::EnsureArgumentIsString must be a string, ' .
-                (is_object($maybe) ? get_class($maybe) : gettype($maybe)) .
-                ' given!'
-            );
-
-            TypeParanoia::EnsureArgumentIsString($maybe);
-        }
-    }
-
     public function DataProviderThrowIfNotType() : array
     {
         return [

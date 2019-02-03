@@ -85,6 +85,9 @@ class JsonTypeUtilities
         return $jsonType;
     }
 
+    /**
+    * @param array<string|int, string> $jsonDef
+    */
     private static function MakeMapperThrowIfJsonDefNotValid(
         string $class,
         array $jsonDef,
@@ -98,7 +101,7 @@ class JsonTypeUtilities
                 if (isset($jsonDef[$prop]) && false === is_array($array[$prop])) {
                     static::ThrowBecauseArrayJsonTypeNotValid(
                         $class,
-                        TypeParanoia::EnsureArgumentIsString($jsonDef[$prop]),
+                        $jsonDef[$prop],
                         $prop
                     );
                 }
