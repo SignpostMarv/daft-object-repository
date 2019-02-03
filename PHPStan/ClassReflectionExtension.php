@@ -17,7 +17,9 @@ use SignpostMarv\DaftObject\DaftObject;
 use SignpostMarv\DaftObject\DefinitionAssistant;
 
 /**
-* @template-extends Base<DaftObject>
+* @template T as DaftObject
+*
+* @template-extends Base<T>
 */
 class ClassReflectionExtension extends Base
 {
