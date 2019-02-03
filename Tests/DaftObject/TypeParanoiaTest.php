@@ -7,7 +7,6 @@ declare(strict_types=1);
 namespace SignpostMarv\DaftObject\Tests\DaftObject;
 
 use DateTimeImmutable;
-use DateTimeInterface;
 use InvalidArgumentException;
 use SignpostMarv\DaftObject\DaftObject;
 use SignpostMarv\DaftObject\DaftObjectRepositoryTypeByClassMethodAndTypeException;
