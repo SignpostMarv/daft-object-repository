@@ -8,8 +8,6 @@ namespace SignpostMarv\DaftObject\Tests\DaftObject;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
-use SignpostMarv\DaftObject\DaftObject;
-use SignpostMarv\DaftObject\DaftObjectRepositoryTypeByClassMethodAndTypeException;
 use SignpostMarv\DaftObject\Tests\TestCase;
 use SignpostMarv\DaftObject\TypeCertainty;
 use SignpostMarv\DaftObject\TypeParanoia;
