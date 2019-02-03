@@ -87,7 +87,7 @@ class DefinitionAssistant extends Base
         string ...$props
     ) : Closure {
         return function (string $property) use ($type, $props, $SetNotGet) : ? string {
-            if (TypeParanoia::MaybeInArray($property, $props)) {
+            if (in_array($property, $props, self::IN_ARRAY_STRICT_MODE)) {
                 /**
                 * @var string
                 */

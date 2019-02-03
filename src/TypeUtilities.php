@@ -81,7 +81,13 @@ class TypeUtilities
         string $prop,
         bool $SetNotGet = self::BOOL_DEFAULT_SET_NOT_GET
     ) : string {
-        if (TypeParanoia::MaybeInArray(mb_substr($prop, 0, 1), self::SUPPORTED_INVALID_LEADING_CHARACTERS)) {
+        if (
+            in_array(
+                mb_substr($prop, 0, 1),
+                self::SUPPORTED_INVALID_LEADING_CHARACTERS,
+                DefinitionAssistant::IN_ARRAY_STRICT_MODE
+            )
+        ) {
             return ($SetNotGet ? 'Alter' : 'Obtain') . ucfirst(mb_substr($prop, 1));
         }
 

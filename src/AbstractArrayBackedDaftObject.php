@@ -70,7 +70,11 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     public function __isset(string $property) : bool
     {
         return
-            TypeParanoia::MaybeInMaybeArray($property, static::DaftObjectProperties()) &&
+            in_array(
+                $property,
+                static::DaftObjectProperties(),
+                DefinitionAssistant::IN_ARRAY_STRICT_MODE
+            ) &&
             isset($this->data, $this->data[$property]);
     }
 
@@ -175,7 +179,11 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     */
     protected function RetrievePropertyValueFromData(string $property)
     {
-        $isNullable = TypeParanoia::MaybeInMaybeArray($property, static::DaftObjectNullableProperties());
+        $isNullable = in_array(
+            $property,
+            static::DaftObjectNullableProperties(),
+            DefinitionAssistant::IN_ARRAY_STRICT_MODE
+        );
 
         if (
             ! array_key_exists($property, $this->data) &&
@@ -303,7 +311,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     {
         $properties = static::DaftObjectProperties();
 
-        if ( ! TypeParanoia::MaybeInArray($property, $properties)) {
+        if ( ! in_array($property, $properties, DefinitionAssistant::IN_ARRAY_STRICT_MODE)) {
             throw new UndefinedPropertyException(static::class, $property);
         } elseif ($this->DaftObjectWormPropertyWritten($property)) {
             throw new PropertyNotRewriteableException(static::class, $property);
@@ -317,7 +325,10 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     */
     private function MaybeThrowOnNudge(string $property, $value, array $properties) : void
     {
-        if (true === is_null($value) && ! TypeParanoia::MaybeInArray($property, $properties)) {
+        if (
+            true === is_null($value) &&
+            ! in_array($property, $properties, DefinitionAssistant::IN_ARRAY_STRICT_MODE)
+        ) {
             throw new PropertyNotNullableException(static::class, $property);
         }
     }

@@ -112,7 +112,7 @@ class JsonTypeUtilities
         array $array
     ) : array {
         $filter = function (string $prop) use ($jsonProps, $array, $class) : bool {
-            if ( ! TypeParanoia::MaybeInArray($prop, $jsonProps)) {
+            if ( ! in_array($prop, $jsonProps, DefinitionAssistant::IN_ARRAY_STRICT_MODE)) {
                 throw new PropertyNotJsonDecodableException($class, $prop);
             }
 
