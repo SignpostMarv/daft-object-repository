@@ -9,6 +9,7 @@ namespace SignpostMarv\DaftObject\Tests\DaftObjectRepository;
 use Generator;
 use RuntimeException;
 use SignpostMarv\DaftObject\DaftObject;
+use SignpostMarv\DaftObject\DaftObjectCreatedByArray;
 use SignpostMarv\DaftObject\DaftObjectMemoryRepository;
 use SignpostMarv\DaftObject\DaftObjectRepository;
 use SignpostMarv\DaftObject\DaftObjectRepositoryTypeException;
@@ -21,13 +22,16 @@ use SignpostMarv\DaftObject\Tests\TestCase;
 class DaftObjectRepositoryTest extends TestCase
 {
     /**
-    * @psalm-param class-string<DefinesOwnIdPropertiesInterface> $type
+    * @psalm-param class-string<DefinesOwnIdPropertiesInterface&DaftObjectCreatedByArray> $type
     */
     public static function DaftObjectRepositoryByType(string $type) : DaftObjectRepository
     {
         return DaftObjectMemoryRepository::DaftObjectRepositoryByType($type);
     }
 
+    /**
+    * @psalm-param DefinesOwnIdPropertiesInterface&DaftObjectCreatedByArray $object
+    */
     public static function DaftObjectRepositoryByDaftObject(
         DefinesOwnIdPropertiesInterface $object
     ) : DaftObjectRepository {
@@ -71,6 +75,8 @@ class DaftObjectRepositoryTest extends TestCase
     }
 
     /**
+    * @psalm-param class-string<DefinesOwnIdPropertiesInterface&DaftObjectCreatedByArray> $objImplementation
+    *
     * @dataProvider RepositoryDataProvider
     */
     public function testRepositoryForImplementaion(
@@ -79,17 +85,6 @@ class DaftObjectRepositoryTest extends TestCase
         bool $writeable,
         array ...$paramsArray
     ) : void {
-        if ( ! is_subclass_of($objImplementation, DefinesOwnIdPropertiesInterface::class, true)) {
-            static::markTestSkipped(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                DefinesOwnIdPropertiesInterface::class
-            );
-
-            return;
-        }
-
         $repo = static::DaftObjectRepositoryByType($objImplementation);
 
         $idProps = [];
@@ -105,7 +100,7 @@ class DaftObjectRepositoryTest extends TestCase
 
         foreach ($paramsArray as $params) {
             /**
-            * @var DefinesOwnIdPropertiesInterface
+            * @var DefinesOwnIdPropertiesInterface&DaftObjectCreatedByArray
             */
             $obj = new $objImplementation($params, $writeable);
 
@@ -170,6 +165,9 @@ class DaftObjectRepositoryTest extends TestCase
     }
 
     /**
+    * @psalm-param class-string<DefinesOwnIdPropertiesInterface&DaftObjectCreatedByArray> $objectTypeA
+    * @psalm-param class-string<DefinesOwnIdPropertiesInterface&DaftObjectCreatedByArray> $objectTypeB
+    *
     * @dataProvider DaftObjectRepositoryTypeExceptionForgetRemoveDataProvider
     */
     public function testForgetDaftObjectRepositoryTypeException(
@@ -178,34 +176,7 @@ class DaftObjectRepositoryTest extends TestCase
         array $dataTypeA,
         array $dataTypeB
     ) : void {
-        if ( ! is_subclass_of($objectTypeA, DefinesOwnIdPropertiesInterface::class, true)) {
-            static::markTestSkipped(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                DefinesOwnIdPropertiesInterface::class
-            );
-
-            return;
-        } elseif ( ! is_subclass_of($objectTypeB, DefinesOwnIdPropertiesInterface::class, true)) {
-            static::markTestSkipped(
-                'Argument 2 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                DefinesOwnIdPropertiesInterface::class
-            );
-
-            return;
-        }
-
-        /**
-        * @var DefinesOwnIdPropertiesInterface
-        */
         $A = new $objectTypeA($dataTypeA);
-
-        /**
-        * @var DefinesOwnIdPropertiesInterface
-        */
         $B = new $objectTypeB($dataTypeB);
 
         $repo = static::DaftObjectRepositoryByDaftObject($A);
@@ -225,6 +196,9 @@ class DaftObjectRepositoryTest extends TestCase
     }
 
     /**
+    * @psalm-param class-string<DefinesOwnIdPropertiesInterface&DaftObjectCreatedByArray> $objectTypeA
+    * @psalm-param class-string<DefinesOwnIdPropertiesInterface&DaftObjectCreatedByArray> $objectTypeB
+    *
     * @dataProvider DaftObjectRepositoryTypeExceptionForgetRemoveDataProvider
     */
     public function testRemoveDaftObjectRepositoryTypeException(
@@ -233,34 +207,7 @@ class DaftObjectRepositoryTest extends TestCase
         array $dataTypeA,
         array $dataTypeB
     ) : void {
-        if ( ! is_subclass_of($objectTypeA, DefinesOwnIdPropertiesInterface::class, true)) {
-            static::markTestSkipped(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                DefinesOwnIdPropertiesInterface::class
-            );
-
-            return;
-        } elseif ( ! is_subclass_of($objectTypeB, DefinesOwnIdPropertiesInterface::class, true)) {
-            static::markTestSkipped(
-                'Argument 2 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                DefinesOwnIdPropertiesInterface::class
-            );
-
-            return;
-        }
-
-        /**
-        * @var DefinesOwnIdPropertiesInterface
-        */
         $A = new $objectTypeA($dataTypeA);
-
-        /**
-        * @var DefinesOwnIdPropertiesInterface
-        */
         $B = new $objectTypeB($dataTypeB);
 
         $repo = static::DaftObjectRepositoryByDaftObject($A);
@@ -280,6 +227,9 @@ class DaftObjectRepositoryTest extends TestCase
     }
 
     /**
+    * @psalm-param class-string<DefinesOwnIdPropertiesInterface&DaftObjectCreatedByArray> $objectTypeA
+    * @psalm-param class-string<DefinesOwnIdPropertiesInterface&DaftObjectCreatedByArray> $objectTypeB
+    *
     * @dataProvider DaftObjectRepositoryTypeExceptionForgetRemoveDataProvider
     */
     public function testRememberDaftObjectRepositoryTypeException(
@@ -288,34 +238,7 @@ class DaftObjectRepositoryTest extends TestCase
         array $dataTypeA,
         array $dataTypeB
     ) : void {
-        if ( ! is_subclass_of($objectTypeA, DefinesOwnIdPropertiesInterface::class, true)) {
-            static::markTestSkipped(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                DefinesOwnIdPropertiesInterface::class
-            );
-
-            return;
-        } elseif ( ! is_subclass_of($objectTypeB, DefinesOwnIdPropertiesInterface::class, true)) {
-            static::markTestSkipped(
-                'Argument 2 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                DefinesOwnIdPropertiesInterface::class
-            );
-
-            return;
-        }
-
-        /**
-        * @var DefinesOwnIdPropertiesInterface
-        */
         $A = new $objectTypeA($dataTypeA);
-
-        /**
-        * @var DefinesOwnIdPropertiesInterface
-        */
         $B = new $objectTypeB($dataTypeB);
 
         $repo = static::DaftObjectRepositoryByDaftObject($A);

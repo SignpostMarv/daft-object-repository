@@ -8,12 +8,19 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject;
 
+/**
+* @template T as DefinesOwnIdPropertiesInterface&DaftObjectCreatedByArray
+*
+* @template-extends AbstractDaftObjectRepository<DefinesOwnIdPropertiesInterface&DaftObjectCreatedByArray>
+*/
 class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
 {
     const BOOL_DEFAULT_ASSUMEDOESNOTEXIST = false;
 
     /**
     * @var DefinesOwnIdPropertiesInterface[]
+    *
+    * @psalm-var T[]
     */
     protected $memory = [];
 
@@ -39,9 +46,6 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
         $this->RememberDaftObjectData($object);
     }
 
-    /**
-    * @param scalar|(scalar|array|object|null)[] $id
-    */
     public function ForgetDaftObjectById($id) : void
     {
         $this->ForgetDaftObjectByHashId($this->type::DaftObjectIdValuesHash(
@@ -49,9 +53,6 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
         ));
     }
 
-    /**
-    * @param scalar|(scalar|array|object|null)[] $id
-    */
     public function RemoveDaftObjectById($id) : void
     {
         $this->RemoveDaftObjectByHashId($this->type::DaftObjectIdValuesHash(
@@ -60,9 +61,11 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     }
 
     /**
-    * @param scalar|(scalar|array|object|null)[] $id
+    * {@inheritdoc}
+    *
+    * @psalm-return T|null
     */
-    public function RecallDaftObject($id) : ? DaftObject
+    public function RecallDaftObject($id) : ? DefinesOwnIdPropertiesInterface
     {
         $hashId = $this->type::DaftObjectIdValuesHash(
             TypeParanoia::ForceArgumentAsArray($id)
@@ -92,8 +95,10 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     * Recalls the corresponding daft object instance from cached data.
     *
     * @param scalar|(scalar|array|object|null)[] $id
+    *
+    * @psalm-return T|null
     */
-    protected function RecallDaftObjectFromData($id) : ? DaftObject
+    protected function RecallDaftObjectFromData($id) : ? DefinesOwnIdPropertiesInterface
     {
         $hashId = $this->type::DaftObjectIdValuesHash(
             TypeParanoia::ForceArgumentAsArray($id)
@@ -102,9 +107,6 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
         if (isset($this->data[$hashId])) {
             $type = $this->type;
 
-            /**
-            * @var DaftObject
-            */
             $out = new $type($this->data[$hashId]);
 
             return $out;

@@ -8,6 +8,11 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject;
 
+/**
+* @template T as DefinesOwnIdPropertiesInterface&DaftObjectCreatedByArray
+*
+* @template-extends DaftObjectRepository<DefinesOwnIdPropertiesInterface&DaftObjectCreatedByArray>
+*/
 abstract class AbstractDaftObjectRepository implements DaftObjectRepository
 {
     /**
@@ -23,7 +28,7 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
     /**
     * @var string
     *
-    * @psalm-var class-string<DefinesOwnIdPropertiesInterface>
+    * @psalm-var class-string<T>
     */
     protected $type;
 
@@ -35,7 +40,7 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
     /**
     * @param mixed ...$args
     *
-    * @psalm-param class-string<DefinesOwnIdPropertiesInterface> $type
+    * @psalm-param class-string<T> $type
     */
     protected function __construct(string $type, ...$args)
     {
@@ -105,6 +110,8 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
 
     /**
     * {@inheritdoc}
+    *
+    * @psalm-param class-string<T> $type
     */
     public static function DaftObjectRepositoryByType(
         string $type,
@@ -124,11 +131,18 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
 
     /**
     * {@inheritdoc}
+    *
+    * @psalm-param T $object
     */
     public static function DaftObjectRepositoryByDaftObject(
         DefinesOwnIdPropertiesInterface $object,
         ...$args
     ) : DaftObjectRepository {
-        return static::DaftObjectRepositoryByType(get_class($object), ...$args);
+        /**
+        * @psalm-var class-string<T>
+        */
+        $className = get_class($object);
+
+        return static::DaftObjectRepositoryByType($className, ...$args);
     }
 }

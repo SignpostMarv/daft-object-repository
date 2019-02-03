@@ -11,13 +11,13 @@ class EnsureProtectedMethodsNeedToBeProtectedOnRepository extends DaftObjectMemo
     /**
     * @param scalar|array<string, scalar|null> $id
     */
-    public function EnsureRecallDaftObjectFromData($id) : ? DaftObject
+    public function EnsureRecallDaftObjectFromData($id) : ? DefinesOwnIdPropertiesInterface
     {
         return $this->RecallDaftObjectFromData($id);
     }
 
     /**
-    * @psalm-param class-string<DefinesOwnIdPropertiesInterface> $type
+    * @psalm-param class-string<DefinesOwnIdPropertiesInterface&DaftObjectCreatedByArray> $type
     */
     public static function EnsureConstructorNeedsToBeProtected(
         string $type,
