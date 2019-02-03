@@ -289,7 +289,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         }
 
         if (is_array($spec)) {
-            $value = TypeParanoia::MaybeThrowIfValueDoesNotMatchMultiTypedArray(
+            $value = DefinitionAssistant::MaybeThrowIfValueDoesNotMatchMultiTypedArray(
                 $autoTrimStrings,
                 $throwIfNotUnique,
                 $value,

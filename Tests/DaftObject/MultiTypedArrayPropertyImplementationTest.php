@@ -11,6 +11,7 @@ use DateTimeImmutable;
 use Generator;
 use InvalidArgumentException;
 use SignpostMarv\DaftObject\DaftObject;
+use SignpostMarv\DaftObject\DefinitionAssistant;
 use SignpostMarv\DaftObject\MultiTypedArrayPropertiesTester;
 use SignpostMarv\DaftObject\Tests\TestCase;
 use SignpostMarv\DaftObject\TypeParanoia;
@@ -27,7 +28,7 @@ class MultiTypedArrayPropertyImplementationTest extends TestCase
                 InvalidArgumentException::class,
                 (
                     'Argument 3 passed to ' .
-                    TypeParanoia::class .
+                    DefinitionAssistant::class .
                     '::MaybeThrowIfValueDoesNotMatchMultiTypedArray must be an array' .
                     ', integer given!'
                 ),
@@ -39,7 +40,7 @@ class MultiTypedArrayPropertyImplementationTest extends TestCase
                 InvalidArgumentException::class,
                 (
                     'Argument 3 passed to ' .
-                    TypeParanoia::class .
+                    DefinitionAssistant::class .
                     '::MaybeThrowIfNotArrayIntKeys must be array<int, mixed>'
                 ),
             ],
@@ -50,7 +51,7 @@ class MultiTypedArrayPropertyImplementationTest extends TestCase
                 InvalidArgumentException::class,
                 (
                     'Argument 3 passed to ' .
-                    TypeParanoia::class .
+                    DefinitionAssistant::class .
                     '::MaybeThrowIfValueArrayDoesNotMatchTypes' .
                     ' contained values that did not match the provided types!'
                 ),
@@ -120,7 +121,7 @@ class MultiTypedArrayPropertyImplementationTest extends TestCase
         static::expectException(InvalidArgumentException::class);
         static::expectExceptionMessage(
             'Argument 3 passed to ' .
-            TypeParanoia::class .
+            DefinitionAssistant::class .
             '::MaybeThrowIfValueDoesNotMatchMultiTypedArrayValueArray contained non-unique values!'
         );
 
