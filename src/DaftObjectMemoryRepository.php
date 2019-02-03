@@ -11,7 +11,7 @@ namespace SignpostMarv\DaftObject;
 /**
 * @template T as DefinesOwnIdPropertiesInterface&DaftObjectCreatedByArray
 *
-* @template-extends AbstractDaftObjectRepository<DefinesOwnIdPropertiesInterface&DaftObjectCreatedByArray>
+* @template-extends AbstractDaftObjectRepository<T>
 */
 class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
 {
@@ -29,6 +29,11 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     */
     protected $data = [];
 
+    /**
+    * {@inheritdoc}
+    *
+    * @psalm-param T $object
+    */
     public function RememberDaftObject(DefinesOwnIdPropertiesInterface $object) : void
     {
         TypeParanoia::ThrowIfNotDaftObjectIdPropertiesType(
@@ -71,13 +76,14 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
             TypeParanoia::ForceArgumentAsArray($id)
         );
 
-        if (false === isset($this->memory[$hashId])) {
-            return $this->RecallDaftObjectFromData($id);
-        }
-
-        return $this->memory[$hashId];
+        return $this->memory[$hashId] ?? $this->RecallDaftObjectFromData($id);
     }
 
+    /**
+    * {@inheritdoc}
+    *
+    * @psalm-param T $object
+    */
     public function RememberDaftObjectData(
         DefinesOwnIdPropertiesInterface $object,
         bool $assumeDoesNotExist = self::BOOL_DEFAULT_ASSUMEDOESNOTEXIST

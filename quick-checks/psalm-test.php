@@ -13,9 +13,24 @@ use SignpostMarv\DaftObject\ReadWriteJson;
 $a = new ReadWrite();
 $b = new ReadWriteJson();
 
+$repo = DaftObjectMemoryRepository::DaftObjectRepositoryByType(ReadWriteJson::class);
+
+$repo->ForgetDaftObject($a);
+
 /**
 * @psalm-var DaftObjectMemoryRepository<ReadWriteJson>
 */
 $repo = DaftObjectMemoryRepository::DaftObjectRepositoryByType(ReadWriteJson::class);
+
+$repo->ForgetDaftObject($a);
+
+$repo = DaftObjectMemoryRepository::DaftObjectRepositoryByDaftObject($b);
+
+$repo->ForgetDaftObject($a);
+
+/**
+* @psalm-var DaftObjectMemoryRepository<ReadWriteJson>
+*/
+$repo = DaftObjectMemoryRepository::DaftObjectRepositoryByDaftObject($b);
 
 $repo->ForgetDaftObject($a);

@@ -11,7 +11,7 @@ namespace SignpostMarv\DaftObject;
 /**
 * @template T as DefinesOwnIdPropertiesInterface&DaftObjectCreatedByArray
 *
-* @template-implements DaftObjectRepository<DefinesOwnIdPropertiesInterface&DaftObjectCreatedByArray>
+* @template-implements DaftObjectRepository<T>
 */
 abstract class AbstractDaftObjectRepository implements DaftObjectRepository
 {
@@ -119,6 +119,8 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
     * {@inheritdoc}
     *
     * @psalm-param class-string<T> $type
+    *
+    * @psalm-return AbstractDaftObjectRepository<T>
     */
     public static function DaftObjectRepositoryByType(
         string $type,
@@ -140,6 +142,8 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
     * {@inheritdoc}
     *
     * @psalm-param T $object
+    *
+    * @psalm-return AbstractDaftObjectRepository<T>
     */
     public static function DaftObjectRepositoryByDaftObject(
         DefinesOwnIdPropertiesInterface $object,
