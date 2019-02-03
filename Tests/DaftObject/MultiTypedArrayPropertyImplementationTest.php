@@ -14,7 +14,6 @@ use SignpostMarv\DaftObject\DaftObject;
 use SignpostMarv\DaftObject\DefinitionAssistant;
 use SignpostMarv\DaftObject\MultiTypedArrayPropertiesTester;
 use SignpostMarv\DaftObject\Tests\TestCase;
-use SignpostMarv\DaftObject\TypeParanoia;
 
 class MultiTypedArrayPropertyImplementationTest extends TestCase
 {
