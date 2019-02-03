@@ -17,18 +17,6 @@ use SignpostMarv\DaftObject\TypeParanoia;
 
 class TypeParanoiaTest extends TestCase
 {
-    public function testIsSubThingStrings() : void
-    {
-        static::assertTrue(TypeParanoia::IsSubThingStrings(
-            DateTimeImmutable::class,
-            DateTimeInterface::class
-        ));
-        static::assertFalse(TypeParanoia::IsSubThingStrings(
-            static::class,
-            DateTimeImmutable::class
-        ));
-    }
-
     public function DataProviderEnsureArgumentIsArray() : array
     {
         return [

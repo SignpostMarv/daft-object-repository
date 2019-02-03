@@ -22,11 +22,6 @@ class TypeParanoia extends TypeCertainty
         return is_a($maybe, $thing, true);
     }
 
-    public static function IsSubThingStrings(string $maybe, string $thing) : bool
-    {
-        return is_subclass_of($maybe, $thing, true);
-    }
-
     /**
     * @param mixed $value
     *
