@@ -34,3 +34,14 @@ $repo->ForgetDaftObject($a);
 $repo = DaftObjectMemoryRepository::DaftObjectRepositoryByDaftObject($b);
 
 $repo->ForgetDaftObject($a);
+
+$repo = DaftObjectMemoryRepository::DaftObjectRepositoryByDaftObject($b);
+
+$repo->RememberDaftObject($a);
+
+/**
+* @psalm-var DaftObjectMemoryRepository<ReadWriteJson>
+*/
+$repo = DaftObjectMemoryRepository::DaftObjectRepositoryByDaftObject($b);
+
+$repo->RememberDaftObject($a);

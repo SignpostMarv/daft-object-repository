@@ -54,14 +54,6 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
     */
     public function ForgetDaftObject(DefinesOwnIdPropertiesInterface $object) : void
     {
-        TypeParanoia::ThrowIfNotDaftObjectIdPropertiesType(
-            $object,
-            1,
-            static::class,
-            __FUNCTION__,
-            $this->type
-        );
-
         /**
         * @var (scalar|array|object|null)[]
         */
@@ -84,14 +76,6 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
     */
     public function RemoveDaftObject(DefinesOwnIdPropertiesInterface $object) : void
     {
-        TypeParanoia::ThrowIfNotDaftObjectIdPropertiesType(
-            $object,
-            1,
-            static::class,
-            __FUNCTION__,
-            $this->type
-        );
-
         /**
         * @var (scalar|array|object|null)[]
         */
@@ -125,15 +109,6 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
         string $type,
         ...$args
     ) : DaftObjectRepository {
-        TypeParanoia::ThrowIfNotType(
-            $type,
-            1,
-            static::class,
-            __FUNCTION__,
-            DaftObjectCreatedByArray::class,
-            DefinesOwnIdPropertiesInterface::class
-        );
-
         return new static($type, ...$args);
     }
 

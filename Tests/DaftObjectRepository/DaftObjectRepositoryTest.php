@@ -58,22 +58,6 @@ class DaftObjectRepositoryTest extends TestCase
         }
     }
 
-    public function DaftObjectRepositoryTypeExceptionForgetRemoveDataProvider() : array
-    {
-        return [
-            [
-                ReadWrite::class,
-                ReadOnly::class,
-                [
-                    'Foo' => '1',
-                ],
-                [
-                    'Foo' => '1',
-                ],
-            ],
-        ];
-    }
-
     /**
     * @psalm-param class-string<DefinesOwnIdPropertiesInterface&DaftObjectCreatedByArray> $objImplementation
     *
@@ -162,99 +146,6 @@ class DaftObjectRepositoryTest extends TestCase
                 );
             }
         }
-    }
-
-    /**
-    * @psalm-param class-string<DefinesOwnIdPropertiesInterface&DaftObjectCreatedByArray> $objectTypeA
-    * @psalm-param class-string<DefinesOwnIdPropertiesInterface&DaftObjectCreatedByArray> $objectTypeB
-    *
-    * @dataProvider DaftObjectRepositoryTypeExceptionForgetRemoveDataProvider
-    */
-    public function testForgetDaftObjectRepositoryTypeException(
-        string $objectTypeA,
-        string $objectTypeB,
-        array $dataTypeA,
-        array $dataTypeB
-    ) : void {
-        $A = new $objectTypeA($dataTypeA);
-        $B = new $objectTypeB($dataTypeB);
-
-        $repo = static::DaftObjectRepositoryByDaftObject($A);
-
-        $this->expectException(DaftObjectRepositoryTypeException::class);
-        $this->expectExceptionMessage(
-            'Argument 1 passed to ' .
-            get_class($repo) .
-            '::ForgetDaftObject() must be an implementation of ' .
-            $objectTypeA .
-            ', ' .
-            $objectTypeB .
-            ' given.'
-        );
-
-        $repo->ForgetDaftObject($B);
-    }
-
-    /**
-    * @psalm-param class-string<DefinesOwnIdPropertiesInterface&DaftObjectCreatedByArray> $objectTypeA
-    * @psalm-param class-string<DefinesOwnIdPropertiesInterface&DaftObjectCreatedByArray> $objectTypeB
-    *
-    * @dataProvider DaftObjectRepositoryTypeExceptionForgetRemoveDataProvider
-    */
-    public function testRemoveDaftObjectRepositoryTypeException(
-        string $objectTypeA,
-        string $objectTypeB,
-        array $dataTypeA,
-        array $dataTypeB
-    ) : void {
-        $A = new $objectTypeA($dataTypeA);
-        $B = new $objectTypeB($dataTypeB);
-
-        $repo = static::DaftObjectRepositoryByDaftObject($A);
-
-        $this->expectException(DaftObjectRepositoryTypeException::class);
-        $this->expectExceptionMessage(sprintf(
-            'Argument 1 passed to ' .
-            get_class($repo) .
-            '::RemoveDaftObject() must be an implementation of ' .
-            $objectTypeA .
-            ', ' .
-            $objectTypeB .
-            ' given.'
-        ));
-
-        $repo->RemoveDaftObject($B);
-    }
-
-    /**
-    * @psalm-param class-string<DefinesOwnIdPropertiesInterface&DaftObjectCreatedByArray> $objectTypeA
-    * @psalm-param class-string<DefinesOwnIdPropertiesInterface&DaftObjectCreatedByArray> $objectTypeB
-    *
-    * @dataProvider DaftObjectRepositoryTypeExceptionForgetRemoveDataProvider
-    */
-    public function testRememberDaftObjectRepositoryTypeException(
-        string $objectTypeA,
-        string $objectTypeB,
-        array $dataTypeA,
-        array $dataTypeB
-    ) : void {
-        $A = new $objectTypeA($dataTypeA);
-        $B = new $objectTypeB($dataTypeB);
-
-        $repo = static::DaftObjectRepositoryByDaftObject($A);
-
-        $this->expectException(DaftObjectRepositoryTypeException::class);
-        $this->expectExceptionMessage(
-            'Argument 1 passed to ' .
-            get_class($repo) .
-            '::RememberDaftObject() must be an implementation of ' .
-            $objectTypeA .
-            ', ' .
-            $objectTypeB .
-            ' given.'
-        );
-
-        $repo->RememberDaftObject($B);
     }
 
     /**
