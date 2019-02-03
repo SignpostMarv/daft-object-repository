@@ -51,9 +51,9 @@ class JsonTypeUtilities
     */
     public static function ThrowIfJsonDefNotValid(string $type, array $array) : array
     {
-        $jsonProps = TypeParanoia::EnsureArgumentIsArray($type::DaftObjectJsonPropertyNames());
+        $jsonProps = $type::DaftObjectJsonPropertyNames();
         $array = JsonTypeUtilities::FilterThrowIfJsonDefNotValid($type, $jsonProps, $array);
-        $jsonDef = TypeParanoia::EnsureArgumentIsArray($type::DaftObjectJsonProperties());
+        $jsonDef = $type::DaftObjectJsonProperties();
 
         $keys = array_keys($array);
 

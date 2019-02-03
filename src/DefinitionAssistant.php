@@ -52,7 +52,7 @@ class DefinitionAssistant extends Base
         /**
         * @var array<int, string>
         */
-        $props = TypeCertainty::EnsureArgumentIsArray($maybe::PROPERTIES);
+        $props = $maybe::PROPERTIES;
 
         static::RegisterDaftObjectTypeFromTypeAndProps($maybe, ...$props);
     }

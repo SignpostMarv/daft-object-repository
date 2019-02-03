@@ -16,26 +16,6 @@ class TypeCertainty
 
     /**
     * @param mixed $maybe
-    */
-    public static function EnsureArgumentIsArray($maybe, int $argument = null, string $method = __METHOD__) : array
-    {
-        if ( ! is_array($maybe)) {
-            throw new InvalidArgumentException(
-                'Argument ' .
-                (is_int($argument) ? $argument : self::INDEX_FIRST_ARG) .
-                ' passed to ' .
-                $method .
-                ' must be an array, ' .
-                (is_object($maybe) ? get_class($maybe) : gettype($maybe)) .
-                ' given!'
-            );
-        }
-
-        return $maybe;
-    }
-
-    /**
-    * @param mixed $maybe
     *
     * @template T
     *
