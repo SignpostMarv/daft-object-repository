@@ -243,46 +243,6 @@ class DaftTestObjectTest extends TestCase
                 false,
                 true,
             ],
-            [
-                ReadOnlyBad::class,
-                ClassMethodReturnIsNotArrayOfStringsException::class,
-                (
-                    ReadOnlyBad::class .
-                    '::DaftObjectIdProperties() does not return string[]'
-                ),
-                [
-                    'Foo' => 'Bar',
-                ],
-                true,
-                false,
-            ],
-            [
-                ReadOnlyBadDefinesOwnId::class,
-                ClassDoesNotImplementClassException::class,
-                (
-                    ReadOnlyBadDefinesOwnId::class .
-                    ' does not implement ' .
-                    DefinesOwnIdPropertiesInterface::class
-                ),
-                [
-                    'Foo' => 'Bar',
-                ],
-                true,
-                false,
-            ],
-            [
-                ReadOnlyInsuficientIdProperties::class,
-                ClassMethodReturnHasZeroArrayCountException::class,
-                (
-                    ReadOnlyInsuficientIdProperties::class .
-                    '::DaftObjectIdProperties() must return at least one property'
-                ),
-                [
-                    'Foo' => 'Bar',
-                ],
-                true,
-                false,
-            ],
         ];
     }
 
@@ -489,6 +449,8 @@ class DaftTestObjectTest extends TestCase
     }
 
     /**
+    * @psalm-param class-string<DaftObject> $implementation
+    *
     * @dataProvider ThrowsExceptionProvider
     */
     public function testThrowsException(
@@ -499,17 +461,6 @@ class DaftTestObjectTest extends TestCase
         bool $readable,
         bool $writeable
     ) : void {
-        if ( ! is_subclass_of($implementation, DaftObject::class, true)) {
-            static::markTestSkipped(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                DaftObject::class
-            );
-
-            return;
-        }
-
         $initialCount = count($params);
 
         $params = array_filter($params, 'is_string', ARRAY_FILTER_USE_KEY);

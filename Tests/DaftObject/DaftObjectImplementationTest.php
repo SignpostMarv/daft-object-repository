@@ -894,34 +894,21 @@ class DaftObjectImplementationTest extends TestCase
     }
 
     /**
+    * @psalm-param class-string<DefinesOwnIdPropertiesInterface> $className
+    *
     * @dataProvider dataProviderNonAbstractDefinesOwnIdGoodImplementations
     */
     final public function testHasDefinedAllIdPropertiesCorrectly(
         string $className,
         ReflectionClass $reflector
     ) : void {
-        if ( ! is_subclass_of($className, DefinesOwnIdPropertiesInterface::class, true)) {
-            static::markTestSkipped(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                DefinesOwnIdPropertiesInterface::class
-            );
-
-            return;
-        }
-
-        /**
-        * @var array<int, string>
-        */
         $properties = $className::DaftObjectProperties();
 
         static::assertGreaterThan(0, count($properties));
 
-        /**
-        * @var array<int, string|null>
-        */
         $idProperties = (array) $className::DaftObjectIdProperties();
+
+        static::assertGreaterThan(0, count($properties));
 
         foreach ($idProperties as $property) {
             static::assertIsString(

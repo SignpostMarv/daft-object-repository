@@ -48,8 +48,6 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     */
     public function __construct(array $data = [], bool $writeAll = false)
     {
-        parent::__construct();
-
         if (true === $writeAll) {
             foreach ($data as $k => $v) {
                 if ( ! is_string($k)) {

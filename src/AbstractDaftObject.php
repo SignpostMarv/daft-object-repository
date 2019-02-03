@@ -60,20 +60,6 @@ abstract class AbstractDaftObject implements DaftObject
     */
     const PROPERTIES_WITH_MULTI_TYPED_ARRAYS = [];
 
-    /**
-    * Does some sanity checking.
-    *
-    * @see DefinesOwnIdPropertiesInterface
-    * @see TypeUtilities::CheckTypeDefinesOwnIdProperties()
-    */
-    public function __construct()
-    {
-        TypeUtilities::CheckTypeDefinesOwnIdProperties(
-            static::class,
-            ($this instanceof DefinesOwnIdPropertiesInterface)
-        );
-    }
-
     public function __get(string $property)
     {
         return $this->DoGetSet($property, false);
