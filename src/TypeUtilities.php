@@ -147,17 +147,6 @@ class TypeUtilities
     }
 
     /**
-    * @param mixed $maybe
-    */
-    protected static function FilterMaybeArray($maybe, callable $filter) : array
-    {
-        return array_filter(
-            TypeParanoia::EnsureArgumentIsArray($maybe, TypeParanoia::INDEX_FIRST_ARG, __METHOD__),
-            $filter
-        );
-    }
-
-    /**
     * @psalm-param class-string<DaftObject> $class
     */
     protected static function CachePublicGettersAndSetters(string $class) : void
@@ -225,7 +214,7 @@ class TypeUtilities
             );
         } elseif (
             count($properties) !==
-            count(self::FilterMaybeArray($properties, 'is_string'))
+            count(array_filter($properties, 'is_string'))
         ) {
             throw new ClassMethodReturnIsNotArrayOfStringsException(
                 $class,
