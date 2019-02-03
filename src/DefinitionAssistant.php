@@ -27,6 +27,9 @@ class DefinitionAssistant extends Base
 
     const IS_A_STRINGS = true;
 
+    /**
+    * @psalm-param class-string<DaftObject> $type
+    */
     public static function IsTypeUnregistered(string $type) : bool
     {
         if ( ! is_a($type, DaftObject::class, true)) {
@@ -57,12 +60,21 @@ class DefinitionAssistant extends Base
         static::RegisterDaftObjectTypeFromTypeAndProps($maybe, ...$props);
     }
 
+    /**
+    * {@inheritdoc}
+    *
+    * @psalm-param class-string<DaftObject>|DaftObject $maybe
+    */
     public static function ObtainExpectedProperties($maybe) : array
     {
+        /**
+        * @psalm-var class-string<DaftObject>
+        */
         $maybe = is_object($maybe) ? get_class($maybe) : $maybe;
 
         if (static::IsTypeUnregistered($maybe)) {
-            if (is_a($maybe, AbstractDaftObject::class, self::IS_A_STRINGS)) {
+
+            if (is_a($maybe, AbstractDaftObject::class, true)) {
                 static::RegisterAbstractDaftObjectType($maybe);
             }
         }
@@ -159,11 +171,13 @@ class DefinitionAssistant extends Base
 
     /**
     * @psalm-param class-string<DaftObject> $maybe
+    *
+    * @psalm-return class-string<DaftObject>
     */
     private static function RegisterDaftObjectTypeFromTypeAndProps(
         string $maybe,
         string ...$props
-    ) : void {
+    ) : string {
         $args = static::TypeAndGetterAndSetterClosureWithProps($maybe, ...$props);
 
         /**
@@ -177,7 +191,8 @@ class DefinitionAssistant extends Base
             $args[self::INT_ARRAY_INDEX_SETTER],
             ...$props
         );
-        self::MaybeRegisterAdditionalTypes($args[0]);
+
+        return self::MaybeRegisterAdditionalTypes($args[self::INT_ARRAY_INDEX_TYPE]);
     }
 
     /**
@@ -187,19 +202,36 @@ class DefinitionAssistant extends Base
     */
     private static function MaybeRegisterAdditionalTypes(string $maybe) : string
     {
-        foreach (
+        return array_reduce(
+            array_filter(
             [
                 DefinesOwnArrayIdInterface::class,
                 DefinesOwnIntegerIdInterface::class,
                 DefinesOwnStringIdInterface::class,
-            ] as $otherType
-        ) {
-            if ($otherType !== $maybe && self::IsTypeUnregistered($otherType)) {
-                self::RegisterDaftObjectTypeFromTypeAndProps($otherType, 'id');
-            }
-        }
+                ],
+                function (string $otherType) use ($maybe) : bool {
+                    return $otherType !== $maybe;
+                }
+            ),
+            /**
+            * @psalm-param class-string<DaftObject> $maybe
+            * @psolm-param class-string<DaftObject> $otherType
+            */
+            function (string $maybe, string $otherType) : string {
+                /**
+                * @psalm-var class-string<DaftObject>
+                */
+                $otherType = $otherType;
 
-        return $maybe;
+                if (self::IsTypeUnregistered($otherType)) {
+
+                    $otherType = self::RegisterDaftObjectTypeFromTypeAndProps($otherType, 'id');
+                }
+
+                return $maybe;
+            },
+            $maybe
+        );
     }
 
     /**

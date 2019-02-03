@@ -94,7 +94,7 @@ class TypeUtilities
         return ($SetNotGet ? 'Set' : 'Get') . ucfirst($prop);
     }
 
-    protected static function HasMethod(
+    private static function HasMethod(
         string $class,
         string $property,
         bool $SetNotGet,
@@ -114,7 +114,7 @@ class TypeUtilities
     /**
     * @psalm-param class-string<DaftObject> $class
     */
-    protected static function CachePublicGettersAndSetters(string $class) : void
+    private static function CachePublicGettersAndSetters(string $class) : void
     {
         if (false === isset(self::$Getters[$class])) {
             self::$Getters[$class] = [];
@@ -142,7 +142,7 @@ class TypeUtilities
     /**
     * @psalm-param class-string<DaftObject> $class
     */
-    protected static function CachePublicGettersAndSettersProperties(string $class) : void
+    private static function CachePublicGettersAndSettersProperties(string $class) : void
     {
         foreach (
             DefinitionAssistant::ObtainExpectedProperties($class) as $prop

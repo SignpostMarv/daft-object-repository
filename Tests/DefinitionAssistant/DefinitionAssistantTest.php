@@ -73,40 +73,6 @@ class DefinitionAssistantTest extends TestCase
         DefinitionAssistant::AutoRegisterType($type, ...$properties);
     }
 
-    public function testNotDaftObject() : void
-    {
-        DefinitionAssistant::ClearTypes();
-        static::expectException(InvalidArgumentException::class);
-        static::expectExceptionMessage(
-            'Argument 1 passed to ' .
-            'SignpostMarv\DaftObject\DefinitionAssistant::IsTypeUnregistered()' .
-            ' must be an implementation of ' .
-            DaftObject::class .
-            ', ' .
-            get_class($this) .
-            ' given!'
-        );
-
-        DefinitionAssistant::ObtainExpectedProperties($this);
-    }
-
-    public function testNotDaftObjectIsTypeUnregistered() : void
-    {
-        DefinitionAssistant::ClearTypes();
-        static::expectException(InvalidArgumentException::class);
-        static::expectExceptionMessage(
-            'Argument 1 passed to ' .
-            'SignpostMarv\DaftObject\DefinitionAssistant::IsTypeUnregistered()' .
-            ' must be an implementation of ' .
-            DaftObject::class .
-            ', ' .
-            get_class($this) .
-            ' given!'
-        );
-
-        DefinitionAssistant::IsTypeUnregistered(static::class);
-    }
-
     public function testRegisterAbstractDaftObjectTypeHasAlreadyBeenRegistered() : void
     {
         DefinitionAssistant::ClearTypes();

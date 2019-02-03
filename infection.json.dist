@@ -11,15 +11,9 @@
     },
     "mutators": {
         "@default": true,
-        "Foreach_": {
-            "ignore": [
-                "SignpostMarv\\DaftObject\\DefinitionAssistant::MaybeRegisterAdditionalTypes"
-            ]
-        },
         "LogicalAnd": {
             "ignore": [
                 "SignpostMarv\\DaftObject\\AbstractArrayBackedDaftObject::NudgePropertyValue",
-                "SignpostMarv\\DaftObject\\TypeUtilities::HasMethod",
                 "SignpostMarv\\DaftObject\\PHPStan\\ClassReflectionExtension::MaybeRegisterTypesOrExitEarly"
             ]
         },
@@ -31,8 +25,6 @@
         "MethodCallRemoval": {
             "ignore": [
                 "SignpostMarv\\DaftObject\\DaftObjectMemoryRepository::RememberDaftObject",
-                "SignpostMarv\\DaftObject\\DefinitionAssistant::MaybeRegisterAdditionalTypes",
-                "SignpostMarv\\DaftObject\\DefinitionAssistant::RegisterDaftObjectTypeFromTypeAndProps",
                 "SignpostMarv\\DaftObject\\PHPStan\\ClassReflectionExtension::MaybeRegisterTypesOrExitEarly",
                 "SignpostMarv\\DaftObject\\TypeUtilities::DaftObjectPublicOrProtectedGetters"
             ]
@@ -43,25 +35,11 @@
                 "SignpostMarv\\DaftObject\\DefinitionAssistant::MaybeRegisterAdditionalTypes"
             ]
         },
-        "Plus": {
-            "ignore": [
-                "SignpostMarv\\DaftObject\\TypeParanoia::ThrowIfNotType"
-            ]
-        },
-        "ProtectedVisibility": {
-            "ignore": [
-                "SignpostMarv\\DaftObject\\TypeUtilities::CachePublicGettersAndSetters",
-                "SignpostMarv\\DaftObject\\TypeUtilities::CachePublicGettersAndSettersProperties",
-                "SignpostMarv\\DaftObject\\TypeUtilities::CheckTypeDefinesOwnIdPropertiesIsImplementation",
-                "SignpostMarv\\DaftObject\\TypeUtilities::CountMaybeArray",
-                "SignpostMarv\\DaftObject\\TypeUtilities::FilterMaybeArray",
-                "SignpostMarv\\DaftObject\\TypeUtilities::HasMethod"
-            ]
-        },
         "Throw_": {
             "ignore": [
                 "SignpostMarv\\DaftObject\\AbstractDaftObject::CompareToDaftSortableObject",
-                "SignpostMarv\\DaftObject\\AbstractArrayBackedDaftObject::MaybeThrowForPropertyOnNudge"
+                "SignpostMarv\\DaftObject\\AbstractArrayBackedDaftObject::MaybeThrowForPropertyOnNudge",
+                "SignpostMarv\\DaftObject\\DefinitionAssistant::IsTypeUnregistered"
             ]
         }
     }
