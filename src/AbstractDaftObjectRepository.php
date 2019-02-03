@@ -11,7 +11,7 @@ namespace SignpostMarv\DaftObject;
 /**
 * @template T as DefinesOwnIdPropertiesInterface&DaftObjectCreatedByArray
 *
-* @template-extends DaftObjectRepository<DefinesOwnIdPropertiesInterface&DaftObjectCreatedByArray>
+* @template-implements DaftObjectRepository<DefinesOwnIdPropertiesInterface&DaftObjectCreatedByArray>
 */
 abstract class AbstractDaftObjectRepository implements DaftObjectRepository
 {

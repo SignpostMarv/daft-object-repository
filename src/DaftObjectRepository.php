@@ -60,7 +60,7 @@ interface DaftObjectRepository
     *
     * @psalm-param class-string<T> $type
     *
-    * @return static
+    * @return static<T>
     */
     public static function DaftObjectRepositoryByType(string $type, ...$args) : self;
 
