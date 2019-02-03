@@ -26,7 +26,6 @@ use SignpostMarv\DaftObject\DaftSortableObject;
 use SignpostMarv\DaftObject\DateTimeImmutableTestObject;
 use SignpostMarv\DaftObject\DefinesOwnIdPropertiesInterface;
 use SignpostMarv\DaftObject\IntegerIdBasedDaftObject;
-use SignpostMarv\DaftObject\JsonTypeUtilities;
 use SignpostMarv\DaftObject\NudgesIncorrectly;
 use SignpostMarv\DaftObject\PasswordHashTestObject;
 use SignpostMarv\DaftObject\PropertyNotNullableException;
