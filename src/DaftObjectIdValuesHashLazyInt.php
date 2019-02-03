@@ -33,7 +33,7 @@ trait DaftObjectIdValuesHashLazyInt
             */
             $val = $object->$prop;
 
-            $id[] = TypeParanoia::VarExportNonScalars($val);
+            $id[] = static::VarExportNonScalars($val);
         }
 
         return static::DaftObjectIdValuesHash($id);
@@ -48,18 +48,33 @@ trait DaftObjectIdValuesHashLazyInt
     {
         $className = static::class;
 
-        $objectIds = implode('::', array_map(TypeParanoia::class . '::VarExportNonScalars', $id));
+        $objectIds = implode('::', array_map(static::class . '::VarExportNonScalars', $id));
 
         if ( ! isset(self::$ids[$className])) {
             self::$ids[$className] = [];
         }
 
         if ( ! isset(self::$ids[$className][$objectIds])) {
-            self::$ids[$className][$objectIds] = TypeParanoia::VarExportNonScalars(count(
+            self::$ids[$className][$objectIds] = static::VarExportNonScalars(count(
                 self::$ids[$className]
             ));
         }
 
         return self::$ids[$className][$objectIds];
+    }
+
+    /**
+    * @param mixed $maybe
+    */
+    private static function VarExportNonScalars($maybe) : string
+    {
+        if (is_string($maybe)) {
+            return $maybe;
+        }
+
+        return
+            is_scalar($maybe)
+                ? (string) $maybe
+                : var_export($maybe, true);
     }
 }

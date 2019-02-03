@@ -8,7 +8,7 @@ namespace SignpostMarv\DaftObject;
 
 use InvalidArgumentException;
 
-class TypeParanoia extends TypeCertainty
+class TypeParanoia
 {
     const INDEX_SECOND_ARG = 2;
 
