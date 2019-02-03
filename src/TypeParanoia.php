@@ -15,25 +15,6 @@ class TypeParanoia extends TypeCertainty
     const INT_ARG_OFFSET = 5;
 
     /**
-    * @param mixed $needle
-    * @param mixed $haystack
-    */
-    public static function MaybeInMaybeArray($needle, $haystack) : bool
-    {
-        $haystack = self::EnsureArgumentIsArray($haystack, self::INDEX_SECOND_ARG, __METHOD__);
-
-        return static::MaybeInArray($needle, $haystack);
-    }
-
-    /**
-    * @param mixed $needle
-    */
-    public static function MaybeInArray($needle, array $haystack) : bool
-    {
-        return in_array($needle, $haystack, true);
-    }
-
-    /**
     * @tempalte T as class-string
     */
     public static function IsThingStrings(string $maybe, string $thing) : bool
@@ -245,7 +226,11 @@ class TypeParanoia extends TypeCertainty
                     return false;
                 }
 
-                return TypeParanoia::MaybeInArray(gettype($maybe), $types);
+                return in_array(
+                    gettype($maybe),
+                    $types,
+                    DefinitionAssistant::IN_ARRAY_STRICT_MODE
+                );
             }
         );
 
@@ -270,7 +255,10 @@ class TypeParanoia extends TypeCertainty
         bool $autoTrimStrings,
         string ...$types
     ) : array {
-        if (TypeParanoia::MaybeInArray('string', $types) && $autoTrimStrings) {
+        if (
+            $autoTrimStrings &&
+            in_array('string', $types, DefinitionAssistant::IN_ARRAY_STRICT_MODE)
+        ) {
             $value = array_map(
                 /**
                 * @param mixed $maybe
