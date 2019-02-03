@@ -15,7 +15,6 @@ use SignpostMarv\DaftMagicPropertyAnalysis\PHPStan\ClassReflectionExtension as B
 use SignpostMarv\DaftObject\AbstractDaftObject;
 use SignpostMarv\DaftObject\DaftObject;
 use SignpostMarv\DaftObject\DefinitionAssistant;
-use SignpostMarv\DaftObject\TypeParanoia;
 
 /**
 * @template-extends Base<DaftObject>
