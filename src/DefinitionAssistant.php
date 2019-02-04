@@ -153,7 +153,7 @@ class DefinitionAssistant extends Base
     *
     * @psalm-return class-string<DaftObject>
     */
-    private static function RegisterDaftObjectTypeFromTypeAndProps(
+    protected static function RegisterDaftObjectTypeFromTypeAndProps(
         string $maybe,
         string ...$props
     ) : string {
@@ -179,7 +179,7 @@ class DefinitionAssistant extends Base
     *
     * @psalm-return class-string<DaftObject>
     */
-    private static function MaybeRegisterAdditionalTypes(string $maybe) : string
+    protected static function MaybeRegisterAdditionalTypes(string $maybe) : string
     {
         return array_reduce(
             array_filter(

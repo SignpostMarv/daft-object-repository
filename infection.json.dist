@@ -37,6 +37,12 @@
                 "SignpostMarv\\DaftObject\\DefinitionAssistant::MaybeRegisterAdditionalTypes"
             ]
         },
+        "ProtectedVisibility": {
+            "ignore": [
+                "SignpostMarv\\DaftObject\\DefinitionAssistant::MaybeRegisterAdditionalTypes",
+                "SignpostMarv\\DaftObject\\DefinitionAssistant::RegisterDaftObjectTypeFromTypeAndProps"
+            ]
+        },
         "Throw_": {
             "ignore": [
                 "SignpostMarv\\DaftObject\\AbstractDaftObject::CompareToDaftSortableObject",
