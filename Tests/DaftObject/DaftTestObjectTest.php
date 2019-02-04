@@ -10,7 +10,6 @@ use ReflectionMethod;
 use SignpostMarv\DaftObject\DaftObject;
 use SignpostMarv\DaftObject\DaftObjectWorm;
 use SignpostMarv\DaftObject\DefinesOwnArrayIdInterface;
-use SignpostMarv\DaftObject\DefinesOwnIdPropertiesInterface;
 use SignpostMarv\DaftObject\DefinesOwnIntegerIdInterface;
 use SignpostMarv\DaftObject\DefinesOwnStringIdInterface;
 use SignpostMarv\DaftObject\PropertyNotNullableException;
