@@ -127,30 +127,6 @@ class DefinitionAssistant extends Base
     }
 
     /**
-    * @psalm-param class-string<T> $type
-    *
-    * @psalm-return array{0:class-string<T>, 1:null|Closure(string):?string, 2:null|Closure(string):?string, 4:string}
-    */
-    private static function TypeAndGetterAndSetterClosureWithProps(
-        string $type,
-        string ...$props
-    ) : array {
-        /**
-        * @psalm-var array{0:class-string<T>, 1:null|Closure(string):?string, 2:null|Closure(string):?string, 4:string}
-        */
-        $out = array_merge(
-            [
-                $type,
-                static::SetterOrGetterClosure($type, self::BOOL_EXPECTING_GETTER, ...$props),
-                static::SetterOrGetterClosure($type, self::BOOL_EXPECTING_SETTER, ...$props),
-            ],
-            $props
-        );
-
-        return $out;
-    }
-
-    /**
     * @psalm-param class-string<T> $maybe
     *
     * @psalm-return class-string<T>
@@ -216,6 +192,30 @@ class DefinitionAssistant extends Base
                 return $maybe;
             },
             $maybe
+        );
+
+        return $out;
+    }
+
+    /**
+    * @psalm-param class-string<T> $type
+    *
+    * @psalm-return array{0:class-string<T>, 1:null|Closure(string):?string, 2:null|Closure(string):?string, 4:string}
+    */
+    private static function TypeAndGetterAndSetterClosureWithProps(
+        string $type,
+        string ...$props
+    ) : array {
+        /**
+        * @psalm-var array{0:class-string<T>, 1:null|Closure(string):?string, 2:null|Closure(string):?string, 4:string}
+        */
+        $out = array_merge(
+            [
+                $type,
+                static::SetterOrGetterClosure($type, self::BOOL_EXPECTING_GETTER, ...$props),
+                static::SetterOrGetterClosure($type, self::BOOL_EXPECTING_SETTER, ...$props),
+            ],
+            $props
         );
 
         return $out;
