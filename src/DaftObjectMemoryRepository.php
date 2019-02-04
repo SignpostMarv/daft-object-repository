@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace SignpostMarv\DaftObject;
 
 /**
-* @template T as DefinesOwnIdPropertiesInterface&DaftObjectCreatedByArray
+* @template T as SuitableForRepositoryType
 *
 * @template-extends AbstractDaftObjectRepository<T>
 */
@@ -18,23 +18,11 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     const BOOL_DEFAULT_ASSUMEDOESNOTEXIST = false;
 
     /**
-    * @var DefinesOwnIdPropertiesInterface[]
-    *
-    * @psalm-var T[]
-    */
-    protected $memory = [];
-
-    /**
-    * @var mixed[][]
-    */
-    protected $data = [];
-
-    /**
     * {@inheritdoc}
     *
     * @psalm-param T $object
     */
-    public function RememberDaftObject(DefinesOwnIdPropertiesInterface $object) : void
+    public function RememberDaftObject(SuitableForRepositoryType $object) : void
     {
         $hashId = $object::DaftObjectIdHash($object);
 
@@ -62,7 +50,7 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     *
     * @psalm-return T|null
     */
-    public function RecallDaftObject($id) : ? DefinesOwnIdPropertiesInterface
+    public function RecallDaftObject($id) : ? SuitableForRepositoryType
     {
         $hashId = $this->type::DaftObjectIdValuesHash(
             is_array($id) ? $id : [$id]
@@ -77,7 +65,7 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     * @psalm-param T $object
     */
     public function RememberDaftObjectData(
-        DefinesOwnIdPropertiesInterface $object,
+        SuitableForRepositoryType $object,
         bool $assumeDoesNotExist = self::BOOL_DEFAULT_ASSUMEDOESNOTEXIST
     ) : void {
         $hashId = $object::DaftObjectIdHash($object);
@@ -96,7 +84,7 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     *
     * @psalm-return T|null
     */
-    protected function RecallDaftObjectFromData($id) : ? DefinesOwnIdPropertiesInterface
+    protected function RecallDaftObjectFromData($id) : ? SuitableForRepositoryType
     {
         $hashId = $this->type::DaftObjectIdValuesHash(
             is_array($id) ? $id : [$id]

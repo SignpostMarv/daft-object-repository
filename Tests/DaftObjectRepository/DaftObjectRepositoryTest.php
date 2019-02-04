@@ -15,23 +15,21 @@ use SignpostMarv\DaftObject\DaftObjectRepository;
 use SignpostMarv\DaftObject\DefinesOwnIdPropertiesInterface;
 use SignpostMarv\DaftObject\ReadWrite;
 use SignpostMarv\DaftObject\ReadWriteTwoColumnPrimaryKey;
+use SignpostMarv\DaftObject\SuitableForRepositoryType;
 use SignpostMarv\DaftObject\Tests\TestCase;
 
 class DaftObjectRepositoryTest extends TestCase
 {
     /**
-    * @psalm-param class-string<DefinesOwnIdPropertiesInterface&DaftObjectCreatedByArray> $type
+    * @psalm-param class-string<SuitableForRepositoryType> $type
     */
     public static function DaftObjectRepositoryByType(string $type) : DaftObjectRepository
     {
         return DaftObjectMemoryRepository::DaftObjectRepositoryByType($type);
     }
 
-    /**
-    * @psalm-param DefinesOwnIdPropertiesInterface&DaftObjectCreatedByArray $object
-    */
     public static function DaftObjectRepositoryByDaftObject(
-        DefinesOwnIdPropertiesInterface $object
+        SuitableForRepositoryType $object
     ) : DaftObjectRepository {
         return DaftObjectMemoryRepository::DaftObjectRepositoryByDaftObject($object);
     }
@@ -57,7 +55,7 @@ class DaftObjectRepositoryTest extends TestCase
     }
 
     /**
-    * @psalm-param class-string<DefinesOwnIdPropertiesInterface&DaftObjectCreatedByArray> $objImplementation
+    * @psalm-param class-string<SuitableForRepositoryType> $objImplementation
     *
     * @dataProvider RepositoryDataProvider
     */
@@ -82,7 +80,7 @@ class DaftObjectRepositoryTest extends TestCase
 
         foreach ($paramsArray as $params) {
             /**
-            * @var DefinesOwnIdPropertiesInterface&DaftObjectCreatedByArray
+            * @var SuitableForRepositoryType
             */
             $obj = new $objImplementation($params, $writeable);
 
@@ -128,7 +126,7 @@ class DaftObjectRepositoryTest extends TestCase
             $repo->ForgetDaftObject($obj);
 
             /**
-            * @var DefinesOwnIdPropertiesInterface|null
+            * @var SuitableForRepositoryType|null
             */
             $retrieved = $repo->RecallDaftObject($ids);
 
@@ -148,22 +146,24 @@ class DaftObjectRepositoryTest extends TestCase
 
     /**
     * @param (scalar|array|object|null)[] $ids
+    *
+    * @psalm-param class-string<SuitableForRepositoryType> $objImplementation
     */
     protected function repositoryForImplementaionTestRetrievedInLoopOne(
-        DefinesOwnIdPropertiesInterface $retrieved,
-        DefinesOwnIdPropertiesInterface $obj,
+        SuitableForRepositoryType $retrieved,
+        SuitableForRepositoryType $obj,
         DaftObjectRepository $repo,
         string $objImplementation,
         array $ids,
         array $idProps,
         bool $writeable
     ) : void {
-        if ( ! is_subclass_of($objImplementation, DefinesOwnIdPropertiesInterface::class, true)) {
+        if ( ! is_subclass_of($objImplementation, SuitableForRepositoryType::class, true)) {
             static::markTestSkipped(
                 'Argument 1 passed to ' .
                 __METHOD__ .
                 ' must be an implementation of ' .
-                DefinesOwnIdPropertiesInterface::class
+                SuitableForRepositoryType::class
             );
 
             return;
@@ -238,7 +238,7 @@ class DaftObjectRepositoryTest extends TestCase
         $repo->ForgetDaftObject($retrieved);
 
         /**
-        * @var DefinesOwnIdPropertiesInterface|null
+        * @var SuitableForRepositoryType|null
         */
         $retrieved = $repo->RecallDaftObject($ids);
 
@@ -259,8 +259,8 @@ class DaftObjectRepositoryTest extends TestCase
     * @param (scalar|array|object|null)[] $ids
     */
     protected function repositoryForImplementaionTestRetrievedInLoopTwo(
-        DefinesOwnIdPropertiesInterface $retrieved,
-        DefinesOwnIdPropertiesInterface $obj,
+        SuitableForRepositoryType $retrieved,
+        SuitableForRepositoryType $obj,
         DaftObjectRepository $repo,
         string $objImplementation,
         array $ids,

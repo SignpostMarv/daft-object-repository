@@ -20,6 +20,7 @@ use SignpostMarv\DaftObject\ReadOnlyTwoColumnPrimaryKey;
 use SignpostMarv\DaftObject\ReadWrite;
 use SignpostMarv\DaftObject\ReadWriteTwoColumnPrimaryKey;
 use SignpostMarv\DaftObject\ReadWriteWorm;
+use SignpostMarv\DaftObject\SuitableForRepositoryType;
 use SignpostMarv\DaftObject\Tests\TestCase;
 use SignpostMarv\DaftObject\UndefinedPropertyException;
 use SignpostMarv\DaftObject\WriteOnly;
@@ -484,16 +485,18 @@ class DaftTestObjectTest extends TestCase
     /**
     * @dataProvider DefinesOwnUntypedIdInterfaceProvider
     *
+    * @psalm-param class-string<SuitableForRepositoryType> $implementation
+    *
     * @psalm-suppress NoInterfaceProperties
     */
     public function testDefinesOwnUntypedIdInterface(string $implementation, array $params) : void
     {
-        if ( ! is_subclass_of($implementation, DefinesOwnIdPropertiesInterface::class, true)) {
+        if ( ! is_subclass_of($implementation, SuitableForRepositoryType::class, true)) {
             static::markTestSkipped(
                 'Argument 1 passed to ' .
                 __METHOD__ .
                 ' must be an implementation of ' .
-                DefinesOwnIdPropertiesInterface::class
+                SuitableForRepositoryType::class
             );
 
             return;

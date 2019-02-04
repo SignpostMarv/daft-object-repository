@@ -7,7 +7,7 @@ declare(strict_types=1);
 namespace SignpostMarv\DaftObject;
 
 class ReadWriteWorm extends AbstractTestObject implements
-    DefinesOwnIdPropertiesInterface,
+    SuitableForRepositoryType,
     DaftObjectWorm
 {
     use DaftObjectIdValuesHashLazyInt;

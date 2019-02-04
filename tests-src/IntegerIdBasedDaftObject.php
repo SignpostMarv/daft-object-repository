@@ -12,7 +12,7 @@ class IntegerIdBasedDaftObject
     extends
         AbstractArrayBackedDaftObject
     implements
-        DefinesOwnIdPropertiesInterface
+        SuitableForRepositoryType
 {
     use DaftObjectIdValuesHashLazyInt;
 

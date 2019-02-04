@@ -6,7 +6,7 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject;
 
-class ReadOnly extends AbstractTestObject implements DefinesOwnStringIdInterface
+class ReadOnly extends AbstractTestObject implements SuitableForRepositoryType, DefinesOwnStringIdInterface
 {
     use DaftObjectIdValuesHashLazyInt;
     use DefineIdPropertiesCorrectlyTrait;

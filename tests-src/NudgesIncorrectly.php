@@ -6,7 +6,7 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject;
 
-class NudgesIncorrectly extends AbstractTestObject implements DefinesOwnIdPropertiesInterface
+class NudgesIncorrectly extends AbstractTestObject implements SuitableForRepositoryType
 {
     use DaftObjectIdValuesHashLazyInt;
     use ReadTrait, WriteTrait, DefineIdPropertiesCorrectlyTrait;

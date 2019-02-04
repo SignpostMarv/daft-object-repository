@@ -9,14 +9,14 @@ declare(strict_types=1);
 namespace SignpostMarv\DaftObject;
 
 /**
-* @template T as DefinesOwnIdPropertiesInterface
+* @template T as SuitableForRepositoryType
 */
 interface DaftObjectRepository
 {
     /**
     * @psalm-param T $object
     */
-    public function RememberDaftObject(DefinesOwnIdPropertiesInterface $object) : void;
+    public function RememberDaftObject(SuitableForRepositoryType $object) : void;
 
     /**
     * Allow data to be persisted without assuming the object exists, i.e. if it has no id yet.
@@ -24,14 +24,14 @@ interface DaftObjectRepository
     * @psalm-param T $object
     */
     public function RememberDaftObjectData(
-        DefinesOwnIdPropertiesInterface $object,
+        SuitableForRepositoryType $object,
         bool $assumeDoesNotExist = false
     ) : void;
 
     /**
     * @psalm-param T $object
     */
-    public function ForgetDaftObject(DefinesOwnIdPropertiesInterface $object) : void;
+    public function ForgetDaftObject(SuitableForRepositoryType $object) : void;
 
     /**
     * @param scalar|(scalar|array|object|null)[] $id
@@ -41,7 +41,7 @@ interface DaftObjectRepository
     /**
     * @psalm-param T $object
     */
-    public function RemoveDaftObject(DefinesOwnIdPropertiesInterface $object) : void;
+    public function RemoveDaftObject(SuitableForRepositoryType $object) : void;
 
     /**
     * @param scalar|(scalar|array|object|null)[] $id
@@ -53,7 +53,7 @@ interface DaftObjectRepository
     *
     * @psalm-return T|null
     */
-    public function RecallDaftObject($id) : ? DefinesOwnIdPropertiesInterface;
+    public function RecallDaftObject($id) : ? SuitableForRepositoryType;
 
     /**
     * @param mixed ...$args
@@ -76,7 +76,7 @@ interface DaftObjectRepository
     * @psalm-return DaftObjectRepository<T>
     */
     public static function DaftObjectRepositoryByDaftObject(
-        DefinesOwnIdPropertiesInterface $object,
+        SuitableForRepositoryType $object,
         ...$args
     ) : self;
 }

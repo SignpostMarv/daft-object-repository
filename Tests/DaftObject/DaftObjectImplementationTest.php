@@ -894,7 +894,7 @@ class DaftObjectImplementationTest extends TestCase
     }
 
     /**
-    * @psalm-param class-string<DefinesOwnIdPropertiesInterface> $className
+    * @psalm-param class-string<\SignpostMarv\DaftObject\SuitableForRepositoryType> $className
     *
     * @dataProvider dataProviderNonAbstractDefinesOwnIdGoodImplementations
     */

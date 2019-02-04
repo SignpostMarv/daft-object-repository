@@ -9,14 +9,16 @@ declare(strict_types=1);
 namespace SignpostMarv\DaftObject;
 
 /**
-* @template T as DefinesOwnIdPropertiesInterface&DaftObjectCreatedByArray
+* @template T as SuitableForRepositoryType
 *
 * @template-implements DaftObjectRepository<T>
 */
 abstract class AbstractDaftObjectRepository implements DaftObjectRepository
 {
     /**
-    * @var DefinesOwnIdPropertiesInterface[]
+    * @var array<string, SuitableForRepositoryType>
+    *
+    * @psalm-var array<string, T>
     */
     protected $memory = [];
 
@@ -52,7 +54,7 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
     /**
     * {@inheritdoc}
     */
-    public function ForgetDaftObject(DefinesOwnIdPropertiesInterface $object) : void
+    public function ForgetDaftObject(SuitableForRepositoryType $object) : void
     {
         /**
         * @var (scalar|array|object|null)[]
@@ -74,7 +76,7 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
     /**
     * {@inheritdoc}
     */
-    public function RemoveDaftObject(DefinesOwnIdPropertiesInterface $object) : void
+    public function RemoveDaftObject(SuitableForRepositoryType $object) : void
     {
         /**
         * @var (scalar|array|object|null)[]
@@ -120,7 +122,7 @@ abstract class AbstractDaftObjectRepository implements DaftObjectRepository
     * @psalm-return AbstractDaftObjectRepository<T>
     */
     public static function DaftObjectRepositoryByDaftObject(
-        DefinesOwnIdPropertiesInterface $object,
+        SuitableForRepositoryType $object,
         ...$args
     ) : DaftObjectRepository {
         /**
