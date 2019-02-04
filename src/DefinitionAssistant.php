@@ -11,7 +11,9 @@ use InvalidArgumentException;
 use SignpostMarv\DaftMagicPropertyAnalysis\DefinitionAssistant as Base;
 
 /**
-* @template-extends Base<DaftObject>
+* @template T as DaftObject
+*
+* @template-extends Base<T>
 */
 class DefinitionAssistant extends Base
 {
@@ -43,12 +45,12 @@ class DefinitionAssistant extends Base
     /**
     * {@inheritdoc}
     *
-    * @psalm-param class-string<DaftObject>|DaftObject $maybe
+    * @psalm-param class-string<T>|T $maybe
     */
     public static function ObtainExpectedProperties($maybe) : array
     {
         /**
-        * @psalm-var class-string<DaftObject>
+        * @psalm-var class-string<T>
         */
         $maybe = is_object($maybe) ? get_class($maybe) : $maybe;
 
@@ -64,7 +66,7 @@ class DefinitionAssistant extends Base
     }
 
     /**
-    * @psalm-param class-string<DaftObject> $type
+    * @psalm-param class-string<T> $type
     */
     public static function AutoRegisterType(string $type, string ...$properties) : void
     {
@@ -125,16 +127,16 @@ class DefinitionAssistant extends Base
     }
 
     /**
-    * @psalm-param class-string<DaftObject> $type
+    * @psalm-param class-string<T> $type
     *
-    * @psalm-return array{0:class-string<DaftObject>, 1:null|Closure(string):?string, 2:null|Closure(string):?string, 4:string}
+    * @psalm-return array{0:class-string<T>, 1:null|Closure(string):?string, 2:null|Closure(string):?string, 4:string}
     */
     private static function TypeAndGetterAndSetterClosureWithProps(
         string $type,
         string ...$props
     ) : array {
         /**
-        * @psalm-var array{0:class-string<DaftObject>, 1:null|Closure(string):?string, 2:null|Closure(string):?string, 4:string}
+        * @psalm-var array{0:class-string<T>, 1:null|Closure(string):?string, 2:null|Closure(string):?string, 4:string}
         */
         $out = array_merge(
             [
@@ -149,9 +151,9 @@ class DefinitionAssistant extends Base
     }
 
     /**
-    * @psalm-param class-string<DaftObject> $maybe
+    * @psalm-param class-string<T> $maybe
     *
-    * @psalm-return class-string<DaftObject>
+    * @psalm-return class-string<T>
     */
     protected static function RegisterDaftObjectTypeFromTypeAndProps(
         string $maybe,
@@ -171,17 +173,25 @@ class DefinitionAssistant extends Base
             ...$props
         );
 
-        return self::MaybeRegisterAdditionalTypes($args[self::INT_ARRAY_INDEX_TYPE]);
+        /**
+        * @psalm-var class-string<T>
+        */
+        $out = self::MaybeRegisterAdditionalTypes($args[self::INT_ARRAY_INDEX_TYPE]);
+
+        return $out;
     }
 
     /**
-    * @psalm-param class-string<DaftObject> $maybe
+    * @psalm-param class-string<T> $maybe
     *
-    * @psalm-return class-string<DaftObject>
+    * @psalm-return class-string<T>
     */
     protected static function MaybeRegisterAdditionalTypes(string $maybe) : string
     {
-        return array_reduce(
+        /**
+        * @psalm-var class-string<T>
+        */
+        $out = array_reduce(
             array_filter(
                 [
                     DefinesOwnArrayIdInterface::class,
@@ -193,15 +203,12 @@ class DefinitionAssistant extends Base
                 }
             ),
             /**
-            * @psalm-param class-string<DaftObject> $maybe
-            * @psolm-param class-string<DaftObject> $otherType
+            * @psalm-param class-string<T> $maybe
+            * @psalm-param class-string<T> $otherType
+            *
+            * @psalm-return class-string<T>
             */
             function (string $maybe, string $otherType) : string {
-                /**
-                * @psalm-var class-string<DaftObject>
-                */
-                $otherType = $otherType;
-
                 if (self::IsTypeUnregistered($otherType)) {
                     self::RegisterDaftObjectTypeFromTypeAndProps($otherType, 'id');
                 }
@@ -210,6 +217,8 @@ class DefinitionAssistant extends Base
             },
             $maybe
         );
+
+        return $out;
     }
 
     /**
