@@ -127,13 +127,13 @@ class TypeUtilities
                     true
                 )
             ) {
-                /**
-                * @psalm-var class-string<DefinesOwnIdPropertiesInterface>
-                */
-                $class = $class;
-
                 self::$Getters[$class]['id'] = self::BOOL_METHOD_IS_PUBLIC;
             }
+
+            /**
+            * @psalm-var class-string<DaftObject>
+            */
+            $class = $class;
 
             static::CachePublicGettersAndSettersProperties($class);
         }
