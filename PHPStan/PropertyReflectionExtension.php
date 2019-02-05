@@ -12,7 +12,9 @@ use SignpostMarv\DaftMagicPropertyAnalysis\PHPStan\PropertyReflectionExtension a
 use SignpostMarv\DaftObject\DaftObject;
 
 /**
-* @template-extends Base<DaftObject>
+* @template T as \SignpostMarv\DaftObject\DaftObject
+*
+* @template-extends Base<T>
 */
 class PropertyReflectionExtension extends Base
 {
