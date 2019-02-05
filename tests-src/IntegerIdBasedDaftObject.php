@@ -14,6 +14,9 @@ class IntegerIdBasedDaftObject
     implements
         SuitableForRepositoryType
 {
+    /**
+    * @template-uses DaftObjectIdValuesHashLazyInt<IntegerIdBasedDaftObject>
+    */
     use DaftObjectIdValuesHashLazyInt;
 
     const PROPERTIES = [

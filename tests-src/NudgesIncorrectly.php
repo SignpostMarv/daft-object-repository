@@ -8,6 +8,9 @@ namespace SignpostMarv\DaftObject;
 
 class NudgesIncorrectly extends AbstractTestObject implements SuitableForRepositoryType
 {
+    /**
+    * @template-uses DaftObjectIdValuesHashLazyInt<NudgesIncorrectly>
+    */
     use DaftObjectIdValuesHashLazyInt;
     use ReadTrait, WriteTrait, DefineIdPropertiesCorrectlyTrait;
 

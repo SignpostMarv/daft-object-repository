@@ -8,6 +8,9 @@ namespace SignpostMarv\DaftObject;
 
 class ReadOnlyTwoColumnPrimaryKey extends AbstractTestObject implements DefinesOwnArrayIdInterface
 {
+    /**
+    * @template-uses DaftObjectIdValuesHashLazyInt<ReadOnlyTwoColumnPrimaryKey>
+    */
     use DaftObjectIdValuesHashLazyInt;
     use DefineArrayIdPropertiesCorrectlyTrait;
     use ReadTrait;

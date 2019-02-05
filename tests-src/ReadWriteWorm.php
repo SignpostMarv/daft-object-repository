@@ -10,6 +10,9 @@ class ReadWriteWorm extends AbstractTestObject implements
     SuitableForRepositoryType,
     DaftObjectWorm
 {
+    /**
+    * @template-uses DaftObjectIdValuesHashLazyInt<ReadWriteWorm>
+    */
     use DaftObjectIdValuesHashLazyInt;
     use ReadTrait, WriteTrait, DefineIdPropertiesCorrectlyTrait;
 }

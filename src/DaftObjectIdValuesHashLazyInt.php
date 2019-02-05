@@ -8,14 +8,21 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject;
 
+/**
+* @template T as DefinesOwnIdPropertiesInterface
+*/
 trait DaftObjectIdValuesHashLazyInt
 {
     /**
     * @var array<string, array<string, string>>
+    *
+    * @psalm-var array<class-string<T>, array<string, string>>
     */
     private static $ids = [];
 
     /**
+    * @psalm-param T $object
+    *
     * @see DefinesOwnIdPropertiesInterface::DaftObjectIdHash()
     */
     public static function DaftObjectIdHash(DefinesOwnIdPropertiesInterface $object) : string
@@ -29,7 +36,7 @@ trait DaftObjectIdValuesHashLazyInt
 
         foreach ($properties as $prop) {
             /**
-            * @var scalar|array|object|resource|null
+            * @var scalar|array|object|null
             */
             $val = $object->$prop;
 
