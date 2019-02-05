@@ -15,6 +15,8 @@ interface DefinesOwnArrayIdInterface extends DefinesOwnIdPropertiesInterface
 {
     /**
     * Get the integer value of the Id.
+    *
+    * @return scalar[]
     */
     public function GetId() : array;
 }

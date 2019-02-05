@@ -8,6 +8,9 @@ namespace SignpostMarv\DaftObject;
 
 trait DefineArrayIdPropertiesCorrectlyTrait
 {
+    /**
+    * @return scalar[]
+    */
     public function GetId() : array
     {
         return [

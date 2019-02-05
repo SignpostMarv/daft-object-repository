@@ -16,7 +16,7 @@ interface DefinesOwnIdPropertiesInterface extends DaftObject
     /**
     * Get the value of the Id.
     *
-    * @return mixed
+    * @return scalar|scalar[]
     */
     public function GetId();
 
