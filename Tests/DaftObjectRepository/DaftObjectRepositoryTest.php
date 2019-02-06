@@ -16,16 +16,27 @@ use SignpostMarv\DaftObject\ReadWriteTwoColumnPrimaryKey;
 use SignpostMarv\DaftObject\SuitableForRepositoryType;
 use SignpostMarv\DaftObject\Tests\TestCase;
 
+/**
+* @template T as SuitableForRepositoryType
+* @template TRepo as DaftObjectRepository
+*/
 class DaftObjectRepositoryTest extends TestCase
 {
     /**
-    * @psalm-param class-string<SuitableForRepositoryType> $type
+    * @psalm-param class-string<T> $type
+    *
+    * @psalm-return TRepo
     */
     public static function DaftObjectRepositoryByType(string $type) : DaftObjectRepository
     {
         return DaftObjectMemoryRepository::DaftObjectRepositoryByType($type);
     }
 
+    /**
+    * @psalm-param T $object
+    *
+    * @psalm-return TRepo
+    */
     public static function DaftObjectRepositoryByDaftObject(
         SuitableForRepositoryType $object
     ) : DaftObjectRepository {
@@ -53,7 +64,7 @@ class DaftObjectRepositoryTest extends TestCase
     }
 
     /**
-    * @psalm-param class-string<SuitableForRepositoryType> $objImplementation
+    * @psalm-param class-string<T> $objImplementation
     *
     * @dataProvider RepositoryDataProvider
     */
@@ -145,7 +156,7 @@ class DaftObjectRepositoryTest extends TestCase
     /**
     * @param (scalar|array|object|null)[] $ids
     *
-    * @psalm-param class-string<SuitableForRepositoryType> $objImplementation
+    * @psalm-param class-string<T> $objImplementation
     */
     protected function repositoryForImplementaionTestRetrievedInLoopOne(
         SuitableForRepositoryType $retrieved,
