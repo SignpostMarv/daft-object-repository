@@ -62,6 +62,30 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     /**
     * {@inheritdoc}
     *
+    * @psalm-return T
+    */
+    final public function RecallDaftObjectOrThrow($id) : SuitableForRepositoryType
+    {
+        $out = static::RecallDaftObject($id);
+
+        if (is_null($out)) {
+            throw new DaftObjectNotRecalledException(
+                'Argument 1 passed to ' .
+                DaftObjectRepository::class .
+                '::RecallDaftObjectOrThrow() did not resolve to an instance of ' .
+                SuitableForRepositoryType::class .
+                ' from ' .
+                static::class .
+                '::RecallDaftObject()'
+            );
+        }
+
+        return $out;
+    }
+
+    /**
+    * {@inheritdoc}
+    *
     * @psalm-param T $object
     */
     public function RememberDaftObjectData(

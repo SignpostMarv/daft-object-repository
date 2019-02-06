@@ -10,6 +10,7 @@ use Generator;
 use RuntimeException;
 use SignpostMarv\DaftObject\DaftObject;
 use SignpostMarv\DaftObject\DaftObjectMemoryRepository;
+use SignpostMarv\DaftObject\DaftObjectNotRecalledException;
 use SignpostMarv\DaftObject\DaftObjectRepository;
 use SignpostMarv\DaftObject\ReadWrite;
 use SignpostMarv\DaftObject\ReadWriteTwoColumnPrimaryKey;
@@ -252,6 +253,10 @@ class DaftObjectRepositoryTest extends TestCase
         $retrieved = $repo->RecallDaftObject($ids);
 
         if ( ! is_null($retrieved)) {
+            $notThrown = $repo->RecallDaftObjectOrThrow($ids);
+
+            static::assertSame(get_class($retrieved), get_class($notThrown));
+
             $this->repositoryForImplementaionTestRetrievedInLoopTwo(
                 $retrieved,
                 $obj,
@@ -317,6 +322,19 @@ class DaftObjectRepositoryTest extends TestCase
         $repo->RemoveDaftObject($retrieved);
 
         static::assertNull($repo->RecallDaftObject($ids));
+
+        static::expectException(DaftObjectNotRecalledException::class);
+        static::expectExceptionMessage(
+            'Argument 1 passed to ' .
+            DaftObjectRepository::class .
+            '::RecallDaftObjectOrThrow() did not resolve to an instance of ' .
+            SuitableForRepositoryType::class .
+            ' from ' .
+            get_class($repo) .
+            '::RecallDaftObject()'
+        );
+
+        $repo->RecallDaftObjectOrThrow($ids);
     }
 
     protected function RepositoryDataProviderParams() : array
