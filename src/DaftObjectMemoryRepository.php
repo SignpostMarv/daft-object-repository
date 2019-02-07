@@ -66,7 +66,7 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     */
     final public function RecallDaftObjectOrThrow($id) : SuitableForRepositoryType
     {
-        $out = static::RecallDaftObject($id);
+        $out = $this->RecallDaftObject($id);
 
         if (is_null($out)) {
             throw new DaftObjectNotRecalledException(
