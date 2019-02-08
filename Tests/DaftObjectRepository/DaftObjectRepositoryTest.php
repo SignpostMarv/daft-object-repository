@@ -24,13 +24,21 @@ use SignpostMarv\DaftObject\Tests\TestCase;
 class DaftObjectRepositoryTest extends TestCase
 {
     /**
+    * @psalm-return class-string<TRepo>
+    */
+    public static function DaftObjectRepositoryClassString() : string
+    {
+        return DaftObjectMemoryRepository::class;
+    }
+
+    /**
     * @psalm-param class-string<T> $type
     *
     * @psalm-return TRepo
     */
     public static function DaftObjectRepositoryByType(string $type) : DaftObjectRepository
     {
-        return DaftObjectMemoryRepository::DaftObjectRepositoryByType($type);
+        return static::DaftObjectRepositoryClassString()::DaftObjectRepositoryByType($type);
     }
 
     /**
@@ -41,7 +49,7 @@ class DaftObjectRepositoryTest extends TestCase
     public static function DaftObjectRepositoryByDaftObject(
         SuitableForRepositoryType $object
     ) : DaftObjectRepository {
-        return DaftObjectMemoryRepository::DaftObjectRepositoryByDaftObject($object);
+        return static::DaftObjectRepositoryClassString()::DaftObjectRepositoryByDaftObject($object);
     }
 
     public function RepositoryDataProvider() : Generator
