@@ -52,7 +52,7 @@ class DefinitionAssistant extends Base
         /**
         * @psalm-var class-string<T>
         */
-        $maybe = is_object($maybe) ? get_class($maybe) : $maybe;
+        $maybe = is_string($maybe) ? $maybe : get_class($maybe);
 
         if (static::IsTypeUnregistered($maybe)) {
             if (is_a($maybe, AbstractDaftObject::class, true)) {
