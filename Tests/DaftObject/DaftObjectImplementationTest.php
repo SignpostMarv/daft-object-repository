@@ -182,12 +182,7 @@ class DaftObjectImplementationTest extends TestCase
     final public function dataProviderNonAbstractGoodImplementationsWithProperties() : Generator
     {
         foreach ($this->dataProviderNonAbstractGoodImplementations() as $args) {
-            /**
-            * @var scalar
-            */
-            $className = $args[0];
-
-            if ( ! is_string($className)) {
+            if ( ! is_string($args[0])) {
                 static::markTestSkipped(
                     'Index 0 retrieved from ' .
                     get_class($this) .
@@ -195,7 +190,7 @@ class DaftObjectImplementationTest extends TestCase
                 );
 
                 return;
-            } elseif ( ! is_subclass_of($className, DaftObject::class, true)) {
+            } elseif ( ! is_subclass_of($args[0], DaftObject::class, true)) {
                 static::markTestSkipped(
                     'Index 0 retrieved from ' .
                     get_class($this) .
@@ -206,10 +201,7 @@ class DaftObjectImplementationTest extends TestCase
                 return;
             }
 
-            /**
-            * @var array
-            */
-            $properties = $className::DaftObjectProperties();
+            $properties = $args[0]::DaftObjectProperties();
 
             if (count($properties) > 0) {
                 yield $args;
