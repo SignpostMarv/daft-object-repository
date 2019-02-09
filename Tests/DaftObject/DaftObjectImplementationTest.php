@@ -183,9 +183,7 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractGoodImplementationsWithProperties() : Generator
     {
-        $implementations = $this->dataProviderNonAbstractGoodImplementations();
-
-        foreach ($implementations as $args) {
+        foreach ($this->dataProviderNonAbstractGoodImplementations() as $args) {
             /**
             * @var scalar
             */
@@ -282,9 +280,7 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractGoodExportableImplementations() : Generator
     {
-        $implementations = $this->dataProviderNonAbstractGoodImplementations();
-
-        foreach ($implementations as $args) {
+        foreach ($this->dataProviderNonAbstractGoodImplementations() as $args) {
             /**
             * @var array{0:scalar, 1:ReflectionClass}
             */
@@ -329,9 +325,7 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractGoodPropertiesImplementations() : Generator
     {
-        $implementations = $this->dataProviderNonAbstractGoodImplementations();
-
-        foreach ($implementations as $args) {
+        foreach ($this->dataProviderNonAbstractGoodImplementations() as $args) {
             /**
             * @var array{0:scalar, 1:ReflectionClass}
             */
@@ -479,9 +473,7 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractGoodSortableImplementations() : Generator
     {
-        $implementations = $this->dataProviderNonAbstractGoodImplementations();
-
-        foreach ($implementations as $args) {
+        foreach ($this->dataProviderNonAbstractGoodImplementations() as $args) {
             if (
                 isset($args[0]) &&
                 is_string($args[0]) &&
@@ -494,9 +486,7 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractGoodNonSortableImplementations() : Generator
     {
-        $implementations = $this->dataProviderNonAbstractGoodImplementations();
-
-        foreach ($implementations as $args) {
+        foreach ($this->dataProviderNonAbstractGoodImplementations() as $args) {
             if (
                 isset($args[0]) &&
                 is_string($args[0]) &&
@@ -546,9 +536,7 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractGoodFuzzing() : Generator
     {
-        $implementations = $this->dataProviderNonAbstractGoodImplementations();
-
-        foreach ($implementations as $args) {
+        foreach ($this->dataProviderNonAbstractGoodImplementations() as $args) {
             /**
             * @var string
             */
@@ -2186,9 +2174,7 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderDaftObjectCreatedByArray() : Generator
     {
-        $implementations = $this->dataProviderNonAbstractGoodImplementations();
-
-        foreach ($implementations as $args) {
+        foreach ($this->dataProviderNonAbstractGoodImplementations() as $args) {
             if (
                 is_array($args) &&
                 count($args) >= 1 &&
