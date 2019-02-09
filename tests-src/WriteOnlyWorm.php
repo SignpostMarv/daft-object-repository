@@ -11,7 +11,7 @@ class WriteOnlyWorm extends AbstractTestObject implements
     DefinesOwnStringIdInterface
 {
     /**
-    * @template-uses DaftObjectIdValuesHashLazyInt<WriteOnlyWorm>
+    * @use DaftObjectIdValuesHashLazyInt<WriteOnlyWorm>
     */
     use DaftObjectIdValuesHashLazyInt;
     use WriteTrait;

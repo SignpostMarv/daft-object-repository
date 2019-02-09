@@ -9,7 +9,7 @@ namespace SignpostMarv\DaftObject;
 class ReadOnlyInsuficientIdProperties extends AbstractTestObject implements SuitableForRepositoryType
 {
     /**
-    * @template-uses DaftObjectIdValuesHashLazyInt<ReadOnlyInsuficientIdProperties>
+    * @use DaftObjectIdValuesHashLazyInt<ReadOnlyInsuficientIdProperties>
     */
     use DaftObjectIdValuesHashLazyInt;
     use DefineIdPropertiesInsufficientlyTrait;

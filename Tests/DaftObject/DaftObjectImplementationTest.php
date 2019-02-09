@@ -2362,15 +2362,6 @@ class DaftObjectImplementationTest extends TestCase
             DaftSortableObject::class,
             true
         ));
-
-        static::expectException(ClassDoesNotImplementClassException::class);
-        static::expectExceptionMessage(sprintf(
-            '%s does not implement %s',
-            $className,
-            DaftSortableObject::class
-        ));
-
-        $className::DaftSortableObjectProperties();
     }
 
     public function testSortableObject() : void
@@ -2392,31 +2383,6 @@ class DaftObjectImplementationTest extends TestCase
         static::assertSame(0, $b->CompareToDaftSortableObject($b));
         static::assertSame(-1, $a->CompareToDaftSortableObject($b));
         static::assertSame(1, $b->CompareToDaftSortableObject($a));
-    }
-
-    public function testNotSortableObject() : void
-    {
-        $a = new ReadWrite([
-            'Foo' => 'a',
-            'Bar' => 1.0,
-            'Baz' => 1,
-            'Bat' => false,
-        ]);
-        $b = new SortableReadWrite([
-            'Foo' => 'b',
-            'Bar' => 2.0,
-            'Baz' => 2,
-            'Bat' => true,
-        ]);
-
-        static::expectException(ClassDoesNotImplementClassException::class);
-        static::expectExceptionMessage(sprintf(
-            '%s does not implement %s',
-            ReadWrite::class,
-            DaftSortableObject::class
-        ));
-
-        $a->CompareToDaftSortableObject($b);
     }
 
     /**

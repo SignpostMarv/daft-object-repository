@@ -11,7 +11,7 @@ class ReadWriteWorm extends AbstractTestObject implements
     DaftObjectWorm
 {
     /**
-    * @template-uses DaftObjectIdValuesHashLazyInt<ReadWriteWorm>
+    * @use DaftObjectIdValuesHashLazyInt<ReadWriteWorm>
     */
     use DaftObjectIdValuesHashLazyInt;
     use ReadTrait, WriteTrait, DefineIdPropertiesCorrectlyTrait;

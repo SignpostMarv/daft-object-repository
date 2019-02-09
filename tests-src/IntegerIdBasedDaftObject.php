@@ -15,7 +15,7 @@ class IntegerIdBasedDaftObject
         SuitableForRepositoryType
 {
     /**
-    * @template-uses DaftObjectIdValuesHashLazyInt<IntegerIdBasedDaftObject>
+    * @use DaftObjectIdValuesHashLazyInt<IntegerIdBasedDaftObject>
     */
     use DaftObjectIdValuesHashLazyInt;
 

@@ -108,26 +108,6 @@ abstract class AbstractDaftObject implements DaftObject
         return $out;
     }
 
-    public function CompareToDaftSortableObject(DaftSortableObject $otherObject) : int
-    {
-        if ( ! is_a(static::class, DaftSortableObject::class, true)) {
-            throw new ClassDoesNotImplementClassException(
-                static::class,
-                DaftSortableObject::class
-            );
-        }
-
-        foreach (static::DaftSortableObjectProperties() as $property) {
-            $sort = $this->__get($property) <=> $otherObject->__get($property);
-
-            if (0 !== $sort) {
-                return $sort;
-            }
-        }
-
-        return 0;
-    }
-
     public static function DaftObjectProperties() : array
     {
         /**
@@ -210,26 +190,6 @@ abstract class AbstractDaftObject implements DaftObject
 
             $out[] = $prop;
         }
-
-        return $out;
-    }
-
-    /**
-    * @return array<int, string>
-    */
-    public static function DaftSortableObjectProperties() : array
-    {
-        if ( ! is_a(static::class, DaftSortableObject::class, true)) {
-            throw new ClassDoesNotImplementClassException(
-                static::class,
-                DaftSortableObject::class
-            );
-        }
-
-        /**
-        * @var array<int, string>
-        */
-        $out = static::SORTABLE_PROPERTIES;
 
         return $out;
     }

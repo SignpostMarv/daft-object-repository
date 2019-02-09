@@ -9,7 +9,7 @@ namespace SignpostMarv\DaftObject;
 class WriteOnly extends AbstractTestObject implements DefinesOwnStringIdInterface
 {
     /**
-    * @template-uses DaftObjectIdValuesHashLazyInt<WriteOnly>
+    * @use DaftObjectIdValuesHashLazyInt<WriteOnly>
     */
     use DaftObjectIdValuesHashLazyInt;
     use WriteTrait;

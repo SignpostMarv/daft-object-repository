@@ -8,8 +8,14 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject;
 
+/**
+* @template T as DaftSortableObject
+*/
 interface DaftSortableObject extends DaftObject
 {
+    /**
+    * @psalm-param T $otherObject
+    */
     public function CompareToDaftSortableObject(DaftSortableObject $otherObject) : int;
 
     /**
