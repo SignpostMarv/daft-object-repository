@@ -196,9 +196,7 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractDefinesOwnIdGoodImplementations() : Generator
     {
-        $implementations = $this->dataProviderNonAbstractGoodImplementationsWithProperties();
-
-        foreach ($implementations as $args) {
+        foreach ($this->dataProviderNonAbstractGoodImplementationsWithProperties() as $args) {
             /**
             * @var string
             */
@@ -212,9 +210,7 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractGoodNullableImplementations() : Generator
     {
-        $implementations = $this->dataProviderNonAbstractGoodImplementationsWithProperties();
-
-        foreach ($implementations as $args) {
+        foreach ($this->dataProviderNonAbstractGoodImplementationsWithProperties() as $args) {
             /**
             * @var array{0:scalar, 1:ReflectionClass}
             */
