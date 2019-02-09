@@ -90,9 +90,7 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractImplementations() : Generator
     {
-        $sources = $this->dataProviderImplementations();
-
-        foreach ($sources as $args) {
+        foreach ($this->dataProviderImplementations() as $args) {
             list($className) = $args;
             if (
                 false === (($reflector = new ReflectionClass($className))->isAbstract())
@@ -2244,9 +2242,7 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function DataProviderNotDaftObjectHasPropertiesWithMultiTypedArraysOfUniqueValues(
     ) : Generator {
-        $sources = $this->dataProviderImplementations();
-
-        foreach ($sources as $args) {
+        foreach ($this->dataProviderImplementations() as $args) {
             if (
                 is_a($args[0], AbstractDaftObject::class, true) &&
                 ! is_a(
