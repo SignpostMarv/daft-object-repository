@@ -2067,17 +2067,6 @@ class DaftObjectImplementationTest extends TestCase
     */
     public function testSortableImplementation(string $className) : void
     {
-        if ( ! is_a($className, DaftSortableObject::class, true)) {
-            static::markTestSkipped(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                DaftSortableObject::class
-            );
-
-            return;
-        }
-
         /**
         * @var scalar|array|object|resource|null
         */
