@@ -2408,7 +2408,6 @@ class DaftObjectImplementationTest extends TestCase
 
         foreach ($implementations as $args) {
             if (
-                is_string($args[0]) &&
                 is_a($args[0], DaftSortableObject::class)
             ) {
                 yield $args;
