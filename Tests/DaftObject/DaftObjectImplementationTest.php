@@ -114,9 +114,7 @@ class DaftObjectImplementationTest extends TestCase
 
         foreach ($this->dataProviderNonAbstractImplementations() as $args) {
             if (false === in_array($args[0] ?? null, $invalid, true)) {
-                list($implementation) = $args;
-
-                if ( ! is_subclass_of($implementation, DaftObject::class, true)) {
+                if ( ! is_subclass_of($args[0], DaftObject::class, true)) {
                     static::markTestSkipped(
                         'Index 0 retrieved from ' .
                         get_class($this) .
@@ -127,7 +125,7 @@ class DaftObjectImplementationTest extends TestCase
                     return;
                 }
 
-                $properties = $implementation::DaftObjectProperties();
+                $properties = $args[0]::DaftObjectProperties();
 
                 $initialCount = count($properties);
 
