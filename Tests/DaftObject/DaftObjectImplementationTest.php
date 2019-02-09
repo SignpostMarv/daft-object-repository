@@ -255,19 +255,9 @@ class DaftObjectImplementationTest extends TestCase
     final public function dataProviderNonAbstractGetterSetters() : Generator
     {
         foreach ($this->dataProviderNonAbstractImplementations() as $args) {
-            /**
-            * @var string
-            */
-            $className = $args[0];
-
-            /**
-            * @var ReflectionClass
-            */
-            $reflector = $args[1];
-
-            foreach ($reflector->getMethods() as $method) {
+            foreach ($args[1]->getMethods() as $method) {
                 if (preg_match('/^[GS]et[A-Z]/', $method->getName()) > 0) {
-                    yield [$className, $method];
+                    yield [$args[0], $method];
                 }
             }
         }
