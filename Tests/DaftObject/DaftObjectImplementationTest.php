@@ -33,7 +33,6 @@ use SignpostMarv\DaftObject\PropertyNotRewriteableException;
 use SignpostMarv\DaftObject\ReadOnlyBad;
 use SignpostMarv\DaftObject\ReadOnlyBadDefinesOwnId;
 use SignpostMarv\DaftObject\ReadOnlyInsuficientIdProperties;
-use SignpostMarv\DaftObject\ReadWrite;
 use SignpostMarv\DaftObject\ReadWriteJson;
 use SignpostMarv\DaftObject\ReadWriteJsonJson;
 use SignpostMarv\DaftObject\ReadWriteJsonJsonArray;
