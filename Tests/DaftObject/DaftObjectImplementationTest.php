@@ -446,12 +446,7 @@ class DaftObjectImplementationTest extends TestCase
     final public function dataProviderNonAbstractGoodFuzzingHasSettersPerPropertyWorm() : Generator
     {
         foreach ($this->dataProviderNonAbstractGoodFuzzingHasSettersPerProperty() as $args) {
-            /**
-            * @var string
-            */
-            $className = $args[0];
-
-            if (is_a($className, DaftObjectWorm::class, true)) {
+            if (is_a($args[0], DaftObjectWorm::class, true)) {
                 yield $args;
             }
         }
@@ -460,19 +455,7 @@ class DaftObjectImplementationTest extends TestCase
     final public function dataProviderNonAbstractGoodFuzzingHasSettersPerPropertyNotNullable(
     ) : Generator {
         foreach ($this->dataProviderNonAbstractGoodFuzzingHasSettersPerProperty() as $args) {
-            if (count($args) <= self::NUM_EXPECTED_ARGS_FOR_IMPLEMENTATION) {
-                continue;
-            }
-
-            static::assertIsString($args[0]);
-            static::assertIsString($args[5]);
-
-            /**
-            * @var string
-            */
-            $className = $args[0];
-
-            if ( ! is_subclass_of($className, DaftObject::class, true)) {
+            if ( ! is_subclass_of($args[0], DaftObject::class, true)) {
                 static::markTestSkipped(
                     'Index 0 retrieved from ' .
                     get_class($this) .
@@ -484,15 +467,9 @@ class DaftObjectImplementationTest extends TestCase
                 return;
             }
 
-            /**
-            * @var string
-            */
             $property = $args[5];
 
-            /**
-            * @var array
-            */
-            $properties = $className::DaftObjectNullableProperties();
+            $properties = $args[0]::DaftObjectNullableProperties();
 
             if (
                 false === in_array(
