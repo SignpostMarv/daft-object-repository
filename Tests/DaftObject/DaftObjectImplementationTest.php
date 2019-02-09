@@ -144,23 +144,17 @@ class DaftObjectImplementationTest extends TestCase
         }
     }
 
+    /**
+    * @psalm-return Generator<int, array{0:class-string<T>, 1:ReflectionClass, 2:bool}, mixed, void>
+    */
     final public function dataProviderNonAbstractGoodImplementationsWithMixedCaseProperties() : Generator
     {
         $invalid = $this->dataProviderInvalidImplementations();
 
         foreach ($this->dataProviderNonAbstractImplementations() as $args) {
-            /**
-            * @var array{0:string, 1:ReflectionClass}
-            */
-            $args = $args;
-
             if (false === in_array($args[0] ?? null, $invalid, true)) {
                 list($implementation) = $args;
 
-                if (is_subclass_of($implementation, DaftObject::class, true)) {
-                    /**
-                    * @var array
-                    */
                     $properties = $implementation::DaftObjectProperties();
 
                     $initialCount = count($properties);
@@ -175,8 +169,12 @@ class DaftObjectImplementationTest extends TestCase
                         $args[] = true;
                     }
 
+                    /**
+                    * @psalm-var array{0:class-string<T>, 1:ReflectionClass, 2:bool}
+                    */
+                    $args = $args;
+
                     yield $args;
-                }
             }
         }
     }
