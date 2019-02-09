@@ -285,40 +285,9 @@ class DaftObjectImplementationTest extends TestCase
         $implementations = $this->dataProviderGoodNonAbstractGetterSetters();
 
         foreach ($implementations as $args) {
-            /**
-            * @var array{0:scalar, 1:ReflectionClass}
-            */
-            $args = $args;
+            $property = mb_substr($args[1]->getName(), 3);
 
-            static::assertIsString($args[0]);
-
-            /**
-            * @var string
-            */
-            $className = $args[0];
-
-            if ( ! is_subclass_of($className, DaftObject::class, true)) {
-                static::markTestSkipped(
-                    'Index 0 retrieved from ' .
-                    get_class($this) .
-                    '::dataProviderGoodNonAbstractGetterSetters must be an implementation of ' .
-                    DaftObject::class
-                );
-
-                return;
-            }
-
-            /**
-            * @var ReflectionClass
-            */
-            $reflector = $args[1];
-
-            $property = mb_substr($reflector->getName(), 3);
-
-            /**
-            * @var array
-            */
-            $properties = $className::DaftObjectProperties();
+            $properties = $args[0]::DaftObjectProperties();
 
             $defined = (
                 in_array($property, $properties, true) ||
@@ -326,7 +295,7 @@ class DaftObjectImplementationTest extends TestCase
             );
 
             $definesOwnId = is_a(
-                $className,
+                $args[0],
                 DefinesOwnIdPropertiesInterface::class,
                 true
             );
