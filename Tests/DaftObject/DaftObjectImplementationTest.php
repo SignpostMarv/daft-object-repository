@@ -1327,6 +1327,8 @@ class DaftObjectImplementationTest extends TestCase
     * @dataProvider dataProviderNonAbstractJsonArrayBackedGoodFuzzingHasSetters
     *
     * @depends testHasDefinedImplementationCorrectly
+    *
+    * @psalm-param class-string<AbstractArrayBackedDaftObject> $className
     */
     final public function testProviderNonAbstractGoodFuzzingJsonFromArrayFailure(
         string $className,
@@ -1335,17 +1337,6 @@ class DaftObjectImplementationTest extends TestCase
         array $getters,
         array $setters
     ) : void {
-        if ( ! is_a($className, AbstractArrayBackedDaftObject::class, true)) {
-            static::markTestSkipped(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                AbstractArrayBackedDaftObject::class
-            );
-
-            return;
-        }
-
         $this->expectException(DaftObjectNotDaftJsonBadMethodCallException::class);
         $this->expectExceptionMessage(sprintf(
             '%s does not implement %s',
