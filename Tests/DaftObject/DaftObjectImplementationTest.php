@@ -438,25 +438,13 @@ class DaftObjectImplementationTest extends TestCase
 
     /**
     * @dataProvider dataProviderNonAbstractGoodImplementationsWithProperties
+    *
+    * @psalm-param class-string<T> $className
     */
     final public function testHasDefinedAllPropertiesCorrectly(
         string $className,
         ReflectionClass $reflector
     ) : void {
-        if ( ! is_subclass_of($className, DaftObject::class, true)) {
-            static::markTestSkipped(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                DaftObject::class
-            );
-
-            return;
-        }
-
-        /**
-        * @var array<int, string|null>
-        */
         $properties = $className::DaftObjectProperties();
 
         static::assertGreaterThan(0, count($properties));
