@@ -2010,6 +2010,21 @@ class DaftObjectImplementationTest extends TestCase
     }
 
     /**
+    * @return array<int, string>
+    *
+    * @psalm-return array<int, class-string<DaftObject>>
+    */
+    final public function dataProviderInvalidImplementations() : array
+    {
+        return [
+            NudgesIncorrectly::class,
+            ReadOnlyBad::class,
+            ReadOnlyBadDefinesOwnId::class,
+            ReadOnlyInsuficientIdProperties::class,
+        ];
+    }
+
+    /**
     * @psalm-suppress ForbiddenCode
     */
     final protected function VarDumpDaftObject(DaftObject $obj) : string
@@ -2140,21 +2155,6 @@ class DaftObjectImplementationTest extends TestCase
                         '/'
                     )
         );
-    }
-
-    /**
-    * @return array<int, string>
-    *
-    * @psalm-return array<int, class-string<DaftObject>>
-    */
-    final public function dataProviderInvalidImplementations() : array
-    {
-        return [
-            NudgesIncorrectly::class,
-            ReadOnlyBad::class,
-            ReadOnlyBadDefinesOwnId::class,
-            ReadOnlyInsuficientIdProperties::class,
-        ];
     }
 
     /**
