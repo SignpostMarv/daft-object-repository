@@ -496,7 +496,7 @@ class DaftObjectImplementationTest extends TestCase
 
         $idProperties = (array) $className::DaftObjectIdProperties();
 
-        static::assertGreaterThan(0, count($properties));
+        static::assertGreaterThan(0, count($idProperties));
 
         foreach ($idProperties as $property) {
             static::assertIsString(
