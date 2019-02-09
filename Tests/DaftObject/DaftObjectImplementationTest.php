@@ -404,9 +404,7 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractNonWormGoodFuzzingHasSetters() : Generator
     {
-        $implementations = $this->dataProviderNonAbstractGoodFuzzingHasSetters();
-
-        foreach ($implementations as $args) {
+        foreach ($this->dataProviderNonAbstractGoodFuzzingHasSetters() as $args) {
             /**
             * @var string
             */
@@ -420,9 +418,7 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractJsonArrayBackedGoodFuzzingHasSetters() : Generator
     {
-        $implementations = $this->dataProviderNonAbstractGoodFuzzingHasSetters();
-
-        foreach ($implementations as $args) {
+        foreach ($this->dataProviderNonAbstractGoodFuzzingHasSetters() as $args) {
             /**
             * @var string
             */
@@ -439,9 +435,7 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractGoodFuzzingHasSettersPerProperty() : Generator
     {
-        $implementations = $this->dataProviderNonAbstractGoodFuzzingHasSetters();
-
-        foreach ($implementations as $args) {
+        foreach ($this->dataProviderNonAbstractGoodFuzzingHasSetters() as $args) {
             if (count($args) < self::NUM_EXPECTED_ARGS_FOR_IMPLEMENTATION) {
                 continue;
             }
