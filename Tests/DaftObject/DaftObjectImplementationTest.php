@@ -114,11 +114,14 @@ class DaftObjectImplementationTest extends TestCase
 
         foreach ($this->dataProviderNonAbstractImplementations() as $args) {
             if (false === in_array($args[0] ?? null, $invalid, true)) {
-                if ( ! is_subclass_of($args[0], DaftObject::class, true)) {
+                $reflector = new ReflectionClass($args[0]);
+
+                if ($reflector->isAbstract() || $reflector->isInterface()) {
                     static::markTestSkipped(
                         'Index 0 retrieved from ' .
                         get_class($this) .
-                        '::dataProviderNonAbstractImplementations must be an implementation of ' .
+                        '::dataProviderNonAbstractImplementations must be a' .
+                        ' non-abstract, non-interface  implementation of ' .
                         DaftObject::class
                     );
 
