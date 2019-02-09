@@ -109,9 +109,7 @@ class DaftObjectImplementationTest extends TestCase
     {
         $invalid = $this->dataProviderInvalidImplementations();
 
-        $implementations = $this->dataProviderNonAbstractImplementations();
-
-        foreach ($implementations as $args) {
+        foreach ($this->dataProviderNonAbstractImplementations() as $args) {
             if (false === in_array($args[0] ?? null, $invalid, true)) {
                 list($implementation) = $args;
 
@@ -150,9 +148,7 @@ class DaftObjectImplementationTest extends TestCase
     {
         $invalid = $this->dataProviderInvalidImplementations();
 
-        $implementations = $this->dataProviderNonAbstractImplementations();
-
-        foreach ($implementations as $args) {
+        foreach ($this->dataProviderNonAbstractImplementations() as $args) {
             /**
             * @var array{0:string, 1:ReflectionClass}
             */
@@ -381,9 +377,7 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractGetterSetters() : Generator
     {
-        $implementations = $this->dataProviderNonAbstractImplementations();
-
-        foreach ($implementations as $args) {
+        foreach ($this->dataProviderNonAbstractImplementations() as $args) {
             /**
             * @var string
             */
