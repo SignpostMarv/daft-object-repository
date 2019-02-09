@@ -980,7 +980,6 @@ class DaftObjectImplementationTest extends TestCase
         string $className,
         ReflectionMethod $reflector
     ) : void {
-
         $property = mb_substr($reflector->getName(), 3);
 
         $properties = $className::DaftObjectProperties();
