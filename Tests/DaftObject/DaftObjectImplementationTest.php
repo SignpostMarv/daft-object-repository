@@ -282,9 +282,7 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderGoodNonAbstractGetterSettersNotId() : Generator
     {
-        $implementations = $this->dataProviderGoodNonAbstractGetterSetters();
-
-        foreach ($implementations as $args) {
+        foreach ($this->dataProviderGoodNonAbstractGetterSetters() as $args) {
             $property = mb_substr($args[1]->getName(), 3);
 
             $properties = $args[0]::DaftObjectProperties();
