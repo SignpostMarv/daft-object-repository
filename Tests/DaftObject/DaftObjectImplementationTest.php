@@ -10,6 +10,7 @@ use DateTimeImmutable;
 use Generator;
 use InvalidArgumentException;
 use ReflectionClass;
+use ReflectionException;
 use ReflectionMethod;
 use ReflectionType;
 use SignpostMarv\DaftObject\AbstractArrayBackedDaftObject;
@@ -724,35 +725,17 @@ class DaftObjectImplementationTest extends TestCase
 
     /**
     * @dataProvider dataProviderNonAbstractGoodPropertiesImplementations
+    *
+    * @psalm-param class-string<T> $className
     */
     final public function testHasDefinedImplementationCorrectly(
         string $className,
         ReflectionClass $reflector
     ) : void {
-        if ( ! is_subclass_of($className, DaftObject::class, true)) {
-            static::markTestSkipped(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                DaftObject::class
-            );
-
-            return;
-        }
-
-        /**
-        * @var array<int, string>
-        */
         $properties = $className::DaftObjectProperties();
 
-        /**
-        * @var array<int, string>
-        */
         $nullables = $className::DaftObjectNullableProperties();
 
-        /**
-        * @var array<int, string>
-        */
         $exportables = $className::DaftObjectExportableProperties();
 
         foreach ($properties as $property) {
@@ -782,16 +765,36 @@ class DaftObjectImplementationTest extends TestCase
             );
 
             $reflectorGetter = null;
+
+            try {
+                $reflectorGetter = $reflector->getMethod($getter);
+            } catch (ReflectionException $e) {
+            }
+
             $getterPublic = (
-                $reflector->hasMethod($getter) &&
-                ($reflectorGetter = $reflector->getMethod($getter))->isPublic()
+                ($reflectorGetter instanceof ReflectionMethod) &&
+                $reflectorGetter->isPublic()
             );
 
+            if (($reflectorGetter instanceof ReflectionMethod) && ! $reflectorGetter->isPublic()) {
+                $reflectorGetter = null;
+            }
+
             $reflectorSetter = null;
+
+            try {
+                $reflectorSetter = $reflector->getMethod($setter);
+            } catch (ReflectionException $e) {
+            }
+
             $setterPublic = (
-                $reflector->hasMethod($setter) &&
-                ($reflectorSetter = $reflector->getMethod($setter))->isPublic()
+                ($reflectorSetter instanceof ReflectionMethod) &&
+                $reflectorSetter->isPublic()
             );
+
+            if (($reflectorGetter instanceof ReflectionMethod) && ! $reflectorGetter->isPublic()) {
+                $reflectorGetter = null;
+            }
 
             $anyPublic = $getterPublic || $setterPublic;
 
@@ -808,12 +811,7 @@ class DaftObjectImplementationTest extends TestCase
                 )
             );
 
-            if ($getterPublic) {
-                /**
-                * @var ReflectionMethod
-                */
-                $reflectorGetter = $reflectorGetter;
-
+            if ($reflectorGetter instanceof ReflectionMethod) {
                 static::assertSame(
                     0,
                     $reflectorGetter->getNumberOfParameters(),
@@ -834,8 +832,6 @@ class DaftObjectImplementationTest extends TestCase
                         '() must have a return type.'
                     )
                 );
-
-                $returnType = null;
 
                 /**
                 * @var ReflectionType
@@ -867,12 +863,7 @@ class DaftObjectImplementationTest extends TestCase
                 }
             }
 
-            if ($setterPublic) {
-                /**
-                * @var ReflectionMethod
-                */
-                $reflectorSetter = $reflectorSetter;
-
+            if ($reflectorSetter instanceof ReflectionMethod) {
                 static::assertSame(
                     1,
                     $reflectorSetter->getNumberOfParameters(),
@@ -913,9 +904,6 @@ class DaftObjectImplementationTest extends TestCase
                     )
                 );
 
-                /**
-                * @var ReflectionType|null
-                */
                 $type = ($reflectorSetter->getParameters()[0])->getType();
 
                 if ($type instanceof ReflectionType) {
