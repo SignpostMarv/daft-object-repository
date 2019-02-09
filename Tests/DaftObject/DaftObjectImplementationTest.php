@@ -189,9 +189,7 @@ class DaftObjectImplementationTest extends TestCase
     final public function dataProviderNonAbstractGoodNullableImplementations() : Generator
     {
         foreach ($this->dataProviderNonAbstractGoodImplementationsWithProperties() as $args) {
-            $properties = $args[0]::DaftObjectNullableProperties();
-
-            if (count($properties) > 0) {
+            if (count($args[0]::DaftObjectNullableProperties()) > 0) {
                 yield $args;
             }
         }
