@@ -41,10 +41,16 @@ use SignpostMarv\DaftObject\SortableReadWrite;
 use SignpostMarv\DaftObject\Tests\TestCase;
 use SignpostMarv\DaftObject\TypeUtilities;
 
+/**
+* @template T as DaftObject
+*/
 class DaftObjectImplementationTest extends TestCase
 {
     const NUM_EXPECTED_ARGS_FOR_IMPLEMENTATION = 5;
 
+    /**
+    * @psalm-return Generator<int, array{0:class-string<DaftObject>}, mixed, void>
+    */
     public function dataProviderImplementations() : Generator
     {
         foreach (
@@ -84,16 +90,11 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractImplementations() : Generator
     {
-        /**
-        * @var iterable<array>
-        */
         $sources = $this->dataProviderImplementations();
 
         foreach ($sources as $args) {
             list($className) = $args;
             if (
-                is_string($className) &&
-                is_a($className, DaftObject::class, true) &&
                 false === (($reflector = new ReflectionClass($className))->isAbstract())
             ) {
                 yield [$className, $reflector];
@@ -2243,9 +2244,6 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function DataProviderNotDaftObjectHasPropertiesWithMultiTypedArraysOfUniqueValues(
     ) : Generator {
-        /**
-        * @var iterable<array<int, string>>
-        */
         $sources = $this->dataProviderImplementations();
 
         foreach ($sources as $args) {
