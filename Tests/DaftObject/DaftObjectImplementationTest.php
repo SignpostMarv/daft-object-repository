@@ -338,9 +338,7 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderFuzzingImplementations() : Generator
     {
-        $implementations = $this->FuzzingImplementationsViaGenerator();
-
-        foreach ($implementations as $args) {
+        foreach ($this->FuzzingImplementationsViaGenerator() as $args) {
             if (
                 is_array($args) &&
                 self::MIN_EXPECTED_ARRAY_COUNT === count($args) &&
