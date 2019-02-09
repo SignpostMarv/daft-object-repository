@@ -180,28 +180,12 @@ class DaftObjectImplementationTest extends TestCase
         }
     }
 
+    /**
+    * @psalm-return Generator<int, array{0:class-string<T>, 1:ReflectionClass}, mixed, void>
+    */
     final public function dataProviderNonAbstractGoodImplementationsWithProperties() : Generator
     {
         foreach ($this->dataProviderNonAbstractGoodImplementations() as $args) {
-            if ( ! is_string($args[0])) {
-                static::markTestSkipped(
-                    'Index 0 retrieved from ' .
-                    get_class($this) .
-                    '::dataProviderNonAbstractImplementations must be a string'
-                );
-
-                return;
-            } elseif ( ! is_subclass_of($args[0], DaftObject::class, true)) {
-                static::markTestSkipped(
-                    'Index 0 retrieved from ' .
-                    get_class($this) .
-                    '::dataProviderNonAbstractGoodImplementations must be an implementation of ' .
-                    DaftObject::class
-                );
-
-                return;
-            }
-
             $properties = $args[0]::DaftObjectProperties();
 
             if (count($properties) > 0) {
@@ -212,9 +196,6 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractDefinesOwnIdGoodImplementations() : Generator
     {
-        /**
-        * @var \Traversable<array<int, string|ReflectionClass>>
-        */
         $implementations = $this->dataProviderNonAbstractGoodImplementationsWithProperties();
 
         foreach ($implementations as $args) {
@@ -231,9 +212,6 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractGoodNullableImplementations() : Generator
     {
-        /**
-        * @var \Traversable<array<int, string|ReflectionClass>>
-        */
         $implementations = $this->dataProviderNonAbstractGoodImplementationsWithProperties();
 
         foreach ($implementations as $args) {
