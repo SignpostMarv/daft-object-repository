@@ -1435,139 +1435,139 @@ class DaftObjectImplementationTest extends TestCase
         array $getters,
         array $setters
     ) : void {
-            $exportables = (array) $className::DaftObjectExportableProperties();
+        $exportables = (array) $className::DaftObjectExportableProperties();
 
-            $propertyNames = (array) $className::DaftObjectJsonPropertyNames();
+        $propertyNames = (array) $className::DaftObjectJsonPropertyNames();
 
-            $jsonProps = [];
+        $jsonProps = [];
 
-            $properties = $className::DaftObjectJsonProperties();
+        $properties = $className::DaftObjectJsonProperties();
 
-            foreach ($properties as $k => $v) {
-                $prop = $v;
+        foreach ($properties as $k => $v) {
+            $prop = $v;
 
-                if (is_string($k)) {
-                    static::assertIsString(
-                        $v,
-                        sprintf(
-                            (
-                                '%s::DaftObjectJsonProperties()' .
-                                ' ' .
-                                'key-value pairs' .
-                                ' ' .
-                                'must be either array<int, string>' .
-                                ' or ' .
-                                'array<string, string>'
-                            ),
-                            $className
-                        )
-                    );
+            if (is_string($k)) {
+                static::assertIsString(
+                    $v,
+                    sprintf(
+                        (
+                            '%s::DaftObjectJsonProperties()' .
+                            ' ' .
+                            'key-value pairs' .
+                            ' ' .
+                            'must be either array<int, string>' .
+                            ' or ' .
+                            'array<string, string>'
+                        ),
+                        $className
+                    )
+                );
 
-                    /**
-                    * @var string
-                    */
-                    $v = $v;
+                /**
+                * @var string
+                */
+                $v = $v;
 
-                    if ('[]' === mb_substr($v, -2)) {
-                        $v = mb_substr($v, 0, -2);
-                    }
-
-                    static::assertTrue(
-                        class_exists($v),
-                        sprintf(
-                            (
-                                'When %s::DaftObjectJsonProperties()' .
-                                ' ' .
-                                'key-value pair is array<string, string>' .
-                                ' ' .
-                                'the value must refer to a class.'
-                            ),
-                            $className
-                        )
-                    );
-
-                    static::assertTrue(
-                        is_a($v, DaftJson::class, true),
-                        sprintf(
-                            (
-                                'When %s::DaftObjectJsonProperties()' .
-                                ' ' .
-                                'key-value pair is array<string, string>' .
-                                ' ' .
-                                'the value must be an implementation of %s'
-                            ),
-                            $className,
-                            DaftJson::class
-                        )
-                    );
-
-                    $prop = $k;
+                if ('[]' === mb_substr($v, -2)) {
+                    $v = mb_substr($v, 0, -2);
                 }
 
-                static::assertContains(
-                    $prop,
-                    $exportables,
+                static::assertTrue(
+                    class_exists($v),
                     sprintf(
                         (
-                            'Properties listed in' .
+                            'When %s::DaftObjectJsonProperties()' .
                             ' ' .
-                            '%s::DaftObjectJsonProperties() must also be' .
+                            'key-value pair is array<string, string>' .
                             ' ' .
-                            'listed in %s::DaftObjectExportableProperties()'
+                            'the value must refer to a class.'
                         ),
-                        $className,
                         $className
                     )
                 );
 
-                static::assertContains(
-                    $prop,
-                    $propertyNames,
+                static::assertTrue(
+                    is_a($v, DaftJson::class, true),
                     sprintf(
                         (
-                            'Properties listed in' .
+                            'When %s::DaftObjectJsonProperties()' .
                             ' ' .
-                            '%s::DaftObjectJsonProperties() must also be' .
+                            'key-value pair is array<string, string>' .
                             ' ' .
-                            'listed in %s::DaftObjectJsonPropertyNames()'
+                            'the value must be an implementation of %s'
                         ),
                         $className,
-                        $className
+                        DaftJson::class
                     )
                 );
 
-                $jsonProps[] = $prop;
+                $prop = $k;
             }
 
-            foreach ($propertyNames as $prop) {
-                static::assertContains(
-                    $prop,
-                    $propertyNames,
-                    sprintf(
-                        (
-                            'Properties listed in' .
-                            ' ' .
-                            '%s::DaftObjectJsonPropertyNames() must also be' .
-                            ' ' .
-                            'listed or referenced in' .
-                            ' ' .
-                            '%s::DaftObjectJsonProperties()'
-                        ),
-                        $className,
-                        $className
-                    )
-                );
-            }
-
-            $initialCount = count($propertyNames);
-
-            static::assertCount(
-                $initialCount,
-                array_unique(
-                    array_map('mb_strtolower', $propertyNames),
-                    SORT_REGULAR
+            static::assertContains(
+                $prop,
+                $exportables,
+                sprintf(
+                    (
+                        'Properties listed in' .
+                        ' ' .
+                        '%s::DaftObjectJsonProperties() must also be' .
+                        ' ' .
+                        'listed in %s::DaftObjectExportableProperties()'
+                    ),
+                    $className,
+                    $className
                 )
             );
+
+            static::assertContains(
+                $prop,
+                $propertyNames,
+                sprintf(
+                    (
+                        'Properties listed in' .
+                        ' ' .
+                        '%s::DaftObjectJsonProperties() must also be' .
+                        ' ' .
+                        'listed in %s::DaftObjectJsonPropertyNames()'
+                    ),
+                    $className,
+                    $className
+                )
+            );
+
+            $jsonProps[] = $prop;
+        }
+
+        foreach ($propertyNames as $prop) {
+            static::assertContains(
+                $prop,
+                $propertyNames,
+                sprintf(
+                    (
+                        'Properties listed in' .
+                        ' ' .
+                        '%s::DaftObjectJsonPropertyNames() must also be' .
+                        ' ' .
+                        'listed or referenced in' .
+                        ' ' .
+                        '%s::DaftObjectJsonProperties()'
+                    ),
+                    $className,
+                    $className
+                )
+            );
+        }
+
+        $initialCount = count($propertyNames);
+
+        static::assertCount(
+            $initialCount,
+            array_unique(
+                array_map('mb_strtolower', $propertyNames),
+                SORT_REGULAR
+            )
+        );
     }
 
     /**
