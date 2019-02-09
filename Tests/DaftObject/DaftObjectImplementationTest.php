@@ -270,9 +270,7 @@ class DaftObjectImplementationTest extends TestCase
     {
         $invalid = $this->dataProviderInvalidImplementations();
 
-        $implementations = $this->dataProviderNonAbstractGetterSetters();
-
-        foreach ($implementations as $args) {
+        foreach ($this->dataProviderNonAbstractGetterSetters() as $args) {
             /**
             * @var string
             */
