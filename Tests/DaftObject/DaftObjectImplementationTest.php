@@ -216,9 +216,7 @@ class DaftObjectImplementationTest extends TestCase
     final public function dataProviderNonAbstractGoodPropertiesImplementations() : Generator
     {
         foreach ($this->dataProviderNonAbstractGoodImplementations() as $args) {
-            $properties = $args[0]::DaftObjectProperties();
-
-            if (count($properties) > 0) {
+            if (count($args[0]::DaftObjectProperties()) > 0) {
                 yield $args;
             }
         }
@@ -262,18 +260,19 @@ class DaftObjectImplementationTest extends TestCase
 
             $properties = $args[0]::DaftObjectProperties();
 
-            $defined = (
-                in_array($property, $properties, true) ||
-                in_array(lcfirst($property), $properties, true)
-            );
-
-            $definesOwnId = is_a(
-                $args[0],
-                DefinesOwnIdPropertiesInterface::class,
-                true
-            );
-
-            if ( ! (false === $defined && $definesOwnId)) {
+            if (
+                ! (
+                    ! (
+                        in_array($property, $properties, true) ||
+                        in_array(lcfirst($property), $properties, true)
+                    ) &&
+                    is_a(
+                        $args[0],
+                        DefinesOwnIdPropertiesInterface::class,
+                        true
+                    )
+                )
+            ) {
                 yield $args;
             }
         }
