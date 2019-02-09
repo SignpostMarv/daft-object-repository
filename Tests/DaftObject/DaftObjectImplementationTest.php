@@ -505,11 +505,6 @@ class DaftObjectImplementationTest extends TestCase
             );
         }
 
-        /**
-        * @var array<int, string>
-        */
-        $idProperties = $idProperties;
-
         foreach ($idProperties as $property) {
             static::assertTrue(
                 in_array($property, $properties, true),
