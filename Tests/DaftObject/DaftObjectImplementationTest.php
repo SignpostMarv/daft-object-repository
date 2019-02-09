@@ -73,24 +73,6 @@ class DaftObjectImplementationTest extends TestCase
     }
 
     /**
-    * @psalm-return array<int, class-string<T>>
-    */
-    final public function dataProviderInvalidImplementations() : array
-    {
-        $out = [];
-
-        $implementations = array_filter($this->InvalidImplementations(), 'is_string');
-
-        foreach ($implementations as $arg) {
-            if (class_exists($arg) && is_a($arg, DaftObject::class, true)) {
-                $out[] = $arg;
-            }
-        }
-
-        return $out;
-    }
-
-    /**
     * @psalm-return Generator<int, array{0:class-string<T>, 1:ReflectionClass}, mixed, void>
     */
     final public function dataProviderNonAbstractImplementations() : Generator
@@ -2165,7 +2147,7 @@ class DaftObjectImplementationTest extends TestCase
     *
     * @psalm-return array<int, class-string<DaftObject>>
     */
-    protected function InvalidImplementations() : array
+    final public function dataProviderInvalidImplementations() : array
     {
         return [
             NudgesIncorrectly::class,
