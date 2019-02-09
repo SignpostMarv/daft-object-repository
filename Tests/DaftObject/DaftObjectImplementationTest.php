@@ -2113,20 +2113,11 @@ class DaftObjectImplementationTest extends TestCase
 
     /**
     * @dataProvider dataProviderNonAbstractGoodNonSortableImplementations
+    *
+    * @psalm-param class-string<AbstractDaftObject> $className
     */
     public function testNotSortableImplementation(string $className) : void
     {
-        if ( ! is_a($className, AbstractDaftObject::class, true)) {
-            static::markTestSkipped(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                AbstractDaftObject::class
-            );
-
-            return;
-        }
-
         static::assertFalse(is_subclass_of(
             $className,
             DaftSortableObject::class,
