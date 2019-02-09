@@ -417,9 +417,7 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractGoodFuzzingHasSetters() : Generator
     {
-        $implementations = $this->dataProviderNonAbstractGoodFuzzing();
-
-        foreach ($implementations as $args) {
+        foreach ($this->dataProviderNonAbstractGoodFuzzing() as $args) {
             if (count($args) < self::NUM_EXPECTED_ARGS_FOR_IMPLEMENTATION) {
                 continue;
             }
@@ -2404,9 +2402,7 @@ class DaftObjectImplementationTest extends TestCase
 
     protected function SortableFuzzingImplementationsViaGenerator() : Generator
     {
-        $implementations = $this->dataProviderNonAbstractGoodFuzzing();
-
-        foreach ($implementations as $args) {
+        foreach ($this->dataProviderNonAbstractGoodFuzzing() as $args) {
             if (
                 is_a($args[0], DaftSortableObject::class)
             ) {
