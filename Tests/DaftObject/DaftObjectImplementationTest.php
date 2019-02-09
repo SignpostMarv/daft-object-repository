@@ -155,26 +155,26 @@ class DaftObjectImplementationTest extends TestCase
             if (false === in_array($args[0] ?? null, $invalid, true)) {
                 list($implementation) = $args;
 
-                    $properties = $implementation::DaftObjectProperties();
+                $properties = $implementation::DaftObjectProperties();
 
-                    $initialCount = count($properties);
+                $initialCount = count($properties);
 
-                    if (
-                        $initialCount === count(
-                            array_unique(array_map('mb_strtolower', $properties), SORT_REGULAR)
-                        )
-                    ) {
-                        $args[] = false;
-                    } else {
-                        $args[] = true;
-                    }
+                if (
+                    $initialCount === count(
+                        array_unique(array_map('mb_strtolower', $properties), SORT_REGULAR)
+                    )
+                ) {
+                    $args[] = false;
+                } else {
+                    $args[] = true;
+                }
 
-                    /**
-                    * @psalm-var array{0:class-string<T>, 1:ReflectionClass, 2:bool}
-                    */
-                    $args = $args;
+                /**
+                * @psalm-var array{0:class-string<T>, 1:ReflectionClass, 2:bool}
+                */
+                $args = $args;
 
-                    yield $args;
+                yield $args;
             }
         }
     }
