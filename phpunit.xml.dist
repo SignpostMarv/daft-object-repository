@@ -9,6 +9,9 @@
     <testsuite name="DaftObjectRepository">
       <directory>./Tests/DaftObjectRepository/</directory>
     </testsuite>
+    <testsuite name="DaftSortableObject">
+      <directory>./Tests/DaftSortableObject/</directory>
+    </testsuite>
     <testsuite name="PHPStan">
       <directory>./Tests/PHPStan/</directory>
     </testsuite>
