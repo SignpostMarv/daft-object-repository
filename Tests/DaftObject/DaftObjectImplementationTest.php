@@ -2064,6 +2064,8 @@ class DaftObjectImplementationTest extends TestCase
 
     /**
     * @dataProvider dataProviderNonAbstractGoodSortableImplementations
+    *
+    * @psalm-param class-string<DaftSortableObject> $className
     */
     public function testSortableImplementation(string $className) : void
     {
