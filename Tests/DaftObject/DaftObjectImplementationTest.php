@@ -391,16 +391,18 @@ class DaftObjectImplementationTest extends TestCase
                         $getter = TypeUtilities::MethodNameFromProperty($propertyForMethod, false);
                         $setter = TypeUtilities::MethodNameFromProperty($propertyForMethod, true);
 
-                        if ($args[1]->hasMethod($getter)) {
-                            if ($args[1]->getMethod($getter)->isPublic()) {
+                        if (
+                            $args[1]->hasMethod($getter) &&
+                            $args[1]->getMethod($getter)->isPublic()
+                        ) {
                                 $getters[] = $property;
-                            }
                         }
 
-                        if ($args[1]->hasMethod($setter)) {
-                            if ($args[1]->getMethod($setter)->isPublic()) {
+                        if (
+                            $args[1]->hasMethod($setter) &&
+                            $args[1]->getMethod($setter)->isPublic()
+                        ) {
                                 $setters[] = $property;
-                            }
                         }
                     }
 
