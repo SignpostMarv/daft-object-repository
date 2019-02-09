@@ -14,6 +14,11 @@ namespace SignpostMarv\DaftObject;
 trait TraitSortableDaftObject
 {
     /**
+    * @return scalar|array|object|null
+    */
+    abstract public function __get(string $property);
+
+    /**
     * @psalm-param T as $otherObject
     */
     public function CompareToDaftSortableObject(DaftSortableObject $otherObject) : int
@@ -51,7 +56,7 @@ trait TraitSortableDaftObject
         /**
         * @var array<int, string>
         */
-        $out = static::SORTABLE_PROPERTIES;
+        $out = (array) constant(static::class . '::SORTABLE_PROPERTIES');
 
         return $out;
     }
