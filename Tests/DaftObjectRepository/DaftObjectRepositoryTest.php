@@ -8,7 +8,6 @@ namespace SignpostMarv\DaftObject\Tests\DaftObjectRepository;
 
 use Generator;
 use RuntimeException;
-use SignpostMarv\DaftObject\DaftObject;
 use SignpostMarv\DaftObject\DaftObjectMemoryRepository;
 use SignpostMarv\DaftObject\DaftObjectNotRecalledException;
 use SignpostMarv\DaftObject\DaftObjectRepository;
