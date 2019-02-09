@@ -458,26 +458,10 @@ class DaftObjectImplementationTest extends TestCase
     final public function dataProviderNonAbstractGoodFuzzingHasSettersPerPropertyNotNullable(
     ) : Generator {
         foreach ($this->dataProviderNonAbstractGoodFuzzingHasSettersPerProperty() as $args) {
-            if ( ! is_subclass_of($args[0], DaftObject::class, true)) {
-                static::markTestSkipped(
-                    'Index 0 retrieved from ' .
-                    get_class($this) .
-                    '::dataProviderNonAbstractGoodFuzzingHasSettersPerProperty' .
-                    ' must be an implementation of ' .
-                    DaftObject::class
-                );
-
-                return;
-            }
-
-            $property = $args[5];
-
-            $properties = $args[0]::DaftObjectNullableProperties();
-
             if (
                 false === in_array(
-                    $property,
-                    $properties,
+                    $args[5],
+                    $args[0]::DaftObjectNullableProperties(),
                     true
                 )
             ) {
