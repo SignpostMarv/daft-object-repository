@@ -271,22 +271,8 @@ class DaftObjectImplementationTest extends TestCase
         $invalid = $this->dataProviderInvalidImplementations();
 
         foreach ($this->dataProviderNonAbstractGetterSetters() as $args) {
-            /**
-            * @var string
-            */
-            $className = $args[0];
-
-            if ( ! is_subclass_of($className, DaftObject::class, true)) {
-                continue;
-            }
-
-            /**
-            * @var ReflectionMethod
-            */
-            $method = $args[1];
-
-            if (false === in_array($className, $invalid, true)) {
-                yield [$className, $method];
+            if (false === in_array($args[0], $invalid, true)) {
+                yield [$args[0], $args[1]];
             }
         }
     }
