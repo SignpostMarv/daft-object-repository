@@ -201,12 +201,9 @@ class DaftObjectImplementationTest extends TestCase
     final public function dataProviderNonAbstractGoodExportableImplementations() : Generator
     {
         foreach ($this->dataProviderNonAbstractGoodImplementations() as $args) {
-            $exportables = $args[0]::DaftObjectExportableProperties();
-            $properties = $args[0]::DaftObjectProperties();
-
             if (
-                count($exportables) > 0 &&
-                count($properties) > 0
+                count($args[0]::DaftObjectExportableProperties()) > 0 &&
+                count($args[0]::DaftObjectProperties()) > 0
             ) {
                 yield $args;
             }
