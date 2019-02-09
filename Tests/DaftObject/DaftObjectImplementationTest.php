@@ -2162,6 +2162,8 @@ class DaftObjectImplementationTest extends TestCase
 
     /**
     * @return array<int, string>
+    *
+    * @psalm-return array<int, class-string<DaftObject>>
     */
     protected function InvalidImplementations() : array
     {
