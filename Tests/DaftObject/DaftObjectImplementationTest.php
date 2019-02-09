@@ -364,9 +364,7 @@ class DaftObjectImplementationTest extends TestCase
     final public function dataProviderNonAbstractGoodFuzzing() : Generator
     {
         foreach ($this->dataProviderNonAbstractGoodImplementations() as $args) {
-            $fuzzingImplementations = $this->dataProviderFuzzingImplementations();
-
-            foreach ($fuzzingImplementations as $fuzzingImplementationArgs) {
+            foreach ($this->dataProviderFuzzingImplementations() as $fuzzingImplementationArgs) {
                 if (is_a($args[0], $fuzzingImplementationArgs[0], true)) {
                     /**
                     * @psalm-var class-string<T>
