@@ -339,14 +339,6 @@ class DaftObjectImplementationTest extends TestCase
     final public function dataProviderFuzzingImplementations() : Generator
     {
         foreach ($this->FuzzingImplementationsViaGenerator() as $args) {
-            if (
-                is_array($args) &&
-                self::MIN_EXPECTED_ARRAY_COUNT === count($args) &&
-                isset($args[0], $args[1]) &&
-                is_string($args[0]) &&
-                is_array($args[1]) &&
-                is_a($args[0], DaftObject::class, true)
-            ) {
                 $validKeys = true;
 
                 /**
@@ -363,7 +355,6 @@ class DaftObjectImplementationTest extends TestCase
                 if ($validKeys) {
                     yield [$args[0], $args[1]];
                 }
-            }
         }
     }
 
