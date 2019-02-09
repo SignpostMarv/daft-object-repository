@@ -220,41 +220,14 @@ class DaftObjectImplementationTest extends TestCase
         }
     }
 
+    /**
+    * @psalm-return Generator<int, array{0:class-string<T>, 1:ReflectionClass}, mixed, void>
+    */
     final public function dataProviderNonAbstractGoodExportableImplementations() : Generator
     {
         foreach ($this->dataProviderNonAbstractGoodImplementations() as $args) {
-            /**
-            * @var array{0:scalar, 1:ReflectionClass}
-            */
-            $args = $args;
-
-            static::assertIsString($args[0]);
-
-            /**
-            * @var string
-            */
-            $className = $args[0];
-
-            if ( ! is_subclass_of($className, DaftObject::class, true)) {
-                static::markTestSkipped(
-                    'Index 0 retrieved from ' .
-                    get_class($this) .
-                    '::dataProviderNonAbstractGoodImplementations must be an implementation of ' .
-                    DaftObject::class
-                );
-
-                return;
-            }
-
-            /**
-            * @var array
-            */
-            $exportables = $className::DaftObjectExportableProperties();
-
-            /**
-            * @var array
-            */
-            $properties = $className::DaftObjectProperties();
+            $exportables = $args[0]::DaftObjectExportableProperties();
+            $properties = $args[0]::DaftObjectProperties();
 
             if (
                 count($exportables) > 0 &&
