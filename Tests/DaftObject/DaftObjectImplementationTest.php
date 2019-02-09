@@ -337,22 +337,12 @@ class DaftObjectImplementationTest extends TestCase
     }
 
     /**
-    * @psalm-return Generator<int, array{0:class-string<T>, 1:array<string, scalar|array|object|null>}, mixed, void>
-    */
-    final public function dataProviderFuzzingImplementations() : Generator
-    {
-        foreach ($this->FuzzingImplementationsViaGenerator() as $args) {
-                yield [$args[0], $args[1]];
-        }
-    }
-
-    /**
     * @psalm-return Generator<int, array{0:class-string<T>, 1:ReflectionClass, 2:array<string, scalar|array|object|null>, 3:array<int, string>, 4:array<int, string>}, mixed, void>
     */
     final public function dataProviderNonAbstractGoodFuzzing() : Generator
     {
         foreach ($this->dataProviderNonAbstractGoodImplementations() as $args) {
-            foreach ($this->dataProviderFuzzingImplementations() as $fuzzingImplementationArgs) {
+            foreach ($this->FuzzingImplementationsViaGenerator() as $fuzzingImplementationArgs) {
                 if (is_a($args[0], $fuzzingImplementationArgs[0], true)) {
                     /**
                     * @psalm-var class-string<T>
