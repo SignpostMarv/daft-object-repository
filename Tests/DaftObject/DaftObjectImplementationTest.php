@@ -336,6 +336,9 @@ class DaftObjectImplementationTest extends TestCase
         }
     }
 
+    /**
+    * @psalm-return Generator<int, array{0:class-string<T>, 1:array<string, scalar|array|object|null>}, mixed, void>
+    */
     final public function dataProviderFuzzingImplementations() : Generator
     {
         foreach ($this->FuzzingImplementationsViaGenerator() as $args) {
@@ -371,9 +374,6 @@ class DaftObjectImplementationTest extends TestCase
             */
             $reflector = $args[1];
 
-            /**
-            * @var \Traversable<array<int, string|array>>
-            */
             $fuzzingImplementations = $this->dataProviderFuzzingImplementations();
 
             foreach ($fuzzingImplementations as $fuzzingImplementationArgs) {
