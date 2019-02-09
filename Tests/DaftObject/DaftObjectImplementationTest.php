@@ -1007,6 +1007,8 @@ class DaftObjectImplementationTest extends TestCase
     * @param array<int, string> $getters
     * @param array<int, string> $setters
     *
+    * @psalm-param class-string<T> $className
+    *
     * @dataProvider dataProviderNonAbstractNonWormGoodFuzzingHasSetters
     *
     * @depends testHasDefinedImplementationCorrectly
@@ -1018,20 +1020,6 @@ class DaftObjectImplementationTest extends TestCase
         array $getters,
         array $setters
     ) : void {
-        if ( ! is_subclass_of($className, DaftObject::class, true)) {
-            static::markTestSkipped(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                DaftObject::class
-            );
-
-            return;
-        }
-
-        /**
-        * @var DaftObject
-        */
         $obj = new $className($args);
 
         static::assertCount(
@@ -1040,9 +1028,6 @@ class DaftObjectImplementationTest extends TestCase
             ($className . '::ChangedProperties() must be empty after instantiation')
         );
 
-        /**
-        * @var DaftObject
-        */
         $obj = new $className([]);
 
         static::assertCount(
@@ -1053,22 +1038,13 @@ class DaftObjectImplementationTest extends TestCase
 
         $settersNotNull = [];
 
-        /**
-        * @var array<string, array<int, string>>
-        */
         $otherProperties = $className::DaftObjectPropertiesChangeOtherProperties();
 
         foreach ($setters as $setterProperty) {
-            /**
-            * @var array<int, string>
-            */
             $propertiesExpectedToBeChanged = [
                 $setterProperty,
             ];
 
-            /**
-            * @var array<int, string>
-            */
             $propertiesExpectedNotToBeChanged = $className::DaftObjectProperties();
 
             if (isset($otherProperties[$setterProperty])) {
@@ -1081,6 +1057,9 @@ class DaftObjectImplementationTest extends TestCase
                 );
             }
 
+            /**
+            * @var array<int, string>
+            */
             $propertiesExpectedNotToBeChanged = array_filter(
                 $propertiesExpectedNotToBeChanged,
                 function (string $maybe) use ($propertiesExpectedToBeChanged) : bool {
@@ -1088,9 +1067,6 @@ class DaftObjectImplementationTest extends TestCase
                 }
             );
 
-            /**
-            * @var array<int, string>
-            */
             $checkingProperties = array_merge(
                 $propertiesExpectedToBeChanged,
                 $propertiesExpectedNotToBeChanged
@@ -1148,9 +1124,6 @@ class DaftObjectImplementationTest extends TestCase
             }
         }
 
-        /**
-        * @var DaftObject
-        */
         $obj = new $className([]);
 
         $propertiesExpectedToBeChanged = [];
@@ -1208,9 +1181,6 @@ class DaftObjectImplementationTest extends TestCase
             }
         }
 
-        /**
-        * @var array<int, string>
-        */
         $properties = $className::DaftObjectNullableProperties();
 
         foreach ($properties as $property) {
