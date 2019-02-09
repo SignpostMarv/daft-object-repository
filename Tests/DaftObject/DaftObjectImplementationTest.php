@@ -663,25 +663,13 @@ class DaftObjectImplementationTest extends TestCase
     * @dataProvider dataProviderNonAbstractGoodExportableImplementations
     *
     * @depends testHasDefinedAllPropertiesCorrectly
+    *
+    * @psalm-param class-string<T> $className
     */
     final public function testHasDefinedAllExportablesCorrectly(
         string $className,
         ReflectionClass $reflector
     ) : void {
-        if ( ! is_subclass_of($className, DaftObject::class, true)) {
-            static::markTestSkipped(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                DaftObject::class
-            );
-
-            return;
-        }
-
-        /**
-        * @var array<int, string|null>
-        */
         $exportables = $className::DaftObjectExportableProperties();
 
         foreach ($exportables as $exportable) {
@@ -695,15 +683,7 @@ class DaftObjectImplementationTest extends TestCase
             );
         }
 
-        /**
-        * @var array<int, string>
-        */
-        $exportables = $exportables;
-
-        /**
-        * @var array<int, string>
-        */
-        $properties = (array) $className::DaftObjectProperties();
+        $properties = $className::DaftObjectProperties();
 
         foreach ($exportables as $exportable) {
             static::assertTrue(
