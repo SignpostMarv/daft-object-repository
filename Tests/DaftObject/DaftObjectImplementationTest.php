@@ -393,10 +393,6 @@ class DaftObjectImplementationTest extends TestCase
     final public function dataProviderNonAbstractGoodFuzzingHasSetters() : Generator
     {
         foreach ($this->dataProviderNonAbstractGoodFuzzing() as $args) {
-            if (count($args) < self::NUM_EXPECTED_ARGS_FOR_IMPLEMENTATION) {
-                continue;
-            }
-
             if (count((array) $args[4]) > 0) {
                 yield $args;
             }
