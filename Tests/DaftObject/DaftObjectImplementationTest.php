@@ -238,6 +238,9 @@ class DaftObjectImplementationTest extends TestCase
         }
     }
 
+    /**
+    * @psalm-return Generator<int, array{0:class-string<T>, 1:ReflectionClass}, mixed, void>
+    */
     final public function dataProviderNonAbstractGoodPropertiesImplementations() : Generator
     {
         foreach ($this->dataProviderNonAbstractGoodImplementations() as $args) {
