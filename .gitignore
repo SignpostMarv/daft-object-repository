@@ -8,3 +8,4 @@
 /tools/
 /infection.log
 /xdebug-filter.phpunit.php
+/phpunit.cache
