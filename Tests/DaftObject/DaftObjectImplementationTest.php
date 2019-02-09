@@ -78,11 +78,10 @@ class DaftObjectImplementationTest extends TestCase
     final public function dataProviderNonAbstractImplementations() : Generator
     {
         foreach ($this->dataProviderImplementations() as $args) {
-            list($className) = $args;
             if (
-                false === (($reflector = new ReflectionClass($className))->isAbstract())
+                false === (($reflector = new ReflectionClass($args[0]))->isAbstract())
             ) {
-                yield [$className, $reflector];
+                yield [$args[0], $reflector];
             }
         }
     }
