@@ -321,12 +321,13 @@ class DaftObjectImplementationTest extends TestCase
         }
     }
 
+    /**
+    * @psalm-return Generator<int, array{0:class-string<T&AbstractDaftObject>, 1:ReflectionClass}, mixed, void>
+    */
     final public function dataProviderNonAbstractGoodNonSortableImplementations() : Generator
     {
         foreach ($this->dataProviderNonAbstractGoodImplementations() as $args) {
             if (
-                isset($args[0]) &&
-                is_string($args[0]) &&
                 is_a($args[0], AbstractDaftObject::class, true) &&
                 ! is_a($args[0], DaftSortableObject::class, true)
             ) {
