@@ -338,9 +338,6 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderFuzzingImplementations() : Generator
     {
-        /**
-        * @var \Traversable<array|null>
-        */
         $implementations = $this->FuzzingImplementationsViaGenerator();
 
         foreach ($implementations as $args) {
@@ -2319,6 +2316,9 @@ class DaftObjectImplementationTest extends TestCase
         ];
     }
 
+    /**
+    * @psalm-return array<int, array{0:class-string<T>, 1:array<string, scalar|array|object|null>}>
+    */
     protected function FuzzingImplementationsViaArray() : array
     {
         return [
@@ -2435,6 +2435,9 @@ class DaftObjectImplementationTest extends TestCase
         ];
     }
 
+    /**
+    * @psalm-return Generator<int, array{0:class-string<T>, 1:array<string, scalar|array|object|null>}, mixed, void>
+    */
     protected function FuzzingImplementationsViaGenerator() : Generator
     {
         yield from $this->FuzzingImplementationsViaArray();
