@@ -390,6 +390,9 @@ class DaftObjectImplementationTest extends TestCase
         }
     }
 
+    /**
+    * @psalm-return Generator<int, array{0:class-string<T>, 1:ReflectionClass, 2:array<string, scalar|array|object|null>, 3:array<int, string>, 4:array<int, string>}, mixed, void>
+    */
     final public function dataProviderNonAbstractGoodFuzzingHasSetters() : Generator
     {
         foreach ($this->dataProviderNonAbstractGoodFuzzing() as $args) {
@@ -401,9 +404,6 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractNonWormGoodFuzzingHasSetters() : Generator
     {
-        /**
-        * @var \Traversable<array<int, string>>
-        */
         $implementations = $this->dataProviderNonAbstractGoodFuzzingHasSetters();
 
         foreach ($implementations as $args) {
@@ -420,9 +420,6 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractJsonArrayBackedGoodFuzzingHasSetters() : Generator
     {
-        /**
-        * @var \Traversable<array<int, string>>
-        */
         $implementations = $this->dataProviderNonAbstractGoodFuzzingHasSetters();
 
         foreach ($implementations as $args) {
@@ -442,9 +439,6 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractGoodFuzzingHasSettersPerProperty() : Generator
     {
-        /**
-        * @var \Traversable<array<int, mixed>>
-        */
         $implementations = $this->dataProviderNonAbstractGoodFuzzingHasSetters();
 
         foreach ($implementations as $args) {
