@@ -1573,6 +1573,8 @@ class DaftObjectImplementationTest extends TestCase
     /**
     * @param array<string, scalar|array|object|null> $args
     *
+    * @psalm-param class-string<T> $className
+    *
     * @dataProvider dataProviderNonAbstractGoodFuzzingHasSettersPerPropertyWorm
     *
     * @depends testHasDefinedImplementationCorrectly
@@ -1585,17 +1587,6 @@ class DaftObjectImplementationTest extends TestCase
         array $setters,
         string $property
     ) : void {
-        if ( ! is_subclass_of($className, DaftObject::class, true)) {
-            static::markTestSkipped(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                DaftObject::class
-            );
-
-            return;
-        }
-
         $obj = new $className($args, true);
 
         $this->expectException(PropertyNotRewriteableException::class);
@@ -1612,6 +1603,8 @@ class DaftObjectImplementationTest extends TestCase
     /**
     * @param array<string, scalar|array|object|null> $args
     *
+    * @psalm-param class-string<T> $className
+    *
     * @dataProvider dataProviderNonAbstractGoodFuzzingHasSettersPerPropertyWorm
     *
     * @depends testHasDefinedImplementationCorrectly
@@ -1624,17 +1617,6 @@ class DaftObjectImplementationTest extends TestCase
         array $setters,
         string $property
     ) : void {
-        if ( ! is_subclass_of($className, DaftObject::class, true)) {
-            static::markTestSkipped(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                DaftObject::class
-            );
-
-            return;
-        }
-
         $obj = new $className([], true);
 
         $obj->__set($property, $args[$property]);
@@ -1652,6 +1634,8 @@ class DaftObjectImplementationTest extends TestCase
 
     /**
     * @dataProvider dataProviderNonAbstractGoodFuzzingHasSettersPerPropertyNotNullable
+    *
+    * @psalm-param class-string<AbstractDaftObject> $className
     */
     final public function testNonAbstractGoodFuzzingHasSettersPerPropertyNotNullable(
         string $className,
@@ -1661,22 +1645,10 @@ class DaftObjectImplementationTest extends TestCase
         array $setters,
         string $property
     ) : void {
-        if ( ! is_subclass_of($className, AbstractDaftObject::class, true)) {
-            static::markTestSkipped(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                AbstractDaftObject::class
-            );
-
-            return;
-        } elseif (
+        if (
             ! $reflector->isAbstract() &&
             in_array($property, $setters, true)
         ) {
-            /**
-            * @var ReflectionMethod
-            */
             $method = $reflector->getMethod('NudgePropertyValue');
 
             $method->setAccessible(true);
@@ -1725,20 +1697,11 @@ class DaftObjectImplementationTest extends TestCase
 
     /**
     * @dataProvider dataProviderDaftObjectCreatedByArray
+    *
+    * @psalm-param class-string<T> $className
     */
     final public function testConstructorArrayKeys(string $className, bool $writeAll) : void
     {
-        if ( ! is_a($className, DaftObject::class, true)) {
-            static::markTestSkipped(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                DaftObject::class
-            );
-
-            return;
-        }
-
         static::expectException(InvalidArgumentException::class);
         static::expectExceptionMessage('Properties must be strings!');
 
@@ -1752,40 +1715,19 @@ class DaftObjectImplementationTest extends TestCase
     */
     public function testSortableImplementation(string $className) : void
     {
-        /**
-        * @var scalar|array|object|resource|null
-        */
         $publicOrProtected = $className::DaftObjectPublicOrProtectedGetters();
-
-        static::assertIsArray($publicOrProtected);
-
-        /**
-        * @var array<int|string, scalar|array|object|null>
-        */
-        $publicOrProtected = $publicOrProtected;
 
         foreach ($publicOrProtected as $k => $v) {
             static::assertIsInt($k);
             static::assertIsString($v);
         }
 
-        /**
-        * @var array<int|string, scalar|array|object|null>
-        */
         $properties = $className::DaftSortableObjectProperties();
 
         foreach ($properties as $k => $v) {
             static::assertIsInt($k);
             static::assertIsString($v);
 
-            /**
-            * @var string
-            */
-            $v = $v;
-
-            /**
-            * @var string
-            */
             $expectedMethod = TypeUtilities::MethodNameFromProperty($v, false);
 
             static::assertTrue(in_array($v, $publicOrProtected, true));
@@ -1830,21 +1772,12 @@ class DaftObjectImplementationTest extends TestCase
 
     /**
     * @dataProvider DataProviderNotDaftObjectHasPropertiesWithMultiTypedArraysOfUniqueValues
+    *
+    * @psalm-param class-string<AbstractDaftObject> $implementation
     */
     public function testNotDaftObjectHasPropertiesWithMultiTypedArraysOfUniqueValues(
         string $implementation
     ) : void {
-        if ( ! is_a($implementation, AbstractDaftObject::class, true)) {
-            static::markTestSkipped(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                AbstractDaftObject::class
-            );
-
-            return;
-        }
-
         static::expectException(ClassDoesNotImplementClassException::class);
         static::expectExceptionMessage(
             $implementation .
@@ -1881,6 +1814,9 @@ class DaftObjectImplementationTest extends TestCase
         return (string) ob_get_clean();
     }
 
+    /**
+    * @psalm-param T $obj
+    */
     protected static function RegexForObject(DaftObject $obj) : string
     {
         /**
@@ -2130,6 +2066,9 @@ class DaftObjectImplementationTest extends TestCase
         yield from $this->FuzzingImplementationsViaArray();
     }
 
+    /**
+    * @psalm-return Generator<int, array{0:class-string<T&DaftSortableObject>, 1:ReflectionClass, 2:array<string, scalar|array|object|null>, 3:array<int, string>, 4:array<int, string>}, mixed, void>
+    */
     protected function SortableFuzzingImplementationsViaGenerator() : Generator
     {
         foreach ($this->dataProviderNonAbstractGoodFuzzing() as $args) {
