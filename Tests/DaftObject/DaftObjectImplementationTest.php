@@ -395,14 +395,14 @@ class DaftObjectImplementationTest extends TestCase
                             $args[1]->hasMethod($getter) &&
                             $args[1]->getMethod($getter)->isPublic()
                         ) {
-                                $getters[] = $property;
+                            $getters[] = $property;
                         }
 
                         if (
                             $args[1]->hasMethod($setter) &&
                             $args[1]->getMethod($setter)->isPublic()
                         ) {
-                                $setters[] = $property;
+                            $setters[] = $property;
                         }
                     }
 
