@@ -11,6 +11,11 @@
     },
     "mutators": {
         "@default": true,
+        "CastArray": {
+            "ignore": [
+                "SignpostMarv\\DaftObject\\TraitSortableDaftObject::DaftSortableObjectProperties"
+            ]
+        },
         "LogicalAnd": {
             "ignore": [
                 "SignpostMarv\\DaftObject\\AbstractArrayBackedDaftObject::NudgePropertyValue",
