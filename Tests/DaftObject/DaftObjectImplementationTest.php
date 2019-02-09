@@ -364,39 +364,19 @@ class DaftObjectImplementationTest extends TestCase
     final public function dataProviderNonAbstractGoodFuzzing() : Generator
     {
         foreach ($this->dataProviderNonAbstractGoodImplementations() as $args) {
-            /**
-            * @var string
-            */
-            $className = $args[0];
-
-            /**
-            * @var ReflectionClass
-            */
-            $reflector = $args[1];
-
             $fuzzingImplementations = $this->dataProviderFuzzingImplementations();
 
             foreach ($fuzzingImplementations as $fuzzingImplementationArgs) {
-                /**
-                * @var string
-                */
-                $implementation = $fuzzingImplementationArgs[0];
-
-                /**
-                * @var array
-                */
-                $args = $fuzzingImplementationArgs[1];
-
-                if (is_a($className, $implementation, true)) {
+                if (is_a($args[0], $fuzzingImplementationArgs[0], true)) {
                     /**
-                    * @var DaftObject
+                    * @psalm-var class-string<T>
                     */
-                    $className = $className;
+                    $args[0] = $args[0];
 
                     $getters = [];
                     $setters = [];
 
-                    $properties = $className::DaftObjectProperties();
+                    $properties = $args[0]::DaftObjectProperties();
 
                     $initialCount = count($properties);
 
@@ -413,30 +393,20 @@ class DaftObjectImplementationTest extends TestCase
                         $getter = TypeUtilities::MethodNameFromProperty($propertyForMethod, false);
                         $setter = TypeUtilities::MethodNameFromProperty($propertyForMethod, true);
 
-                        if ($reflector->hasMethod($getter)) {
-                            /**
-                            * @var ReflectionMethod
-                            */
-                            $getter = $reflector->getMethod($getter);
-
-                            if ($getter->isPublic()) {
+                        if ($args[1]->hasMethod($getter)) {
+                            if ($args[1]->getMethod($getter)->isPublic()) {
                                 $getters[] = $property;
                             }
                         }
 
-                        if ($reflector->hasMethod($setter)) {
-                            /**
-                            * @var ReflectionMethod
-                            */
-                            $setter = $reflector->getMethod($setter);
-
-                            if ($setter->isPublic()) {
+                        if ($args[1]->hasMethod($setter)) {
+                            if ($args[1]->getMethod($setter)->isPublic()) {
                                 $setters[] = $property;
                             }
                         }
                     }
 
-                    yield [$className, $reflector, $args, $getters, $setters];
+                    yield [$args[0], $args[1], $fuzzingImplementationArgs[1], $getters, $setters];
                 }
             }
         }
