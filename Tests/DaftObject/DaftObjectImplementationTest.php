@@ -105,6 +105,9 @@ class DaftObjectImplementationTest extends TestCase
         }
     }
 
+    /**
+    * @psalm-return Generator<int, array{0:class-string<T>, 1:ReflectionClass}, mixed, void>
+    */
     final public function dataProviderNonAbstractGoodImplementations() : Generator
     {
         $invalid = $this->dataProviderInvalidImplementations();
@@ -124,9 +127,6 @@ class DaftObjectImplementationTest extends TestCase
                     return;
                 }
 
-                /**
-                * @var array
-                */
                 $properties = $implementation::DaftObjectProperties();
 
                 $initialCount = count($properties);
@@ -183,9 +183,6 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractGoodImplementationsWithProperties() : Generator
     {
-        /**
-        * @var iterable<array>
-        */
         $implementations = $this->dataProviderNonAbstractGoodImplementations();
 
         foreach ($implementations as $args) {
@@ -285,9 +282,6 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractGoodExportableImplementations() : Generator
     {
-        /**
-        * @var \Traversable<array<int, string|ReflectionClass>>
-        */
         $implementations = $this->dataProviderNonAbstractGoodImplementations();
 
         foreach ($implementations as $args) {
@@ -335,9 +329,6 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractGoodPropertiesImplementations() : Generator
     {
-        /**
-        * @var \Traversable<array<int, string|ReflectionClass>>
-        */
         $implementations = $this->dataProviderNonAbstractGoodImplementations();
 
         foreach ($implementations as $args) {
@@ -488,9 +479,6 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractGoodSortableImplementations() : Generator
     {
-        /**
-        * @var \Traversable<array<int, string|ReflectionClass>>
-        */
         $implementations = $this->dataProviderNonAbstractGoodImplementations();
 
         foreach ($implementations as $args) {
@@ -506,9 +494,6 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractGoodNonSortableImplementations() : Generator
     {
-        /**
-        * @var \Traversable<array<int, string|ReflectionClass>>
-        */
         $implementations = $this->dataProviderNonAbstractGoodImplementations();
 
         foreach ($implementations as $args) {
@@ -561,9 +546,6 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractGoodFuzzing() : Generator
     {
-        /**
-        * @var \Traversable<array<int, string|ReflectionClass>>
-        */
         $implementations = $this->dataProviderNonAbstractGoodImplementations();
 
         foreach ($implementations as $args) {
@@ -2204,9 +2186,6 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderDaftObjectCreatedByArray() : Generator
     {
-        /**
-        * @var \Traversable<array|null>
-        */
         $implementations = $this->dataProviderNonAbstractGoodImplementations();
 
         foreach ($implementations as $args) {
