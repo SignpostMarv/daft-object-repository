@@ -342,22 +342,7 @@ class DaftObjectImplementationTest extends TestCase
     final public function dataProviderFuzzingImplementations() : Generator
     {
         foreach ($this->FuzzingImplementationsViaGenerator() as $args) {
-            $validKeys = true;
-
-            /**
-            * @var array<int, string|int>
-            */
-            $args1keys = array_keys($args[1]);
-
-            foreach ($args1keys as $shouldBeProperty) {
-                if (false === is_string($shouldBeProperty)) {
-                    $validKeys = false;
-                    break;
-                }
-            }
-            if ($validKeys) {
                 yield [$args[0], $args[1]];
-            }
         }
     }
 
