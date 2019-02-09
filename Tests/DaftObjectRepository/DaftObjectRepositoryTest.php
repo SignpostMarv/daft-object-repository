@@ -87,9 +87,6 @@ class DaftObjectRepositoryTest extends TestCase
 
         $idProps = [];
 
-        /**
-        * @var array<int, string>
-        */
         $idProperties = $objImplementation::DaftObjectIdProperties();
 
         foreach ($idProperties as $idProp) {
@@ -97,9 +94,6 @@ class DaftObjectRepositoryTest extends TestCase
         }
 
         foreach ($paramsArray as $params) {
-            /**
-            * @var SuitableForRepositoryType
-            */
             $obj = new $objImplementation($params, $writeable);
 
             $repoByObject = static::DaftObjectRepositoryByDaftObject($obj);
@@ -141,11 +135,10 @@ class DaftObjectRepositoryTest extends TestCase
                 throw new RuntimeException('Insufficient Id properties found!');
             }
 
+            static::assertInstanceOf(SuitableForRepositoryType::class, $obj);
+
             $repo->ForgetDaftObject($obj);
 
-            /**
-            * @var SuitableForRepositoryType|null
-            */
             $retrieved = $repo->RecallDaftObject($ids);
 
             if ( ! is_null($retrieved)) {
@@ -176,17 +169,6 @@ class DaftObjectRepositoryTest extends TestCase
         array $idProps,
         bool $writeable
     ) : void {
-        if ( ! is_subclass_of($objImplementation, SuitableForRepositoryType::class, true)) {
-            static::markTestSkipped(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                SuitableForRepositoryType::class
-            );
-
-            return;
-        }
-
         static::assertSame(get_class($obj), get_class($retrieved));
         static::assertNotSame($obj, $retrieved);
 
@@ -195,15 +177,9 @@ class DaftObjectRepositoryTest extends TestCase
             $objImplementation::DaftObjectIdHash($retrieved)
         );
 
-        /**
-        * @var array<int, string>
-        */
         $properties = $objImplementation::DaftObjectProperties();
 
         foreach ($properties as $prop) {
-            /**
-            * @var string
-            */
             $expectedMethod = static::MethodNameFromProperty($prop);
 
             if (
@@ -257,6 +233,8 @@ class DaftObjectRepositoryTest extends TestCase
 
         /**
         * @var SuitableForRepositoryType|null
+        *
+        * @psalm-var T|null
         */
         $retrieved = $repo->RecallDaftObject($ids);
 
@@ -279,6 +257,11 @@ class DaftObjectRepositoryTest extends TestCase
 
     /**
     * @param (scalar|array|object|null)[] $ids
+    *
+    * @psalm-param T $retrieved
+    * @psalm-param T $obj
+    * @psalm-param TRepo $repo
+    * @psalm-param class-string<T> $objImplementation
     */
     protected function repositoryForImplementaionTestRetrievedInLoopTwo(
         SuitableForRepositoryType $retrieved,
@@ -289,20 +272,6 @@ class DaftObjectRepositoryTest extends TestCase
         array $idProps,
         bool $writeable
     ) : void {
-        if ( ! is_subclass_of($objImplementation, DaftObject::class, true)) {
-            static::markTestSkipped(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                DaftObject::class
-            );
-
-            return;
-        }
-
-        /**
-        * @var array<int, string>
-        */
         $properties = $objImplementation::DaftObjectProperties();
 
         foreach ($properties as $prop) {
