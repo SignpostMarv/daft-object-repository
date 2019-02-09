@@ -284,9 +284,7 @@ class DaftObjectImplementationTest extends TestCase
     final public function dataProviderNonAbstractGoodSortableImplementations() : Generator
     {
         foreach ($this->dataProviderNonAbstractGoodImplementations() as $args) {
-            if (
-                is_a($args[0], DaftSortableObject::class, true)
-            ) {
+            if (is_a($args[0], DaftSortableObject::class, true)) {
                 yield $args;
             }
         }
