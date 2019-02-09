@@ -72,6 +72,9 @@ class DaftObjectImplementationTest extends TestCase
         }
     }
 
+    /**
+    * @psalm-return array<int, class-string<T>>
+    */
     final public function dataProviderInvalidImplementations() : array
     {
         $out = [];
@@ -87,6 +90,9 @@ class DaftObjectImplementationTest extends TestCase
         return $out;
     }
 
+    /**
+    * @psalm-return Generator<int, array{0:class-string<T>, 1:ReflectionClass}, mixed, void>
+    */
     final public function dataProviderNonAbstractImplementations() : Generator
     {
         foreach ($this->dataProviderImplementations() as $args) {
@@ -103,24 +109,13 @@ class DaftObjectImplementationTest extends TestCase
     {
         $invalid = $this->dataProviderInvalidImplementations();
 
-        /**
-        * @var iterable<array>
-        */
         $implementations = $this->dataProviderNonAbstractImplementations();
 
         foreach ($implementations as $args) {
             if (false === in_array($args[0] ?? null, $invalid, true)) {
                 list($implementation) = $args;
 
-                if ( ! is_string($implementation)) {
-                    static::markTestSkipped(
-                        'Index 0 retrieved from ' .
-                        get_class($this) .
-                        '::dataProviderNonAbstractImplementations must be a string'
-                    );
-
-                    return;
-                } elseif ( ! is_subclass_of($implementation, DaftObject::class, true)) {
+                if ( ! is_subclass_of($implementation, DaftObject::class, true)) {
                     static::markTestSkipped(
                         'Index 0 retrieved from ' .
                         get_class($this) .
@@ -155,9 +150,6 @@ class DaftObjectImplementationTest extends TestCase
     {
         $invalid = $this->dataProviderInvalidImplementations();
 
-        /**
-        * @var array<int, array<int, string|ReflectionClass>>
-        */
         $implementations = $this->dataProviderNonAbstractImplementations();
 
         foreach ($implementations as $args) {
@@ -389,9 +381,6 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractGetterSetters() : Generator
     {
-        /**
-        * @var \Traversable<array<int, string|ReflectionClass>>
-        */
         $implementations = $this->dataProviderNonAbstractImplementations();
 
         foreach ($implementations as $args) {
