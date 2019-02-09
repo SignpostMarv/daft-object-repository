@@ -1223,6 +1223,8 @@ class DaftObjectImplementationTest extends TestCase
     * @dataProvider dataProviderNonAbstractGoodFuzzingHasSetters
     *
     * @depends testHasDefinedImplementationCorrectly
+    *
+    * @psalm-param class-string<T> $className
     */
     final public function testProviderNonAbstractGoodFuzzingSetFromBlankThenJsonSerialiseMaybeFailure(
         string $className,
@@ -1231,33 +1233,11 @@ class DaftObjectImplementationTest extends TestCase
         array $getters,
         array $setters
     ) : void {
-        if ( ! is_subclass_of($className, DaftObject::class, true)) {
-            static::markTestSkipped(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                DaftObject::class
-            );
-
-            return;
-        }
-
         $obj = new $className($args);
 
         if ($obj instanceof DaftJson) {
-            if ( ! is_subclass_of($className, DaftJson::class, true)) {
-                static::markTestSkipped(
-                    'Argument 1 passed to ' .
-                    __METHOD__ .
-                    ' must be an implementation of ' .
-                    DaftJson::class
-                );
-
-                return;
-            }
-
             /**
-            * @var DaftJson
+            * @psalm-var class-string<DaftJson>
             */
             $className = $className;
 
@@ -1275,7 +1255,7 @@ class DaftObjectImplementationTest extends TestCase
             );
 
             /**
-            * @var array|bool
+            * @var array|false
             */
             $decoded = json_decode($json, true);
 
@@ -1296,9 +1276,6 @@ class DaftObjectImplementationTest extends TestCase
             */
             $decoded = $decoded;
 
-            /**
-            * @var DaftJson
-            */
             $objFromJson = $className::DaftObjectFromJsonArray($decoded);
 
             static::assertSame(
@@ -1311,9 +1288,6 @@ class DaftObjectImplementationTest extends TestCase
                 )
             );
 
-            /**
-            * @var DaftJson
-            */
             $objFromJson = $className::DaftObjectFromJsonString($json);
 
             static::assertSame(
