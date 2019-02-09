@@ -461,26 +461,14 @@ class DaftObjectImplementationTest extends TestCase
     * @dataProvider dataProviderNonAbstractGoodImplementationsWithMixedCaseProperties
     *
     * @depends testHasDefinedAllPropertiesCorrectly
+    *
+    * @psalm-param class-string<DaftObject> $className
     */
     final public function testHasDefinedAllPropertiesCorrectlyExceptMixedCase(
         string $className,
         ReflectionClass $reflector,
         bool $hasMixedCase
     ) : void {
-        if ( ! is_subclass_of($className, DaftObject::class, true)) {
-            static::markTestSkipped(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                DaftObject::class
-            );
-
-            return;
-        }
-
-        /**
-        * @var array<int, string>
-        */
         $properties = $className::DaftObjectProperties();
 
         $initialCount = count($properties);
