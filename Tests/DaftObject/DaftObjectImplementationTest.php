@@ -266,6 +266,9 @@ class DaftObjectImplementationTest extends TestCase
         }
     }
 
+    /**
+    * @psalm-return Generator<int, array{0:class-string<T>, 1:ReflectionMethod}, mixed, void>
+    */
     final public function dataProviderGoodNonAbstractGetterSetters() : Generator
     {
         $invalid = $this->dataProviderInvalidImplementations();
