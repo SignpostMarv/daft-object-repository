@@ -402,31 +402,27 @@ class DaftObjectImplementationTest extends TestCase
         }
     }
 
+    /**
+    * @psalm-return Generator<int, array{0:class-string<T>, 1:ReflectionClass, 2:array<string, scalar|array|object|null>, 3:array<int, string>, 4:array<int, string>}, mixed, void>
+    */
     final public function dataProviderNonAbstractNonWormGoodFuzzingHasSetters() : Generator
     {
         foreach ($this->dataProviderNonAbstractGoodFuzzingHasSetters() as $args) {
-            /**
-            * @var string
-            */
-            $interfaceCheck = $args[0];
-
-            if ( ! is_a($interfaceCheck, DaftObjectWorm::class, true)) {
+            if ( ! is_a($args[0], DaftObjectWorm::class, true)) {
                 yield $args;
             }
         }
     }
 
+    /**
+    * @psalm-return Generator<int, array{0:class-string<T&AbstractArrayBackedDaftObject>, 1:ReflectionClass, 2:array<string, scalar|array|object|null>, 3:array<int, string>, 4:array<int, string>}, mixed, void>
+    */
     final public function dataProviderNonAbstractJsonArrayBackedGoodFuzzingHasSetters() : Generator
     {
         foreach ($this->dataProviderNonAbstractGoodFuzzingHasSetters() as $args) {
-            /**
-            * @var string
-            */
-            $className = $args[0];
-
             if (
-                false === is_a($className, DaftJson::class, true) &&
-                is_a($className, AbstractArrayBackedDaftObject::class, true)
+                false === is_a($args[0], DaftJson::class, true) &&
+                is_a($args[0], AbstractArrayBackedDaftObject::class, true)
             ) {
                 yield $args;
             }
