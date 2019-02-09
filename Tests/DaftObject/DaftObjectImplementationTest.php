@@ -544,25 +544,13 @@ class DaftObjectImplementationTest extends TestCase
     * @dataProvider dataProviderNonAbstractGoodNullableImplementations
     *
     * @depends testHasDefinedAllPropertiesCorrectly
+    *
+    * @psalm-param class-string<T> $className
     */
     final public function testHasDefinedAllNullablesCorrectly(
         string $className,
         ReflectionClass $reflector
     ) : void {
-        if ( ! is_subclass_of($className, DaftObject::class, true)) {
-            static::markTestSkipped(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                DaftObject::class
-            );
-
-            return;
-        }
-
-        /**
-        * @var array<int, string|null>
-        */
         $nullables = $className::DaftObjectNullableProperties();
 
         foreach ($nullables as $nullable) {
@@ -576,14 +564,6 @@ class DaftObjectImplementationTest extends TestCase
             );
         }
 
-        /**
-        * @var array<int, string>
-        */
-        $nullables = $nullables;
-
-        /**
-        * @var array<int, string>
-        */
         $properties = $className::DaftObjectProperties();
 
         foreach ($nullables as $nullable) {
