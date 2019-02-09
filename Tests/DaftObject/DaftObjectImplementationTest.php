@@ -417,9 +417,6 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractGoodFuzzingHasSetters() : Generator
     {
-        /**
-        * @var \Traversable<array<int, string|ReflectionClass|array>>
-        */
         $implementations = $this->dataProviderNonAbstractGoodFuzzing();
 
         foreach ($implementations as $args) {
@@ -2407,9 +2404,6 @@ class DaftObjectImplementationTest extends TestCase
 
     protected function SortableFuzzingImplementationsViaGenerator() : Generator
     {
-        /**
-        * @var \Traversable<array<int, string|ReflectionClass|array>>
-        */
         $implementations = $this->dataProviderNonAbstractGoodFuzzing();
 
         foreach ($implementations as $args) {
