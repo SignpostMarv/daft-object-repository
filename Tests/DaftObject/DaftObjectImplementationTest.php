@@ -429,19 +429,13 @@ class DaftObjectImplementationTest extends TestCase
         }
     }
 
+    /**
+    * @psalm-return Generator<int, array{0:class-string<T>, 1:ReflectionClass, 2:array<string, scalar|array|object|null>, 3:array<int, string>, 4:array<int, string>, 5:string}, mixed, void>
+    */
     final public function dataProviderNonAbstractGoodFuzzingHasSettersPerProperty() : Generator
     {
         foreach ($this->dataProviderNonAbstractGoodFuzzingHasSetters() as $args) {
-            if (count($args) < self::NUM_EXPECTED_ARGS_FOR_IMPLEMENTATION) {
-                continue;
-            }
-
-            /**
-            * @var array<int, string>
-            */
-            $setters = $args[4];
-
-            foreach ($setters as $property) {
+            foreach ($args[4] as $property) {
                 if (in_array($property, array_keys((array) $args[2]), true)) {
                     yield [$args[0], $args[1], $args[2], $args[3], $args[4], $property];
                 }
@@ -451,9 +445,6 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractGoodFuzzingHasSettersPerPropertyWorm() : Generator
     {
-        /**
-        * @var \Traversable<array<int, mixed>>
-        */
         $implementations = $this->dataProviderNonAbstractGoodFuzzingHasSettersPerProperty();
 
         foreach ($implementations as $args) {
@@ -470,9 +461,6 @@ class DaftObjectImplementationTest extends TestCase
 
     final public function dataProviderNonAbstractGoodFuzzingHasSettersPerPropertyNotNullable(
     ) : Generator {
-        /**
-        * @var iterable<array<int, mixed>>
-        */
         $implementations = $this->dataProviderNonAbstractGoodFuzzingHasSettersPerProperty();
 
         foreach ($implementations as $args) {
