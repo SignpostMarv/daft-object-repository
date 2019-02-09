@@ -373,6 +373,30 @@ class DaftObjectImplementationTest extends TestCase
     }
 
     /**
+    * @psalm-return Generator<int, array{0:class-string<T&DaftJson>, 1:ReflectionClass, 2:array<string, scalar|array|object|null>, 3:array<int, string>, 4:array<int, string>}, mixed, void>
+    */
+    final public function dataProviderNonAbstractGoodFuzzingHasSetters_DaftJson() : Generator
+    {
+        foreach ($this->dataProviderNonAbstractGoodFuzzingHasSetters() as $args) {
+            if (is_a($args[0], DaftJson::class, true)) {
+                yield $args;
+            }
+        }
+    }
+
+    /**
+    * @psalm-return Generator<int, array{0:class-string<T>, 1:ReflectionClass, 2:array<string, scalar|array|object|null>, 3:array<int, string>, 4:array<int, string>}, mixed, void>
+    */
+    final public function dataProviderNonAbstractGoodFuzzingHasSetters_Not_DaftJson() : Generator
+    {
+        foreach ($this->dataProviderNonAbstractGoodFuzzingHasSetters() as $args) {
+            if ( ! is_a($args[0], DaftJson::class, true)) {
+                yield $args;
+            }
+        }
+    }
+
+    /**
     * @psalm-return Generator<int, array{0:class-string<T>, 1:ReflectionClass, 2:array<string, scalar|array|object|null>, 3:array<int, string>, 4:array<int, string>}, mixed, void>
     */
     final public function dataProviderNonAbstractNonWormGoodFuzzingHasSetters() : Generator
@@ -1351,6 +1375,8 @@ class DaftObjectImplementationTest extends TestCase
     * @dataProvider dataProviderNonAbstractJsonArrayBackedGoodFuzzingHasSetters
     *
     * @depends testHasDefinedImplementationCorrectly
+    *
+    * @psalm-param class-string<AbstractArrayBackedDaftObject> $className
     */
     final public function testProviderNonAbstractGoodFuzzingJsonFromStringFailure(
         string $className,
@@ -1359,17 +1385,6 @@ class DaftObjectImplementationTest extends TestCase
         array $getters,
         array $setters
     ) : void {
-        if ( ! is_subclass_of($className, AbstractArrayBackedDaftObject::class, true)) {
-            static::markTestSkipped(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                AbstractArrayBackedDaftObject::class
-            );
-
-            return;
-        }
-
         $this->expectException(DaftObjectNotDaftJsonBadMethodCallException::class);
         $this->expectExceptionMessage(sprintf(
             '%s does not implement %s',
@@ -1381,10 +1396,37 @@ class DaftObjectImplementationTest extends TestCase
     }
 
     /**
-    * @dataProvider dataProviderNonAbstractGoodFuzzingHasSetters
+    * @dataProvider dataProviderNonAbstractGoodFuzzingHasSetters_Not_DaftJson
     *
     * @depends testHasDefinedAllExportablesCorrectly
     * @depends testHasDefinedImplementationCorrectly
+    * @depends testProviderNonAbstractGoodFuzzingJsonFromStringFailure
+    *
+    * @psalm-param class-string<AbstractArrayBackedDaftObject> $className
+    */
+    final public function testProviderNonAbstractGoodFuzzingJsonFromStringFailure_dataProviderNonAbstractGoodFuzzingHasSetters(
+        string $className,
+        ReflectionClass $reflector,
+        array $args,
+        array $getters,
+        array $setters
+    ) : void {
+        $this->testProviderNonAbstractGoodFuzzingJsonFromStringFailure(
+            $className,
+            $reflector,
+            $args,
+            $getters,
+            $setters
+        );
+    }
+
+    /**
+    * @dataProvider dataProviderNonAbstractGoodFuzzingHasSetters_DaftJson
+    *
+    * @depends testHasDefinedAllExportablesCorrectly
+    * @depends testHasDefinedImplementationCorrectly
+    *
+    * @psalm-param class-string<DaftJson> $className
     */
     final public function testProviderNonAbstractGoodFuzzingSetFromBlankThenJsonSerialiseMaybePropertiesFailure(
         string $className,
@@ -1393,22 +1435,12 @@ class DaftObjectImplementationTest extends TestCase
         array $getters,
         array $setters
     ) : void {
-        if (is_a($className, DaftJson::class, true)) {
-            /**
-            * @var array<int, string>
-            */
             $exportables = (array) $className::DaftObjectExportableProperties();
 
-            /**
-            * @var array<int, string>
-            */
             $propertyNames = (array) $className::DaftObjectJsonPropertyNames();
 
             $jsonProps = [];
 
-            /**
-            * @var array<int|string, string|null>
-            */
             $properties = $className::DaftObjectJsonProperties();
 
             foreach ($properties as $k => $v) {
@@ -1536,21 +1568,6 @@ class DaftObjectImplementationTest extends TestCase
                     SORT_REGULAR
                 )
             );
-        } elseif (is_a($className, AbstractArrayBackedDaftObject::class, true)) {
-            $this->expectException(DaftObjectNotDaftJsonBadMethodCallException::class);
-            $this->expectExceptionMessage(sprintf(
-                '%s does not implement %s',
-                $className,
-                DaftJson::class
-            ));
-
-            /**
-            * @var DaftJson
-            */
-            $className = $className;
-
-            $className::DaftObjectJsonProperties();
-        }
     }
 
     /**
