@@ -197,12 +197,7 @@ class DaftObjectImplementationTest extends TestCase
     final public function dataProviderNonAbstractDefinesOwnIdGoodImplementations() : Generator
     {
         foreach ($this->dataProviderNonAbstractGoodImplementationsWithProperties() as $args) {
-            /**
-            * @var string
-            */
-            $className = $args[0];
-
-            if (is_a($className, DefinesOwnIdPropertiesInterface::class, true)) {
+            if (is_a($args[0], DefinesOwnIdPropertiesInterface::class, true)) {
                 yield $args;
             }
         }
@@ -211,31 +206,7 @@ class DaftObjectImplementationTest extends TestCase
     final public function dataProviderNonAbstractGoodNullableImplementations() : Generator
     {
         foreach ($this->dataProviderNonAbstractGoodImplementationsWithProperties() as $args) {
-            /**
-            * @var array{0:scalar, 1:ReflectionClass}
-            */
-            static::assertIsString($args[0]);
-
-            /**
-            * @var string
-            */
-            $className = $args[0];
-
-            if ( ! is_subclass_of($className, DaftObject::class, true)) {
-                static::markTestSkipped(
-                    'Index 0 retrieved from ' .
-                    get_class($this) .
-                    '::dataProviderNonAbstractGoodImplementations must be an implementation of ' .
-                    DaftObject::class
-                );
-
-                return;
-            }
-
-            /**
-            * @var array
-            */
-            $properties = $className::DaftObjectNullableProperties();
+            $properties = $args[0]::DaftObjectNullableProperties();
 
             if (count($properties) > 0) {
                 yield $args;
