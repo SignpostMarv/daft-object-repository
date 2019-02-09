@@ -47,7 +47,9 @@
             "ignore": [
                 "SignpostMarv\\DaftObject\\AbstractDaftObject::CompareToDaftSortableObject",
                 "SignpostMarv\\DaftObject\\AbstractArrayBackedDaftObject::MaybeThrowForPropertyOnNudge",
-                "SignpostMarv\\DaftObject\\DefinitionAssistant::IsTypeUnregistered"
+                "SignpostMarv\\DaftObject\\DefinitionAssistant::IsTypeUnregistered",
+                "SignpostMarv\\DaftObject\\TraitSortableDaftObject::CompareToDaftSortableObject",
+                "SignpostMarv\\DaftObject\\TraitSortableDaftObject::DaftSortableObjectProperties"
             ]
         }
     }
