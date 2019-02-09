@@ -443,6 +443,9 @@ class DaftObjectImplementationTest extends TestCase
         }
     }
 
+    /**
+    * @psalm-return Generator<int, array{0:class-string<T&DaftObjectWorm>, 1:ReflectionClass, 2:array<string, scalar|array|object|null>, 3:array<int, string>, 4:array<int, string>, 5:string}, mixed, void>
+    */
     final public function dataProviderNonAbstractGoodFuzzingHasSettersPerPropertyWorm() : Generator
     {
         foreach ($this->dataProviderNonAbstractGoodFuzzingHasSettersPerProperty() as $args) {
