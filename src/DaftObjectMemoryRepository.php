@@ -72,7 +72,7 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     ) : SuitableForRepositoryType {
         $out = $this->RecallDaftObject($id);
 
-        if ( ! is_a($out, $type, true)) {
+        if (is_null($out) || ! is_a($out, $type, true)) {
             throw new DaftObjectNotRecalledException(
                 'Argument 1 passed to ' .
                 DaftObjectRepository::class .

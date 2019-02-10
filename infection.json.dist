@@ -28,6 +28,11 @@
                 "SignpostMarv\\DaftObject\\PHPStan\\ClassReflectionExtension::MaybeRegisterTypesOrExitEarly"
             ]
         },
+        "LogicalOr": {
+            "ignore": [
+                "SignpostMarv\\DaftObject\\DaftObjectMemoryRepository::RecallDaftObjectOrThrow"
+            ]
+        },
         "MethodCallRemoval": {
             "ignore": [
                 "SignpostMarv\\DaftObject\\DaftObjectMemoryRepository::RememberDaftObject",
