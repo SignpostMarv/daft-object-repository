@@ -304,13 +304,13 @@ class DaftObjectRepositoryTest extends TestCase
             'Argument 1 passed to ' .
             DaftObjectRepository::class .
             '::RecallDaftObjectOrThrow() did not resolve to an instance of ' .
-            SuitableForRepositoryType::class .
+            $objImplementation .
             ' from ' .
             get_class($repo) .
             '::RecallDaftObject()'
         );
 
-        $repo->RecallDaftObjectOrThrow($ids);
+        $repo->RecallDaftObjectOrThrow($ids, $objImplementation);
     }
 
     protected function RepositoryDataProviderParams() : array
