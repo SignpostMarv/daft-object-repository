@@ -58,9 +58,14 @@ interface DaftObjectRepository
     /**
     * @param scalar|(scalar|array|object|null)[] $id
     *
+    * @psalm-param class-string<T> $type
+    *
     * @psalm-return T
     */
-    public function RecallDaftObjectOrThrow($id) : SuitableForRepositoryType;
+    public function RecallDaftObjectOrThrow(
+        $id,
+        string $type = SuitableForRepositoryType::class
+    ) : SuitableForRepositoryType;
 
     /**
     * @param mixed ...$args

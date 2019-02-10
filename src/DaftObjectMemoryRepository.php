@@ -60,12 +60,16 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     }
 
     /**
-    * {@inheritdoc}
+    * @param scalar|(scalar|array|object|null)[] $id
+    *
+    * @psalm-param class-string<T> $type
     *
     * @psalm-return T
     */
-    final public function RecallDaftObjectOrThrow($id) : SuitableForRepositoryType
-    {
+    final public function RecallDaftObjectOrThrow(
+        $id,
+        string $type = SuitableForRepositoryType::class
+    ) : SuitableForRepositoryType {
         $out = $this->RecallDaftObject($id);
 
         if (is_null($out)) {
@@ -78,7 +82,22 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
                 static::class .
                 '::RecallDaftObject()'
             );
+        } elseif ( ! is_a($out, $type, true)) {
+            throw new DaftObjectNotRecalledException(
+                'Argument 1 passed to ' .
+                DaftObjectRepository::class .
+                '::RecallDaftObjectOrThrow() did not resolve to an instance of ' .
+                $type .
+                ' from ' .
+                static::class .
+                '::RecallDaftObject()'
+            );
         }
+
+        /**
+        * @psalm-var T
+        */
+        $out = $out;
 
         return $out;
     }
