@@ -66,7 +66,7 @@ class DaftObjectMemoryRepository extends AbstractDaftObjectRepository
     *
     * @psalm-return T
     */
-    final public function RecallDaftObjectOrThrow(
+    public function RecallDaftObjectOrThrow(
         $id,
         string $type = SuitableForRepositoryType::class
     ) : SuitableForRepositoryType {
