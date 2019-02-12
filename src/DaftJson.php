@@ -12,6 +12,8 @@ use JsonSerializable;
 
 /**
 * Base daft object.
+*
+* @template T as DaftJson
 */
 interface DaftJson extends DaftObject, JsonSerializable
 {
@@ -27,11 +29,15 @@ interface DaftJson extends DaftObject, JsonSerializable
 
     /**
     * @return static
+    *
+    * @psalm-return T
     */
     public static function DaftObjectFromJsonArray(array $array, bool $writeAll = false) : self;
 
     /**
     * @return static
+    *
+    * @psalm-return T
     */
     public static function DaftObjectFromJsonString(string $string) : self;
 }

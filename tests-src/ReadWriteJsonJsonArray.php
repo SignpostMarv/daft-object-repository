@@ -6,6 +6,11 @@ declare(strict_types=1);
 
 namespace SignpostMarv\DaftObject;
 
+/**
+* @template T as ReadWriteJsonJsonArray
+*
+* @template-implements DaftJson<T>
+*/
 class ReadWriteJsonJsonArray extends AbstractArrayBackedDaftObject implements DaftJson
 {
     const PROPERTIES = [

@@ -27,7 +27,11 @@ class JsonTypeUtilities
     }
 
     /**
+    * @template T as DaftJson
+    *
     * @return array<int, DaftJson>|DaftJson
+    *
+    * @psalm-return array<int, T>|T
     */
     final public static function DaftJsonFromJsonType(
         string $jsonType,
@@ -36,10 +40,23 @@ class JsonTypeUtilities
         bool $writeAll
     ) {
         if ('[]' === mb_substr($jsonType, -2)) {
-            $jsonType = self::ThrowIfNotJsonType(mb_substr($jsonType, 0, -2));
+            /**
+            * @psalm-var class-string<DaftObject>
+            */
+            $jsonType = mb_substr($jsonType, 0, -2);
+
+            /**
+            * @psalm-var class-string<T>
+            */
+            $jsonType = self::ThrowIfNotJsonType($jsonType);
 
             return self::DaftObjectFromJsonTypeArray($jsonType, $prop, $propVal, $writeAll);
         }
+
+        /**
+        * @psalm-var class-string<T>
+        */
+        $jsonType = $jsonType;
 
         return JsonTypeUtilities::ArrayToJsonType($jsonType, $propVal, $writeAll);
     }
@@ -69,6 +86,8 @@ class JsonTypeUtilities
     }
 
     /**
+    * @psalm-param class-string<DaftObject> $jsonType
+    *
     * @psalm-return class-string<DaftJson>
     */
     private static function ThrowIfNotJsonType(string $jsonType) : string
@@ -131,17 +150,28 @@ class JsonTypeUtilities
         return array_filter($array, $filter, ARRAY_FILTER_USE_KEY);
     }
 
+    /**
+    * @template T as DaftJson
+    *
+    * @psalm-param class-string<T> $type
+    *
+    * @psalm-return T
+    */
     private static function ArrayToJsonType(string $type, array $value, bool $writeAll) : DaftJson
     {
-        return self::ThrowIfNotJsonType($type)::DaftObjectFromJsonArray($value, $writeAll);
+        return $type::DaftObjectFromJsonArray($value, $writeAll);
     }
 
     /**
+    * @template T as DaftJson
+    *
     * @param mixed[] $propVal
     *
-    * @psalm-param class-string<DaftJson> $jsonType
+    * @psalm-param class-string<T> $jsonType
     *
     * @return array<int, DaftJson>
+    *
+    * @psalm-return array<int, T>
     */
     private static function DaftObjectFromJsonTypeArray(
         string $jsonType,
@@ -152,6 +182,8 @@ class JsonTypeUtilities
         return array_map(
             /**
             * @param mixed $val
+            *
+            * @psalm-return T
             */
             function ($val) use ($jsonType, $writeAll, $prop) : DaftJson {
                 if (false === is_array($val)) {

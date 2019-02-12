@@ -11,6 +11,11 @@ namespace SignpostMarv\DaftObject\LinkedData;
 use SignpostMarv\DaftObject\AbstractArrayBackedDaftObject;
 use SignpostMarv\DaftObject\DaftJsonLinkedData;
 
+/**
+* @template T as HasId
+*
+* @template-implements DaftJsonLinkedData<T>
+*/
 class HasId extends AbstractArrayBackedDaftObject implements DaftJsonLinkedData
 {
     const PROPERTIES = [
