@@ -19,7 +19,6 @@
         "LogicalAnd": {
             "ignore": [
                 "SignpostMarv\\DaftObject\\AbstractArrayBackedDaftObject::NudgePropertyValue",
-                "SignpostMarv\\DaftObject\\TypeUtilities::HasMethod",
                 "SignpostMarv\\DaftObject\\PHPStan\\ClassReflectionExtension::MaybeRegisterTypesOrExitEarly"
             ]
         },
@@ -55,12 +54,8 @@
         },
         "Throw_": {
             "ignore": [
-                "SignpostMarv\\DaftObject\\AbstractDaftObject::CompareToDaftSortableObject",
                 "SignpostMarv\\DaftObject\\AbstractArrayBackedDaftObject::MaybeThrowForPropertyOnNudge",
-                "SignpostMarv\\DaftObject\\DaftObjectMemoryRepository::RecallDaftObjectOrThrow",
-                "SignpostMarv\\DaftObject\\DefinitionAssistant::IsTypeUnregistered",
-                "SignpostMarv\\DaftObject\\TraitSortableDaftObject::CompareToDaftSortableObject",
-                "SignpostMarv\\DaftObject\\TraitSortableDaftObject::DaftSortableObjectProperties"
+                "SignpostMarv\\DaftObject\\TraitSortableDaftObject::CompareToDaftSortableObject"
             ]
         }
     }
