@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files>
   <file src="quick-checks\psalm-test.php">
-    <TypeCoercion occurrences="3">
-      <code>$a</code>
-      <code>$a</code>
+    <TypeCoercion occurrences="1">
       <code>$a</code>
     </TypeCoercion>
   </file>
