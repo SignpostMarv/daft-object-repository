@@ -145,10 +145,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         /**
         * @var scalar|array|object|null
         */
-        $decoded = json_decode(
-            $string,
-            true
-        );
+        $decoded = json_decode($string, true);
 
         return JsonTypeUtilities::ThrowIfNotDaftJson(static::class)::DaftObjectFromJsonArray(
             is_array($decoded) ? $decoded : [$decoded]
@@ -184,10 +181,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
             DefinitionAssistant::IN_ARRAY_STRICT_MODE
         );
 
-        if (
-            ! array_key_exists($property, $this->data) &&
-            ! $isNullable
-        ) {
+        if (! array_key_exists($property, $this->data) && ! $isNullable) {
             throw new PropertyNotNullableException(static::class, $property);
         } elseif ($isNullable) {
             return $this->data[$property] ?? null;
@@ -269,9 +263,6 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
         bool $autoTrimStrings = self::BOOL_DEFAULT_AUTOTRIMSTRINGS,
         bool $throwIfNotUnique = self::BOOL_DEFAULT_THROWIFNOTUNIQUE
     ) {
-        /**
-        * @var array<int, string>|null
-        */
         $spec = null;
 
         if (
