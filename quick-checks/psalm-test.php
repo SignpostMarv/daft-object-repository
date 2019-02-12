@@ -45,3 +45,9 @@ $repo->RememberDaftObject($a);
 $repo = DaftObjectMemoryRepository::DaftObjectRepositoryByDaftObject($b);
 
 $repo->RememberDaftObject($a);
+
+
+$a = new ReadWrite([1 => 2]); // expected to trigger an error
+$b = new ReadWrite(['1' => 2]); // expected to trigger an error because of php internal typecasting
+$c = new ReadWrite([1]); // expected to trigger an error
+$d = new ReadWrite(['foo' => 1]); // expected to trigger no error

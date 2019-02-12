@@ -55,7 +55,8 @@
         "Throw_": {
             "ignore": [
                 "SignpostMarv\\DaftObject\\AbstractArrayBackedDaftObject::MaybeThrowForPropertyOnNudge",
-                "SignpostMarv\\DaftObject\\TraitSortableDaftObject::CompareToDaftSortableObject"
+                "SignpostMarv\\DaftObject\\TraitSortableDaftObject::CompareToDaftSortableObject",
+                "SignpostMarv\\DaftObject\\TypeUtilities::HasMethod"
             ]
         }
     }

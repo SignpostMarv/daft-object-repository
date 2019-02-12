@@ -1696,19 +1696,6 @@ class DaftObjectImplementationTest extends TestCase
     }
 
     /**
-    * @dataProvider dataProviderDaftObjectCreatedByArray
-    *
-    * @psalm-param class-string<T> $className
-    */
-    final public function testConstructorArrayKeys(string $className, bool $writeAll) : void
-    {
-        static::expectException(InvalidArgumentException::class);
-        static::expectExceptionMessage('Properties must be strings!');
-
-        $object = new $className([1], $writeAll);
-    }
-
-    /**
     * @dataProvider dataProviderNonAbstractGoodSortableImplementations
     *
     * @psalm-param class-string<DaftSortableObject> $className

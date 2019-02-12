@@ -30,7 +30,7 @@ class IntegerIdBasedDaftObject
     const JSON_PROPERTIES = self::EXPORTABLE_PROPERTIES;
 
     /**
-    * @param array<int|string, scalar|null|array|object> $data
+    * @param array<string, scalar|array|object|null> $data
     */
     public function __construct(array $data = [], bool $writeAll = false)
     {

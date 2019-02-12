@@ -44,22 +44,16 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
     private $wormProperties = [];
 
     /**
-    * @param array<int|string, scalar|array|object|null> $data
+    * @param array<string, scalar|array|object|null> $data
     */
     public function __construct(array $data = [], bool $writeAll = false)
     {
         if (true === $writeAll) {
             foreach ($data as $k => $v) {
-                if ( ! is_string($k)) {
-                    throw new InvalidArgumentException(DaftObjectCreatedByArray::ERR_KEY_NOT_STRING);
-                }
                 $this->__set($k, $v);
             }
         } else {
             foreach ($data as $k => $v) {
-                if ( ! is_string($k)) {
-                    throw new InvalidArgumentException(DaftObjectCreatedByArray::ERR_KEY_NOT_STRING);
-                }
                 $this->data[$k] = $v;
             }
         }
