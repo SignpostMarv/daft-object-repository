@@ -161,9 +161,7 @@ abstract class AbstractDaftObject implements DaftObject
         /**
         * @var array<int|string, string>
         */
-        $out = JsonTypeUtilities::ThrowIfNotDaftJson(
-            static::class
-        )::JSON_PROPERTIES;
+        $out = JsonTypeUtilities::ThrowIfNotDaftJson(static::class)::JSON_PROPERTIES;
 
         return $out;
     }
