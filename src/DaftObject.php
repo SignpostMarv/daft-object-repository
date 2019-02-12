@@ -73,8 +73,6 @@ interface DaftObject
     * Check if a property exists on an object.
     *
     * @param string $property the property being checked
-    *
-    * @return bool
     */
     public function HasPropertyChanged(string $property) : bool;
 
