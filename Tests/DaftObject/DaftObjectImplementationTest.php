@@ -8,7 +8,6 @@ namespace SignpostMarv\DaftObject\Tests\DaftObject;
 
 use DateTimeImmutable;
 use Generator;
-use InvalidArgumentException;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;

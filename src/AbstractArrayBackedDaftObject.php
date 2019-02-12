@@ -9,7 +9,6 @@ declare(strict_types=1);
 namespace SignpostMarv\DaftObject;
 
 use Closure;
-use InvalidArgumentException;
 
 /**
 * Array-backed daft objects.
@@ -181,7 +180,7 @@ abstract class AbstractArrayBackedDaftObject extends AbstractDaftObject implemen
             DefinitionAssistant::IN_ARRAY_STRICT_MODE
         );
 
-        if (! array_key_exists($property, $this->data) && ! $isNullable) {
+        if ( ! array_key_exists($property, $this->data) && ! $isNullable) {
             throw new PropertyNotNullableException(static::class, $property);
         } elseif ($isNullable) {
             return $this->data[$property] ?? null;
