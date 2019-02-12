@@ -19,7 +19,8 @@
         "LogicalAnd": {
             "ignore": [
                 "SignpostMarv\\DaftObject\\AbstractArrayBackedDaftObject::NudgePropertyValue",
-                "SignpostMarv\\DaftObject\\PHPStan\\ClassReflectionExtension::MaybeRegisterTypesOrExitEarly"
+                "SignpostMarv\\DaftObject\\PHPStan\\ClassReflectionExtension::MaybeRegisterTypesOrExitEarly",
+                "SignpostMarv\\DaftObject\\TypeUtilities::HasMethod"
             ]
         },
         "LogicalNot": {
@@ -55,8 +56,7 @@
         "Throw_": {
             "ignore": [
                 "SignpostMarv\\DaftObject\\AbstractArrayBackedDaftObject::MaybeThrowForPropertyOnNudge",
-                "SignpostMarv\\DaftObject\\TraitSortableDaftObject::CompareToDaftSortableObject",
-                "SignpostMarv\\DaftObject\\TypeUtilities::HasMethod"
+                "SignpostMarv\\DaftObject\\TraitSortableDaftObject::CompareToDaftSortableObject"
             ]
         }
     }
