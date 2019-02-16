@@ -50,6 +50,8 @@ class UndefinedPropertyExceptionTest extends TestCase
 
     /**
     * @dataProvider dataProviderUndefinedPropertyException
+    *
+    * @psalm-param class-string<DaftObject> $implementation
     */
     public function testUndefinedPropertyException(
         string $implementation,
@@ -58,17 +60,6 @@ class UndefinedPropertyExceptionTest extends TestCase
         bool $writeAll,
         string $property
     ) : void {
-        if ( ! is_subclass_of($implementation, DaftObject::class, true)) {
-            static::markTestSkipped(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                DaftObject::class
-            );
-
-            return;
-        }
-
         $this->expectException(UndefinedPropertyException::class);
         $this->expectExceptionMessage(sprintf(
             'Property not defined: %s::$%s',

@@ -117,6 +117,8 @@ class DaftObjectRepositoryTest extends TestCase
                 $ids[] = $id_val;
             }
 
+            static::assertGreaterThan(0, count($ids));
+
             if (1 === count($ids)) {
                 static::assertIsScalar($ids[0]);
 
@@ -129,10 +131,6 @@ class DaftObjectRepositoryTest extends TestCase
             }
 
             static::assertSame($obj, $repo->RecallDaftObject($ids));
-
-            if (count($ids) < 1) {
-                throw new RuntimeException('Insufficient Id properties found!');
-            }
 
             static::assertInstanceOf(SuitableForRepositoryType::class, $obj);
 

@@ -23,18 +23,14 @@ class DateTimeImmutableTestObject extends AbstractArrayBackedDaftObject
     public function GetDatetime() : DateTimeImmutable
     {
         /**
-        * @var DateTimeImmutable|string
+        * @var DateTimeImmutable
         */
         $in = $this->RetrievePropertyValueFromData('datetime');
 
-        if ($in instanceof DateTimeImmutable) {
             return (new DateTimeImmutable())->createFromFormat(
                 self::STR_FORMAT_TEST,
                 $in->format(self::STR_FORMAT_TEST)
             );
-        }
-
-        return new DateTimeImmutable($in);
     }
 
     public function SetDatetime(DateTimeImmutable $value) : void

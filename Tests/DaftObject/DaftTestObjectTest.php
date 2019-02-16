@@ -490,17 +490,6 @@ class DaftTestObjectTest extends TestCase
     */
     public function testDefinesOwnUntypedIdInterface(string $implementation, array $params) : void
     {
-        if ( ! is_subclass_of($implementation, SuitableForRepositoryType::class, true)) {
-            static::markTestSkipped(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                SuitableForRepositoryType::class
-            );
-
-            return;
-        }
-
         $obj = new $implementation($params, false);
 
         /**
@@ -558,21 +547,12 @@ class DaftTestObjectTest extends TestCase
 
     /**
     * @dataProvider RetrievePropertyValueFromDataNotNullableExceptionDataProvider
+    *
+    * @psalm-param class-string<DaftObject> $implementation
     */
     public function testRetrievePropertyValueFromDataNotNullableException(
         string $implementation
     ) : void {
-        if ( ! is_subclass_of($implementation, DaftObject::class, true)) {
-            static::markTestSkipped(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                DaftObject::class
-            );
-
-            return;
-        }
-
         $obj = new $implementation();
 
         /**

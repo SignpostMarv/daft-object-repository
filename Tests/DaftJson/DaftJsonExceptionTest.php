@@ -107,6 +107,8 @@ class DaftJsonExceptionTest extends TestCase
 
     /**
     * @dataProvider dataProviderClassDoesNotImplementClassException
+    *
+    * @psalm-param class-string<AbstractArrayBackedDaftObject> $implementation
     */
     public function testClassDoesNotImplementClassException(
         string $implementation,
@@ -114,17 +116,6 @@ class DaftJsonExceptionTest extends TestCase
         array $args,
         bool $writeAll
     ) : void {
-        if ( ! is_subclass_of($implementation, AbstractArrayBackedDaftObject::class, true)) {
-            static::markTestSkipped(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                AbstractArrayBackedDaftObject::class
-            );
-
-            return;
-        }
-
         $this->expectException(ClassDoesNotImplementClassException::class);
         $this->expectExceptionMessage(sprintf(
             '%s does not implement %s',
@@ -137,6 +128,8 @@ class DaftJsonExceptionTest extends TestCase
 
     /**
     * @dataProvider dataProviderPropertyNotThingableException
+    *
+    * @psalm-param class-string<DaftJson> $implementation
     */
     public function testPropertyNotThingableException(
         string $implementation,
@@ -147,17 +140,6 @@ class DaftJsonExceptionTest extends TestCase
         array $args,
         bool $writeAll
     ) : void {
-        if ( ! is_subclass_of($implementation, DaftJson::class, true)) {
-            static::markTestSkipped(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                DaftJson::class
-            );
-
-            return;
-        }
-
         $this->expectException($expectingException);
         $this->expectExceptionMessage(sprintf(
             'Property not %s: %s::$%s',
@@ -166,9 +148,6 @@ class DaftJsonExceptionTest extends TestCase
             $expectingFailureWithProperty
         ));
 
-        /**
-        * @var DaftJson
-        */
         $obj = $implementation::DaftObjectFromJsonArray($args, $writeAll);
 
         /**

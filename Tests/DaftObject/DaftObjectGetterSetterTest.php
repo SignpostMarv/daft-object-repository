@@ -10,6 +10,7 @@ use DateTimeImmutable;
 use Generator;
 use RuntimeException;
 use SignpostMarv\DaftObject\DaftObject;
+use SignpostMarv\DaftObject\DaftObjectCreatedByArray;
 use SignpostMarv\DaftObject\MultiTypedArrayPropertiesTester;
 use SignpostMarv\DaftObject\NotPublicGetterPropertyException;
 use SignpostMarv\DaftObject\NotPublicSetterPropertyException;
@@ -169,6 +170,8 @@ class DaftObjectGetterSetterTest extends TestCase
     /**
     * @param scalar|array|object|null $value
     *
+    * @psalm-param class-string<DaftObjectCreatedByArray>
+    *
     * @dataProvider dataProviderGetterSetterGoodGetterOnly
     */
     public function testGetterOnly(
@@ -177,17 +180,6 @@ class DaftObjectGetterSetterTest extends TestCase
         $value,
         string $changedProperty = null
     ) : void {
-        if ( ! is_subclass_of($implementation, DaftObject::class, true)) {
-            static::markTestSkipped(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                DaftObject::class
-            );
-
-            return;
-        }
-
         $arr = [];
 
         $arr[$property] = $value;
@@ -200,6 +192,8 @@ class DaftObjectGetterSetterTest extends TestCase
     /**
     * @param scalar|array|object|null $value
     *
+    * @psalm-param class-string<DaftObjectCreatedByArray>
+    *
     * @dataProvider dataProviderGetterSetterGoodSetterOnly
     */
     public function testSetterOnly(
@@ -208,22 +202,9 @@ class DaftObjectGetterSetterTest extends TestCase
         $value,
         string $changedProperty
     ) : void {
-        if ( ! is_subclass_of($implementation, DaftObject::class, true)) {
-            static::markTestSkipped(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                DaftObject::class
-            );
-
-            return;
-        }
 
         $arr = [];
 
-        /**
-        * @var DaftObject
-        */
         $obj = new $implementation($arr);
 
         $obj->__set($property, $value);
@@ -234,6 +215,8 @@ class DaftObjectGetterSetterTest extends TestCase
     /**
     * @param scalar|array|object|null $value
     *
+    * @psalm-param class-string<DaftObject>
+    *
     * @dataProvider dataProviderGetterSetterGoodGetterSetter
     */
     public function testGetterSetterGood(
@@ -242,20 +225,6 @@ class DaftObjectGetterSetterTest extends TestCase
         $value,
         string $changedProperty
     ) : void {
-        if ( ! is_subclass_of($implementation, DaftObject::class, true)) {
-            static::markTestSkipped(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                DaftObject::class
-            );
-
-            return;
-        }
-
-        /**
-        * @var DaftObject
-        */
         $obj = new $implementation([]);
 
         $obj->__set($property, $value);
@@ -267,23 +236,14 @@ class DaftObjectGetterSetterTest extends TestCase
     /**
     * @param mixed $value
     *
+    * @psalm-param class-string<DaftObject>
+    *
     * @dataProvider dataProviderGetterBad
     *
     * @depends testGetterSetterGood
     */
     public function testGetterBad(string $implementation, string $property, $value) : void
     {
-        if ( ! is_subclass_of($implementation, DaftObject::class, true)) {
-            static::markTestSkipped(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                DaftObject::class
-            );
-
-            return;
-        }
-
         $obj = new $implementation([
             $property => $value,
         ]);
@@ -304,23 +264,14 @@ class DaftObjectGetterSetterTest extends TestCase
     /**
     * @param scalar|array|object|null $value
     *
+    * @psalm-param class-string<DaftObject> $implementation
+    *
     * @dataProvider dataProviderSetterBad
     *
     * @depends testGetterSetterGood
     */
     public function testSetterBad(string $implementation, string $property, $value) : void
     {
-        if ( ! is_subclass_of($implementation, DaftObject::class, true)) {
-            static::markTestSkipped(
-                'Argument 1 passed to ' .
-                __METHOD__ .
-                ' must be an implementation of ' .
-                DaftObject::class
-            );
-
-            return;
-        }
-
         $obj = new $implementation();
 
         $this->expectException(NotPublicSetterPropertyException::class);
