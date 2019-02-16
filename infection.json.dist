@@ -19,7 +19,8 @@
         "LogicalAnd": {
             "ignore": [
                 "SignpostMarv\\DaftObject\\AbstractArrayBackedDaftObject::NudgePropertyValue",
-                "SignpostMarv\\DaftObject\\PHPStan\\ClassReflectionExtension::MaybeRegisterTypesOrExitEarly"
+                "SignpostMarv\\DaftObject\\PHPStan\\ClassReflectionExtension::MaybeRegisterTypesOrExitEarly",
+                "SignpostMarv\\DaftObject\\TypeUtilities::HasMethod"
             ]
         },
         "LogicalNot": {
