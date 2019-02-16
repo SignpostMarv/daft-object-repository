@@ -27,10 +27,10 @@ class DateTimeImmutableTestObject extends AbstractArrayBackedDaftObject
         */
         $in = $this->RetrievePropertyValueFromData('datetime');
 
-            return (new DateTimeImmutable())->createFromFormat(
-                self::STR_FORMAT_TEST,
-                $in->format(self::STR_FORMAT_TEST)
-            );
+        return (new DateTimeImmutable())->createFromFormat(
+            self::STR_FORMAT_TEST,
+            $in->format(self::STR_FORMAT_TEST)
+        );
     }
 
     public function SetDatetime(DateTimeImmutable $value) : void

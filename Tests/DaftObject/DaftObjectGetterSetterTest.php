@@ -170,7 +170,7 @@ class DaftObjectGetterSetterTest extends TestCase
     /**
     * @param scalar|array|object|null $value
     *
-    * @psalm-param class-string<DaftObjectCreatedByArray>
+    * @psalm-param class-string<DaftObjectCreatedByArray> $implementation
     *
     * @dataProvider dataProviderGetterSetterGoodGetterOnly
     */
@@ -192,7 +192,7 @@ class DaftObjectGetterSetterTest extends TestCase
     /**
     * @param scalar|array|object|null $value
     *
-    * @psalm-param class-string<DaftObjectCreatedByArray>
+    * @psalm-param class-string<DaftObjectCreatedByArray> $implementation
     *
     * @dataProvider dataProviderGetterSetterGoodSetterOnly
     */
@@ -215,7 +215,7 @@ class DaftObjectGetterSetterTest extends TestCase
     /**
     * @param scalar|array|object|null $value
     *
-    * @psalm-param class-string<DaftObject>
+    * @psalm-param class-string<DaftObject> $implementation
     *
     * @dataProvider dataProviderGetterSetterGoodGetterSetter
     */
@@ -236,7 +236,7 @@ class DaftObjectGetterSetterTest extends TestCase
     /**
     * @param mixed $value
     *
-    * @psalm-param class-string<DaftObject>
+    * @psalm-param class-string<DaftObject> $implementation
     *
     * @dataProvider dataProviderGetterBad
     *
