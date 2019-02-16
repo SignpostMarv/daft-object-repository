@@ -98,7 +98,7 @@ class DefinitionAssistant extends Base
     }
 
     /**
-    * @param mixed $value
+    * @param scalar|array|object|null $value
     *
     * @return array<int, mixed> filtered $value
     */
@@ -117,6 +117,11 @@ class DefinitionAssistant extends Base
                 ' given!'
             );
         }
+
+        /**
+        * @var (scalar|array|object|null)[]
+        */
+        $value = $value;
 
         return static::MaybeThrowIfValueDoesNotMatchMultiTypedArrayValueArray(
             $autoTrimStrings,
@@ -222,6 +227,8 @@ class DefinitionAssistant extends Base
     }
 
     /**
+    * @param (scalar|array|object|null)[] $value
+    *
     * @return array<int, mixed> filtered $value
     */
     private static function MaybeThrowIfValueDoesNotMatchMultiTypedArrayValueArray(
@@ -232,13 +239,26 @@ class DefinitionAssistant extends Base
     ) : array {
         $value = static::MaybeThrowIfNotArrayIntKeys($value);
         $value = static::MaybeThrowIfValueArrayDoesNotMatchTypes($value, ...$types);
+
+        /**
+        * @var (scalar|array|object|null)[]
+        */
         $value = static::MaybeRemapStringsToTrimmedStrings($value, $autoTrimStrings, ...$types);
 
         $initialCount = count($value);
 
-        $value = array_unique($value, SORT_REGULAR);
+        /**
+        * @var array<int, mixed>
+        */
+        $out = [];
 
-        if ($throwIfNotUnique && count($value) !== $initialCount) {
+        foreach ($value as $maybe) {
+            if ( ! in_array($maybe, $out, true)) {
+                $out[] = $maybe;
+            }
+        }
+
+        if ($throwIfNotUnique && count($out) !== $initialCount) {
             throw new InvalidArgumentException(
                 'Argument 3 passed to ' .
                 __METHOD__ .
@@ -246,7 +266,7 @@ class DefinitionAssistant extends Base
             );
         }
 
-        return array_values($value);
+        return $out;
     }
 
     /**

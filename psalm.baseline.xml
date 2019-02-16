@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files>
   <file src="quick-checks\psalm-test.php">
-    <InvalidScalarArgument occurrences="1">
+    <InvalidScalarArgument occurrences="3">
       <code>[1 =&gt; 2]</code>
+      <code>['1' =&gt; 2]</code>
+      <code>[1]</code>
     </InvalidScalarArgument>
     <TypeCoercion occurrences="1">
       <code>$a</code>
