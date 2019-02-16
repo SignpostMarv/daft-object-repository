@@ -202,7 +202,6 @@ class DaftObjectGetterSetterTest extends TestCase
         $value,
         string $changedProperty
     ) : void {
-
         $arr = [];
 
         $obj = new $implementation($arr);
