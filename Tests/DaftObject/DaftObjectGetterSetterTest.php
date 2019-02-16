@@ -255,10 +255,7 @@ class DaftObjectGetterSetterTest extends TestCase
             $property
         ));
 
-        /**
-        * @var scalar|array|DaftObject|null
-        */
-        $foo = $obj->__get($property);
+        $obj->__get($property);
     }
 
     /**
