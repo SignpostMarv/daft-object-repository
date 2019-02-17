@@ -1,6 +1,6 @@
 {
-    "name": "signpostmarv/daft-object",
-    "description": "Daft Object",
+    "name": "signpostmarv/daft-object-repository",
+    "description": "Daft Object Repository",
     "type": "library",
     "license": "Apache-2.0",
     "authors": [
@@ -18,9 +18,15 @@
         "psr-4": {
             "SignpostMarv\\DaftMagicPropertyAnalysis\\": "./vendor/signpostmarv/daft-magic-property-analysis/src/",
             "SignpostMarv\\DaftMagicPropertyAnalysis\\PHPStan\\": "./vendor/signpostmarv/daft-magic-property-analysis/PHPStan/",
-            "SignpostMarv\\DaftObject\\": "./tests-src/",
-            "SignpostMarv\\DaftObject\\PHPStan\\": "./PHPStan/",
-            "SignpostMarv\\DaftObject\\Tests\\": "./Tests/"
+            "SignpostMarv\\DaftObject\\": [
+                "./vendor/signpostmarv/daft-object/tests-src/",
+                "./tests-src/"
+            ],
+            "SignpostMarv\\DaftObject\\PHPStan\\": "./vendor/signpostmarv/daft-object/PHPStan/",
+            "SignpostMarv\\DaftObject\\Tests\\": [
+                "./vendor/signpostmarv/daft-object/Tests/",
+                "./Tests/"
+            ]
         }
     },
     "config": {
@@ -59,7 +65,8 @@
         "php": "^7.1,>=7.1.3",
         "ext-json": "*",
         "ext-mbstring": "*",
-        "signpostmarv/daft-magic-property-analysis": "^0.7.0"
+        "signpostmarv/daft-magic-property-analysis": "^0.7.0",
+        "signpostmarv/daft-object": "dev-object-only"
     },
     "require-dev": {
         "infection/infection": "^0.12.2",

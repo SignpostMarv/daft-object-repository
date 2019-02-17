@@ -7,22 +7,10 @@
 >
   <testsuites>
     <testsuite name="DaftObject">
-      <directory>./Tests/DaftObject/</directory>
-    </testsuite>
-    <testsuite name="DaftJson">
-      <directory>./Tests/DaftJson/</directory>
+      <directory>./vendor/signpostmarv/daft-object/Tests/</directory>
     </testsuite>
     <testsuite name="DaftObjectRepository">
       <directory>./Tests/DaftObjectRepository/</directory>
-    </testsuite>
-    <testsuite name="DaftSortableObject">
-      <directory>./Tests/DaftSortableObject/</directory>
-    </testsuite>
-    <testsuite name="PHPStan">
-      <directory>./Tests/PHPStan/</directory>
-    </testsuite>
-    <testsuite name="DefinitionAssistant">
-      <directory>./Tests/DefinitionAssistant/</directory>
     </testsuite>
   </testsuites>
   <logging>
@@ -44,6 +32,8 @@
   <filter>
     <whitelist processUncoveredFilesFromWhitelist="true">
       <directory suffix=".php">./src/</directory>
+      <directory suffix=".php">./Tests/</directory>
+      <directory suffix=".php">./tests-src/</directory>
     </whitelist>
   </filter>
 </phpunit>
