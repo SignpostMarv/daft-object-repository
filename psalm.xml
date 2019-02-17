@@ -11,6 +11,10 @@
         <directory name="src" />
         <directory name="tests-src" />
         <directory name="Tests" />
+
+        <ignoreFiles>
+            <directory name="./vendor/signpostmarv/daft-object/" />
+        </ignoreFiles>
     </projectFiles>
 
     <issueHandlers>

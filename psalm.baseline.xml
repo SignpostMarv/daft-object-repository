@@ -1,16 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files>
-  <file src="vendor\signpostmarv\daft-object\tests-src\DefineIdPropertiesIncorrectlyTrait.php">
-    <ImplementedReturnTypeMismatch occurrences="1">
-      <code>null</code>
-    </ImplementedReturnTypeMismatch>
-    <LessSpecificImplementedReturnType occurrences="1">
-      <code>array</code>
-    </LessSpecificImplementedReturnType>
-  </file>
-  <file src="vendor\signpostmarv\daft-object\tests-src\DefineIdPropertiesInsufficientlyTrait.php">
-    <ImplementedReturnTypeMismatch occurrences="1">
-      <code>null</code>
-    </ImplementedReturnTypeMismatch>
-  </file>
-</files>
+<files/>
