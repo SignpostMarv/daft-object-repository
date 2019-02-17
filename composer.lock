@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0de5c0a6f6f0219c38bb98eb814c44e7",
+    "content-hash": "d4534de56d6eeb710c2b92b961d9ed29",
     "packages": [
         {
             "name": "signpostmarv/daft-magic-property-analysis",
@@ -58,7 +58,7 @@
         },
         {
             "name": "signpostmarv/daft-object",
-            "version": "dev-object-only",
+            "version": "v1.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SignpostMarv/daft-object.git",
@@ -5140,7 +5140,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "signpostmarv/daft-object": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": false,
