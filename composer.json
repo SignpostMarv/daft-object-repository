@@ -50,7 +50,7 @@
             "infection --min-msi=100"
         ],
         "other-tests": [
-            "phpstan analyse -c ./phpstan.neon .php_cs.dist src PHPStan Tests ./quick-checks/json-ld.php ./quick-checks/phpstan-test.php",
+            "phpstan analyse -c ./phpstan.neon .php_cs.dist src Tests tests-src",
             "psalm",
             "phpcpd ./src/ ./Tests/ ./tests-src/",
             "phpmnd ./ --exclude=./phpdoc/ --exclude=./phpunit/ --exclude=./vendor/ --non-zero-exit-on-violation --hint",

@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files>
-  <file src="quick-checks\psalm-test.php">
-    <InvalidScalarArgument occurrences="3">
-      <code>[1 =&gt; 2]</code>
-      <code>['1' =&gt; 2]</code>
-      <code>[1]</code>
-    </InvalidScalarArgument>
-    <TypeCoercion occurrences="1">
-      <code>$a</code>
-    </TypeCoercion>
-  </file>
-  <file src="tests-src\DefineIdPropertiesIncorrectlyTrait.php">
+  <file src="vendor\signpostmarv\daft-object\tests-src\DefineIdPropertiesIncorrectlyTrait.php">
     <ImplementedReturnTypeMismatch occurrences="1">
       <code>null</code>
     </ImplementedReturnTypeMismatch>
@@ -18,7 +8,7 @@
       <code>array</code>
     </LessSpecificImplementedReturnType>
   </file>
-  <file src="tests-src\DefineIdPropertiesInsufficientlyTrait.php">
+  <file src="vendor\signpostmarv\daft-object\tests-src\DefineIdPropertiesInsufficientlyTrait.php">
     <ImplementedReturnTypeMismatch occurrences="1">
       <code>null</code>
     </ImplementedReturnTypeMismatch>

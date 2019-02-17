@@ -11,8 +11,6 @@
         <directory name="src" />
         <directory name="tests-src" />
         <directory name="Tests" />
-        <directory name="PHPStan" />
-        <directory name="quick-checks" />
     </projectFiles>
 
     <issueHandlers>

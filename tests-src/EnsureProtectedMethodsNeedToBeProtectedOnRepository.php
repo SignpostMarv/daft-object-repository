@@ -17,6 +17,8 @@ class EnsureProtectedMethodsNeedToBeProtectedOnRepository extends DaftObjectMemo
     }
 
     /**
+    * @param mixed ...$args
+    *
     * @psalm-param class-string<SuitableForRepositoryType> $type
     */
     public static function EnsureConstructorNeedsToBeProtected(
