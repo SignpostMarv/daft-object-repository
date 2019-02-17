@@ -2,7 +2,6 @@
     "timeout": 20,
     "source": {
         "directories": [
-            "PHPStan",
             "src"
         ]
     },
@@ -11,23 +10,6 @@
     },
     "mutators": {
         "@default": true,
-        "CastArray": {
-            "ignore": [
-                "SignpostMarv\\DaftObject\\TraitSortableDaftObject::DaftSortableObjectProperties"
-            ]
-        },
-        "LogicalAnd": {
-            "ignore": [
-                "SignpostMarv\\DaftObject\\AbstractArrayBackedDaftObject::NudgePropertyValue",
-                "SignpostMarv\\DaftObject\\PHPStan\\ClassReflectionExtension::MaybeRegisterTypesOrExitEarly",
-                "SignpostMarv\\DaftObject\\TypeUtilities::HasMethod"
-            ]
-        },
-        "LogicalNot": {
-            "ignore": [
-                "SignpostMarv\\DaftObject\\PHPStan\\ClassReflectionExtension::MaybeRegisterTypesOrExitEarly"
-            ]
-        },
         "LogicalOr": {
             "ignore": [
                 "SignpostMarv\\DaftObject\\DaftObjectMemoryRepository::RecallDaftObjectOrThrow"
@@ -35,28 +17,13 @@
         },
         "MethodCallRemoval": {
             "ignore": [
-                "SignpostMarv\\DaftObject\\DaftObjectMemoryRepository::RememberDaftObject",
-                "SignpostMarv\\DaftObject\\DefinitionAssistant::MaybeRegisterAdditionalTypes",
-                "SignpostMarv\\DaftObject\\PHPStan\\ClassReflectionExtension::MaybeRegisterTypesOrExitEarly",
-                "SignpostMarv\\DaftObject\\TypeUtilities::DaftObjectPublicOrProtectedGetters"
-            ]
-        },
-        "NotIdentical": {
-            "ignore": [
-                "SignpostMarv\\DaftObject\\AbstractArrayBackedDaftObject::NudgePropertyValue",
-                "SignpostMarv\\DaftObject\\DefinitionAssistant::MaybeRegisterAdditionalTypes"
+                "SignpostMarv\\DaftObject\\DaftObjectMemoryRepository::RememberDaftObject"
             ]
         },
         "ProtectedVisibility": {
             "ignore": [
-                "SignpostMarv\\DaftObject\\DefinitionAssistant::MaybeRegisterAdditionalTypes",
-                "SignpostMarv\\DaftObject\\DefinitionAssistant::RegisterDaftObjectTypeFromTypeAndProps"
-            ]
-        },
-        "Throw_": {
-            "ignore": [
-                "SignpostMarv\\DaftObject\\AbstractArrayBackedDaftObject::MaybeThrowForPropertyOnNudge",
-                "SignpostMarv\\DaftObject\\TraitSortableDaftObject::CompareToDaftSortableObject"
+                "SignpostMarv\\DaftObject\\AbstractDaftObjectRepository::__construct",
+                "SignpostMarv\\DaftObject\\DaftObjectMemoryRepository::RecallDaftObjectFromData"
             ]
         }
     }
