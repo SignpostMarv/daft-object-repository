@@ -7,16 +7,15 @@
     errorBaseline="./psalm.baseline.xml"
 >
     <projectFiles>
-        <file name=".php_cs.dist" />
-        <directory name="src" />
-        <directory name="tests-src" />
-        <directory name="Tests" />
+        <file name=".php_cs.dist"/>
+        <directory name="src"/>
+        <directory name="Tests"/>
 
         <ignoreFiles>
-            <directory name="./vendor/signpostmarv/daft-object/" />
+            <directory name="./vendor/signpostmarv/daft-object/"/>
         </ignoreFiles>
     </projectFiles>
 
     <issueHandlers>
     </issueHandlers>
-</psalm>
+<plugins><pluginClass class="Psalm\PhpUnitPlugin\Plugin"/></plugins></psalm>

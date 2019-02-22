@@ -6,11 +6,14 @@
   executionOrder="random"
 >
   <testsuites>
-    <testsuite name="DaftObject">
-      <directory>./vendor/signpostmarv/daft-object/Tests/</directory>
+    <testsuite name="DaftObjectRepository > DaftObject">
+      <directory>./Tests/DaftObject/</directory>
     </testsuite>
-    <testsuite name="DaftObjectRepository">
-      <directory>./Tests/DaftObjectRepository/</directory>
+    <testsuite name="DaftObjectRepository > SuitableForRepositoryType">
+      <directory>./Tests/SuitableForRepositoryType/</directory>
+    </testsuite>
+    <testsuite name="DaftObjectRepository > DaftObjectMemoryRepository">
+      <directory>./Tests/DaftObjectMemoryRepository/</directory>
     </testsuite>
   </testsuites>
   <logging>

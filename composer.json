@@ -17,15 +17,14 @@
     "autoload-dev": {
         "psr-4": {
             "SignpostMarv\\DaftMagicPropertyAnalysis\\": "./vendor/signpostmarv/daft-magic-property-analysis/src/",
-            "SignpostMarv\\DaftMagicPropertyAnalysis\\PHPStan\\": "./vendor/signpostmarv/daft-magic-property-analysis/PHPStan/",
             "SignpostMarv\\DaftObject\\": [
-                "./vendor/signpostmarv/daft-object/tests-src/",
-                "./tests-src/"
+                "./vendor/signpostmarv/daft-object/tests-src/"
             ],
-            "SignpostMarv\\DaftObject\\PHPStan\\": "./vendor/signpostmarv/daft-object/PHPStan/",
-            "SignpostMarv\\DaftObject\\Tests\\": [
-                "./vendor/signpostmarv/daft-object/Tests/",
+            "SignpostMarv\\DaftObject\\DaftObjectRepository\\Tests\\": [
                 "./Tests/"
+            ],
+            "SignpostMarv\\DaftObject\\Tests\\": [
+                "./vendor/signpostmarv/daft-object/Tests/"
             ]
         }
     },
@@ -50,9 +49,9 @@
             "infection --min-msi=100"
         ],
         "other-tests": [
-            "phpstan analyse -c ./phpstan.neon .php_cs.dist src Tests tests-src",
+            "phpstan analyse -c ./phpstan.neon .php_cs.dist src Tests",
             "psalm",
-            "phpcpd ./src/ ./Tests/ ./tests-src/",
+            "phpcpd ./src/ ./Tests/",
             "phpmnd ./ --exclude=./phpdoc/ --exclude=./phpunit/ --exclude=./vendor/ --non-zero-exit-on-violation --hint",
             "composer-require-checker check --config-file=./composer-require-checker.json ./composer.json",
             "php-cs-fixer fix --verbose --allow-risky=yes --dry-run"
@@ -76,6 +75,7 @@
         "phpstan/phpstan-strict-rules": "^0.11.0",
         "phpunit/phpunit": "^7.5",
         "povils/phpmnd": "^2.1",
+        "psalm/plugin-phpunit": "^0.4.1",
         "roave/security-advisories": "dev-master",
         "sebastian/phpcpd": "^4.1",
         "signpostmarv/php-cs-fixer-config": "^0.9.0",
