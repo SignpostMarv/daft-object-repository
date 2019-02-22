@@ -10,6 +10,17 @@
     },
     "mutators": {
         "@default": true,
+        "Coalesce": {
+            "ignore": [
+                "SignpostMarv\\DaftObject\\DaftObjectMemoryRepository::RecallDaftObject"
+            ]
+        },
+        "Foreach_": {
+            "ignore": [
+                "SignpostMarv\\DaftObject\\AbstractDaftObjectRepository::ForgetDaftObject",
+                "SignpostMarv\\DaftObject\\DaftObjectMemoryRepository::RememberDaftObjectData"
+            ]
+        },
         "LogicalOr": {
             "ignore": [
                 "SignpostMarv\\DaftObject\\DaftObjectMemoryRepository::RecallDaftObjectOrThrow"
@@ -17,7 +28,8 @@
         },
         "MethodCallRemoval": {
             "ignore": [
-                "SignpostMarv\\DaftObject\\DaftObjectMemoryRepository::RememberDaftObject"
+                "SignpostMarv\\DaftObject\\AbstractDaftObjectRepository::ForgetDaftObject",
+                "SignpostMarv\\DaftObject\\DaftObjectMemoryRepository::ForgetDaftObjectById"
             ]
         },
         "ProtectedVisibility": {
