@@ -12,6 +12,14 @@ class ReadOnlyInsuficientIdProperties extends AbstractTestObject implements Suit
     * @use DaftObjectIdValuesHashLazyInt<ReadOnlyInsuficientIdProperties>
     */
     use DaftObjectIdValuesHashLazyInt;
-    use DefineIdPropertiesInsufficientlyTrait;
-    use ReadTrait;
+
+    public function GetId() : string
+    {
+        return (string) $this->RetrievePropertyValueFromData('Foo');
+    }
+
+    public static function DaftObjectIdProperties() : array
+    {
+        return ['Foo'];
+    }
 }

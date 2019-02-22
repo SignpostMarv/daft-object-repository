@@ -14,5 +14,14 @@ class ReadWriteWorm extends AbstractTestObject implements
     * @use DaftObjectIdValuesHashLazyInt<ReadWriteWorm>
     */
     use DaftObjectIdValuesHashLazyInt;
-    use ReadTrait, WriteTrait, DefineIdPropertiesCorrectlyTrait;
+
+    public function GetId() : string
+    {
+        return (string) $this->RetrievePropertyValueFromData('Foo');
+    }
+
+    public static function DaftObjectIdProperties() : array
+    {
+        return ['Foo'];
+    }
 }

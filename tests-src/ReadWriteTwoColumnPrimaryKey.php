@@ -12,5 +12,17 @@ class ReadWriteTwoColumnPrimaryKey extends AbstractTestObject implements Suitabl
     * @use DaftObjectIdValuesHashLazyInt<ReadWriteTwoColumnPrimaryKey>
     */
     use DaftObjectIdValuesHashLazyInt;
-    use ReadTrait, WriteTrait, DefineArrayIdPropertiesCorrectlyTrait;
+
+    public function GetId() : array
+    {
+        return (array) [
+            $this->GetFoo(),
+            $this->GetBar(),
+        ];
+    }
+
+    public static function DaftObjectIdProperties() : array
+    {
+        return ['Foo', 'Bar'];
+    }
 }

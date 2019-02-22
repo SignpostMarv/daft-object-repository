@@ -12,10 +12,19 @@ class NudgesIncorrectly extends AbstractTestObject implements SuitableForReposit
     * @use DaftObjectIdValuesHashLazyInt<NudgesIncorrectly>
     */
     use DaftObjectIdValuesHashLazyInt;
-    use ReadTrait, WriteTrait, DefineIdPropertiesCorrectlyTrait;
 
     public function SetFoo(string $value) : void
     {
         $this->NudgePropertyValue('nope', $value);
+    }
+
+    public function GetId() : string
+    {
+        return (string) $this->RetrievePropertyValueFromData('Foo');
+    }
+
+    public static function DaftObjectIdProperties() : array
+    {
+        return ['Foo'];
     }
 }

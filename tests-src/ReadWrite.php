@@ -12,5 +12,14 @@ class ReadWrite extends AbstractTestObject implements SuitableForRepositoryType
     * @use DaftObjectIdValuesHashLazyInt<ReadWrite>
     */
     use DaftObjectIdValuesHashLazyInt;
-    use ReadTrait, WriteTrait, DefineIdPropertiesCorrectlyTrait;
+
+    public function GetId() : string
+    {
+        return (string) $this->RetrievePropertyValueFromData('Foo');
+    }
+
+    public static function DaftObjectIdProperties() : array
+    {
+        return ['Foo'];
+    }
 }

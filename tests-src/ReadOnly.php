@@ -12,6 +12,14 @@ class ReadOnly extends AbstractTestObject implements SuitableForRepositoryType, 
     * @use DaftObjectIdValuesHashLazyInt<ReadOnly>
     */
     use DaftObjectIdValuesHashLazyInt;
-    use DefineIdPropertiesCorrectlyTrait;
-    use ReadTrait;
+
+    public function GetId() : string
+    {
+        return (string) $this->RetrievePropertyValueFromData('Foo');
+    }
+
+    public static function DaftObjectIdProperties() : array
+    {
+        return ['Foo'];
+    }
 }
