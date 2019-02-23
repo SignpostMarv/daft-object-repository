@@ -85,14 +85,10 @@ class DaftObjectMemoryRepositoryTest extends Base
             $expected_data
         );
 
-        $expected_changed = [];
+        $expected_changed = static::ExpectedChangedProperties_test_DaftObjectMemoryRepository($a);
 
         foreach (static::ChangedData_test_DaftObjectMemoryRepository() as $k => $v) {
             $expected_data[$k] = $v;
-
-            if ($a->__get($k) !== $v) {
-                $expected_changed[] = $k;
-            }
 
             $a->__set($k, $v);
 
@@ -264,5 +260,24 @@ class DaftObjectMemoryRepositoryTest extends Base
         return [
             'foo' => 'baz',
         ];
+    }
+
+    /**
+    * @psalm-param T $object
+    *
+    * @return array<int, string>
+    */
+    protected static function ExpectedChangedProperties_test_DaftObjectMemoryRepository(
+        SuitableForRepositoryType $object
+    ) : array {
+        $expected_changed = [];
+
+        foreach (static::ChangedData_test_DaftObjectMemoryRepository() as $k => $v) {
+            if ($object->__get($k) !== $v) {
+                $expected_changed[] = $k;
+            }
+        }
+
+        return $expected_changed;
     }
 }
