@@ -26,6 +26,8 @@ class SuitableForRepositoryIntType extends AbstractArrayBackedDaftObject impleme
         'foo',
     ];
 
+    const EXPORTABLE_PROPERTIES = self::PROPERTIES;
+
     public function GetId() : int
     {
         return (int) $this->RetrievePropertyValueFromData('id');
