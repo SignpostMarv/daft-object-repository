@@ -35,9 +35,7 @@ class DaftObjectMemoryRepositoryTest extends Base
 
     public function test_DaftObjectMemoryRepository() : void
     {
-        $expected_data = [
-            'foo' => 'bar',
-        ];
+        $expected_data = static::test_DaftObjectMemoryRepository_InitialData();
 
         /**
         * @var SuitableForRepositoryIntType
@@ -86,11 +84,14 @@ class DaftObjectMemoryRepositoryTest extends Base
             $expected_data
         );
 
-        $expected_data['foo'] = 'baz';
+        foreach (static::test_DaftObjectMemoryRepository_ChangedData() as $k => $v) {
+            $expected_data[$k] = $v;
 
-        $a->foo = 'baz';
+            $a->__set($k, $v);
 
-        static::assertSame('baz', $a->__get('foo'));
+            static::assertSame($v, $a->__get($k));
+        }
+
 
         $repo->RememberDaftObjectData($a, false);
 
@@ -231,5 +232,25 @@ class DaftObjectMemoryRepositoryTest extends Base
         static::assertSame(get_class($repo), get_class($repo_from_object));
 
         return $repo;
+    }
+
+    /**
+    * @return array<string, scalar|array|object|null>
+    */
+    protected static function test_DaftObjectMemoryRepository_InitialData() : array
+    {
+        return [
+            'foo' => 'bar',
+        ];
+    }
+
+    /**
+    * @return array<string, scalar|array|object|null>
+    */
+    protected static function test_DaftObjectMemoryRepository_ChangedData() : array
+    {
+        return [
+            'foo' => 'baz',
+        ];
     }
 }
