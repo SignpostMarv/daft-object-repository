@@ -106,7 +106,7 @@ class DaftObjectMemoryRepositoryTest extends Base
             '::RecallDaftObjectOrThrow() did not resolve to an instance of ' .
             SuitableForRepositoryType::class .
             ' from ' .
-            Fixtures\DaftObjectMemoryRepositorySuitableForRepositoryIntType::class .
+            static::ObtainDaftObjectRepositoryType() .
             '::RecallDaftObject()'
         );
 
