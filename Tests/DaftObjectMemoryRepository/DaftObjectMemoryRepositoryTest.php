@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace SignpostMarv\DaftObject\DaftObjectRepository\Tests\DaftObjectMemoryRepository;
 
 use PHPUnit\Framework\TestCase as Base;
+use SignpostMarv\DaftObject\DaftObjectMemoryRepository;
 use SignpostMarv\DaftObject\DaftObjectNotRecalledException;
 use SignpostMarv\DaftObject\DaftObjectRepository;
 use SignpostMarv\DaftObject\DaftObjectRepository\Tests\SuitableForRepositoryType\Fixtures\SuitableForRepositoryIntType;
@@ -14,7 +15,7 @@ use SignpostMarv\DaftObject\SuitableForRepositoryType;
 
 /**
 * @template T as SuitableForRepositoryIntType
-* @template R as Fixtures\DaftObjectMemoryRepositorySuitableForRepositoryIntType
+* @template R as DaftObjectMemoryRepository
 */
 class DaftObjectMemoryRepositoryTest extends Base
 {
