@@ -85,12 +85,24 @@ class DaftObjectMemoryRepositoryTest extends Base
             $expected_data
         );
 
+        $expected_changed = [];
+
         foreach (static::ChangedData_test_DaftObjectMemoryRepository() as $k => $v) {
             $expected_data[$k] = $v;
+
+            if ($a->__get($k) !== $v) {
+                $expected_changed[] = $k;
+            }
 
             $a->__set($k, $v);
 
             static::assertSame($v, $a->__get($k));
+        }
+
+        $actually_changed = $a->ChangedProperties();
+
+        foreach ($expected_changed as $k) {
+            static::assertContains($k, $actually_changed);
         }
 
         $repo->RememberDaftObjectData($a, false);
