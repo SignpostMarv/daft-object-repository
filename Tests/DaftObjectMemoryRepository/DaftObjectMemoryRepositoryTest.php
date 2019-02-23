@@ -35,10 +35,21 @@ class DaftObjectMemoryRepositoryTest extends Base
 
     public function test_DaftObjectMemoryRepository() : void
     {
-        $a = static::ObtainSuitableForRepositoryIntTypeFromArgs([
-            'id' => 1,
+        $expected_data = [
             'foo' => 'bar',
-        ]);
+        ];
+
+        /**
+        * @var SuitableForRepositoryIntType
+        *
+        * @psalm-var T
+        */
+        $a = static::ObtainSuitableForRepositoryIntTypeFromArgs(array_merge(
+            ['id' => 1],
+            $expected_data
+        ));
+
+        static::assertInstanceOf(static::ObtainDaftObjectType(), $a);
 
         /**
         * @psalm-var R
@@ -50,9 +61,7 @@ class DaftObjectMemoryRepositoryTest extends Base
         $this->RecallThenAssertBothModes(
             $repo,
             $a,
-            [
-                'foo' => 'bar',
-            ]
+            $expected_data
         );
 
         $repo->ForgetDaftObjectById(1);
@@ -60,21 +69,43 @@ class DaftObjectMemoryRepositoryTest extends Base
         $this->RecallThenAssertBothModes(
             $repo,
             $a,
-            [
-                'foo' => 'bar',
-            ]
+            $expected_data
         );
 
-        $repo->RememberDaftObject($a);
+        $repo->RemoveDaftObject($a);
+
+        $a_recalled = $repo->RecallDaftObject(1);
+
+        static::assertNull($a_recalled);
+
+        $repo->RememberDaftObjectData($a, true);
+
+        $this->RecallThenAssertBothModes(
+            $repo,
+            $a,
+            $expected_data
+        );
+
+        $expected_data['foo'] = 'baz';
+
+        $a->foo = 'baz';
+
+        static::assertSame('baz', $a->__get('foo'));
+
+        $repo->RememberDaftObjectData($a, false);
+
+        $this->RecallThenAssertBothModes(
+            $repo,
+            $a,
+            $expected_data
+        );
 
         $repo->ForgetDaftObject($a);
 
         $this->RecallThenAssertBothModes(
             $repo,
             $a,
-            [
-                'foo' => 'bar',
-            ]
+            $expected_data
         );
 
         $repo->RemoveDaftObjectById(1);
@@ -88,9 +119,7 @@ class DaftObjectMemoryRepositoryTest extends Base
         $this->RecallThenAssertBothModes(
             $repo,
             $a,
-            [
-                'foo' => 'bar',
-            ]
+            $expected_data
         );
 
         $repo->RemoveDaftObject($a);

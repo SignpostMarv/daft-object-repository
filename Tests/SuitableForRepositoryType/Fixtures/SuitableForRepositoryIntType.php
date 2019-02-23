@@ -13,7 +13,7 @@ use SignpostMarv\DaftObject\SuitableForRepositoryType;
 
 /**
 * @property-read int $id
-* @property-read string $foo
+* @property string $foo
 */
 class SuitableForRepositoryIntType extends AbstractArrayBackedDaftObject implements
     SuitableForRepositoryType,
@@ -34,6 +34,11 @@ class SuitableForRepositoryIntType extends AbstractArrayBackedDaftObject impleme
     public function GetFoo() : string
     {
         return (string) $this->RetrievePropertyValueFromData('foo');
+    }
+
+    public function SetFoo(string $value) : void
+    {
+        $this->NudgePropertyValue('foo', $value);
     }
 
     public static function DaftObjectIdProperties() : array
