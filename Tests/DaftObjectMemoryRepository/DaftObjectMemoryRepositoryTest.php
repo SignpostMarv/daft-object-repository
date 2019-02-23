@@ -14,7 +14,7 @@ use SignpostMarv\DaftObject\DaftObjectRepository\Tests\SuitableForRepositoryType
 use SignpostMarv\DaftObject\SuitableForRepositoryType;
 
 /**
-* @template T as SuitableForRepositoryIntType
+* @template T as SuitableForRepositoryType
 * @template R as DaftObjectMemoryRepository
 */
 class DaftObjectMemoryRepositoryTest extends Base
@@ -157,8 +157,8 @@ class DaftObjectMemoryRepositoryTest extends Base
     ) : void {
         $obj_recalled =
             $recall_not_throw
-                ? $repo->RecallDaftObject($obj->id)
-                : $repo->RecallDaftObjectOrThrow($obj->id);
+                ? $repo->RecallDaftObject($obj->GetId())
+                : $repo->RecallDaftObjectOrThrow($obj->GetId());
 
         static::assertInstanceOf(static::ObtainDaftObjectType(), $obj_recalled);
 
