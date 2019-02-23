@@ -35,11 +35,6 @@ class DaftObjectMemoryRepositoryTest extends Base
 
     public function test_DaftObjectMemoryRepository() : void
     {
-        /**
-        * @psalm-var class-string<R>
-        */
-        $repo_type = static::ObtainDaftObjectRepositoryType();
-
         $a = static::ObtainSuitableForRepositoryIntTypeFromArgs([
             'id' => 1,
             'foo' => 'bar',
@@ -48,13 +43,7 @@ class DaftObjectMemoryRepositoryTest extends Base
         /**
         * @psalm-var R
         */
-        $repo = $repo_type::DaftObjectRepositoryByType(
-            SuitableForRepositoryIntType::class
-        );
-
-        $repo_from_object = $repo_type::DaftObjectRepositoryByDaftObject($a);
-
-        static::assertSame(get_class($repo), get_class($repo_from_object));
+        $repo = $this->ObtainDaftObjectRepositoryAndAssertSameByObject($a);
 
         $repo->RememberDaftObject($a);
 
@@ -188,5 +177,30 @@ class DaftObjectMemoryRepositoryTest extends Base
         $type = static::ObtainDaftObjectType();
 
         return new $type($args);
+    }
+
+    /**
+    * @psalm-param T $object
+    *
+    * @psalm-return R
+    */
+    protected function ObtainDaftObjectRepositoryAndAssertSameByObject(
+        SuitableForRepositoryType $object
+    ) : DaftObjectRepository {
+        /**
+        * @psalm-var class-string<R>
+        */
+        $repo_type = static::ObtainDaftObjectRepositoryType();
+
+        /**
+        * @psalm-var R
+        */
+        $repo = $repo_type::DaftObjectRepositoryByType(static::ObtainDaftObjectType());
+
+        $repo_from_object = $repo_type::DaftObjectRepositoryByDaftObject($object);
+
+        static::assertSame(get_class($repo), get_class($repo_from_object));
+
+        return $repo;
     }
 }
