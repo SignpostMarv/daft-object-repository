@@ -92,7 +92,6 @@ class DaftObjectMemoryRepositoryTest extends Base
             static::assertSame($v, $a->__get($k));
         }
 
-
         $repo->RememberDaftObjectData($a, false);
 
         $this->RecallThenAssertBothModes(
