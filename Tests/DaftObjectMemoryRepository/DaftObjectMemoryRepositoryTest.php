@@ -171,7 +171,18 @@ class DaftObjectMemoryRepositoryTest extends Base
         static::assertInstanceOf(static::ObtainDaftObjectType(), $obj_recalled);
 
         foreach ($assert_same_props as $k => $v) {
-            static::assertSame($v, $obj->__get($k));
+            static::assertSame(
+                $v,
+                $obj->__get($k),
+                (
+                    get_class($obj) .
+                    '::$' .
+                    $k .
+                    ' was expected to be "' .
+                    var_export($v, true) .
+                    '"'
+                )
+            );
         }
     }
 
