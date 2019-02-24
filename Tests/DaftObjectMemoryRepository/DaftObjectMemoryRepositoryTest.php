@@ -19,21 +19,6 @@ use SignpostMarv\DaftObject\SuitableForRepositoryType;
 */
 class DaftObjectMemoryRepositoryTest extends Base
 {
-    /**
-    * @var bool
-    */
-    protected $backupGlobals = false;
-
-    /**
-    * @var bool
-    */
-    protected $backupStaticAttributes = false;
-
-    /**
-    * @var bool
-    */
-    protected $runTestInSeparateProcess = false;
-
     public function test_DaftObjectMemoryRepository() : void
     {
         $expected_data = static::InitialData_test_DaftObjectMemoryRepository();

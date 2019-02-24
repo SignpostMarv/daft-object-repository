@@ -1,2 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files/>
+<files>
+  <file src="Tests\DaftObjectMemoryRepository\DaftObjectMemoryRepositoryTest.php">
+    <PossiblyUnusedMethod occurrences="1">
+      <code>public function test_DaftObjectMemoryRepository() : void</code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="Tests\SuitableForRepositoryType\Fixtures\SuitableForRepositoryIntType.php">
+    <PossiblyUnusedMethod occurrences="2">
+      <code>public function GetFoo() : string</code>
+      <code>public function SetFoo(string $value) : void</code>
+    </PossiblyUnusedMethod>
+  </file>
+</files>

@@ -13,6 +13,7 @@
 
         <ignoreFiles>
             <directory name="./vendor/signpostmarv/daft-object/"/>
+            <file name="./vendor/phpunit/phpunit/src/Framework/TestCase.php"/>
         </ignoreFiles>
     </projectFiles>
 
