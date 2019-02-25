@@ -8,8 +8,8 @@ namespace SignpostMarv\DaftObject\DaftObjectRepository\Tests\DaftObjectMemoryRep
 
 use PHPUnit\Framework\TestCase as Base;
 use SignpostMarv\DaftObject\DaftObjectMemoryRepository;
-use SignpostMarv\DaftObject\DaftObjectNotRecalledException;
 use SignpostMarv\DaftObject\DaftObjectRepository;
+use SignpostMarv\DaftObject\DaftObjectRepository\Exceptions\DaftObjectNotRecalledException;
 use SignpostMarv\DaftObject\DaftObjectRepository\Tests\SuitableForRepositoryType\Fixtures\SuitableForRepositoryIntType;
 use SignpostMarv\DaftObject\SuitableForRepositoryType;
 
