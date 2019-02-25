@@ -46,7 +46,7 @@
             "@other-tests"
         ],
         "infection": [
-            "infection --min-msi=100"
+            "infection --min-msi=100 -vvv"
         ],
         "other-tests": [
             "phpstan analyse -c ./phpstan.neon .php_cs.dist src Tests",
