@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3f6933ebebc063690e5e480135739d65",
+    "content-hash": "d32d58fc44c8340f28f4e936ee3a787d",
     "packages": [
         {
             "name": "signpostmarv/daft-magic-property-analysis",
@@ -58,16 +58,16 @@
         },
         {
             "name": "signpostmarv/daft-object",
-            "version": "dev-master",
+            "version": "v2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SignpostMarv/daft-object.git",
-                "reference": "0db919e0821ef5a6c092a78e53b465f8b4cb2fad"
+                "reference": "f1b7ddbdd1eb29784c73f006eb65ae9656b30993"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SignpostMarv/daft-object/zipball/0db919e0821ef5a6c092a78e53b465f8b4cb2fad",
-                "reference": "0db919e0821ef5a6c092a78e53b465f8b4cb2fad",
+                "url": "https://api.github.com/repos/SignpostMarv/daft-object/zipball/f1b7ddbdd1eb29784c73f006eb65ae9656b30993",
+                "reference": "f1b7ddbdd1eb29784c73f006eb65ae9656b30993",
                 "shasum": ""
             },
             "require": {
@@ -75,7 +75,7 @@
                 "ext-mbstring": "*",
                 "php": "^7.1,>=7.1.3",
                 "signpostmarv/daft-magic-property-analysis": "^0.7.0",
-                "signpostmarv/sprintf-exception-factory": "dev-master"
+                "signpostmarv/sprintf-exception-factory": "^1.2"
             },
             "require-dev": {
                 "infection/infection": "^0.12.2",
@@ -109,11 +109,11 @@
                 }
             ],
             "description": "Daft Object",
-            "time": "2019-02-25T21:34:04+00:00"
+            "time": "2019-02-25T23:41:09+00:00"
         },
         {
             "name": "signpostmarv/sprintf-exception-factory",
-            "version": "dev-master",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SignpostMarv/sprintf-exception-factory.git",
@@ -5324,8 +5324,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "signpostmarv/daft-object": 20,
-        "signpostmarv/sprintf-exception-factory": 20,
         "roave/security-advisories": 20,
         "vimeo/psalm": 20
     },

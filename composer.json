@@ -65,8 +65,8 @@
         "ext-json": "*",
         "ext-mbstring": "*",
         "signpostmarv/daft-magic-property-analysis": "^0.7.0",
-        "signpostmarv/daft-object": "dev-master",
-        "signpostmarv/sprintf-exception-factory": "dev-master"
+        "signpostmarv/daft-object": "^2.1",
+        "signpostmarv/sprintf-exception-factory": "^1.2"
     },
     "require-dev": {
         "infection/infection": "^0.12.2",
