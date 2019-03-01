@@ -10,6 +10,7 @@ use SignpostMarv\DaftObject\AbstractArrayBackedDaftObject;
 use SignpostMarv\DaftObject\DaftObjectIdValuesHashLazyInt;
 use SignpostMarv\DaftObject\DefinesOwnIntegerIdInterface;
 use SignpostMarv\DaftObject\SuitableForRepositoryType;
+use SignpostMarv\DaftObject\TypeUtilities;
 
 /**
 * @property-read int $id
@@ -30,12 +31,24 @@ class SuitableForRepositoryIntType extends AbstractArrayBackedDaftObject impleme
 
     public function GetId() : int
     {
-        return (int) $this->RetrievePropertyValueFromData('id');
+        return TypeUtilities::ExpectRetrievedValueIsIntish(
+            'id',
+            $this->RetrievePropertyValueFromData(
+                'id'
+            ),
+            static::class
+        );
     }
 
     public function GetFoo() : string
     {
-        return (string) $this->RetrievePropertyValueFromData('foo');
+        return TypeUtilities::ExpectRetrievedValueIsString(
+            'foo',
+            $this->RetrievePropertyValueFromData(
+                'foo'
+            ),
+            static::class
+        );
     }
 
     public function SetFoo(string $value) : void
