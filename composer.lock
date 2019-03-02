@@ -62,12 +62,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SignpostMarv/daft-object.git",
-                "reference": "e73d104adc7a9c37af72f5073b024c41c6ed98af"
+                "reference": "4002a0be8c03fc256d7b62560f60d73676fe3dda"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SignpostMarv/daft-object/zipball/e73d104adc7a9c37af72f5073b024c41c6ed98af",
-                "reference": "e73d104adc7a9c37af72f5073b024c41c6ed98af",
+                "url": "https://api.github.com/repos/SignpostMarv/daft-object/zipball/4002a0be8c03fc256d7b62560f60d73676fe3dda",
+                "reference": "4002a0be8c03fc256d7b62560f60d73676fe3dda",
                 "shasum": ""
             },
             "require": {
@@ -109,7 +109,7 @@
                 }
             ],
             "description": "Daft Object",
-            "time": "2019-03-02T09:55:51+00:00"
+            "time": "2019-03-02T16:26:40+00:00"
         },
         {
             "name": "signpostmarv/sprintf-exception-factory",
