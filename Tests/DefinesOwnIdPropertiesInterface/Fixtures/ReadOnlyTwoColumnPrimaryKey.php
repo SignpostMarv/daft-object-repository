@@ -78,7 +78,7 @@ class ReadOnlyTwoColumnPrimaryKey extends AbstractArrayBackedDaftObject implemen
     public function GetBat() : ? bool
     {
         /**
-        * @var bool|null|string $out
+        * @var bool|string|null
         */
         $out = $this->RetrievePropertyValueFromData('Bat');
 
