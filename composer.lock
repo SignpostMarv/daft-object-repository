@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "496ce231bd8236a96a72ef4671084c4e",
+    "content-hash": "274ba5cc1fdea0178dcecee06a52c979",
     "packages": [
         {
             "name": "signpostmarv/daft-magic-property-analysis",
@@ -62,12 +62,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SignpostMarv/daft-object.git",
-                "reference": "f3fd9b37ac80d8acb3baf78e41f640bc3fe76de3"
+                "reference": "e73d104adc7a9c37af72f5073b024c41c6ed98af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SignpostMarv/daft-object/zipball/f3fd9b37ac80d8acb3baf78e41f640bc3fe76de3",
-                "reference": "f3fd9b37ac80d8acb3baf78e41f640bc3fe76de3",
+                "url": "https://api.github.com/repos/SignpostMarv/daft-object/zipball/e73d104adc7a9c37af72f5073b024c41c6ed98af",
+                "reference": "e73d104adc7a9c37af72f5073b024c41c6ed98af",
                 "shasum": ""
             },
             "require": {
@@ -84,10 +84,9 @@
                 "phpstan/phpstan": "^0.11.2",
                 "phpstan/phpstan-phpunit": "^0.11.0",
                 "phpstan/phpstan-strict-rules": "^0.11.0",
-                "phpunit/phpcov": "^5.0",
                 "phpunit/phpunit": "^7.5",
                 "povils/phpmnd": "^2.1",
-                "psalm/plugin-phpunit": "^0.4.1",
+                "psalm/plugin-phpunit": "^0.5.1",
                 "roave/security-advisories": "dev-master",
                 "sebastian/phpcpd": "^4.1",
                 "signpostmarv/php-cs-fixer-config": "^0.9.0",
@@ -110,7 +109,7 @@
                 }
             ],
             "description": "Daft Object",
-            "time": "2019-02-28T23:52:03+00:00"
+            "time": "2019-03-02T09:55:51+00:00"
         },
         {
             "name": "signpostmarv/sprintf-exception-factory",
@@ -3138,28 +3137,28 @@
         },
         {
             "name": "psalm/plugin-phpunit",
-            "version": "0.4.1",
+            "version": "0.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/psalm/phpunit-psalm-plugin.git",
-                "reference": "707b2472bad6655d85c39a4e2e1d210800c73b75"
+                "reference": "2fcf618ba9a710e22a0da9fab465770ee6314cfa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/psalm/phpunit-psalm-plugin/zipball/707b2472bad6655d85c39a4e2e1d210800c73b75",
-                "reference": "707b2472bad6655d85c39a4e2e1d210800c73b75",
+                "url": "https://api.github.com/repos/psalm/phpunit-psalm-plugin/zipball/2fcf618ba9a710e22a0da9fab465770ee6314cfa",
+                "reference": "2fcf618ba9a710e22a0da9fab465770ee6314cfa",
                 "shasum": ""
             },
             "require": {
                 "composer/semver": "^1.4",
                 "muglug/package-versions-56": "^1.2",
-                "phpunit/phpunit": "^5.0 || ^6.0 || ^7.0",
-                "vimeo/psalm": "^3.0 || dev-master"
+                "phpunit/phpunit": "^6.0 || ^7.0 || ^8.0",
+                "vimeo/psalm": "^3.0.13 || dev-master"
             },
             "require-dev": {
                 "codeception/base": "^2.5",
                 "squizlabs/php_codesniffer": "^3.3.1",
-                "weirdan/codeception-psalm-module": "^0.1.0"
+                "weirdan/codeception-psalm-module": "^0.2.1"
             },
             "type": "psalm-plugin",
             "extra": {
@@ -3171,6 +3170,12 @@
                 "psr-4": {
                     "Psalm\\PhpUnitPlugin\\": [
                         "."
+                    ],
+                    "Psalm\\PhpUnitPlugin\\Hooks\\": [
+                        "hooks"
+                    ],
+                    "Psalm\\PhpUnitPlugin\\Exception\\": [
+                        "Exception"
                     ]
                 }
             },
@@ -3185,7 +3190,7 @@
                 }
             ],
             "description": "Psalm plugin for PHPUnit",
-            "time": "2019-02-14T05:10:52+00:00"
+            "time": "2019-03-01T18:53:36+00:00"
         },
         {
             "name": "psr/container",
@@ -5105,12 +5110,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/vimeo/psalm.git",
-                "reference": "27527956d4bf569c57ecb809b578a57754c41da8"
+                "reference": "5c76ab35c8952e6f8f6363c66e0a0f721b7b99cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vimeo/psalm/zipball/27527956d4bf569c57ecb809b578a57754c41da8",
-                "reference": "27527956d4bf569c57ecb809b578a57754c41da8",
+                "url": "https://api.github.com/repos/vimeo/psalm/zipball/5c76ab35c8952e6f8f6363c66e0a0f721b7b99cd",
+                "reference": "5c76ab35c8952e6f8f6363c66e0a0f721b7b99cd",
                 "shasum": ""
             },
             "require": {
@@ -5175,7 +5180,7 @@
                 "inspection",
                 "php"
             ],
-            "time": "2019-02-22T16:47:55+00:00"
+            "time": "2019-03-01T22:30:55+00:00"
         },
         {
             "name": "webmozart/assert",
