@@ -7,14 +7,14 @@
   </file>
   <file src="Tests\DefinesOwnIdPropertiesInterface\Fixtures\ReadOnlyTwoColumnPrimaryKey.php">
     <PossiblyUnusedMethod occurrences="2">
-      <code>public function GetBaz() : int</code>
-      <code>public function GetBat() : ? bool</code>
+      <code>GetBaz</code>
+      <code>GetBat</code>
     </PossiblyUnusedMethod>
   </file>
   <file src="Tests\SuitableForRepositoryType\Fixtures\SuitableForRepositoryIntType.php">
     <PossiblyUnusedMethod occurrences="2">
-      <code>public function GetFoo() : string</code>
-      <code>public function SetFoo(string $value) : void</code>
+      <code>GetFoo</code>
+      <code>SetFoo</code>
     </PossiblyUnusedMethod>
   </file>
   <file src="src\DefinesOwnStringIdInterface.php">
