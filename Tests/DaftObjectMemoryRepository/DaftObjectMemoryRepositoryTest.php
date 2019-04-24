@@ -23,11 +23,6 @@ class DaftObjectMemoryRepositoryTest extends Base
     {
         $expected_data = static::InitialData_test_DaftObjectMemoryRepository();
 
-        /**
-        * @var SuitableForRepositoryIntType
-        *
-        * @psalm-var T
-        */
         $a = static::ObtainSuitableForRepositoryIntTypeFromArgs(array_merge(
             ['id' => 1],
             $expected_data

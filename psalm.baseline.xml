@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files>
-  <file src="Tests\DaftObjectMemoryRepository\DaftObjectMemoryRepositoryTest.php">
-    <RedundantConditionGivenDocblockType occurrences="1">
-      <code>assertInstanceOf</code>
-    </RedundantConditionGivenDocblockType>
-  </file>
   <file src="Tests\DefinesOwnIdPropertiesInterface\Fixtures\ReadOnlyTwoColumnPrimaryKey.php">
     <PossiblyUnusedMethod occurrences="2">
       <code>GetBaz</code>
